@@ -24,8 +24,8 @@ type alias Model =
     }
 
 
-init : String -> ( Model, Cmd Msg )
-init token =
+init : String -> String -> ( Model, Cmd Msg )
+init apiUrl token =
     ( { students = Loading
       , studentRatings = Dict.empty
       , studentGames = Dict.empty
@@ -36,7 +36,8 @@ init token =
       , isAdding = False
       }
     , Api.Students.getStudents
-        { token = token
+        { apiUrl = apiUrl
+        , token = token
         , onResponse = GotStudents
         }
     )
@@ -50,12 +51,12 @@ type Msg
     | HideAddModal
     | NewStudentChessComChanged String
     | NewStudentLichessChanged String
-    | SubmitNewStudent String
+    | SubmitNewStudent { apiUrl : String, token : String }
     | GotNewStudent (Result Http.Error Student)
 
 
-update : String -> Msg -> Model -> ( Model, Cmd Msg )
-update token msg model =
+update : String -> String -> Msg -> Model -> ( Model, Cmd Msg )
+update apiUrl token msg model =
     case msg of
         GotStudents result ->
             case result of
@@ -67,7 +68,8 @@ update token msg model =
                                 |> List.map
                                     (\student ->
                                         Api.Students.getStudentRatings
-                                            { token = token
+                                            { apiUrl = apiUrl
+                                            , token = token
                                             , studentId = student.id
                                             , onResponse = GotStudentRatings student.id
                                             }
@@ -78,7 +80,8 @@ update token msg model =
                                 |> List.map
                                     (\student ->
                                         Api.Students.getStudentGames
-                                            { token = token
+                                            { apiUrl = apiUrl
+                                            , token = token
                                             , studentId = student.id
                                             , onResponse = GotStudentGames student.id
                                             }
@@ -125,14 +128,15 @@ update token msg model =
         NewStudentLichessChanged username ->
             ( { model | newStudentLichess = username, addError = Nothing }, Cmd.none )
 
-        SubmitNewStudent tkn ->
+        SubmitNewStudent config ->
             if String.isEmpty model.newStudentChessCom && String.isEmpty model.newStudentLichess then
                 ( { model | addError = Just "Please enter at least one chess username" }, Cmd.none )
 
             else
                 ( { model | isAdding = True, addError = Nothing }
                 , Api.Students.createStudent
-                    { token = tkn
+                    { apiUrl = config.apiUrl
+                    , token = config.token
                     , chessComUsername =
                         if String.isEmpty model.newStudentChessCom then
                             Nothing
@@ -199,8 +203,8 @@ httpErrorToString error =
             "Error: " ++ message
 
 
-view : String -> Model -> Html Msg
-view token model =
+view : String -> String -> Model -> Html Msg
+view apiUrl token model =
     div []
         [ -- Header
           div [ class "flex items-center justify-between mb-8" ]
@@ -238,7 +242,7 @@ view token model =
 
         -- Add student modal
         , if model.showAddModal then
-            viewAddModal token model
+            viewAddModal apiUrl token model
 
           else
             text ""
@@ -465,8 +469,8 @@ formatRelativeDate dateStr =
     "recently"
 
 
-viewAddModal : String -> Model -> Html Msg
-viewAddModal token model =
+viewAddModal : String -> String -> Model -> Html Msg
+viewAddModal apiUrl token model =
     div [ class "fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" ]
         [ div [ class "bg-white rounded-lg shadow-lg max-w-md w-full mx-4" ]
             [ -- Header
@@ -480,7 +484,7 @@ viewAddModal token model =
                 ]
 
             -- Form
-            , Html.form [ onSubmit (SubmitNewStudent token), class "p-4" ]
+            , Html.form [ onSubmit (SubmitNewStudent { apiUrl = apiUrl, token = token }), class "p-4" ]
                 [ -- Error message
                   case model.addError of
                     Just errorMsg ->

@@ -1,6 +1,5 @@
 module Api exposing
     ( Endpoint
-    , apiUrl
     , delete
     , get
     , post
@@ -16,13 +15,8 @@ type Endpoint
     = Endpoint String
 
 
-apiUrl : String
-apiUrl =
-    "http://localhost:8080"
-
-
-url : List String -> Endpoint
-url paths =
+url : String -> List String -> Endpoint
+url apiUrl paths =
     Endpoint (apiUrl ++ "/" ++ String.join "/" paths)
 
 

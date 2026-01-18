@@ -26,8 +26,8 @@ type PlatformFilter
     | LichessOnly
 
 
-init : String -> String -> ( Model, Cmd Msg )
-init token studentId =
+init : String -> String -> String -> ( Model, Cmd Msg )
+init apiUrl token studentId =
     ( { studentId = studentId
       , student = Loading
       , weaknesses = Loading
@@ -36,17 +36,20 @@ init token studentId =
       }
     , Cmd.batch
         [ Api.Students.getStudent
-            { token = token
+            { apiUrl = apiUrl
+            , token = token
             , studentId = studentId
             , onResponse = GotStudent
             }
         , Api.Students.getStudentWeaknesses
-            { token = token
+            { apiUrl = apiUrl
+            , token = token
             , studentId = studentId
             , onResponse = GotWeaknesses
             }
         , Api.Students.getStudentGames
-            { token = token
+            { apiUrl = apiUrl
+            , token = token
             , studentId = studentId
             , onResponse = GotGames
             }

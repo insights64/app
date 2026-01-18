@@ -36,8 +36,8 @@ type Msg
     | GotRegisterResponse (Result Http.Error { token : String, coach : Coach })
 
 
-update : Msg -> Model -> ( Model, Cmd Msg, Maybe { token : String, coach : Coach } )
-update msg model =
+update : String -> Msg -> Model -> ( Model, Cmd Msg, Maybe { token : String, coach : Coach } )
+update apiUrl msg model =
     case msg of
         EmailChanged email ->
             ( { model | email = email, error = Nothing }
@@ -79,7 +79,8 @@ update msg model =
             else
                 ( { model | isLoading = True, error = Nothing }
                 , Api.Auth.register
-                    { email = model.email
+                    { apiUrl = apiUrl
+                    , email = model.email
                     , password = model.password
                     , onResponse = GotRegisterResponse
                     }

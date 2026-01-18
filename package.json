@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "concurrently \"elm-watch hot\" \"vite\"",
-    "build": "elm make src/Main.elm --optimize --output=public/elm.js",
+    "build": "elm make src/Main.elm --optimize --output=public/elm.js && node scripts/inject-env.js",
     "serve": "vite preview"
   },
   "devDependencies": {

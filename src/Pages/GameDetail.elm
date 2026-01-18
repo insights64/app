@@ -14,13 +14,14 @@ type alias Model =
     }
 
 
-init : String -> String -> ( Model, Cmd Msg )
-init token gameId =
+init : String -> String -> String -> ( Model, Cmd Msg )
+init apiUrl token gameId =
     ( { gameId = gameId
       , gameDetail = Loading
       }
     , Api.Games.getGame
-        { token = token
+        { apiUrl = apiUrl
+        , token = token
         , gameId = gameId
         , onResponse = GotGameDetail
         }

@@ -21,14 +21,15 @@ authResponseDecoder =
 
 
 login :
-    { email : String
+    { apiUrl : String
+    , email : String
     , password : String
     , onResponse : Result Http.Error AuthResponse -> msg
     }
     -> Cmd msg
 login config =
     Api.post
-        { endpoint = Api.url [ "api", "auth", "login" ]
+        { endpoint = Api.url config.apiUrl [ "api", "auth", "login" ]
         , token = Nothing
         , body =
             Encode.object
@@ -41,14 +42,15 @@ login config =
 
 
 register :
-    { email : String
+    { apiUrl : String
+    , email : String
     , password : String
     , onResponse : Result Http.Error AuthResponse -> msg
     }
     -> Cmd msg
 register config =
     Api.post
-        { endpoint = Api.url [ "api", "auth", "register" ]
+        { endpoint = Api.url config.apiUrl [ "api", "auth", "register" ]
         , token = Nothing
         , body =
             Encode.object

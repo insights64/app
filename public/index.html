@@ -67,10 +67,19 @@
   <div id="app"></div>
   <script src="elm.js"></script>
   <script>
-    // Initialize Elm app with token from localStorage
+    // API URL configuration - injected at build time
+    // __API_URL__ is replaced by the build script with the actual URL
+    const API_URL = '__API_URL__' !== '__' + 'API_URL__'
+      ? '__API_URL__'
+      : 'http://localhost:8080';
+
+    // Initialize Elm app with token from localStorage and API URL
     const app = Elm.Main.init({
       node: document.getElementById('app'),
-      flags: localStorage.getItem('insights64_token')
+      flags: {
+        token: localStorage.getItem('insights64_token'),
+        apiUrl: API_URL
+      }
     });
 
     // Port: Save token to localStorage

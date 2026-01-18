@@ -7,13 +7,14 @@ import Types exposing (Game, RatingHistory, Student, WeaknessSummary, gamesDecod
 
 
 getStudents :
-    { token : String
+    { apiUrl : String
+    , token : String
     , onResponse : Result Http.Error (List Student) -> msg
     }
     -> Cmd msg
 getStudents config =
     Api.get
-        { endpoint = Api.url [ "api", "students" ]
+        { endpoint = Api.url config.apiUrl [ "api", "students" ]
         , token = Just config.token
         , decoder = studentsDecoder
         , onResponse = config.onResponse
@@ -21,14 +22,15 @@ getStudents config =
 
 
 getStudent :
-    { token : String
+    { apiUrl : String
+    , token : String
     , studentId : String
     , onResponse : Result Http.Error Student -> msg
     }
     -> Cmd msg
 getStudent config =
     Api.get
-        { endpoint = Api.url [ "api", "students", config.studentId ]
+        { endpoint = Api.url config.apiUrl [ "api", "students", config.studentId ]
         , token = Just config.token
         , decoder = studentDecoder
         , onResponse = config.onResponse
@@ -36,7 +38,8 @@ getStudent config =
 
 
 createStudent :
-    { token : String
+    { apiUrl : String
+    , token : String
     , chessComUsername : Maybe String
     , lichessUsername : Maybe String
     , onResponse : Result Http.Error Student -> msg
@@ -44,7 +47,7 @@ createStudent :
     -> Cmd msg
 createStudent config =
     Api.post
-        { endpoint = Api.url [ "api", "students" ]
+        { endpoint = Api.url config.apiUrl [ "api", "students" ]
         , token = Just config.token
         , body =
             Encode.object
@@ -71,28 +74,30 @@ createStudent config =
 
 
 deleteStudent :
-    { token : String
+    { apiUrl : String
+    , token : String
     , studentId : String
     , onResponse : Result Http.Error () -> msg
     }
     -> Cmd msg
 deleteStudent config =
     Api.delete
-        { endpoint = Api.url [ "api", "students", config.studentId ]
+        { endpoint = Api.url config.apiUrl [ "api", "students", config.studentId ]
         , token = config.token
         , onResponse = config.onResponse
         }
 
 
 getStudentWeaknesses :
-    { token : String
+    { apiUrl : String
+    , token : String
     , studentId : String
     , onResponse : Result Http.Error (List WeaknessSummary) -> msg
     }
     -> Cmd msg
 getStudentWeaknesses config =
     Api.get
-        { endpoint = Api.url [ "api", "students", config.studentId, "weaknesses" ]
+        { endpoint = Api.url config.apiUrl [ "api", "students", config.studentId, "weaknesses" ]
         , token = Just config.token
         , decoder = weaknessesDecoder
         , onResponse = config.onResponse
@@ -100,14 +105,15 @@ getStudentWeaknesses config =
 
 
 getStudentGames :
-    { token : String
+    { apiUrl : String
+    , token : String
     , studentId : String
     , onResponse : Result Http.Error (List Game) -> msg
     }
     -> Cmd msg
 getStudentGames config =
     Api.get
-        { endpoint = Api.url [ "api", "students", config.studentId, "games" ]
+        { endpoint = Api.url config.apiUrl [ "api", "students", config.studentId, "games" ]
         , token = Just config.token
         , decoder = gamesDecoder
         , onResponse = config.onResponse
@@ -115,14 +121,15 @@ getStudentGames config =
 
 
 getStudentRatings :
-    { token : String
+    { apiUrl : String
+    , token : String
     , studentId : String
     , onResponse : Result Http.Error (List RatingHistory) -> msg
     }
     -> Cmd msg
 getStudentRatings config =
     Api.get
-        { endpoint = Api.url [ "api", "students", config.studentId, "ratings" ]
+        { endpoint = Api.url config.apiUrl [ "api", "students", config.studentId, "ratings" ]
         , token = Just config.token
         , decoder = ratingsDecoder
         , onResponse = config.onResponse

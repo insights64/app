@@ -23,14 +23,15 @@ gameDetailDecoder =
 
 
 getGame :
-    { token : String
+    { apiUrl : String
+    , token : String
     , gameId : String
     , onResponse : Result Http.Error GameDetail -> msg
     }
     -> Cmd msg
 getGame config =
     Api.get
-        { endpoint = Api.url [ "api", "games", config.gameId ]
+        { endpoint = Api.url config.apiUrl [ "api", "games", config.gameId ]
         , token = Just config.token
         , decoder = gameDetailDecoder
         , onResponse = config.onResponse

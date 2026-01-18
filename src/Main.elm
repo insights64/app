@@ -33,6 +33,7 @@ type alias Model =
     { key : Nav.Key
     , session : Session
     , page : Page
+    , apiUrl : String
     }
 
 
@@ -55,14 +56,16 @@ type Page
 
 
 type alias Flags =
-    Maybe String
+    { token : Maybe String
+    , apiUrl : String
+    }
 
 
 init : Flags -> Url -> Nav.Key -> ( Model, Cmd Msg )
-init maybeToken url key =
+init flags url key =
     let
         session =
-            case maybeToken of
+            case flags.token of
                 Just token ->
                     -- We have a token but no coach info yet
                     -- For simplicity, create a placeholder coach
@@ -77,6 +80,7 @@ init maybeToken url key =
                 { key = key
                 , session = session
                 , page = NotFoundPage
+                , apiUrl = flags.apiUrl
                 }
     in
     ( model, cmd )
@@ -114,7 +118,7 @@ update msg model =
         ( LoginMsg subMsg, LoginPage subModel ) ->
             let
                 ( newSubModel, subCmd, maybeAuth ) =
-                    Login.update subMsg subModel
+                    Login.update model.apiUrl subMsg subModel
             in
             case maybeAuth of
                 Just { token, coach } ->
@@ -133,7 +137,7 @@ update msg model =
         ( RegisterMsg subMsg, RegisterPage subModel ) ->
             let
                 ( newSubModel, subCmd, maybeAuth ) =
-                    Register.update subMsg subModel
+                    Register.update model.apiUrl subMsg subModel
             in
             case maybeAuth of
                 Just { token, coach } ->
@@ -154,7 +158,7 @@ update msg model =
                 LoggedIn token _ ->
                     let
                         ( newSubModel, subCmd ) =
-                            Dashboard.update token subMsg subModel
+                            Dashboard.update model.apiUrl token subMsg subModel
                     in
                     ( { model | page = DashboardPage newSubModel }
                     , Cmd.map DashboardMsg subCmd
@@ -218,7 +222,7 @@ changeRouteTo route model =
                 LoggedIn token _ ->
                     let
                         ( subModel, subCmd ) =
-                            Dashboard.init token
+                            Dashboard.init model.apiUrl token
                     in
                     ( { model | page = DashboardPage subModel }
                     , Cmd.map DashboardMsg subCmd
@@ -232,7 +236,7 @@ changeRouteTo route model =
                 LoggedIn token _ ->
                     let
                         ( subModel, subCmd ) =
-                            StudentDetail.init token studentId
+                            StudentDetail.init model.apiUrl token studentId
                     in
                     ( { model | page = StudentDetailPage subModel }
                     , Cmd.map StudentDetailMsg subCmd
@@ -246,7 +250,7 @@ changeRouteTo route model =
                 LoggedIn token _ ->
                     let
                         ( subModel, subCmd ) =
-                            GameDetail.init token gameId
+                            GameDetail.init model.apiUrl token gameId
                     in
                     ( { model | page = GameDetailPage subModel }
                     , Cmd.map GameDetailMsg subCmd
@@ -280,7 +284,7 @@ view model =
                         Layout.layout
                             { coach = coach
                             , onLogout = Logout
-                            , content = Html.map DashboardMsg (Dashboard.view token subModel)
+                            , content = Html.map DashboardMsg (Dashboard.view model.apiUrl token subModel)
                             }
 
                     Guest ->

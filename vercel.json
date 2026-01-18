@@ -1,5 +1,5 @@
 {
-  "buildCommand": "elm make src/Main.elm --optimize --output=public/elm.js",
+  "buildCommand": "npm run build",
   "outputDirectory": "public",
   "routes": [
     { "handle": "filesystem" },
