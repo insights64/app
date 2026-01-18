@@ -1,0 +1,14 @@
+{
+  "name": "insights64-app",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "concurrently \"elm-watch hot\" \"vite\"",
+    "build": "elm make src/Main.elm --optimize --output=public/elm.js",
+    "serve": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0",
+    "concurrently": "^8.0.0",
+    "elm-watch": "^1.2.0"
+  }
+}

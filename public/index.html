@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Insights64 - Chess Coaching Dashboard</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+  <!-- Fonts - Lora for headings, Poppins for body -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Poppins', 'system-ui', 'sans-serif'],
+            serif: ['Lora', 'Georgia', 'serif'],
+          },
+          colors: {
+            anthro: {
+              dark: '#141413',
+              light: '#faf9f5',
+              cream: '#f5f3ef',
+              gray: '#6b6962',
+              'gray-mid': '#8a877f',
+              'gray-light': '#e8e6dc',
+              orange: '#d97757',
+              'orange-dark': '#c15f3c',
+              blue: '#6a9bcc',
+              green: '#788c5d',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    ::selection {
+      background-color: #d97757;
+      color: white;
+    }
+
+    /* Custom scrollbar for a cleaner look */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #c1c1c1;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #a1a1a1;
+    }
+  </style>
+</head>
+<body class="bg-anthro-light min-h-screen font-sans antialiased">
+  <div id="app"></div>
+  <script src="elm.js"></script>
+  <script>
+    // Initialize Elm app with token from localStorage
+    const app = Elm.Main.init({
+      node: document.getElementById('app'),
+      flags: localStorage.getItem('insights64_token')
+    });
+
+    // Port: Save token to localStorage
+    if (app.ports.saveToken) {
+      app.ports.saveToken.subscribe(function(token) {
+        localStorage.setItem('insights64_token', token);
+      });
+    }
+
+    // Port: Clear token from localStorage
+    if (app.ports.clearToken) {
+      app.ports.clearToken.subscribe(function() {
+        localStorage.removeItem('insights64_token');
+      });
+    }
+  </script>
+</body>
+</html>
