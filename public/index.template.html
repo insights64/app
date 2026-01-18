@@ -68,9 +68,9 @@
   <script src="elm.js"></script>
   <script>
     // API URL configuration - injected at build time
-    // http://localhost:8080 is replaced by the build script with the actual URL
-    const API_URL = 'http://localhost:8080' !== '__' + 'API_URL__'
-      ? 'http://localhost:8080'
+    // __API_URL__ is replaced by the build script with the actual URL
+    const API_URL = '__API_URL__' !== '__' + 'API_URL__'
+      ? '__API_URL__'
       : 'http://localhost:8080';
 
     // Initialize Elm app with token from localStorage and API URL
