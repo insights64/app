@@ -21,9 +21,8 @@ type alias Model =
 
 
 type PlatformFilter
-    = Combined
+    = AllGames
     | ChessComOnly
-    | LichessOnly
 
 
 init : String -> String -> String -> ( Model, Cmd Msg )
@@ -32,7 +31,7 @@ init apiUrl token studentId =
       , student = Loading
       , weaknesses = Loading
       , games = Loading
-      , platformFilter = Combined
+      , platformFilter = AllGames
       }
     , Cmd.batch
         [ Api.Students.getStudent
@@ -254,30 +253,13 @@ viewStudentHeader : Student -> Html Msg
 viewStudentHeader student =
     div [ class "bg-white rounded-lg border border-gray-200 p-6 mb-6" ]
         [ div [ class "flex items-center gap-3 mb-2" ]
-            [ case ( student.chessComUsername, student.lichessUsername ) of
-                ( Just _, Just _ ) ->
-                    span [ class "text-2xl text-gray-600" ] [ text "♞♘" ]
-
-                ( Just _, Nothing ) ->
-                    span [ class "text-2xl text-gray-600" ] [ text "♞" ]
-
-                ( Nothing, Just _ ) ->
-                    span [ class "text-2xl text-gray-600" ] [ text "♘" ]
-
-                ( Nothing, Nothing ) ->
-                    text ""
+            [ span [ class "text-2xl text-gray-600" ] [ text "♞" ]
             , h1 [ class "text-2xl font-bold text-gray-900" ] [ text student.displayName ]
             ]
         , div [ class "text-sm text-gray-600 space-y-1" ]
             [ case student.chessComUsername of
                 Just username ->
                     div [] [ text ("Chess.com: " ++ username) ]
-
-                Nothing ->
-                    text ""
-            , case student.lichessUsername of
-                Just username ->
-                    div [] [ text ("Lichess: " ++ username) ]
 
                 Nothing ->
                     text ""
@@ -288,9 +270,8 @@ viewStudentHeader student =
 viewPlatformFilter : PlatformFilter -> Html Msg
 viewPlatformFilter current =
     div [ class "flex gap-2 mb-6" ]
-        [ filterButton "Combined" Combined current
+        [ filterButton "All Games" AllGames current
         , filterButton "Chess.com" ChessComOnly current
-        , filterButton "Lichess" LichessOnly current
         ]
 
 
@@ -312,27 +293,21 @@ filterButton label filter current =
 filterWeaknesses : PlatformFilter -> List WeaknessSummary -> List WeaknessSummary
 filterWeaknesses filter weaknesses =
     case filter of
-        Combined ->
+        AllGames ->
             List.filter (\w -> w.platform == Nothing || w.platform == Just "all") weaknesses
 
         ChessComOnly ->
             List.filter (\w -> w.platform == Just "chess_com") weaknesses
 
-        LichessOnly ->
-            List.filter (\w -> w.platform == Just "lichess") weaknesses
-
 
 filterGames : PlatformFilter -> List Game -> List Game
 filterGames filter games =
     case filter of
-        Combined ->
+        AllGames ->
             games
 
         ChessComOnly ->
             List.filter (\g -> g.platform == "chess_com") games
-
-        LichessOnly ->
-            List.filter (\g -> g.platform == "lichess") games
 
 
 
@@ -425,7 +400,7 @@ viewResultsChart : Student -> List Game -> Html Msg
 viewResultsChart student games =
     let
         studentUsernames =
-            List.filterMap identity [ student.chessComUsername, student.lichessUsername ]
+            List.filterMap identity [ student.chessComUsername ]
                 |> List.map String.toLower
 
         getResult game =
@@ -515,7 +490,7 @@ viewPerformanceChart : Student -> List Game -> Html Msg
 viewPerformanceChart student games =
     let
         studentUsernames =
-            List.filterMap identity [ student.chessComUsername, student.lichessUsername ]
+            List.filterMap identity [ student.chessComUsername ]
                 |> List.map String.toLower
 
         getResultValue game =
@@ -675,7 +650,7 @@ viewGameRow : Student -> Game -> Html Msg
 viewGameRow student game =
     let
         studentUsernames =
-            List.filterMap identity [ student.chessComUsername, student.lichessUsername ]
+            List.filterMap identity [ student.chessComUsername ]
 
         isStudentWhite =
             List.member (String.toLower game.whiteUsername) (List.map String.toLower studentUsernames)
@@ -696,15 +671,7 @@ viewGameRow student game =
         ]
         [ div [ class "flex items-center justify-between" ]
             [ div [ class "flex items-center gap-3" ]
-                [ span [ class "text-gray-500" ]
-                    [ text
-                        (if game.platform == "chess_com" then
-                            "♞"
-
-                         else
-                            "♘"
-                        )
-                    ]
+                [ span [ class "text-gray-500" ] [ text "♞" ]
                 , div []
                     [ div [ class "flex items-center gap-2" ]
                         [ span [ class resultText.colorClass ] [ text resultText.label ]
@@ -733,15 +700,7 @@ viewGameRowSimple game =
         ]
         [ div [ class "flex items-center justify-between" ]
             [ div [ class "flex items-center gap-3" ]
-                [ span [ class "text-gray-500" ]
-                    [ text
-                        (if game.platform == "chess_com" then
-                            "♞"
-
-                         else
-                            "♘"
-                        )
-                    ]
+                [ span [ class "text-gray-500" ] [ text "♞" ]
                 , div []
                     [ div [ class "flex items-center gap-2" ]
                         [ span [ class "font-medium text-gray-900" ]

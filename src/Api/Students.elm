@@ -40,8 +40,7 @@ getStudent config =
 createStudent :
     { apiUrl : String
     , token : String
-    , chessComUsername : Maybe String
-    , lichessUsername : Maybe String
+    , chessComUsername : String
     , onResponse : Result Http.Error Student -> msg
     }
     -> Cmd msg
@@ -51,22 +50,7 @@ createStudent config =
         , token = Just config.token
         , body =
             Encode.object
-                [ ( "chess_com_username"
-                  , case config.chessComUsername of
-                        Just username ->
-                            Encode.string username
-
-                        Nothing ->
-                            Encode.null
-                  )
-                , ( "lichess_username"
-                  , case config.lichessUsername of
-                        Just username ->
-                            Encode.string username
-
-                        Nothing ->
-                            Encode.null
-                  )
+                [ ( "chess_com_username", Encode.string config.chessComUsername )
                 ]
         , decoder = studentDecoder
         , onResponse = config.onResponse

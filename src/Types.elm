@@ -58,7 +58,6 @@ type alias Student =
     , coachId : String
     , displayName : String
     , chessComUsername : Maybe String
-    , lichessUsername : Maybe String
     , lastImportedAt : Maybe String
     , lastInsightAt : Maybe String
     , avatarUrl : Maybe String
@@ -73,7 +72,6 @@ studentDecoder =
         |> Pipeline.required "coach_id" Decode.string
         |> Pipeline.required "display_name" Decode.string
         |> Pipeline.optional "chess_com_username" (Decode.nullable Decode.string) Nothing
-        |> Pipeline.optional "lichess_username" (Decode.nullable Decode.string) Nothing
         |> Pipeline.optional "last_imported_at" (Decode.nullable Decode.string) Nothing
         |> Pipeline.optional "last_insight_at" (Decode.nullable Decode.string) Nothing
         |> Pipeline.optional "avatar_url" (Decode.nullable Decode.string) Nothing

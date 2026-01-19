@@ -18,7 +18,6 @@ type alias Model =
     , studentGames : Dict String (List Game)
     , showAddModal : Bool
     , newStudentChessCom : String
-    , newStudentLichess : String
     , addError : Maybe String
     , isAdding : Bool
     }
@@ -31,7 +30,6 @@ init apiUrl token =
       , studentGames = Dict.empty
       , showAddModal = False
       , newStudentChessCom = ""
-      , newStudentLichess = ""
       , addError = Nothing
       , isAdding = False
       }
@@ -50,7 +48,6 @@ type Msg
     | ShowAddModal
     | HideAddModal
     | NewStudentChessComChanged String
-    | NewStudentLichessChanged String
     | SubmitNewStudent { apiUrl : String, token : String }
     | GotNewStudent (Result Http.Error Student)
 
@@ -113,7 +110,6 @@ update apiUrl token msg model =
             ( { model
                 | showAddModal = True
                 , newStudentChessCom = ""
-                , newStudentLichess = ""
                 , addError = Nothing
               }
             , Cmd.none
@@ -125,30 +121,16 @@ update apiUrl token msg model =
         NewStudentChessComChanged username ->
             ( { model | newStudentChessCom = username, addError = Nothing }, Cmd.none )
 
-        NewStudentLichessChanged username ->
-            ( { model | newStudentLichess = username, addError = Nothing }, Cmd.none )
-
         SubmitNewStudent config ->
-            if String.isEmpty model.newStudentChessCom && String.isEmpty model.newStudentLichess then
-                ( { model | addError = Just "Please enter at least one chess username" }, Cmd.none )
+            if String.isEmpty model.newStudentChessCom then
+                ( { model | addError = Just "Please enter a Chess.com username" }, Cmd.none )
 
             else
                 ( { model | isAdding = True, addError = Nothing }
                 , Api.Students.createStudent
                     { apiUrl = config.apiUrl
                     , token = config.token
-                    , chessComUsername =
-                        if String.isEmpty model.newStudentChessCom then
-                            Nothing
-
-                        else
-                            Just model.newStudentChessCom
-                    , lichessUsername =
-                        if String.isEmpty model.newStudentLichess then
-                            Nothing
-
-                        else
-                            Just model.newStudentLichess
+                    , chessComUsername = model.newStudentChessCom
                     , onResponse = GotNewStudent
                     }
                 )
@@ -170,7 +152,6 @@ update apiUrl token msg model =
                         , showAddModal = False
                         , isAdding = False
                         , newStudentChessCom = ""
-                        , newStudentLichess = ""
                       }
                     , Cmd.none
                     )
@@ -427,13 +408,6 @@ viewPlatformBadges student =
 
             Nothing ->
                 text ""
-        , case student.lichessUsername of
-            Just username ->
-                span [ class "text-sm text-anthro-gray" ]
-                    [ text username ]
-
-            Nothing ->
-                text ""
         ]
 
 
@@ -512,28 +486,10 @@ viewAddModal apiUrl token model =
                         ]
                     ]
 
-                -- Lichess username
-                , div [ class "mb-4" ]
-                    [ label [ class "block text-sm font-medium text-gray-700 mb-1" ]
-                        [ text "Lichess username" ]
-                    , div [ class "relative" ]
-                        [ input
-                            [ type_ "text"
-                            , class "w-full px-3 py-2 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none"
-                            , placeholder "username"
-                            , value model.newStudentLichess
-                            , onInput NewStudentLichessChanged
-                            , disabled model.isAdding
-                            ]
-                            []
-                        , span [ class "absolute right-3 top-1/2 -translate-y-1/2 text-gray-400" ] [ text "♘" ]
-                        ]
-                    ]
-
                 -- Info note
                 , div [ class "mb-6 flex items-start gap-2 text-sm text-gray-500" ]
                     [ span [ class "text-blue-500" ] [ text "ℹ" ]
-                    , text "Name and avatar will be fetched automatically from the chess platform"
+                    , text "Name and avatar will be fetched automatically from Chess.com"
                     ]
 
                 -- Buttons
