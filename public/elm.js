@@ -11869,7 +11869,7 @@ var $author$project$Pages$StudentDetail$viewGameRow = F2(
 				[
 					$elm$html$Html$Attributes$href(chessComAnalyzeUrl),
 					$elm$html$Html$Attributes$target('_blank'),
-					$elm$html$Html$Attributes$class('block p-4 hover:bg-orange-50 transition-colors group')
+					$elm$html$Html$Attributes$class('block p-4 hover:bg-orange-50 transition-colors')
 				]),
 			_List_fromArray(
 				[
@@ -11989,7 +11989,7 @@ var $author$project$Pages$StudentDetail$viewGameRow = F2(
 							$elm$html$Html$span,
 							_List_fromArray(
 								[
-									$elm$html$Html$Attributes$class('text-orange-500 font-medium flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity')
+									$elm$html$Html$Attributes$class('text-orange-500 font-medium flex-shrink-0 opacity-60 hover:opacity-100 transition-opacity')
 								]),
 							_List_fromArray(
 								[
@@ -12038,7 +12038,7 @@ var $author$project$Pages$StudentDetail$viewGameRowSimple = function (gameWithIn
 			[
 				$elm$html$Html$Attributes$href(chessComAnalyzeUrl),
 				$elm$html$Html$Attributes$target('_blank'),
-				$elm$html$Html$Attributes$class('block p-4 hover:bg-orange-50 transition-colors group')
+				$elm$html$Html$Attributes$class('block p-4 hover:bg-orange-50 transition-colors')
 			]),
 		_List_fromArray(
 			[
@@ -12099,7 +12099,7 @@ var $author$project$Pages$StudentDetail$viewGameRowSimple = function (gameWithIn
 						$elm$html$Html$span,
 						_List_fromArray(
 							[
-								$elm$html$Html$Attributes$class('text-orange-500 font-medium opacity-0 group-hover:opacity-100 transition-opacity')
+								$elm$html$Html$Attributes$class('text-orange-500 font-medium opacity-60 hover:opacity-100 transition-opacity')
 							]),
 						_List_fromArray(
 							[

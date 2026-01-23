@@ -1541,7 +1541,7 @@ viewGameRow student gameWithInsights =
     a
         [ href chessComAnalyzeUrl
         , target "_blank"
-        , class "block p-4 hover:bg-orange-50 transition-colors group"
+        , class "block p-4 hover:bg-orange-50 transition-colors"
         ]
         [ div [ class "flex items-start justify-between gap-4" ]
             [ -- Color indicator (circle)
@@ -1608,7 +1608,7 @@ viewGameRow student gameWithInsights =
                 ]
 
             -- Open link with better visibility
-            , span [ class "text-orange-500 font-medium flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity" ]
+            , span [ class "text-orange-500 font-medium flex-shrink-0 opacity-60 hover:opacity-100 transition-opacity" ]
                 [ text "Open →" ]
             ]
         ]
@@ -1779,7 +1779,7 @@ viewGameRowSimple gameWithInsights =
     a
         [ href chessComAnalyzeUrl
         , target "_blank"
-        , class "block p-4 hover:bg-orange-50 transition-colors group"
+        , class "block p-4 hover:bg-orange-50 transition-colors"
         ]
         [ div [ class "flex items-center justify-between" ]
             [ div [ class "flex items-center gap-3" ]
@@ -1792,7 +1792,7 @@ viewGameRowSimple gameWithInsights =
                         [ text (formatDate game.playedAt) ]
                     ]
                 ]
-            , span [ class "text-orange-500 font-medium opacity-0 group-hover:opacity-100 transition-opacity" ]
+            , span [ class "text-orange-500 font-medium opacity-60 hover:opacity-100 transition-opacity" ]
                 [ text "Open →" ]
             ]
         ]
