@@ -324,7 +324,7 @@ viewNotFound : Html Msg
 viewNotFound =
     div [ class "min-h-screen flex items-center justify-center bg-cream" ]
         [ div [ class "text-center" ]
-            [ div [ class "text-6xl text-gray-300 mb-4" ] [ text "♞" ]
+            [ div [ class "text-6xl text-gray-300 mb-4" ] [ text "N" ]
             , h1 [ class "text-2xl font-bold text-gray-900 mb-2" ] [ text "Page Not Found" ]
             , p [ class "text-gray-600 mb-6" ] [ text "The page you're looking for doesn't exist." ]
             , a

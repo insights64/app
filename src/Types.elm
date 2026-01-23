@@ -1,21 +1,34 @@
 module Types exposing
     ( Coach
+    , ColorFilter(..)
     , Game
+    , GameInsight
+    , GameTag
+    , GameWithInsights
     , MoveAnalysis
-    , RatingHistory
     , RemoteData(..)
+    , ResultFilter(..)
     , Student
-    , WeaknessSummary
+    , Tag
+    , TagWithCount
+    , TimeControl(..)
     , coachDecoder
+    , colorFilterToString
     , gameDecoder
+    , gameInsightDecoder
+    , gameTagDecoder
+    , gameWithInsightsDecoder
     , gamesDecoder
+    , gamesWithInsightsDecoder
     , moveAnalysisDecoder
-    , ratingHistoryDecoder
-    , ratingsDecoder
+    , resultFilterToString
     , studentDecoder
     , studentsDecoder
-    , weaknessDecoder
-    , weaknessesDecoder
+    , tagDecoder
+    , tagWithCountDecoder
+    , tagsDecoder
+    , tagsWithCountsDecoder
+    , timeControlToString
     )
 
 import Json.Decode as Decode exposing (Decoder)
@@ -84,37 +97,53 @@ studentsDecoder =
 
 
 
--- WEAKNESS SUMMARY
+-- TAG
 
 
-type alias WeaknessSummary =
+type alias Tag =
     { id : String
-    , studentId : String
+    , slug : String
+    , name : String
     , category : String
-    , platform : Maybe String
-    , score : Float
-    , totalPositions : Int
-    , mistakes : Int
-    , updatedAt : String
+    , description : Maybe String
+    , color : Maybe String
+    , priority : Int
     }
 
 
-weaknessDecoder : Decoder WeaknessSummary
-weaknessDecoder =
-    Decode.succeed WeaknessSummary
+tagDecoder : Decoder Tag
+tagDecoder =
+    Decode.succeed Tag
         |> Pipeline.required "id" Decode.string
-        |> Pipeline.required "student_id" Decode.string
+        |> Pipeline.required "slug" Decode.string
+        |> Pipeline.required "name" Decode.string
         |> Pipeline.required "category" Decode.string
-        |> Pipeline.optional "platform" (Decode.nullable Decode.string) Nothing
-        |> Pipeline.required "score" Decode.float
-        |> Pipeline.required "total_positions" Decode.int
-        |> Pipeline.required "mistakes" Decode.int
-        |> Pipeline.required "updated_at" Decode.string
+        |> Pipeline.optional "description" (Decode.nullable Decode.string) Nothing
+        |> Pipeline.optional "color" (Decode.nullable Decode.string) Nothing
+        |> Pipeline.required "priority" Decode.int
 
 
-weaknessesDecoder : Decoder (List WeaknessSummary)
-weaknessesDecoder =
-    Decode.field "weaknesses" (Decode.list weaknessDecoder)
+tagsDecoder : Decoder (List Tag)
+tagsDecoder =
+    Decode.field "tags" (Decode.list tagDecoder)
+
+
+type alias TagWithCount =
+    { tag : Tag
+    , count : Int
+    }
+
+
+tagWithCountDecoder : Decoder TagWithCount
+tagWithCountDecoder =
+    Decode.succeed TagWithCount
+        |> Pipeline.required "tag" tagDecoder
+        |> Pipeline.required "count" Decode.int
+
+
+tagsWithCountsDecoder : Decoder (List TagWithCount)
+tagsWithCountsDecoder =
+    Decode.field "tags" (Decode.list tagWithCountDecoder)
 
 
 
@@ -133,6 +162,7 @@ type alias Game =
     , result : String
     , playedAt : String
     , analyzed : Bool
+    , openingName : Maybe String
     , createdAt : String
     }
 
@@ -151,12 +181,119 @@ gameDecoder =
         |> Pipeline.required "result" Decode.string
         |> Pipeline.required "played_at" Decode.string
         |> Pipeline.required "analyzed" Decode.bool
+        |> Pipeline.optional "opening_name" (Decode.nullable Decode.string) Nothing
         |> Pipeline.required "created_at" Decode.string
 
 
 gamesDecoder : Decoder (List Game)
 gamesDecoder =
     Decode.field "games" (Decode.list gameDecoder)
+
+
+
+-- GAME INSIGHT
+
+
+type alias GameInsight =
+    { id : String
+    , gameId : String
+    , playerColor : String
+    , opponentRating : Maybe Int
+    , ratingDiff : Maybe Int
+    , accuracyOverall : Maybe Float
+    , accuracyOpening : Maybe Float
+    , accuracyMiddlegame : Maybe Float
+    , accuracyEndgame : Maybe Float
+    , inaccuraciesCount : Int
+    , mistakesCount : Int
+    , blundersCount : Int
+    , bestMovesCount : Int
+    , excellentMovesCount : Int
+    , worstMoveEvalLoss : Maybe Int
+    , maxAdvantage : Maybe Int
+    , maxDisadvantage : Maybe Int
+    , criticalMomentsCount : Int
+    , decisiveAdvantageReached : Bool
+    , decisiveAdvantageSquandered : Bool
+    , phaseDecided : Maybe String
+    }
+
+
+gameInsightDecoder : Decoder GameInsight
+gameInsightDecoder =
+    Decode.succeed GameInsight
+        |> Pipeline.required "id" Decode.string
+        |> Pipeline.required "game_id" Decode.string
+        |> Pipeline.required "player_color" Decode.string
+        |> Pipeline.optional "opponent_rating" (Decode.nullable Decode.int) Nothing
+        |> Pipeline.optional "rating_diff" (Decode.nullable Decode.int) Nothing
+        |> Pipeline.optional "accuracy_overall" (Decode.nullable Decode.float) Nothing
+        |> Pipeline.optional "accuracy_opening" (Decode.nullable Decode.float) Nothing
+        |> Pipeline.optional "accuracy_middlegame" (Decode.nullable Decode.float) Nothing
+        |> Pipeline.optional "accuracy_endgame" (Decode.nullable Decode.float) Nothing
+        |> Pipeline.required "inaccuracies_count" Decode.int
+        |> Pipeline.required "mistakes_count" Decode.int
+        |> Pipeline.required "blunders_count" Decode.int
+        |> Pipeline.required "best_moves_count" Decode.int
+        |> Pipeline.required "excellent_moves_count" Decode.int
+        |> Pipeline.optional "worst_move_eval_loss" (Decode.nullable Decode.int) Nothing
+        |> Pipeline.optional "max_advantage" (Decode.nullable Decode.int) Nothing
+        |> Pipeline.optional "max_disadvantage" (Decode.nullable Decode.int) Nothing
+        |> Pipeline.required "critical_moments_count" Decode.int
+        |> Pipeline.required "decisive_advantage_reached" Decode.bool
+        |> Pipeline.required "decisive_advantage_squandered" Decode.bool
+        |> Pipeline.optional "phase_decided" (Decode.nullable Decode.string) Nothing
+
+
+
+-- GAME TAG
+
+
+type alias GameTag =
+    { id : String
+    , gameId : String
+    , tag : Tag
+    , moveNumbers : List Int
+    , primaryMove : Maybe Int
+    , confidence : Float
+    }
+
+
+gameTagDecoder : Decoder GameTag
+gameTagDecoder =
+    Decode.succeed GameTag
+        |> Pipeline.required "id" Decode.string
+        |> Pipeline.required "game_id" Decode.string
+        |> Pipeline.required "tag" tagDecoder
+        |> Pipeline.optional "move_numbers" (Decode.list Decode.int) []
+        |> Pipeline.optional "primary_move" (Decode.nullable Decode.int) Nothing
+        |> Pipeline.required "confidence" Decode.float
+
+
+
+-- GAME WITH INSIGHTS
+
+
+type alias GameWithInsights =
+    { game : Game
+    , insight : Maybe GameInsight
+    , tags : List GameTag
+    }
+
+
+gameWithInsightsDecoder : Decoder GameWithInsights
+gameWithInsightsDecoder =
+    Decode.succeed GameWithInsights
+        |> Pipeline.required "game" gameDecoder
+        |> Pipeline.optional "insight" (Decode.nullable gameInsightDecoder) Nothing
+        |> Pipeline.optional "tags" (Decode.list gameTagDecoder) []
+
+
+gamesWithInsightsDecoder : Decoder { games : List GameWithInsights, total : Int }
+gamesWithInsightsDecoder =
+    Decode.succeed (\games total -> { games = games, total = total })
+        |> Pipeline.required "games" (Decode.list gameWithInsightsDecoder)
+        |> Pipeline.required "total" Decode.int
 
 
 
@@ -197,40 +334,77 @@ moveAnalysisDecoder =
 
 
 
--- RATING HISTORY
+-- TIME CONTROL FILTER
 
 
-type alias RatingHistory =
-    { id : String
-    , studentId : String
-    , platform : String
-    , timeControl : String
-    , rating : Int
-    , rd : Maybe Int
-    , gamesPlayed : Maybe Int
-    , win : Maybe Int
-    , loss : Maybe Int
-    , draw : Maybe Int
-    , recordedAt : String
-    }
+type TimeControl
+    = AllTimeControls
+    | Bullet
+    | Blitz
+    | Rapid
 
 
-ratingHistoryDecoder : Decoder RatingHistory
-ratingHistoryDecoder =
-    Decode.succeed RatingHistory
-        |> Pipeline.required "id" Decode.string
-        |> Pipeline.required "student_id" Decode.string
-        |> Pipeline.required "platform" Decode.string
-        |> Pipeline.required "time_control" Decode.string
-        |> Pipeline.required "rating" Decode.int
-        |> Pipeline.optional "rd" (Decode.nullable Decode.int) Nothing
-        |> Pipeline.optional "games_played" (Decode.nullable Decode.int) Nothing
-        |> Pipeline.optional "win" (Decode.nullable Decode.int) Nothing
-        |> Pipeline.optional "loss" (Decode.nullable Decode.int) Nothing
-        |> Pipeline.optional "draw" (Decode.nullable Decode.int) Nothing
-        |> Pipeline.required "recorded_at" Decode.string
+timeControlToString : TimeControl -> String
+timeControlToString tc =
+    case tc of
+        AllTimeControls ->
+            "all"
+
+        Bullet ->
+            "bullet"
+
+        Blitz ->
+            "blitz"
+
+        Rapid ->
+            "rapid"
 
 
-ratingsDecoder : Decoder (List RatingHistory)
-ratingsDecoder =
-    Decode.field "ratings" (Decode.list ratingHistoryDecoder)
+
+-- RESULT FILTER
+
+
+type ResultFilter
+    = AllResults
+    | WinsOnly
+    | LossesOnly
+    | DrawsOnly
+
+
+resultFilterToString : ResultFilter -> String
+resultFilterToString rf =
+    case rf of
+        AllResults ->
+            "all"
+
+        WinsOnly ->
+            "win"
+
+        LossesOnly ->
+            "loss"
+
+        DrawsOnly ->
+            "draw"
+
+
+
+-- COLOR FILTER
+
+
+type ColorFilter
+    = AllColors
+    | WhiteOnly
+    | BlackOnly
+
+
+colorFilterToString : ColorFilter -> String
+colorFilterToString cf =
+    case cf of
+        AllColors ->
+            "all"
+
+        WhiteOnly ->
+            "white"
+
+        BlackOnly ->
+            "black"

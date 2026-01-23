@@ -1,9 +1,25 @@
-module Api.Students exposing (createStudent, deleteStudent, getStudent, getStudentGames, getStudentRatings, getStudentWeaknesses, getStudents)
+module Api.Students exposing
+    ( createStudent
+    , deleteStudent
+    , getStudent
+    , getStudentGames
+    , getStudentTags
+    , getStudents
+    )
 
 import Api
 import Http
 import Json.Encode as Encode
-import Types exposing (Game, RatingHistory, Student, WeaknessSummary, gamesDecoder, ratingsDecoder, studentDecoder, studentsDecoder, weaknessesDecoder)
+import Types
+    exposing
+        ( GameWithInsights
+        , Student
+        , TagWithCount
+        , gamesWithInsightsDecoder
+        , studentDecoder
+        , studentsDecoder
+        , tagsWithCountsDecoder
+        )
 
 
 getStudents :
@@ -72,49 +88,110 @@ deleteStudent config =
         }
 
 
-getStudentWeaknesses :
-    { apiUrl : String
-    , token : String
-    , studentId : String
-    , onResponse : Result Http.Error (List WeaknessSummary) -> msg
-    }
-    -> Cmd msg
-getStudentWeaknesses config =
-    Api.get
-        { endpoint = Api.url config.apiUrl [ "api", "students", config.studentId, "weaknesses" ]
-        , token = Just config.token
-        , decoder = weaknessesDecoder
-        , onResponse = config.onResponse
-        }
-
-
+{-| Get student's games with insights and tags.
+Unified endpoint supporting all filters and pagination.
+-}
 getStudentGames :
     { apiUrl : String
     , token : String
     , studentId : String
-    , onResponse : Result Http.Error (List Game) -> msg
+    , timeControl : String
+    , result : String
+    , color : String
+    , tags : Maybe String -- comma-separated tag slugs
+    , minAccuracy : Maybe Int
+    , maxAccuracy : Maybe Int
+    , maxBlunders : Maybe Int
+    , minRatingDiff : Maybe Int
+    , maxRatingDiff : Maybe Int
+    , limit : Int
+    , offset : Int
+    , onResponse : Result Http.Error { games : List GameWithInsights, total : Int } -> msg
     }
     -> Cmd msg
 getStudentGames config =
-    Api.get
-        { endpoint = Api.url config.apiUrl [ "api", "students", config.studentId, "games" ]
+    let
+        baseParams =
+            [ ( "time_control", config.timeControl )
+            , ( "result", config.result )
+            , ( "color", config.color )
+            , ( "limit", String.fromInt config.limit )
+            , ( "offset", String.fromInt config.offset )
+            ]
+
+        tagParams =
+            case config.tags of
+                Just t ->
+                    [ ( "tags", t ) ]
+
+                Nothing ->
+                    []
+
+        minAccuracyParams =
+            case config.minAccuracy of
+                Just acc ->
+                    [ ( "min_accuracy", String.fromInt acc ) ]
+
+                Nothing ->
+                    []
+
+        maxAccuracyParams =
+            case config.maxAccuracy of
+                Just acc ->
+                    [ ( "max_accuracy", String.fromInt acc ) ]
+
+                Nothing ->
+                    []
+
+        maxBlundersParams =
+            case config.maxBlunders of
+                Just b ->
+                    [ ( "max_blunders", String.fromInt b ) ]
+
+                Nothing ->
+                    []
+
+        minRatingDiffParams =
+            case config.minRatingDiff of
+                Just rd ->
+                    [ ( "min_rating_diff", String.fromInt rd ) ]
+
+                Nothing ->
+                    []
+
+        maxRatingDiffParams =
+            case config.maxRatingDiff of
+                Just rd ->
+                    [ ( "max_rating_diff", String.fromInt rd ) ]
+
+                Nothing ->
+                    []
+
+        allParams =
+            baseParams ++ tagParams ++ minAccuracyParams ++ maxAccuracyParams ++ maxBlundersParams ++ minRatingDiffParams ++ maxRatingDiffParams
+    in
+    Api.getWithQuery
+        { endpoint = Api.url config.apiUrl [ "api", "students", config.studentId, "games", "insights" ]
         , token = Just config.token
-        , decoder = gamesDecoder
+        , queryParams = allParams
+        , decoder = gamesWithInsightsDecoder
         , onResponse = config.onResponse
         }
 
 
-getStudentRatings :
+{-| Get tag counts for a student (for filter UI)
+-}
+getStudentTags :
     { apiUrl : String
     , token : String
     , studentId : String
-    , onResponse : Result Http.Error (List RatingHistory) -> msg
+    , onResponse : Result Http.Error (List TagWithCount) -> msg
     }
     -> Cmd msg
-getStudentRatings config =
+getStudentTags config =
     Api.get
-        { endpoint = Api.url config.apiUrl [ "api", "students", config.studentId, "ratings" ]
+        { endpoint = Api.url config.apiUrl [ "api", "students", config.studentId, "tags" ]
         , token = Just config.token
-        , decoder = ratingsDecoder
+        , decoder = tagsWithCountsDecoder
         , onResponse = config.onResponse
         }

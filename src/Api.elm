@@ -2,6 +2,7 @@ module Api exposing
     ( Endpoint
     , delete
     , get
+    , getWithQuery
     , post
     , url
     )
@@ -41,6 +42,37 @@ get config =
         { method = "GET"
         , headers = authHeader config.token
         , url = unwrap config.endpoint
+        , body = Http.emptyBody
+        , expect = Http.expectJson config.onResponse config.decoder
+        , timeout = Nothing
+        , tracker = Nothing
+        }
+
+
+getWithQuery :
+    { endpoint : Endpoint
+    , token : Maybe String
+    , queryParams : List ( String, String )
+    , decoder : Decoder a
+    , onResponse : Result Http.Error a -> msg
+    }
+    -> Cmd msg
+getWithQuery config =
+    let
+        queryString =
+            if List.isEmpty config.queryParams then
+                ""
+
+            else
+                "?" ++ String.join "&" (List.map (\( k, v ) -> k ++ "=" ++ v) config.queryParams)
+
+        fullUrl =
+            unwrap config.endpoint ++ queryString
+    in
+    Http.request
+        { method = "GET"
+        , headers = authHeader config.token
+        , url = fullUrl
         , body = Http.emptyBody
         , expect = Http.expectJson config.onResponse config.decoder
         , timeout = Nothing
