@@ -3,8 +3,9 @@ module Pages.StudentDetail exposing (Model, Msg, init, update, view)
 import Api.Students
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Html.Events exposing (onClick, onInput)
+import Html.Events exposing (onClick, onInput, onMouseEnter, onMouseLeave, stopPropagationOn)
 import Http
+import Json.Decode
 import Route
 import Set exposing (Set)
 import Types
@@ -26,9 +27,7 @@ import Types
 
 
 
--- ============================================================================
 -- MODEL
--- ============================================================================
 
 
 type alias Model =
@@ -36,8 +35,6 @@ type alias Model =
     , student : RemoteData String Student
     , games : RemoteData String { games : List GameWithInsights, total : Int }
     , tags : RemoteData String (List TagWithCount)
-
-    -- Filters
     , timeControlFilter : TimeControl
     , resultFilter : ResultFilter
     , colorFilter : ColorFilter
@@ -48,17 +45,12 @@ type alias Model =
     , opponentRatingFilter : String
     , opponentSearch : String
     , sortOrder : SortOrder
-
-    -- UI State
-    , expandedGames : Set String -- Track which game cards are expanded
-    , expandedFilterSections : Set String -- Track which filter sections are expanded
+    , expandedGames : Set String
+    , expandedFilterSections : Set String
     , sidebarVisible : Bool
-
-    -- Pagination
+    , hoveredGameId : Maybe String
     , limit : Int
     , offset : Int
-
-    -- Config
     , apiUrl : String
     , token : String
     }
@@ -98,6 +90,7 @@ init apiUrl token studentId =
       , expandedGames = Set.empty
       , expandedFilterSections = Set.fromList [ "result", "timeControl" ]
       , sidebarVisible = True
+      , hoveredGameId = Nothing
       , limit = 25
       , offset = 0
       , apiUrl = apiUrl
@@ -138,9 +131,7 @@ init apiUrl token studentId =
 
 
 
--- ============================================================================
 -- MSG & UPDATE
--- ============================================================================
 
 
 type Msg
@@ -166,6 +157,7 @@ type Msg
     | ToggleSidebar
     | LoadMore
     | GoToPage Int
+    | HoverGame (Maybe String)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -239,21 +231,15 @@ update msg model =
 
         SetMinAccuracy str ->
             let
-                maybeAccuracy =
-                    String.toInt str
-
                 newModel =
-                    { model | minAccuracy = maybeAccuracy, games = Loading, offset = 0 }
+                    { model | minAccuracy = String.toInt str, games = Loading, offset = 0 }
             in
             ( newModel, fetchFilteredGames newModel )
 
         SetMaxAccuracy str ->
             let
-                maybeAccuracy =
-                    String.toInt str
-
                 newModel =
-                    { model | maxAccuracy = maybeAccuracy, games = Loading, offset = 0 }
+                    { model | maxAccuracy = String.toInt str, games = Loading, offset = 0 }
             in
             ( newModel, fetchFilteredGames newModel )
 
@@ -266,11 +252,8 @@ update msg model =
 
         SetMaxBlunders str ->
             let
-                maybeBlunders =
-                    String.toInt str
-
                 newModel =
-                    { model | maxBlunders = maybeBlunders, games = Loading, offset = 0 }
+                    { model | maxBlunders = String.toInt str, games = Loading, offset = 0 }
             in
             ( newModel, fetchFilteredGames newModel )
 
@@ -348,13 +331,13 @@ update msg model =
 
         GoToPage page ->
             let
-                newOffset =
-                    page * model.limit
-
                 newModel =
-                    { model | offset = newOffset, games = Loading }
+                    { model | offset = page * model.limit, games = Loading }
             in
             ( newModel, fetchFilteredGames newModel )
+
+        HoverGame maybeId ->
+            ( { model | hoveredGameId = maybeId }, Cmd.none )
 
 
 fetchFilteredGames : Model -> Cmd Msg
@@ -417,30 +400,26 @@ httpErrorToString error =
 
 
 
--- ============================================================================
--- HELPER FUNCTIONS
--- ============================================================================
+-- HELPERS
 
 
-{-| Color palette from design spec
--}
 type alias AccuracyColors =
-    { bg : String, text : String, border : String, bar : String }
+    { bg : String, text : String, bar : String }
 
 
-accuracyColorClasses : Float -> AccuracyColors
-accuracyColorClasses accuracy =
+accuracyColors : Float -> AccuracyColors
+accuracyColors accuracy =
     if accuracy <= 40 then
-        { bg = "bg-red-50", text = "text-red-700", border = "border-red-200", bar = "bg-red-500" }
+        { bg = "bg-red-50", text = "text-red-700", bar = "bg-red-500" }
 
     else if accuracy <= 60 then
-        { bg = "bg-orange-50", text = "text-orange-700", border = "border-orange-200", bar = "bg-orange-500" }
+        { bg = "bg-orange-50", text = "text-orange-700", bar = "bg-orange-500" }
 
     else if accuracy <= 80 then
-        { bg = "bg-yellow-50", text = "text-yellow-700", border = "border-yellow-200", bar = "bg-yellow-500" }
+        { bg = "bg-yellow-50", text = "text-yellow-700", bar = "bg-yellow-500" }
 
     else
-        { bg = "bg-green-50", text = "text-green-700", border = "border-green-200", bar = "bg-green-500" }
+        { bg = "bg-green-50", text = "text-green-700", bar = "bg-green-500" }
 
 
 getTagSentiment : Tag -> TagSentiment
@@ -449,95 +428,32 @@ getTagSentiment tag =
         slug =
             String.toLower tag.slug
     in
-    if
-        List.member slug
-            [ "fork-executed"
-            , "pin-created"
-            , "discovered-attack"
-            , "winning-converted"
-            , "clean-game"
-            , "high-accuracy"
-            , "delivered-checkmate"
-            , "comeback"
-            , "upset-victory"
-            , "well-prepared"
-            , "castled-kingside"
-            , "castled-queenside"
-            , "back-rank-threat"
-            , "brilliant"
-            , "great-find"
-            , "best-move"
-            ]
-    then
+    if List.member slug [ "fork-executed", "pin-created", "discovered-attack", "winning-converted", "clean-game", "high-accuracy", "delivered-checkmate", "comeback", "upset-victory", "well-prepared", "castled-kingside", "castled-queenside", "brilliant", "great-find", "best-move" ] then
         Positive
 
-    else if
-        List.member slug
-            [ "fork-missed"
-            , "pin-missed"
-            , "opening-blunder"
-            , "got-checkmated"
-            , "winning-squandered"
-            , "low-accuracy"
-            , "collapsed-after-blunder"
-            , "flagged"
-            , "upset-loss"
-            , "back-rank-victim"
-            , "did-not-castle"
-            , "blunder"
-            ]
-    then
+    else if List.member slug [ "fork-missed", "pin-missed", "opening-blunder", "got-checkmated", "winning-squandered", "low-accuracy", "collapsed-after-blunder", "flagged", "upset-loss", "back-rank-victim", "did-not-castle", "blunder" ] then
         Negative
 
     else
         Neutral
 
 
-getTagSentimentClasses : Tag -> String
-getTagSentimentClasses tag =
+tagClasses : Tag -> String
+tagClasses tag =
     case getTagSentiment tag of
         Positive ->
-            "bg-green-100 text-green-700"
+            "bg-green-100 text-green-700 border border-green-200"
 
         Negative ->
-            "bg-red-100 text-red-700"
+            "bg-red-100 text-red-700 border border-red-200"
 
         Neutral ->
-            "bg-slate-100 text-slate-600"
-
-
-{-| Achievement badges (Brilliant, Great Find, etc) get special gold styling
--}
-isAchievementTag : Tag -> Bool
-isAchievementTag tag =
-    List.member (String.toLower tag.slug)
-        [ "brilliant", "great-find", "best-move", "excellent" ]
-
-
-getAchievementClasses : String
-getAchievementClasses =
-    "bg-amber-100 text-amber-700 border border-amber-200"
+            "bg-gray-100 text-gray-600 border border-gray-200"
 
 
 hasActiveFilters : Model -> Bool
 hasActiveFilters model =
-    model.timeControlFilter
-        /= AllTimeControls
-        || model.resultFilter
-        /= AllResults
-        || model.colorFilter
-        /= AllColors
-        || not (List.isEmpty model.selectedTags)
-        || model.minAccuracy
-        /= Nothing
-        || model.maxAccuracy
-        /= Nothing
-        || model.maxBlunders
-        /= Nothing
-        || model.opponentRatingFilter
-        /= "all"
-        || model.opponentSearch
-        /= ""
+    model.timeControlFilter /= AllTimeControls || model.resultFilter /= AllResults || model.colorFilter /= AllColors || not (List.isEmpty model.selectedTags) || model.minAccuracy /= Nothing || model.maxAccuracy /= Nothing || model.maxBlunders /= Nothing || model.opponentRatingFilter /= "all" || model.opponentSearch /= ""
 
 
 countActiveFilters : Model -> Int
@@ -563,10 +479,10 @@ sortGames order student games =
 
         getOpponentRating g =
             let
-                isStudentWhite =
+                isWhite =
                     List.member (String.toLower g.game.whiteUsername) (List.map String.toLower studentUsernames)
             in
-            if isStudentWhite then
+            if isWhite then
                 g.game.blackElo |> Maybe.withDefault 0
 
             else
@@ -586,13 +502,13 @@ sortGames order student games =
             List.sortBy (\g -> -(getAccuracy g)) games
 
         AccuracyLow ->
-            List.sortBy (\g -> getAccuracy g) games
+            List.sortBy getAccuracy games
 
         OpponentRatingHigh ->
             List.sortBy (\g -> -(getOpponentRating g)) games
 
         OpponentRatingLow ->
-            List.sortBy (\g -> getOpponentRating g) games
+            List.sortBy getOpponentRating games
 
 
 filterByOpponentName : String -> Student -> List GameWithInsights -> List GameWithInsights
@@ -606,21 +522,22 @@ filterByOpponentName searchStr student games =
                 String.toLower searchStr
 
             studentUsernames =
-                List.filterMap identity [ student.chessComUsername ]
-                    |> List.map String.toLower
+                List.filterMap identity [ student.chessComUsername ] |> List.map String.toLower
         in
         List.filter
             (\g ->
                 let
-                    isStudentWhite =
+                    isWhite =
                         List.member (String.toLower g.game.whiteUsername) studentUsernames
 
                     opponent =
-                        if isStudentWhite then
-                            String.toLower g.game.blackUsername
+                        String.toLower
+                            (if isWhite then
+                                g.game.blackUsername
 
-                        else
-                            String.toLower g.game.whiteUsername
+                             else
+                                g.game.whiteUsername
+                            )
                 in
                 String.contains search opponent
             )
@@ -634,7 +551,7 @@ groupGamesByDate games =
             (\game acc ->
                 let
                     dateStr =
-                        formatDateGroupLabel game.game.playedAt
+                        String.left 10 game.game.playedAt
                 in
                 case acc of
                     [] ->
@@ -651,51 +568,32 @@ groupGamesByDate games =
         |> List.reverse
 
 
-formatDateGroupLabel : String -> String
-formatDateGroupLabel dateStr =
-    -- For now, just use the date portion. Could be enhanced with "Today", "Yesterday" etc.
-    String.left 10 dateStr
-
-
 type alias GameStats =
-    { total : Int
-    , wins : Int
-    , losses : Int
-    , draws : Int
-    , avgAccuracy : Maybe Float
-    , winRate : Float
-    }
+    { total : Int, wins : Int, losses : Int, draws : Int, avgAccuracy : Maybe Float }
 
 
 calculateStats : Student -> List GameWithInsights -> GameStats
 calculateStats student games =
     let
         studentUsernames =
-            List.filterMap identity [ student.chessComUsername ]
-                |> List.map String.toLower
+            List.filterMap identity [ student.chessComUsername ] |> List.map String.toLower
 
         isWin g =
             let
-                isStudentWhite =
+                isWhite =
                     List.member (String.toLower g.game.whiteUsername) studentUsernames
             in
-            (isStudentWhite && g.game.result == "1-0")
-                || (not isStudentWhite && g.game.result == "0-1")
+            (isWhite && g.game.result == "1-0") || (not isWhite && g.game.result == "0-1")
 
         isLoss g =
             let
-                isStudentWhite =
+                isWhite =
                     List.member (String.toLower g.game.whiteUsername) studentUsernames
             in
-            (isStudentWhite && g.game.result == "0-1")
-                || (not isStudentWhite && g.game.result == "1-0")
-
-        isDraw g =
-            g.game.result == "1/2-1/2"
+            (isWhite && g.game.result == "0-1") || (not isWhite && g.game.result == "1-0")
 
         accuracies =
-            games
-                |> List.filterMap (\g -> g.insight |> Maybe.andThen .accuracyOverall)
+            List.filterMap (\g -> g.insight |> Maybe.andThen .accuracyOverall) games
 
         avgAcc =
             if List.isEmpty accuracies then
@@ -703,85 +601,96 @@ calculateStats student games =
 
             else
                 Just (List.sum accuracies / toFloat (List.length accuracies))
-
-        total =
-            List.length games
-
-        wins =
-            List.length (List.filter isWin games)
-
-        winRate =
-            if total > 0 then
-                toFloat wins / toFloat total * 100
-
-            else
-                0
     in
-    { total = total
-    , wins = wins
+    { total = List.length games
+    , wins = List.length (List.filter isWin games)
     , losses = List.length (List.filter isLoss games)
-    , draws = List.length (List.filter isDraw games)
+    , draws = List.length (List.filter (\g -> g.game.result == "1/2-1/2") games)
     , avgAccuracy = avgAcc
-    , winRate = winRate
     }
 
 
-{-| Get priority tags for collapsed view (max 3)
-Achievement tags first, then by sentiment
--}
 getPriorityTags : List GameTag -> List GameTag
 getPriorityTags tags =
-    let
-        achievements =
-            List.filter (\gt -> isAchievementTag gt.tag) tags
-
-        nonAchievements =
-            List.filter (\gt -> not (isAchievementTag gt.tag)) tags
-
-        sorted =
-            achievements ++ nonAchievements
-    in
-    List.take 3 sorted
+    List.take 3 tags
 
 
-{-| Group tags by category for expanded view
--}
 groupTagsByCategory : List GameTag -> List ( String, List GameTag )
 groupTagsByCategory tags =
     let
         categories =
-            tags
-                |> List.map (\gt -> gt.tag.category)
-                |> unique
-
-        categoryOrder =
-            [ "tactics", "opening", "accuracy", "advantage", "endgame", "checkmate", "character", "opponent", "time" ]
-
-        sortedCategories =
-            List.sortBy
-                (\cat ->
-                    indexOf cat categoryOrder |> Maybe.withDefault 999
-                )
-                categories
+            tags |> List.map (\gt -> gt.tag.category) |> unique
     in
-    sortedCategories
-        |> List.map
-            (\cat ->
-                ( cat, List.filter (\gt -> gt.tag.category == cat) tags )
-            )
+    categories
+        |> List.map (\cat -> ( cat, List.filter (\gt -> gt.tag.category == cat) tags ))
         |> List.filter (\( _, tagList ) -> not (List.isEmpty tagList))
 
 
+unique : List comparable -> List comparable
+unique list =
+    List.foldl
+        (\item acc ->
+            if List.member item acc then
+                acc
 
--- ============================================================================
+            else
+                acc ++ [ item ]
+        )
+        []
+        list
+
+
+formatDateLabel : String -> String
+formatDateLabel dateStr =
+    let
+        parts =
+            String.split "-" dateStr
+    in
+    case parts of
+        [ year, month, day ] ->
+            let
+                monthName =
+                    case month of
+                        "01" -> "Jan"
+                        "02" -> "Feb"
+                        "03" -> "Mar"
+                        "04" -> "Apr"
+                        "05" -> "May"
+                        "06" -> "Jun"
+                        "07" -> "Jul"
+                        "08" -> "Aug"
+                        "09" -> "Sep"
+                        "10" -> "Oct"
+                        "11" -> "Nov"
+                        "12" -> "Dec"
+                        _ -> month
+
+                dayNum =
+                    String.toInt day |> Maybe.withDefault 0 |> String.fromInt
+            in
+            monthName ++ " " ++ dayNum ++ ", " ++ year
+
+        _ ->
+            dateStr
+
+
+pluralize : Int -> String
+pluralize count =
+    if count == 1 then
+        ""
+
+    else
+        "s"
+
+
+
 -- VIEW
--- ============================================================================
 
 
 view : Model -> Html Msg
 view model =
-    div [ class "min-h-screen bg-gray-50" ]
-        [ -- Mobile filter toggle button
+    div [ class "min-h-screen" ]
+        [ -- Mobile filter toggle
           div [ class "lg:hidden fixed bottom-4 right-4 z-40" ]
             [ button
                 [ onClick ToggleSidebar
@@ -797,7 +706,7 @@ view model =
                 ]
             ]
 
-        -- Mobile sidebar overlay
+        -- Mobile overlay
         , if model.sidebarVisible then
             div [ class "lg:hidden fixed inset-0 bg-black/50 z-30", onClick ToggleSidebar ] []
 
@@ -806,12 +715,9 @@ view model =
 
         -- Main layout
         , div [ class "flex" ]
-            [ -- Sidebar
-              viewSidebar model
-
-            -- Main content
+            [ viewSidebar model
             , div [ class "flex-1 min-w-0 p-4 lg:p-6" ]
-                [ div [ class "max-w-3xl mx-auto" ]
+                [ div [ class "max-w-4xl mx-auto" ]
                     [ viewStudentHeader model.student
                     , viewStatsHeader model
                     , viewGamesList model
@@ -826,81 +732,53 @@ viewSidebar model =
     div
         [ class
             (if model.sidebarVisible then
-                "fixed lg:sticky inset-y-0 left-0 z-40 w-72 bg-white border-r border-gray-200 overflow-y-auto transform transition-transform duration-200 lg:translate-x-0 lg:top-0 lg:h-screen"
+                "fixed lg:sticky inset-y-0 left-0 z-40 w-72 bg-white border-r border-gray-200 overflow-y-auto transform transition-transform duration-200 lg:translate-x-0 lg:top-0 lg:h-screen shadow-lg lg:shadow-none"
 
              else
                 "fixed lg:sticky inset-y-0 left-0 z-40 w-72 bg-white border-r border-gray-200 overflow-y-auto transform -translate-x-full lg:translate-x-0 transition-transform duration-200 lg:top-0 lg:h-screen"
             )
         ]
         [ div [ class "p-4" ]
-            [ -- Mobile close button
+            [ -- Mobile close
               div [ class "lg:hidden flex justify-between items-center mb-4" ]
                 [ span [ class "font-semibold text-gray-900" ] [ text "Filters" ]
-                , button
-                    [ onClick ToggleSidebar
-                    , class "text-gray-400 hover:text-gray-600 p-1"
-                    ]
-                    [ text "✕" ]
+                , button [ onClick ToggleSidebar, class "text-gray-400 hover:text-gray-600 p-1" ] [ text "✕" ]
                 ]
 
             -- Back link
-            , a
-                [ Route.href Route.Dashboard
-                , class "inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-700 mb-6"
-                ]
-                [ span [ class "text-lg" ] [ text "←" ]
-                , text "Dashboard"
-                ]
+            , a [ Route.href Route.Dashboard, class "inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-700 mb-6" ]
+                [ span [ class "text-lg" ] [ text "←" ], text "Dashboard" ]
 
-            -- Filter header with clear button
+            -- Filter header
             , div [ class "flex items-center justify-between mb-4" ]
-                [ span [ class "text-xs font-semibold text-gray-400 uppercase tracking-wide" ] [ text "Filters" ]
+                [ div [ class "flex items-center gap-2" ]
+                    [ span [ class "text-xs font-semibold text-gray-400 uppercase tracking-wide" ] [ text "Filters" ]
+                    , if countActiveFilters model > 0 then
+                        span [ class "bg-gray-900 text-white text-xs px-1.5 py-0.5 rounded-full font-medium" ]
+                            [ text (String.fromInt (countActiveFilters model)) ]
+
+                      else
+                        text ""
+                    ]
                 , if hasActiveFilters model then
-                    button
-                        [ onClick ClearAllFilters
-                        , class "text-xs text-red-600 hover:text-red-700 font-medium"
-                        ]
-                        [ text "Clear" ]
+                    button [ onClick ClearAllFilters, class "text-xs text-red-600 hover:text-red-700 font-medium" ]
+                        [ text "Clear all" ]
 
                   else
                     text ""
                 ]
 
-            -- Filter sections
+            -- Filters
             , div [ class "space-y-1" ]
-                [ viewFilterSection model
-                    "result"
-                    "Result"
-                    (model.resultFilter /= AllResults)
-                    (viewResultFilter model)
-                , viewFilterSection model
-                    "timeControl"
-                    "Time Control"
-                    (model.timeControlFilter /= AllTimeControls)
-                    (viewTimeControlFilter model)
-                , viewFilterSection model
-                    "color"
-                    "Played As"
-                    (model.colorFilter /= AllColors)
-                    (viewColorFilter model)
-                , viewFilterSection model
-                    "accuracy"
-                    "Accuracy"
-                    (model.minAccuracy /= Nothing || model.maxAccuracy /= Nothing)
-                    (viewAccuracyFilter model)
-                , viewFilterSection model
-                    "opponent"
-                    "Opponent"
-                    (model.opponentRatingFilter /= "all" || model.opponentSearch /= "")
-                    (viewOpponentFilter model)
-                , viewFilterSection model
-                    "tags"
-                    "Tags"
-                    (not (List.isEmpty model.selectedTags))
-                    (viewTagFilters model)
+                [ viewFilterSection model "result" "Result" (model.resultFilter /= AllResults) (viewResultFilter model)
+                , viewFilterSection model "timeControl" "Time Control" (model.timeControlFilter /= AllTimeControls) (viewTimeControlFilter model)
+                , viewFilterSection model "color" "Played As" (model.colorFilter /= AllColors) (viewColorFilter model)
+                , viewFilterSection model "accuracy" "Accuracy" (model.minAccuracy /= Nothing || model.maxAccuracy /= Nothing) (viewAccuracyFilter model)
+                , viewFilterSection model "opponent" "Opponent" (model.opponentRatingFilter /= "all" || model.opponentSearch /= "") (viewOpponentFilter model)
+                , viewFilterSection model "tags" "Tags" (not (List.isEmpty model.selectedTags)) (viewTagFilters model)
                 ]
 
-            -- Sort section (always visible)
+            -- Sort
             , div [ class "mt-6 pt-4 border-t border-gray-100" ]
                 [ div [ class "text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2" ] [ text "Sort By" ]
                 , select
@@ -908,26 +786,13 @@ viewSidebar model =
                     , onInput
                         (\str ->
                             case str of
-                                "date-newest" ->
-                                    SetSortOrder DateNewest
-
-                                "date-oldest" ->
-                                    SetSortOrder DateOldest
-
-                                "accuracy-high" ->
-                                    SetSortOrder AccuracyHigh
-
-                                "accuracy-low" ->
-                                    SetSortOrder AccuracyLow
-
-                                "rating-high" ->
-                                    SetSortOrder OpponentRatingHigh
-
-                                "rating-low" ->
-                                    SetSortOrder OpponentRatingLow
-
-                                _ ->
-                                    SetSortOrder DateNewest
+                                "date-newest" -> SetSortOrder DateNewest
+                                "date-oldest" -> SetSortOrder DateOldest
+                                "accuracy-high" -> SetSortOrder AccuracyHigh
+                                "accuracy-low" -> SetSortOrder AccuracyLow
+                                "rating-high" -> SetSortOrder OpponentRatingHigh
+                                "rating-low" -> SetSortOrder OpponentRatingLow
+                                _ -> SetSortOrder DateNewest
                         )
                     ]
                     [ option [ value "date-newest", selected (model.sortOrder == DateNewest) ] [ text "Date (Newest)" ]
@@ -1029,54 +894,39 @@ viewRadioOption label isSelected msg =
               else
                 text ""
             ]
-        , span
-            [ class
-                (if isSelected then
-                    "text-gray-900 font-medium"
-
-                 else
-                    "text-gray-600"
-                )
-            ]
-            [ text label ]
+        , span [ class (if isSelected then "text-gray-900 font-medium" else "text-gray-600") ] [ text label ]
         ]
 
 
 viewAccuracyFilter : Model -> Html Msg
 viewAccuracyFilter model =
-    div []
-        [ div [ class "flex items-center gap-2" ]
-            [ input
-                [ type_ "number"
-                , class "w-16 px-2 py-1.5 text-sm border border-gray-200 rounded focus:ring-2 focus:ring-gray-900 focus:border-gray-900"
-                , placeholder "Min"
-                , Html.Attributes.min "0"
-                , Html.Attributes.max "100"
-                , value (model.minAccuracy |> Maybe.map String.fromInt |> Maybe.withDefault "")
-                , onInput SetMinAccuracy
-                ]
-                []
-            , span [ class "text-gray-400 text-sm" ] [ text "–" ]
-            , input
-                [ type_ "number"
-                , class "w-16 px-2 py-1.5 text-sm border border-gray-200 rounded focus:ring-2 focus:ring-gray-900 focus:border-gray-900"
-                , placeholder "Max"
-                , Html.Attributes.min "0"
-                , Html.Attributes.max "100"
-                , value (model.maxAccuracy |> Maybe.map String.fromInt |> Maybe.withDefault "")
-                , onInput SetMaxAccuracy
-                ]
-                []
-            , if model.minAccuracy /= Nothing || model.maxAccuracy /= Nothing then
-                button
-                    [ onClick ClearAccuracy
-                    , class "text-xs text-gray-400 hover:text-gray-600"
-                    ]
-                    [ text "Clear" ]
-
-              else
-                text ""
+    div [ class "flex items-center gap-2" ]
+        [ input
+            [ type_ "number"
+            , class "w-16 px-2 py-1.5 text-sm border border-gray-200 rounded focus:ring-2 focus:ring-gray-900 focus:border-gray-900"
+            , placeholder "Min"
+            , Html.Attributes.min "0"
+            , Html.Attributes.max "100"
+            , value (model.minAccuracy |> Maybe.map String.fromInt |> Maybe.withDefault "")
+            , onInput SetMinAccuracy
             ]
+            []
+        , span [ class "text-gray-400 text-sm" ] [ text "–" ]
+        , input
+            [ type_ "number"
+            , class "w-16 px-2 py-1.5 text-sm border border-gray-200 rounded focus:ring-2 focus:ring-gray-900 focus:border-gray-900"
+            , placeholder "Max"
+            , Html.Attributes.min "0"
+            , Html.Attributes.max "100"
+            , value (model.maxAccuracy |> Maybe.map String.fromInt |> Maybe.withDefault "")
+            , onInput SetMaxAccuracy
+            ]
+            []
+        , if model.minAccuracy /= Nothing || model.maxAccuracy /= Nothing then
+            button [ onClick ClearAccuracy, class "text-xs text-gray-400 hover:text-gray-600" ] [ text "Clear" ]
+
+          else
+            text ""
         ]
 
 
@@ -1114,20 +964,13 @@ viewTagFilters model =
         Success tagsWithCounts ->
             let
                 sortedTags =
-                    tagsWithCounts
-                        |> List.sortBy (\tc -> -tc.count)
-                        |> List.take 20
+                    tagsWithCounts |> List.sortBy (\tc -> -tc.count) |> List.take 20
             in
             div []
                 [ if not (List.isEmpty model.selectedTags) then
                     div [ class "flex items-center justify-between mb-2" ]
-                        [ span [ class "text-xs text-gray-500" ]
-                            [ text (String.fromInt (List.length model.selectedTags) ++ " selected") ]
-                        , button
-                            [ onClick ClearTags
-                            , class "text-xs text-red-600 hover:text-red-700"
-                            ]
-                            [ text "Clear" ]
+                        [ span [ class "text-xs text-gray-500" ] [ text (String.fromInt (List.length model.selectedTags) ++ " selected") ]
+                        , button [ onClick ClearTags, class "text-xs text-red-600 hover:text-red-700" ] [ text "Clear" ]
                         ]
 
                   else
@@ -1162,7 +1005,7 @@ viewStudentHeader studentData =
         Loading ->
             div [ class "mb-6 animate-pulse" ]
                 [ div [ class "flex items-center gap-4" ]
-                    [ div [ class "w-14 h-14 bg-gray-200 rounded-full" ] []
+                    [ div [ class "w-16 h-16 bg-gray-200 rounded-full" ] []
                     , div [ class "space-y-2" ]
                         [ div [ class "w-40 h-6 bg-gray-200 rounded" ] []
                         , div [ class "w-28 h-4 bg-gray-200 rounded" ] []
@@ -1172,8 +1015,7 @@ viewStudentHeader studentData =
 
         Failure error ->
             div [ class "mb-6 bg-red-50 border border-red-200 rounded-lg p-4" ]
-                [ p [ class "text-red-600" ] [ text error ]
-                ]
+                [ p [ class "text-red-600" ] [ text error ] ]
 
         NotAsked ->
             text ""
@@ -1183,26 +1025,16 @@ viewStudentHeader studentData =
                 [ div [ class "flex items-center gap-4" ]
                     [ case student.avatarUrl of
                         Just url ->
-                            img
-                                [ src url
-                                , class "w-14 h-14 rounded-full border-2 border-gray-200"
-                                , alt (student.displayName ++ "'s avatar")
-                                ]
-                                []
+                            img [ src url, class "w-16 h-16 rounded-full border-2 border-gray-200 shadow-sm", alt student.displayName ] []
 
                         Nothing ->
-                            div [ class "w-14 h-14 rounded-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center text-xl text-gray-600 font-semibold" ]
+                            div [ class "w-16 h-16 rounded-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center text-xl text-gray-600 font-semibold shadow-sm" ]
                                 [ text (String.left 1 student.displayName |> String.toUpper) ]
                     , div []
-                        [ h1 [ class "text-xl font-bold text-gray-900" ]
-                            [ text student.displayName ]
+                        [ h1 [ class "text-2xl font-bold text-gray-900" ] [ text student.displayName ]
                         , case student.chessComUsername of
                             Just username ->
-                                a
-                                    [ href ("https://www.chess.com/member/" ++ username)
-                                    , target "_blank"
-                                    , class "text-sm text-gray-500 hover:text-gray-700"
-                                    ]
+                                a [ href ("https://www.chess.com/member/" ++ username), target "_blank", class "text-sm text-gray-500 hover:text-gray-700" ]
                                     [ text ("@" ++ username) ]
 
                             Nothing ->
@@ -1244,26 +1076,21 @@ viewStatsHeader model =
                     else
                         0
             in
-            div [ class "mb-6 bg-white rounded-xl border border-gray-200 p-5" ]
+            div [ class "mb-6 bg-white rounded-xl border border-gray-200 p-5 shadow-sm" ]
                 [ div [ class "grid grid-cols-2 lg:grid-cols-4 gap-6" ]
-                    [ -- Games stat
-                      div [ class "text-center" ]
-                        [ div [ class "text-3xl font-bold text-gray-900" ]
-                            [ text (String.fromInt gamesData.total) ]
+                    [ div [ class "text-center" ]
+                        [ div [ class "text-3xl font-bold text-gray-900" ] [ text (String.fromInt gamesData.total) ]
                         , div [ class "text-sm text-gray-500 mt-1" ] [ text "Games" ]
                         ]
-
-                    -- Accuracy stat
                     , div [ class "text-center" ]
                         [ case stats.avgAccuracy of
                             Just acc ->
                                 let
                                     colors =
-                                        accuracyColorClasses acc
+                                        accuracyColors acc
                                 in
                                 div []
-                                    [ div [ class ("text-3xl font-bold " ++ colors.text) ]
-                                        [ text (String.fromInt (round acc) ++ "%") ]
+                                    [ div [ class ("text-3xl font-bold " ++ colors.text) ] [ text (String.fromInt (round acc) ++ "%") ]
                                     , div [ class "text-sm text-gray-500 mt-1" ] [ text "Accuracy" ]
                                     ]
 
@@ -1273,8 +1100,6 @@ viewStatsHeader model =
                                     , div [ class "text-sm text-gray-500 mt-1" ] [ text "Accuracy" ]
                                     ]
                         ]
-
-                    -- Win Rate stat
                     , div [ class "text-center" ]
                         [ div [ class "text-3xl font-bold text-gray-900" ]
                             [ text
@@ -1287,43 +1112,29 @@ viewStatsHeader model =
                             ]
                         , div [ class "text-sm text-gray-500 mt-1" ] [ text "Win Rate" ]
                         ]
-
-                    -- Results bar
                     , div [ class "col-span-2 lg:col-span-1" ]
                         [ div [ class "text-sm text-gray-500 mb-2 text-center" ] [ text "Results" ]
-                        , div [ class "h-3 rounded-full overflow-hidden bg-gray-100 flex" ]
+                        , div [ class "h-4 rounded-full overflow-hidden bg-gray-100 flex" ]
                             [ if winPercent > 0 then
-                                div
-                                    [ class "bg-green-500 transition-all"
-                                    , style "width" (String.fromFloat winPercent ++ "%")
-                                    ]
-                                    []
+                                div [ class "bg-green-500 transition-all", style "width" (String.fromFloat winPercent ++ "%"), title (String.fromInt (round winPercent) ++ "% wins") ] []
 
                               else
                                 text ""
                             , if drawPercent > 0 then
-                                div
-                                    [ class "bg-gray-400 transition-all"
-                                    , style "width" (String.fromFloat drawPercent ++ "%")
-                                    ]
-                                    []
+                                div [ class "bg-gray-400 transition-all", style "width" (String.fromFloat drawPercent ++ "%"), title (String.fromInt (round drawPercent) ++ "% draws") ] []
 
                               else
                                 text ""
                             , if lossPercent > 0 then
-                                div
-                                    [ class "bg-red-500 transition-all"
-                                    , style "width" (String.fromFloat lossPercent ++ "%")
-                                    ]
-                                    []
+                                div [ class "bg-red-500 transition-all", style "width" (String.fromFloat lossPercent ++ "%"), title (String.fromInt (round lossPercent) ++ "% losses") ] []
 
                               else
                                 text ""
                             ]
-                        , div [ class "flex justify-between text-xs mt-2" ]
-                            [ span [ class "text-green-600 font-medium" ] [ text (String.fromInt stats.wins ++ "W") ]
+                        , div [ class "flex justify-between text-xs mt-2 font-medium" ]
+                            [ span [ class "text-green-600" ] [ text (String.fromInt stats.wins ++ "W") ]
                             , span [ class "text-gray-500" ] [ text (String.fromInt stats.draws ++ "D") ]
-                            , span [ class "text-red-600 font-medium" ] [ text (String.fromInt stats.losses ++ "L") ]
+                            , span [ class "text-red-600" ] [ text (String.fromInt stats.losses ++ "L") ]
                             ]
                         ]
                     ]
@@ -1343,20 +1154,20 @@ viewGamesList model =
             div [ class "space-y-3" ]
                 (List.repeat 5
                     (div [ class "bg-white rounded-xl border border-gray-200 p-4 animate-pulse" ]
-                        [ div [ class "flex items-center gap-3" ]
-                            [ div [ class "w-3 h-3 bg-gray-200 rounded-full" ] []
-                            , div [ class "w-12 h-4 bg-gray-200 rounded" ] []
-                            , div [ class "w-32 h-4 bg-gray-200 rounded" ] []
-                            , div [ class "flex-1" ] []
-                            , div [ class "w-16 h-4 bg-gray-200 rounded" ] []
+                        [ div [ class "flex items-center gap-4" ]
+                            [ div [ class "w-16 h-8 bg-gray-200 rounded-lg" ] []
+                            , div [ class "flex-1 space-y-2" ]
+                                [ div [ class "w-48 h-4 bg-gray-200 rounded" ] []
+                                , div [ class "w-32 h-3 bg-gray-200 rounded" ] []
+                                ]
+                            , div [ class "w-16 h-6 bg-gray-200 rounded" ] []
                             ]
                         ]
                     )
                 )
 
         Failure error ->
-            div [ class "bg-red-50 border border-red-200 rounded-xl p-4 text-red-600" ]
-                [ text error ]
+            div [ class "bg-red-50 border border-red-200 rounded-xl p-6 text-red-600" ] [ text error ]
 
         Success gamesData ->
             case model.student of
@@ -1378,13 +1189,12 @@ viewGamesList model =
                     in
                     if List.isEmpty filteredGames then
                         div [ class "bg-white rounded-xl border border-gray-200 p-12 text-center" ]
-                            [ div [ class "text-gray-400 mb-2" ] [ text "No games found" ]
+                            [ div [ class "text-6xl mb-4" ] [ text "♟" ]
+                            , div [ class "text-gray-600 mb-2 font-medium" ] [ text "No games found" ]
+                            , div [ class "text-sm text-gray-400 mb-4" ] [ text "Try adjusting your filters" ]
                             , if hasActiveFilters model then
-                                button
-                                    [ onClick ClearAllFilters
-                                    , class "text-sm text-gray-600 hover:text-gray-900 underline"
-                                    ]
-                                    [ text "Clear filters" ]
+                                button [ onClick ClearAllFilters, class "text-sm text-gray-700 hover:text-gray-900 font-medium underline" ]
+                                    [ text "Clear all filters" ]
 
                               else
                                 text ""
@@ -1392,15 +1202,11 @@ viewGamesList model =
 
                     else
                         div []
-                            [ -- Games count
-                              div [ class "mb-4 text-sm text-gray-500" ]
-                                [ text ("Showing " ++ String.fromInt (List.length filteredGames) ++ " of " ++ String.fromInt gamesData.total ++ " games") ]
-
-                            -- Game cards grouped by date
-                            , div [ class "space-y-6" ]
-                                (List.map (viewDateGroup model student) groupedGames)
-
-                            -- Pagination
+                            [ div [ class "mb-4" ]
+                                [ span [ class "text-sm text-gray-500" ]
+                                    [ text ("Showing " ++ String.fromInt (model.offset + 1) ++ "-" ++ String.fromInt (model.offset + List.length filteredGames) ++ " of " ++ String.fromInt gamesData.total ++ " games") ]
+                                ]
+                            , div [ class "space-y-6" ] (List.map (viewDateGroup model student) groupedGames)
                             , if totalPages > 1 then
                                 viewPagination currentPage totalPages
 
@@ -1415,19 +1221,17 @@ viewGamesList model =
 viewDateGroup : Model -> Student -> ( String, List GameWithInsights ) -> Html Msg
 viewDateGroup model student ( dateStr, games ) =
     div []
-        [ -- Date header
-          div [ class "flex items-center gap-3 mb-3" ]
-            [ div [ class "h-px flex-1 bg-gray-200" ] []
-            , span [ class "text-xs font-medium text-gray-400 uppercase tracking-wide" ]
-                [ text dateStr
-                , span [ class "ml-2 text-gray-300" ] [ text ("· " ++ String.fromInt (List.length games) ++ " games") ]
+        [ div [ class "sticky top-0 z-10 py-3" ]
+            [ div [ class "flex items-center gap-3" ]
+                [ div [ class "h-px flex-1 bg-gray-200" ] []
+                , span [ class "text-xs font-medium text-gray-400 px-2" ]
+                    [ text (formatDateLabel dateStr)
+                    , span [ class "ml-1 text-gray-300" ] [ text ("· " ++ String.fromInt (List.length games) ++ " games") ]
+                    ]
+                , div [ class "h-px flex-1 bg-gray-200" ] []
                 ]
-            , div [ class "h-px flex-1 bg-gray-200" ] []
             ]
-
-        -- Game cards
-        , div [ class "space-y-3" ]
-            (List.map (viewGameCard model student) games)
+        , div [ class "space-y-2" ] (List.map (viewGameCard model student) games)
         ]
 
 
@@ -1445,6 +1249,9 @@ viewGameCard model student gameWithInsights =
 
         isExpanded =
             Set.member game.id model.expandedGames
+
+        isHovered =
+            model.hoveredGameId == Just game.id
 
         studentUsernames =
             List.filterMap identity [ student.chessComUsername ]
@@ -1487,78 +1294,89 @@ viewGameCard model student gameWithInsights =
     in
     div
         [ class
-            ("bg-white rounded-xl border transition-all duration-200 "
+            ("bg-white rounded-xl border transition-all duration-200 cursor-pointer "
                 ++ (if isExpanded then
+                        "border-gray-300 shadow-md"
+
+                    else if isHovered then
                         "border-gray-300 shadow-sm"
 
                     else
                         "border-gray-200 hover:border-gray-300 hover:shadow-sm"
                    )
             )
+        , onClick (ToggleGameExpanded game.id)
+        , onMouseEnter (HoverGame (Just game.id))
+        , onMouseLeave (HoverGame Nothing)
         ]
-        [ -- Main card content (always visible)
-          div [ class "p-4" ]
-            [ div [ class "flex items-start gap-3" ]
-                [ -- Result dot
-                  span
-                    [ class ("w-3 h-3 rounded-full mt-1.5 flex-shrink-0 " ++ result.dotColor)
-                    , title result.label
-                    ]
-                    []
+        [ div [ class "p-4" ]
+            [ div [ class "flex items-start gap-4" ]
+                [ -- Large result badge
+                  div [ class ("flex-shrink-0 w-16 h-10 rounded-lg flex items-center justify-center font-bold text-sm " ++ result.badgeClasses) ]
+                    [ text result.label ]
 
                 -- Main info
                 , div [ class "flex-1 min-w-0" ]
-                    [ -- Top row: Result, opponent, rating change
-                      div [ class "flex items-center gap-2 flex-wrap" ]
-                        [ span [ class ("font-semibold text-sm " ++ result.textColor) ] [ text result.label ]
-                        , span [ class "text-gray-700 font-medium" ] [ text ("vs " ++ opponent) ]
+                    [ div [ class "flex items-center gap-2 flex-wrap" ]
+                        [ span [ class "font-semibold text-gray-900" ] [ text opponent ]
                         , case opponentRating of
                             Just rating ->
-                                span [ class "text-gray-500 text-sm" ] [ text (String.fromInt rating) ]
+                                span [ class "text-gray-500 text-sm" ] [ text ("(" ++ String.fromInt rating ++ ")") ]
 
                             Nothing ->
                                 text ""
                         , case ratingDiff of
                             Just diff ->
                                 if diff > 0 then
-                                    span [ class "text-green-600 text-sm font-medium" ] [ text ("+" ++ String.fromInt diff) ]
+                                    span [ class "text-xs px-1.5 py-0.5 rounded bg-green-100 text-green-700 font-medium" ]
+                                        [ text ("+" ++ String.fromInt diff) ]
 
                                 else if diff < 0 then
-                                    span [ class "text-red-600 text-sm font-medium" ] [ text (String.fromInt diff) ]
+                                    span [ class "text-xs px-1.5 py-0.5 rounded bg-red-100 text-red-700 font-medium" ]
+                                        [ text (String.fromInt diff) ]
 
                                 else
                                     text ""
 
                             Nothing ->
                                 text ""
-                        ]
+                        , span
+                            [ class "w-4 h-4 rounded border border-gray-300 flex-shrink-0"
+                            , style "background"
+                                (if isStudentWhite then
+                                    "#fff"
 
-                    -- Opening name
+                                 else
+                                    "#374151"
+                                )
+                            , title
+                                (if isStudentWhite then
+                                    "Played as White"
+
+                                 else
+                                    "Played as Black"
+                                )
+                            ]
+                            []
+                        ]
                     , case game.openingName of
                         Just opening ->
-                            div [ class "text-sm text-gray-600 mt-1 truncate" ]
-                                [ text opening ]
+                            div [ class "text-sm text-gray-500 mt-1 truncate" ] [ text opening ]
 
                         Nothing ->
                             text ""
-
-                    -- Metadata row
-                    , div [ class "flex items-center gap-2 mt-1 text-xs text-gray-400" ]
-                        [ span [] [ text (formatRelativeDate game.playedAt) ]
-                        , viewAccuracyInline insight
+                    , div [ class "flex items-center gap-3 mt-2 text-sm" ]
+                        [ span [ class "text-gray-400" ] [ text (String.left 10 game.playedAt) ]
+                        , viewAccuracyBadge insight
                         ]
-
-                    -- Priority tags (collapsed) or grouped tags (expanded)
                     , if isExpanded then
                         viewExpandedContent insight tags chessComUrl
 
                       else if not (List.isEmpty priorityTags) then
                         div [ class "flex items-center gap-2 mt-3" ]
-                            [ div [ class "flex flex-wrap gap-1" ]
-                                (List.map viewTagBadge priorityTags)
+                            [ div [ class "flex flex-wrap gap-1.5" ] (List.map viewTagBadge priorityTags)
                             , if List.length tags > 3 then
-                                span [ class "text-xs text-gray-400" ]
-                                    [ text ("+" ++ String.fromInt (List.length tags - 3)) ]
+                                span [ class "text-xs text-gray-400 font-medium" ] [ text ("+" ++ String.fromInt (List.length tags - 3) ++ " more") ]
 
                               else
                                 text ""
@@ -1568,45 +1386,46 @@ viewGameCard model student gameWithInsights =
                         text ""
                     ]
 
-                -- Right side: expand toggle
-                , button
-                    [ onClick (ToggleGameExpanded game.id)
-                    , class "text-gray-400 hover:text-gray-600 p-1 flex-shrink-0"
-                    ]
-                    [ text
-                        (if isExpanded then
-                            "▲"
-
-                         else
-                            "▼"
-                        )
-                    , span [ class "sr-only" ]
+                -- Expand indicator
+                , div [ class "flex flex-col items-end gap-2" ]
+                    [ span [ class "text-gray-400 text-sm" ]
                         [ text
                             (if isExpanded then
-                                "Collapse"
+                                "▲"
 
                              else
-                                "Expand"
+                                "▼"
                             )
                         ]
+                    , if isHovered && not isExpanded then
+                        a
+                            [ href chessComUrl
+                            , target "_blank"
+                            , class "text-xs text-gray-500 hover:text-gray-700 font-medium"
+                            , stopPropagationOn "click" (Json.Decode.succeed ( HoverGame Nothing, True ))
+                            ]
+                            [ text "Analyze →" ]
+
+                      else
+                        text ""
                     ]
                 ]
             ]
         ]
 
 
-viewAccuracyInline : Maybe GameInsight -> Html Msg
-viewAccuracyInline maybeInsight =
+viewAccuracyBadge : Maybe GameInsight -> Html Msg
+viewAccuracyBadge maybeInsight =
     case maybeInsight of
         Just ins ->
             case ins.accuracyOverall of
                 Just acc ->
                     let
                         colors =
-                            accuracyColorClasses acc
+                            accuracyColors acc
                     in
-                    span [ class ("font-medium " ++ colors.text) ]
-                        [ text ("· " ++ String.fromInt (round acc) ++ "% accuracy") ]
+                    span [ class ("px-2 py-0.5 rounded text-xs font-semibold " ++ colors.bg ++ " " ++ colors.text) ]
+                        [ text (String.fromInt (round acc) ++ "% accuracy") ]
 
                 Nothing ->
                     text ""
@@ -1618,39 +1437,33 @@ viewAccuracyInline maybeInsight =
 viewExpandedContent : Maybe GameInsight -> List GameTag -> String -> Html Msg
 viewExpandedContent maybeInsight tags chessComUrl =
     div [ class "mt-4 pt-4 border-t border-gray-100 space-y-4" ]
-        [ -- Performance section
-          case maybeInsight of
+        [ case maybeInsight of
             Just ins ->
                 div []
-                    [ div [ class "text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2" ]
-                        [ text "Performance" ]
+                    [ div [ class "text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2" ] [ text "Performance" ]
                     , viewAccuracyBar ins
                     , viewErrorSummary ins
                     ]
 
             Nothing ->
                 text ""
-
-        -- Tags grouped by category
         , if not (List.isEmpty tags) then
             let
                 grouped =
                     groupTagsByCategory tags
             in
-            div [ class "space-y-3" ]
-                (List.map viewTagGroup grouped)
+            div [ class "space-y-3" ] (List.map viewTagGroup grouped)
 
           else
             text ""
-
-        -- Analysis link
-        , a
-            [ href chessComUrl
-            , target "_blank"
-            , class "inline-flex items-center gap-1.5 text-sm text-gray-600 hover:text-gray-900 font-medium"
-            ]
-            [ text "View Full Analysis"
-            , span [] [ text "→" ]
+        , div [ class "flex items-center gap-4 pt-2" ]
+            [ a
+                [ href chessComUrl
+                , target "_blank"
+                , class "inline-flex items-center gap-1.5 text-sm bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-800 font-medium"
+                , stopPropagationOn "click" (Json.Decode.succeed ( HoverGame Nothing, True ))
+                ]
+                [ text "View Analysis", span [] [ text "→" ] ]
             ]
         ]
 
@@ -1661,22 +1474,14 @@ viewAccuracyBar ins =
         Just acc ->
             let
                 colors =
-                    accuracyColorClasses acc
+                    accuracyColors acc
             in
             div [ class "mb-3" ]
                 [ div [ class "flex items-center gap-3" ]
-                    [ div [ class "flex-1 h-2 bg-gray-100 rounded-full overflow-hidden" ]
-                        [ div
-                            [ class ("h-full rounded-full " ++ colors.bar)
-                            , style "width" (String.fromFloat acc ++ "%")
-                            ]
-                            []
-                        ]
-                    , span [ class ("text-sm font-semibold " ++ colors.text) ]
-                        [ text (String.fromInt (round acc) ++ "%") ]
+                    [ div [ class "flex-1 h-2.5 bg-gray-100 rounded-full overflow-hidden" ]
+                        [ div [ class ("h-full rounded-full " ++ colors.bar), style "width" (String.fromFloat acc ++ "%") ] [] ]
+                    , span [ class ("text-sm font-bold " ++ colors.text) ] [ text (String.fromInt (round acc) ++ "%") ]
                     ]
-
-                -- Phase breakdown
                 , div [ class "flex gap-4 mt-2 text-xs text-gray-500" ]
                     [ case ins.accuracyOpening of
                         Just a ->
@@ -1714,16 +1519,16 @@ viewErrorSummary ins =
                 |> List.filter (\( count, _, _ ) -> count > 0)
     in
     if List.isEmpty items then
-        div [ class "text-sm text-green-600 font-medium" ] [ text "Clean game - no major errors" ]
+        div [ class "flex items-center gap-2 text-sm text-green-600 font-medium" ]
+            [ span [ class "text-lg" ] [ text "✓" ], text "Clean game - no major errors" ]
 
     else
-        div [ class "flex items-center gap-3 text-sm" ]
+        div [ class "flex items-center gap-4 text-sm" ]
             (List.map
                 (\( count, label, color ) ->
                     span [ class "flex items-center gap-1.5" ]
-                        [ span [ class ("w-2 h-2 rounded-full " ++ color) ] []
-                        , span [ class "text-gray-600" ]
-                            [ text (String.fromInt count ++ " " ++ label ++ pluralize count) ]
+                        [ span [ class ("w-2.5 h-2.5 rounded-full " ++ color) ] []
+                        , span [ class "text-gray-600 font-medium" ] [ text (String.fromInt count ++ " " ++ label ++ pluralize count) ]
                         ]
                 )
                 items
@@ -1734,51 +1539,39 @@ viewTagGroup : ( String, List GameTag ) -> Html Msg
 viewTagGroup ( category, tags ) =
     div []
         [ div [ class "text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1.5" ]
-            [ text (formatCategoryName category) ]
-        , div [ class "flex flex-wrap gap-1" ]
-            (List.map viewTagBadge tags)
+            [ text (String.replace "_" " " category) ]
+        , div [ class "flex flex-wrap gap-1.5" ] (List.map viewTagBadge tags)
         ]
 
 
 viewTagBadge : GameTag -> Html Msg
 viewTagBadge gameTag =
-    let
-        classes =
-            if isAchievementTag gameTag.tag then
-                getAchievementClasses
-
-            else
-                getTagSentimentClasses gameTag.tag
-    in
-    span [ class ("px-2 py-0.5 text-xs rounded-full font-medium " ++ classes) ]
+    span
+        [ class ("px-2.5 py-1 text-xs rounded-full font-medium " ++ tagClasses gameTag.tag)
+        , title (gameTag.tag.description |> Maybe.withDefault gameTag.tag.name)
+        ]
         [ text gameTag.tag.name ]
 
 
 viewPagination : Int -> Int -> Html Msg
 viewPagination currentPage totalPages =
     let
-        maxVisible =
-            7
-
         pages =
-            if totalPages <= maxVisible then
+            if totalPages <= 7 then
                 List.range 0 (totalPages - 1)
 
             else if currentPage < 3 then
-                List.range 0 (maxVisible - 1)
+                List.range 0 6
 
             else if currentPage > totalPages - 4 then
-                List.range (totalPages - maxVisible) (totalPages - 1)
+                List.range (totalPages - 7) (totalPages - 1)
 
             else
                 List.range (currentPage - 3) (currentPage + 3)
     in
     div [ class "mt-6 flex items-center justify-center gap-1" ]
         ([ if currentPage > 0 then
-            button
-                [ onClick (GoToPage (currentPage - 1))
-                , class "px-3 py-1.5 text-sm text-gray-600 hover:bg-gray-100 rounded-lg"
-                ]
+            button [ onClick (GoToPage (currentPage - 1)), class "px-3 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded-lg font-medium" ]
                 [ text "← Prev" ]
 
            else
@@ -1790,20 +1583,17 @@ viewPagination currentPage totalPages =
                         [ onClick (GoToPage page)
                         , class
                             (if page == currentPage then
-                                "px-3 py-1.5 text-sm bg-gray-900 text-white rounded-lg font-medium"
+                                "px-3 py-2 text-sm bg-gray-900 text-white rounded-lg font-medium"
 
                              else
-                                "px-3 py-1.5 text-sm text-gray-600 hover:bg-gray-100 rounded-lg"
+                                "px-3 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded-lg"
                             )
                         ]
                         [ text (String.fromInt (page + 1)) ]
                 )
                 pages
             ++ [ if currentPage < totalPages - 1 then
-                    button
-                        [ onClick (GoToPage (currentPage + 1))
-                        , class "px-3 py-1.5 text-sm text-gray-600 hover:bg-gray-100 rounded-lg"
-                        ]
+                    button [ onClick (GoToPage (currentPage + 1)), class "px-3 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded-lg font-medium" ]
                         [ text "Next →" ]
 
                  else
@@ -1813,10 +1603,7 @@ viewPagination currentPage totalPages =
 
 
 type alias ResultInfo =
-    { label : String
-    , textColor : String
-    , dotColor : String
-    }
+    { label : String, badgeClasses : String }
 
 
 getResultInfo : Bool -> String -> ResultInfo
@@ -1824,91 +1611,20 @@ getResultInfo isStudentWhite result =
     case result of
         "1-0" ->
             if isStudentWhite then
-                { label = "Win", textColor = "text-green-600", dotColor = "bg-green-500" }
+                { label = "WIN", badgeClasses = "bg-green-100 text-green-700 border border-green-200" }
 
             else
-                { label = "Loss", textColor = "text-red-600", dotColor = "bg-red-500" }
+                { label = "LOSS", badgeClasses = "bg-red-100 text-red-700 border border-red-200" }
 
         "0-1" ->
             if isStudentWhite then
-                { label = "Loss", textColor = "text-red-600", dotColor = "bg-red-500" }
+                { label = "LOSS", badgeClasses = "bg-red-100 text-red-700 border border-red-200" }
 
             else
-                { label = "Win", textColor = "text-green-600", dotColor = "bg-green-500" }
+                { label = "WIN", badgeClasses = "bg-green-100 text-green-700 border border-green-200" }
 
         "1/2-1/2" ->
-            { label = "Draw", textColor = "text-gray-600", dotColor = "bg-gray-400" }
+            { label = "DRAW", badgeClasses = "bg-gray-100 text-gray-600 border border-gray-200" }
 
         _ ->
-            { label = result, textColor = "text-gray-600", dotColor = "bg-gray-400" }
-
-
-pluralize : Int -> String
-pluralize count =
-    if count == 1 then
-        ""
-
-    else
-        "s"
-
-
-formatCategoryName : String -> String
-formatCategoryName cat =
-    cat
-        |> String.replace "_" " "
-        |> capitalizeFirst
-
-
-formatRelativeDate : String -> String
-formatRelativeDate dateStr =
-    -- Simple date formatting - just show the date part
-    String.left 10 dateStr
-
-
-
--- ============================================================================
--- UTILITY FUNCTIONS
--- ============================================================================
-
-
-unique : List comparable -> List comparable
-unique list =
-    List.foldl
-        (\item acc ->
-            if List.member item acc then
-                acc
-
-            else
-                acc ++ [ item ]
-        )
-        []
-        list
-
-
-indexOf : a -> List a -> Maybe Int
-indexOf item list =
-    indexOfHelper 0 item list
-
-
-indexOfHelper : Int -> a -> List a -> Maybe Int
-indexOfHelper index item list =
-    case list of
-        [] ->
-            Nothing
-
-        x :: xs ->
-            if x == item then
-                Just index
-
-            else
-                indexOfHelper (index + 1) item xs
-
-
-capitalizeFirst : String -> String
-capitalizeFirst str =
-    case String.uncons str of
-        Nothing ->
-            ""
-
-        Just ( first, rest ) ->
-            String.cons (Char.toUpper first) rest
+            { label = result, badgeClasses = "bg-gray-100 text-gray-600 border border-gray-200" }
