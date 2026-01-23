@@ -190,7 +190,6 @@ sortStudents option students =
                 (\s ->
                     case s.lastImportedAt of
                         Just date ->
-                            -- Negate to reverse sort (most recent first)
                             date
 
                         Nothing ->
@@ -203,15 +202,23 @@ sortStudents option students =
             List.sortBy .displayName students
 
         SortNeedsAttention ->
-            -- For now, sort by those without imports first (they need attention)
+            -- Sort by those needing attention first (no games or low accuracy)
             List.sortBy
                 (\s ->
-                    case s.lastImportedAt of
-                        Just _ ->
-                            1
+                    if s.stats.gameCount == 0 then
+                        0
 
-                        Nothing ->
-                            0
+                    else
+                        case s.stats.avgAccuracy of
+                            Just acc ->
+                                if acc < 50 then
+                                    1
+
+                                else
+                                    2
+
+                            Nothing ->
+                                2
                 )
                 students
 
@@ -223,10 +230,10 @@ filterStudents option students =
             students
 
         FilterActive ->
-            List.filter (\s -> s.lastImportedAt /= Nothing) students
+            List.filter (\s -> s.stats.gameCount > 0) students
 
         FilterInactive ->
-            List.filter (\s -> s.lastImportedAt == Nothing) students
+            List.filter (\s -> s.stats.gameCount == 0) students
 
 
 getInitials : String -> String
@@ -344,7 +351,10 @@ viewDashboard model students =
             List.length students
 
         activeCount =
-            List.length (List.filter (\s -> s.lastImportedAt /= Nothing) students)
+            List.length (List.filter (\s -> s.stats.gameCount > 0) students)
+
+        totalGames =
+            List.sum (List.map (\s -> s.stats.gameCount) students)
     in
     div []
         [ -- Header with title and add button
@@ -354,9 +364,9 @@ viewDashboard model students =
                     [ h1 [ class "text-2xl font-bold text-gray-900" ] [ text "Your Students" ]
                     , p [ class "text-gray-500 mt-1" ]
                         [ text (String.fromInt studentCount ++ " student" ++ pluralize studentCount)
-                        , if activeCount > 0 then
+                        , if totalGames > 0 then
                             span [ class "text-gray-400" ]
-                                [ text (" · " ++ String.fromInt activeCount ++ " with games imported") ]
+                                [ text (" · " ++ String.fromInt totalGames ++ " games analyzed") ]
 
                           else
                             text ""
@@ -462,7 +472,10 @@ viewStudentCard : Student -> Html Msg
 viewStudentCard student =
     let
         needsSetup =
-            student.lastImportedAt == Nothing
+            student.stats.gameCount == 0
+
+        hasAlerts =
+            not (List.isEmpty (getStudentAlerts student))
 
         statusInfo =
             if needsSetup then
@@ -473,7 +486,7 @@ viewStudentCard student =
 
             else
                 { dotColor = "bg-green-500"
-                , statusText = "Games imported"
+                , statusText = String.fromInt student.stats.gameCount ++ " games"
                 , statusClass = "text-green-600"
                 }
     in
@@ -481,7 +494,7 @@ viewStudentCard student =
         [ Route.href (Route.StudentDetail student.id)
         , class
             ("block bg-white rounded-xl border overflow-hidden transition-all group "
-                ++ (if needsSetup then
+                ++ (if hasAlerts then
                         "border-l-4 border-l-amber-400 border-gray-200 hover:border-gray-300 hover:shadow-md"
 
                     else
@@ -536,22 +549,25 @@ viewStudentCard student =
                     ]
                 ]
 
-            -- Stats row (placeholder - will be populated when API supports it)
+            -- Stats row
             , div [ class "grid grid-cols-3 gap-3 mt-4" ]
-                [ viewStatCell "—" "games" Nothing
-                , viewStatCell "—" "win rate" Nothing
-                , viewStatCell "—" "accuracy" Nothing
+                [ viewStatCell (String.fromInt student.stats.gameCount) "games" Nothing
+                , case student.stats.winRate of
+                    Just rate ->
+                        viewStatCell (String.fromInt (round rate) ++ "%") "win rate" Nothing
+
+                    Nothing ->
+                        viewStatCell "—" "win rate" Nothing
+                , case student.stats.avgAccuracy of
+                    Just acc ->
+                        viewStatCell (String.fromInt (round acc) ++ "%") "accuracy" Nothing
+
+                    Nothing ->
+                        viewStatCell "—" "accuracy" Nothing
                 ]
 
             -- Alert row (shown when student needs attention)
-            , if needsSetup then
-                div [ class "mt-4 flex items-center gap-2 text-sm text-amber-700 bg-amber-50 rounded-lg px-3 py-2" ]
-                    [ span [] [ text "!" ]
-                    , text "Games not imported yet"
-                    ]
-
-              else
-                text ""
+            , viewAlertRow student
 
             -- Footer: CTA and sync status
             , div [ class "mt-4 pt-4 border-t border-gray-100 flex items-center justify-between" ]
@@ -564,6 +580,64 @@ viewStudentCard student =
                 ]
             ]
         ]
+
+
+viewAlertRow : Student -> Html Msg
+viewAlertRow student =
+    let
+        alerts =
+            getStudentAlerts student
+    in
+    case List.head alerts of
+        Just alert ->
+            div [ class "mt-4 flex items-center gap-2 text-sm text-amber-700 bg-amber-50 rounded-lg px-3 py-2" ]
+                [ span [] [ text "!" ]
+                , text alert
+                ]
+
+        Nothing ->
+            text ""
+
+
+getStudentAlerts : Student -> List String
+getStudentAlerts student =
+    let
+        noGames =
+            if student.stats.gameCount == 0 then
+                [ "Games not imported yet" ]
+
+            else
+                []
+
+        lowAccuracy =
+            case student.stats.avgAccuracy of
+                Just acc ->
+                    if acc < 50 then
+                        [ "Low average accuracy (" ++ String.fromInt (round acc) ++ "%)" ]
+
+                    else
+                        []
+
+                Nothing ->
+                    []
+
+        losingRecord =
+            if student.stats.gameCount > 5 then
+                case student.stats.winRate of
+                    Just rate ->
+                        if rate < 30 then
+                            [ "Struggling with recent games" ]
+
+                        else
+                            []
+
+                    Nothing ->
+                        []
+
+            else
+                []
+    in
+    noGames ++ lowAccuracy ++ losingRecord
 
 
 viewStatCell : String -> String -> Maybe String -> Html Msg

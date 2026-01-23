@@ -66,6 +66,16 @@ coachDecoder =
 -- STUDENT
 
 
+type alias StudentStats =
+    { gameCount : Int
+    , winCount : Int
+    , lossCount : Int
+    , drawCount : Int
+    , winRate : Maybe Float
+    , avgAccuracy : Maybe Float
+    }
+
+
 type alias Student =
     { id : String
     , coachId : String
@@ -75,7 +85,19 @@ type alias Student =
     , lastInsightAt : Maybe String
     , avatarUrl : Maybe String
     , createdAt : String
+    , stats : StudentStats
     }
+
+
+studentStatsDecoder : Decoder StudentStats
+studentStatsDecoder =
+    Decode.succeed StudentStats
+        |> Pipeline.required "game_count" Decode.int
+        |> Pipeline.required "win_count" Decode.int
+        |> Pipeline.required "loss_count" Decode.int
+        |> Pipeline.required "draw_count" Decode.int
+        |> Pipeline.optional "win_rate" (Decode.nullable Decode.float) Nothing
+        |> Pipeline.optional "avg_accuracy" (Decode.nullable Decode.float) Nothing
 
 
 studentDecoder : Decoder Student
@@ -89,6 +111,7 @@ studentDecoder =
         |> Pipeline.optional "last_insight_at" (Decode.nullable Decode.string) Nothing
         |> Pipeline.optional "avatar_url" (Decode.nullable Decode.string) Nothing
         |> Pipeline.required "created_at" Decode.string
+        |> Pipeline.required "stats" studentStatsDecoder
 
 
 studentsDecoder : Decoder (List Student)
