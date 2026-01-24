@@ -346,8 +346,13 @@ viewNotFound =
 
 
 subscriptions : Model -> Sub Msg
-subscriptions _ =
-    Sub.none
+subscriptions model =
+    case model.page of
+        DashboardPage subModel ->
+            Sub.map DashboardMsg (Dashboard.subscriptions subModel)
+
+        _ ->
+            Sub.none
 
 
 

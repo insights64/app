@@ -1,4 +1,4 @@
-module Pages.Dashboard exposing (Model, Msg, init, update, view)
+module Pages.Dashboard exposing (Model, Msg, init, subscriptions, update, view)
 
 import Api.Students
 import Html exposing (..)
@@ -7,6 +7,7 @@ import Html.Events exposing (onClick, onInput, onSubmit)
 import Http
 import Json.Decode as Decode
 import Route
+import Time
 import Types exposing (RemoteData(..), Student)
 
 
@@ -24,6 +25,8 @@ type alias Model =
     , isAdding : Bool
     , sortBy : SortOption
     , filterBy : FilterOption
+    , apiUrl : String
+    , token : String
     }
 
 
@@ -54,6 +57,8 @@ init apiUrl token =
       , isAdding = False
       , sortBy = SortRecent
       , filterBy = FilterAll
+      , apiUrl = apiUrl
+      , token = token
       }
     , Api.Students.getStudents
         { apiUrl = apiUrl
@@ -78,6 +83,7 @@ type Msg
     | GotNewStudent (Result Http.Error Student)
     | SetSortBy SortOption
     | SetFilterBy FilterOption
+    | PollProgress Time.Posix
     | NoOp
 
 
@@ -156,6 +162,15 @@ update apiUrl token msg model =
         SetFilterBy option ->
             ( { model | filterBy = option }, Cmd.none )
 
+        PollProgress _ ->
+            ( model
+            , Api.Students.getStudents
+                { apiUrl = model.apiUrl
+                , token = model.token
+                , onResponse = GotStudents
+                }
+            )
+
         NoOp ->
             ( model, Cmd.none )
 
@@ -177,6 +192,29 @@ httpErrorToString error =
 
         Http.BadBody message ->
             "Error: " ++ message
+
+
+subscriptions : Model -> Sub Msg
+subscriptions model =
+    case model.students of
+        Success students ->
+            if hasAnalysisInProgress students then
+                Time.every 5000 PollProgress
+
+            else
+                Sub.none
+
+        _ ->
+            Sub.none
+
+
+hasAnalysisInProgress : List Student -> Bool
+hasAnalysisInProgress students =
+    List.any
+        (\s ->
+            s.stats.gameCount > 0 && s.stats.analyzedCount < s.stats.gameCount
+        )
+        students
 
 
 
@@ -481,15 +519,27 @@ viewStudentCard student =
         hasAlerts =
             not (List.isEmpty (getStudentAlerts student))
 
+        analysisInProgress =
+            student.stats.gameCount > 0 && student.stats.analyzedCount < student.stats.gameCount
+
         statusInfo =
             if needsSetup then
                 { dotColor = "bg-amber-400"
+                , dotAnimation = ""
                 , statusText = "Awaiting import"
                 , statusClass = "text-amber-600"
                 }
 
+            else if analysisInProgress then
+                { dotColor = "bg-blue-500"
+                , dotAnimation = " animate-pulse"
+                , statusText = String.fromInt student.stats.analyzedCount ++ "/" ++ String.fromInt student.stats.gameCount ++ " analyzed"
+                , statusClass = "text-blue-600"
+                }
+
             else
                 { dotColor = "bg-green-500"
+                , dotAnimation = ""
                 , statusText = String.fromInt student.stats.gameCount ++ " games"
                 , statusClass = "text-green-600"
                 }
@@ -578,7 +628,7 @@ viewStudentCard student =
                 [ span [ class "text-sm font-medium text-gray-600 group-hover:text-gray-900 transition-colors" ]
                     [ text "View Games →" ]
                 , span [ class ("text-xs flex items-center gap-1.5 " ++ statusInfo.statusClass) ]
-                    [ span [ class ("w-1.5 h-1.5 rounded-full " ++ statusInfo.dotColor) ] []
+                    [ span [ class ("w-1.5 h-1.5 rounded-full " ++ statusInfo.dotColor ++ statusInfo.dotAnimation) ] []
                     , text statusInfo.statusText
                     ]
                 ]

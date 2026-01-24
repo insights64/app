@@ -73,6 +73,7 @@ type alias StudentStats =
     , drawCount : Int
     , winRate : Maybe Float
     , avgAccuracy : Maybe Float
+    , analyzedCount : Int
     }
 
 
@@ -98,6 +99,7 @@ studentStatsDecoder =
         |> Pipeline.required "draw_count" Decode.int
         |> Pipeline.optional "win_rate" (Decode.nullable Decode.float) Nothing
         |> Pipeline.optional "avg_accuracy" (Decode.nullable Decode.float) Nothing
+        |> Pipeline.required "analyzed_count" Decode.int
 
 
 studentDecoder : Decoder Student

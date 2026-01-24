@@ -1382,6 +1382,9 @@ viewGameCard model student gameWithInsights =
 
                             Nothing ->
                                 text ""
+                        , span
+                            [ class ("px-2 py-0.5 rounded-full text-xs font-semibold " ++ result.pillBg ++ " " ++ result.pillText) ]
+                            [ text result.label ]
                         , case ratingDiff of
                             Just diff ->
                                 if diff > 0 then
@@ -1708,7 +1711,11 @@ viewPagination currentPage totalPages =
 
 
 type alias ResultInfo =
-    { label : String, barColor : String }
+    { label : String
+    , barColor : String
+    , pillBg : String
+    , pillText : String
+    }
 
 
 getResultInfo : Bool -> String -> ResultInfo
@@ -1716,20 +1723,20 @@ getResultInfo isStudentWhite result =
     case result of
         "1-0" ->
             if isStudentWhite then
-                { label = "WIN", barColor = "bg-anthro-green" }
+                { label = "Win", barColor = "bg-green-500", pillBg = "bg-green-100", pillText = "text-green-700" }
 
             else
-                { label = "LOSS", barColor = "bg-red-500" }
+                { label = "Loss", barColor = "bg-red-500", pillBg = "bg-red-100", pillText = "text-red-700" }
 
         "0-1" ->
             if isStudentWhite then
-                { label = "LOSS", barColor = "bg-red-500" }
+                { label = "Loss", barColor = "bg-red-500", pillBg = "bg-red-100", pillText = "text-red-700" }
 
             else
-                { label = "WIN", barColor = "bg-anthro-green" }
+                { label = "Win", barColor = "bg-green-500", pillBg = "bg-green-100", pillText = "text-green-700" }
 
         "1/2-1/2" ->
-            { label = "DRAW", barColor = "bg-anthro-gray-mid" }
+            { label = "Draw", barColor = "bg-gray-400", pillBg = "bg-gray-100", pillText = "text-gray-700" }
 
         _ ->
-            { label = result, barColor = "bg-anthro-gray-mid" }
+            { label = result, barColor = "bg-gray-400", pillBg = "bg-gray-100", pillText = "text-gray-700" }
