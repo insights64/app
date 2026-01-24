@@ -208,7 +208,22 @@
         localStorage.removeItem('insights64_token');
       });
     }
+
+    // Port: Identify user for LogRocket
+    if (app.ports.identifyUser) {
+      app.ports.identifyUser.subscribe(function(user) {
+        if (window.LogRocket) {
+          window.LogRocket.identify(user.id, {
+            email: user.email
+          });
+        }
+      });
+    }
   </script>
+
+  <!-- LogRocket -->
+  <script src="https://cdn.logr-in.com/LogRocket.min.js" crossorigin="anonymous"></script>
+  <script>window.LogRocket && window.LogRocket.init('insights64/insights64');</script>
 
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-7KCFYKSHGW"></script>

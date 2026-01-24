@@ -25,6 +25,9 @@ port saveToken : String -> Cmd msg
 port clearToken : () -> Cmd msg
 
 
+port identifyUser : { id : String, email : String } -> Cmd msg
+
+
 
 -- MODEL
 
@@ -125,6 +128,7 @@ update msg model =
                     ( { model | session = LoggedIn token coach }
                     , Cmd.batch
                         [ saveToken token
+                        , identifyUser { id = coach.id, email = coach.email }
                         , Route.replaceUrl model.key Route.Dashboard
                         ]
                     )
@@ -144,6 +148,7 @@ update msg model =
                     ( { model | session = LoggedIn token coach }
                     , Cmd.batch
                         [ saveToken token
+                        , identifyUser { id = coach.id, email = coach.email }
                         , Route.replaceUrl model.key Route.Dashboard
                         ]
                     )
