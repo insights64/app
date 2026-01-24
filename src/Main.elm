@@ -25,6 +25,9 @@ port saveToken : String -> Cmd msg
 port clearToken : () -> Cmd msg
 
 
+port saveCoach : { id : String, email : String } -> Cmd msg
+
+
 port identifyUser : { id : String, email : String } -> Cmd msg
 
 
@@ -60,6 +63,7 @@ type Page
 
 type alias Flags =
     { token : Maybe String
+    , coach : Maybe Coach
     , apiUrl : String
     }
 
@@ -68,14 +72,15 @@ init : Flags -> Url -> Nav.Key -> ( Model, Cmd Msg )
 init flags url key =
     let
         session =
-            case flags.token of
-                Just token ->
-                    -- We have a token but no coach info yet
-                    -- For simplicity, create a placeholder coach
-                    -- In production, you'd validate the token or decode JWT
+            case ( flags.token, flags.coach ) of
+                ( Just token, Just coach ) ->
+                    LoggedIn token coach
+
+                ( Just token, Nothing ) ->
+                    -- Token exists but no coach data - use placeholder
                     LoggedIn token { id = "", email = "" }
 
-                Nothing ->
+                _ ->
                     Guest
 
         ( model, cmd ) =
@@ -128,6 +133,7 @@ update msg model =
                     ( { model | session = LoggedIn token coach }
                     , Cmd.batch
                         [ saveToken token
+                        , saveCoach { id = coach.id, email = coach.email }
                         , identifyUser { id = coach.id, email = coach.email }
                         , Route.replaceUrl model.key Route.Dashboard
                         ]
@@ -148,6 +154,7 @@ update msg model =
                     ( { model | session = LoggedIn token coach }
                     , Cmd.batch
                         [ saveToken token
+                        , saveCoach { id = coach.id, email = coach.email }
                         , identifyUser { id = coach.id, email = coach.email }
                         , Route.replaceUrl model.key Route.Dashboard
                         ]

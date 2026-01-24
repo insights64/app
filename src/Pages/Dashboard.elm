@@ -23,23 +23,9 @@ type alias Model =
     , newStudentChessCom : String
     , addError : Maybe String
     , isAdding : Bool
-    , sortBy : SortOption
-    , filterBy : FilterOption
     , apiUrl : String
     , token : String
     }
-
-
-type SortOption
-    = SortRecent
-    | SortAlphabetical
-    | SortNeedsAttention
-
-
-type FilterOption
-    = FilterAll
-    | FilterActive
-    | FilterInactive
 
 
 
@@ -55,8 +41,6 @@ init apiUrl token =
       , newStudentChessCom = ""
       , addError = Nothing
       , isAdding = False
-      , sortBy = SortRecent
-      , filterBy = FilterAll
       , apiUrl = apiUrl
       , token = token
       }
@@ -81,8 +65,6 @@ type Msg
     | NewStudentChessComChanged String
     | SubmitNewStudent { apiUrl : String, token : String }
     | GotNewStudent (Result Http.Error Student)
-    | SetSortBy SortOption
-    | SetFilterBy FilterOption
     | PollProgress Time.Posix
     | NoOp
 
@@ -134,7 +116,7 @@ update apiUrl token msg model =
                         updatedStudents =
                             case model.students of
                                 Success students ->
-                                    Success (students ++ [ newStudent ])
+                                    Success (newStudent :: students)
 
                                 _ ->
                                     Success [ newStudent ]
@@ -155,12 +137,6 @@ update apiUrl token msg model =
                       }
                     , Cmd.none
                     )
-
-        SetSortBy option ->
-            ( { model | sortBy = option }, Cmd.none )
-
-        SetFilterBy option ->
-            ( { model | filterBy = option }, Cmd.none )
 
         PollProgress _ ->
             ( model
@@ -221,61 +197,6 @@ hasAnalysisInProgress students =
 -- ============================================================================
 -- HELPERS
 -- ============================================================================
-
-
-sortStudents : SortOption -> List Student -> List Student
-sortStudents option students =
-    case option of
-        SortRecent ->
-            -- Sort by lastImportedAt descending (most recent first)
-            List.sortBy
-                (\s ->
-                    case s.lastImportedAt of
-                        Just date ->
-                            date
-
-                        Nothing ->
-                            "0000-00-00"
-                )
-                students
-                |> List.reverse
-
-        SortAlphabetical ->
-            List.sortBy .displayName students
-
-        SortNeedsAttention ->
-            -- Sort by those needing attention first (no games or low accuracy)
-            List.sortBy
-                (\s ->
-                    if s.stats.gameCount == 0 then
-                        0
-
-                    else
-                        case s.stats.avgAccuracy of
-                            Just acc ->
-                                if acc < 50 then
-                                    1
-
-                                else
-                                    2
-
-                            Nothing ->
-                                2
-                )
-                students
-
-
-filterStudents : FilterOption -> List Student -> List Student
-filterStudents option students =
-    case option of
-        FilterAll ->
-            students
-
-        FilterActive ->
-            List.filter (\s -> s.stats.gameCount > 0) students
-
-        FilterInactive ->
-            List.filter (\s -> s.stats.gameCount == 0) students
 
 
 getInitials : String -> String
@@ -382,18 +303,10 @@ viewError error =
 
 
 viewDashboard : Model -> List Student -> Html Msg
-viewDashboard model students =
+viewDashboard _ students =
     let
-        filteredStudents =
-            students
-                |> filterStudents model.filterBy
-                |> sortStudents model.sortBy
-
         studentCount =
             List.length students
-
-        activeCount =
-            List.length (List.filter (\s -> s.stats.gameCount > 0) students)
 
         totalGames =
             List.sum (List.map (\s -> s.stats.gameCount) students)
@@ -422,91 +335,22 @@ viewDashboard model students =
                     , text "Add Student"
                     ]
                 ]
-
-            -- Sort/Filter controls (shown when 3+ students)
-            , if studentCount >= 3 then
-                div [ class "flex items-center gap-4 mt-4 pt-4 border-t border-gray-100" ]
-                    [ div [ class "flex items-center gap-2" ]
-                        [ span [ class "text-sm text-gray-500" ] [ text "Sort:" ]
-                        , select
-                            [ class "text-sm border border-gray-200 rounded-lg px-3 py-1.5 bg-white focus:ring-2 focus:ring-gray-900 focus:border-gray-900"
-                            , onInput
-                                (\str ->
-                                    case str of
-                                        "recent" ->
-                                            SetSortBy SortRecent
-
-                                        "alphabetical" ->
-                                            SetSortBy SortAlphabetical
-
-                                        "attention" ->
-                                            SetSortBy SortNeedsAttention
-
-                                        _ ->
-                                            SetSortBy SortRecent
-                                )
-                            ]
-                            [ option [ value "recent", selected (model.sortBy == SortRecent) ] [ text "Recent Activity" ]
-                            , option [ value "alphabetical", selected (model.sortBy == SortAlphabetical) ] [ text "Alphabetical" ]
-                            , option [ value "attention", selected (model.sortBy == SortNeedsAttention) ] [ text "Needs Attention" ]
-                            ]
-                        ]
-                    , div [ class "flex items-center gap-2" ]
-                        [ span [ class "text-sm text-gray-500" ] [ text "Filter:" ]
-                        , select
-                            [ class "text-sm border border-gray-200 rounded-lg px-3 py-1.5 bg-white focus:ring-2 focus:ring-gray-900 focus:border-gray-900"
-                            , onInput
-                                (\str ->
-                                    case str of
-                                        "all" ->
-                                            SetFilterBy FilterAll
-
-                                        "active" ->
-                                            SetFilterBy FilterActive
-
-                                        "inactive" ->
-                                            SetFilterBy FilterInactive
-
-                                        _ ->
-                                            SetFilterBy FilterAll
-                                )
-                            ]
-                            [ option [ value "all", selected (model.filterBy == FilterAll) ] [ text "All Students" ]
-                            , option [ value "active", selected (model.filterBy == FilterActive) ] [ text "Active" ]
-                            , option [ value "inactive", selected (model.filterBy == FilterInactive) ] [ text "Needs Setup" ]
-                            ]
-                        ]
-                    ]
-
-              else
-                text ""
             ]
 
         -- Student cards grid
-        , if List.isEmpty filteredStudents then
-            div [ class "text-center py-12 bg-white rounded-xl border border-gray-200" ]
-                [ p [ class "text-gray-500" ] [ text "No students match the current filter" ]
-                , button
-                    [ onClick (SetFilterBy FilterAll)
-                    , class "mt-2 text-sm text-gray-600 hover:text-gray-900 underline"
-                    ]
-                    [ text "Show all students" ]
-                ]
+        , div
+            [ class
+                (if studentCount == 1 then
+                    "max-w-md"
 
-          else
-            div
-                [ class
-                    (if studentCount == 1 then
-                        "max-w-md"
+                 else if studentCount == 2 then
+                    "grid grid-cols-1 md:grid-cols-2 gap-4"
 
-                     else if studentCount == 2 then
-                        "grid grid-cols-1 md:grid-cols-2 gap-4"
-
-                     else
-                        "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
-                    )
-                ]
-                (List.map viewStudentCard filteredStudents)
+                 else
+                    "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+                )
+            ]
+            (List.map viewStudentCard students)
         ]
 
 

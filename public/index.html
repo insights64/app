@@ -186,11 +186,12 @@
       ? 'http://localhost:8080'
       : 'http://localhost:8080';
 
-    // Initialize Elm app with token from localStorage and API URL
+    // Initialize Elm app with token, coach data, and API URL from localStorage
     const app = Elm.Main.init({
       node: document.getElementById('app'),
       flags: {
         token: localStorage.getItem('insights64_token'),
+        coach: JSON.parse(localStorage.getItem('insights64_coach')),
         apiUrl: API_URL
       }
     });
@@ -202,10 +203,18 @@
       });
     }
 
-    // Port: Clear token from localStorage
+    // Port: Clear token and coach data from localStorage
     if (app.ports.clearToken) {
       app.ports.clearToken.subscribe(function() {
         localStorage.removeItem('insights64_token');
+        localStorage.removeItem('insights64_coach');
+      });
+    }
+
+    // Port: Save coach data to localStorage
+    if (app.ports.saveCoach) {
+      app.ports.saveCoach.subscribe(function(coach) {
+        localStorage.setItem('insights64_coach', JSON.stringify(coach));
       });
     }
 
