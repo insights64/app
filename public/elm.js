@@ -7795,13 +7795,15 @@ var $author$project$Pages$Dashboard$update = F4(
 						model,
 						{aE: option}),
 					$elm$core$Platform$Cmd$none);
-			default:
+			case 7:
 				var option = msg.a;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{az: option}),
 					$elm$core$Platform$Cmd$none);
+			default:
+				return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 		}
 	});
 var $author$project$Pages$GameDetail$httpErrorToString = function (error) {
@@ -8834,6 +8836,7 @@ var $author$project$Pages$Dashboard$HideAddModal = {$: 2};
 var $author$project$Pages$Dashboard$NewStudentChessComChanged = function (a) {
 	return {$: 3, a: a};
 };
+var $author$project$Pages$Dashboard$NoOp = {$: 8};
 var $author$project$Pages$Dashboard$SubmitNewStudent = function (a) {
 	return {$: 4, a: a};
 };
@@ -8922,7 +8925,7 @@ var $author$project$Pages$Dashboard$viewAddModal = F3(
 							$elm$html$Html$Events$stopPropagationOn,
 							'click',
 							$elm$json$Json$Decode$succeed(
-								_Utils_Tuple2($author$project$Pages$Dashboard$HideAddModal, false)))
+								_Utils_Tuple2($author$project$Pages$Dashboard$NoOp, true)))
 						]),
 					_List_fromArray(
 						[
@@ -8963,12 +8966,7 @@ var $author$project$Pages$Dashboard$viewAddModal = F3(
 									$elm$html$Html$Events$onSubmit(
 									$author$project$Pages$Dashboard$SubmitNewStudent(
 										{ck: apiUrl, bx: token})),
-									$elm$html$Html$Attributes$class('p-5'),
-									A2(
-									$elm$html$Html$Events$stopPropagationOn,
-									'click',
-									$elm$json$Json$Decode$succeed(
-										_Utils_Tuple2($author$project$Pages$Dashboard$HideAddModal, false)))
+									$elm$html$Html$Attributes$class('p-5')
 								]),
 							_List_fromArray(
 								[

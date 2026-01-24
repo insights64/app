@@ -78,6 +78,7 @@ type Msg
     | GotNewStudent (Result Http.Error Student)
     | SetSortBy SortOption
     | SetFilterBy FilterOption
+    | NoOp
 
 
 update : String -> String -> Msg -> Model -> ( Model, Cmd Msg )
@@ -154,6 +155,9 @@ update apiUrl token msg model =
 
         SetFilterBy option ->
             ( { model | filterBy = option }, Cmd.none )
+
+        NoOp ->
+            ( model, Cmd.none )
 
 
 httpErrorToString : Http.Error -> String
@@ -701,7 +705,7 @@ viewAddModal apiUrl token model =
         ]
         [ div
             [ class "bg-white rounded-xl shadow-xl max-w-md w-full"
-            , Html.Events.stopPropagationOn "click" (Decode.succeed ( HideAddModal, False ))
+            , Html.Events.stopPropagationOn "click" (Decode.succeed ( NoOp, True ))
             ]
             [ -- Header
               div [ class "flex items-center justify-between p-5 border-b border-gray-100" ]
@@ -717,7 +721,6 @@ viewAddModal apiUrl token model =
             , Html.form
                 [ onSubmit (SubmitNewStudent { apiUrl = apiUrl, token = token })
                 , class "p-5"
-                , Html.Events.stopPropagationOn "click" (Decode.succeed ( HideAddModal, False ))
                 ]
                 [ -- Error message
                   case model.addError of
