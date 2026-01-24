@@ -77,7 +77,7 @@ function A9(fun, a, b, c, d, e, f, g, h, i) {
   return fun.a === 9 ? fun.f(a, b, c, d, e, f, g, h, i) : fun(a)(b)(c)(d)(e)(f)(g)(h)(i);
 }
 
-
+console.warn('Compiled in DEV mode. Follow the advice at https://elm-lang.org/0.19.1/optimize for better performance and smaller assets.');
 
 
 var _JsArray_empty = [];
@@ -234,12 +234,12 @@ var _JsArray_appendN = F3(function(n, dest, source)
 
 // LOG
 
-var _Debug_log = F2(function(tag, value)
+var _Debug_log_UNUSED = F2(function(tag, value)
 {
 	return value;
 });
 
-var _Debug_log_UNUSED = F2(function(tag, value)
+var _Debug_log = F2(function(tag, value)
 {
 	console.log(tag + ': ' + _Debug_toString(value));
 	return value;
@@ -265,12 +265,12 @@ function _Debug_todoCase(moduleName, region, value)
 
 // TO STRING
 
-function _Debug_toString(value)
+function _Debug_toString_UNUSED(value)
 {
 	return '<internals>';
 }
 
-function _Debug_toString_UNUSED(value)
+function _Debug_toString(value)
 {
 	return _Debug_toAnsiString(false, value);
 }
@@ -455,13 +455,13 @@ function _Debug_toHexDigit(n)
 // CRASH
 
 
-function _Debug_crash(identifier)
+function _Debug_crash_UNUSED(identifier)
 {
 	throw new Error('https://github.com/elm/core/blob/1.0.0/hints/' + identifier + '.md');
 }
 
 
-function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
+function _Debug_crash(identifier, fact1, fact2, fact3, fact4)
 {
 	switch(identifier)
 	{
@@ -519,11 +519,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.ca.a1 === region.cv.a1)
+	if (region.start.line === region.end.line)
 	{
-		return 'on line ' + region.ca.a1;
+		return 'on line ' + region.start.line;
 	}
-	return 'on lines ' + region.ca.a1 + ' through ' + region.cv.a1;
+	return 'on lines ' + region.start.line + ' through ' + region.end.line;
 }
 
 
@@ -561,7 +561,7 @@ function _Utils_eqHelp(x, y, depth, stack)
 		return true;
 	}
 
-	/**_UNUSED/
+	/**/
 	if (x.$ === 'Set_elm_builtin')
 	{
 		x = $elm$core$Set$toList(x);
@@ -574,7 +574,7 @@ function _Utils_eqHelp(x, y, depth, stack)
 	}
 	//*/
 
-	/**/
+	/**_UNUSED/
 	if (x.$ < 0)
 	{
 		x = $elm$core$Dict$toList(x);
@@ -609,7 +609,7 @@ function _Utils_cmp(x, y, ord)
 		return x === y ? /*EQ*/ 0 : x < y ? /*LT*/ -1 : /*GT*/ 1;
 	}
 
-	/**_UNUSED/
+	/**/
 	if (x instanceof String)
 	{
 		var a = x.valueOf();
@@ -618,10 +618,10 @@ function _Utils_cmp(x, y, ord)
 	}
 	//*/
 
-	/**/
+	/**_UNUSED/
 	if (typeof x.$ === 'undefined')
 	//*/
-	/**_UNUSED/
+	/**/
 	if (x.$[0] === '#')
 	//*/
 	{
@@ -651,17 +651,17 @@ var _Utils_compare = F2(function(x, y)
 
 // COMMON VALUES
 
-var _Utils_Tuple0 = 0;
-var _Utils_Tuple0_UNUSED = { $: '#0' };
+var _Utils_Tuple0_UNUSED = 0;
+var _Utils_Tuple0 = { $: '#0' };
 
-function _Utils_Tuple2(a, b) { return { a: a, b: b }; }
-function _Utils_Tuple2_UNUSED(a, b) { return { $: '#2', a: a, b: b }; }
+function _Utils_Tuple2_UNUSED(a, b) { return { a: a, b: b }; }
+function _Utils_Tuple2(a, b) { return { $: '#2', a: a, b: b }; }
 
-function _Utils_Tuple3(a, b, c) { return { a: a, b: b, c: c }; }
-function _Utils_Tuple3_UNUSED(a, b, c) { return { $: '#3', a: a, b: b, c: c }; }
+function _Utils_Tuple3_UNUSED(a, b, c) { return { a: a, b: b, c: c }; }
+function _Utils_Tuple3(a, b, c) { return { $: '#3', a: a, b: b, c: c }; }
 
-function _Utils_chr(c) { return c; }
-function _Utils_chr_UNUSED(c) { return new String(c); }
+function _Utils_chr_UNUSED(c) { return c; }
+function _Utils_chr(c) { return new String(c); }
 
 
 // RECORDS
@@ -712,11 +712,11 @@ function _Utils_ap(xs, ys)
 
 
 
-var _List_Nil = { $: 0 };
-var _List_Nil_UNUSED = { $: '[]' };
+var _List_Nil_UNUSED = { $: 0 };
+var _List_Nil = { $: '[]' };
 
-function _List_Cons(hd, tl) { return { $: 1, a: hd, b: tl }; }
-function _List_Cons_UNUSED(hd, tl) { return { $: '::', a: hd, b: tl }; }
+function _List_Cons_UNUSED(hd, tl) { return { $: 1, a: hd, b: tl }; }
+function _List_Cons(hd, tl) { return { $: '::', a: hd, b: tl }; }
 
 
 var _List_cons = F2(_List_Cons);
@@ -1212,7 +1212,7 @@ function _Char_toLocaleLower(char)
 
 
 
-/**_UNUSED/
+/**/
 function _Json_errorToString(error)
 {
 	return $elm$json$Json$Decode$errorToString(error);
@@ -1616,11 +1616,11 @@ var _Json_encode = F2(function(indentLevel, value)
 	return JSON.stringify(_Json_unwrap(value), null, indentLevel) + '';
 });
 
-function _Json_wrap_UNUSED(value) { return { $: 0, a: value }; }
-function _Json_unwrap_UNUSED(value) { return value.a; }
+function _Json_wrap(value) { return { $: 0, a: value }; }
+function _Json_unwrap(value) { return value.a; }
 
-function _Json_wrap(value) { return value; }
-function _Json_unwrap(value) { return value; }
+function _Json_wrap_UNUSED(value) { return value; }
+function _Json_unwrap_UNUSED(value) { return value; }
 
 function _Json_emptyArray() { return []; }
 function _Json_emptyObject() { return {}; }
@@ -1857,9 +1857,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.ee,
-		impl.fi,
-		impl.e2,
+		impl.init,
+		impl.update,
+		impl.subscriptions,
 		function() { return function() {} }
 	);
 });
@@ -1872,7 +1872,7 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 function _Platform_initialize(flagDecoder, args, init, update, subscriptions, stepperBuilder)
 {
 	var result = A2(_Json_run, flagDecoder, _Json_wrap(args ? args['flags'] : undefined));
-	$elm$core$Result$isOk(result) || _Debug_crash(2 /**_UNUSED/, _Json_errorToString(result.a) /**/);
+	$elm$core$Result$isOk(result) || _Debug_crash(2 /**/, _Json_errorToString(result.a) /**/);
 	var managers = {};
 	var initPair = init(result.a);
 	var model = initPair.a;
@@ -2316,7 +2316,7 @@ function _Platform_setupIncomingPort(name, sendToApp)
 //
 
 
-function _Platform_export(exports)
+function _Platform_export_UNUSED(exports)
 {
 	scope['Elm']
 		? _Platform_mergeExportsProd(scope['Elm'], exports)
@@ -2337,7 +2337,7 @@ function _Platform_mergeExportsProd(obj, exports)
 }
 
 
-function _Platform_export_UNUSED(exports)
+function _Platform_export(exports)
 {
 	scope['Elm']
 		? _Platform_mergeExportsDebug('Elm', scope['Elm'], exports)
@@ -2377,10 +2377,10 @@ var _VirtualDom_init = F4(function(virtualNode, flagDecoder, debugMetadata, args
 {
 	// NOTE: this function needs _Platform_export available to work
 
-	/**/
+	/**_UNUSED/
 	var node = args['node'];
 	//*/
-	/**_UNUSED/
+	/**/
 	var node = args && args['node'] ? args['node'] : _Debug_crash(0);
 	//*/
 
@@ -2655,14 +2655,14 @@ function _VirtualDom_noInnerHtmlOrFormAction(key)
 function _VirtualDom_noJavaScriptUri(value)
 {
 	return _VirtualDom_RE_js.test(value)
-		? /**/''//*//**_UNUSED/'javascript:alert("This is an XSS vector. Please use ports or web components instead.")'//*/
+		? /**_UNUSED/''//*//**/'javascript:alert("This is an XSS vector. Please use ports or web components instead.")'//*/
 		: value;
 }
 
 function _VirtualDom_noJavaScriptOrHtmlUri(value)
 {
 	return _VirtualDom_RE_js_html.test(value)
-		? /**/''//*//**_UNUSED/'javascript:alert("This is an XSS vector. Please use ports or web components instead.")'//*/
+		? /**_UNUSED/''//*//**/'javascript:alert("This is an XSS vector. Please use ports or web components instead.")'//*/
 		: value;
 }
 
@@ -2670,7 +2670,7 @@ function _VirtualDom_noJavaScriptOrHtmlJson(value)
 {
 	return (typeof _Json_unwrap(value) === 'string' && _VirtualDom_RE_js_html.test(_Json_unwrap(value)))
 		? _Json_wrap(
-			/**/''//*//**_UNUSED/'javascript:alert("This is an XSS vector. Please use ports or web components instead.")'//*/
+			/**_UNUSED/''//*//**/'javascript:alert("This is an XSS vector. Please use ports or web components instead.")'//*/
 		) : value;
 }
 
@@ -2719,9 +2719,9 @@ var _VirtualDom_mapEventTuple = F2(function(func, tuple)
 var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
-		ap: func(record.ap),
-		cd: record.cd,
-		b_: record.b_
+		message: func(record.message),
+		stopPropagation: record.stopPropagation,
+		preventDefault: record.preventDefault
 	}
 });
 
@@ -2989,11 +2989,11 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 		// 3 = Custom
 
 		var value = result.a;
-		var message = !tag ? value : tag < 3 ? value.a : value.ap;
-		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.cd;
+		var message = !tag ? value : tag < 3 ? value.a : value.message;
+		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.stopPropagation;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
-			(tag == 2 ? value.b : tag == 3 && value.b_) && event.preventDefault(),
+			(tag == 2 ? value.b : tag == 3 && value.preventDefault) && event.preventDefault(),
 			eventNode
 		);
 		var tagger;
@@ -3943,15 +3943,15 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.ee,
-		impl.fi,
-		impl.e2,
+		impl.init,
+		impl.update,
+		impl.subscriptions,
 		function(sendToApp, initialModel) {
-			var view = impl.fj;
-			/**/
+			var view = impl.view;
+			/**_UNUSED/
 			var domNode = args['node'];
 			//*/
-			/**_UNUSED/
+			/**/
 			var domNode = args && args['node'] ? args['node'] : _Debug_crash(0);
 			//*/
 			var currNode = _VirtualDom_virtualize(domNode);
@@ -3979,12 +3979,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.ee,
-		impl.fi,
-		impl.e2,
+		impl.init,
+		impl.update,
+		impl.subscriptions,
 		function(sendToApp, initialModel) {
-			var divertHrefToApp = impl.b2 && impl.b2(sendToApp)
-			var view = impl.fj;
+			var divertHrefToApp = impl.setup && impl.setup(sendToApp)
+			var view = impl.view;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -3992,12 +3992,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 			{
 				_VirtualDom_divertHrefToApp = divertHrefToApp;
 				var doc = view(model);
-				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.aX);
+				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.body);
 				var patches = _VirtualDom_diff(currNode, nextNode);
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.e8) && (_VirtualDom_doc.title = title = doc.e8);
+				(title !== doc.title) && (_VirtualDom_doc.title = title = doc.title);
 			});
 		}
 	);
@@ -4053,12 +4053,12 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.eC;
-	var onUrlRequest = impl.eD;
+	var onUrlChange = impl.onUrlChange;
+	var onUrlRequest = impl.onUrlRequest;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
-		b2: function(sendToApp)
+		setup: function(sendToApp)
 		{
 			key.a = sendToApp;
 			_Browser_window.addEventListener('popstate', key);
@@ -4074,9 +4074,9 @@ function _Browser_application(impl)
 					var next = $elm$url$Url$fromString(href).a;
 					sendToApp(onUrlRequest(
 						(next
-							&& curr.cW === next.cW
-							&& curr.cD === next.cD
-							&& curr.cS.a === next.cS.a
+							&& curr.protocol === next.protocol
+							&& curr.host === next.host
+							&& curr.port_.a === next.port_.a
 						)
 							? $elm$browser$Browser$Internal(next)
 							: $elm$browser$Browser$External(href)
@@ -4084,13 +4084,13 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		ee: function(flags)
+		init: function(flags)
 		{
-			return A3(impl.ee, flags, _Browser_getUrl(), key);
+			return A3(impl.init, flags, _Browser_getUrl(), key);
 		},
-		fj: impl.fj,
-		fi: impl.fi,
-		e2: impl.e2
+		view: impl.view,
+		update: impl.update,
+		subscriptions: impl.subscriptions
 	});
 }
 
@@ -4156,17 +4156,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { d6: 'hidden', dF: 'visibilitychange' }
+		? { hidden: 'hidden', change: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { d6: 'mozHidden', dF: 'mozvisibilitychange' }
+		? { hidden: 'mozHidden', change: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { d6: 'msHidden', dF: 'msvisibilitychange' }
+		? { hidden: 'msHidden', change: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { d6: 'webkitHidden', dF: 'webkitvisibilitychange' }
-		: { d6: 'hidden', dF: 'visibilitychange' };
+		? { hidden: 'webkitHidden', change: 'webkitvisibilitychange' }
+		: { hidden: 'hidden', change: 'visibilitychange' };
 }
 
 
@@ -4247,12 +4247,12 @@ var _Browser_call = F2(function(functionName, id)
 function _Browser_getViewport()
 {
 	return {
-		c4: _Browser_getScene(),
-		df: {
-			dk: _Browser_window.pageXOffset,
-			dl: _Browser_window.pageYOffset,
-			di: _Browser_doc.documentElement.clientWidth,
-			cB: _Browser_doc.documentElement.clientHeight
+		scene: _Browser_getScene(),
+		viewport: {
+			x: _Browser_window.pageXOffset,
+			y: _Browser_window.pageYOffset,
+			width: _Browser_doc.documentElement.clientWidth,
+			height: _Browser_doc.documentElement.clientHeight
 		}
 	};
 }
@@ -4262,8 +4262,8 @@ function _Browser_getScene()
 	var body = _Browser_doc.body;
 	var elem = _Browser_doc.documentElement;
 	return {
-		di: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
-		cB: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
+		width: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
+		height: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
 
@@ -4286,15 +4286,15 @@ function _Browser_getViewportOf(id)
 	return _Browser_withNode(id, function(node)
 	{
 		return {
-			c4: {
-				di: node.scrollWidth,
-				cB: node.scrollHeight
+			scene: {
+				width: node.scrollWidth,
+				height: node.scrollHeight
 			},
-			df: {
-				dk: node.scrollLeft,
-				dl: node.scrollTop,
-				di: node.clientWidth,
-				cB: node.clientHeight
+			viewport: {
+				x: node.scrollLeft,
+				y: node.scrollTop,
+				width: node.clientWidth,
+				height: node.clientHeight
 			}
 		};
 	});
@@ -4324,18 +4324,18 @@ function _Browser_getElement(id)
 		var x = _Browser_window.pageXOffset;
 		var y = _Browser_window.pageYOffset;
 		return {
-			c4: _Browser_getScene(),
-			df: {
-				dk: x,
-				dl: y,
-				di: _Browser_doc.documentElement.clientWidth,
-				cB: _Browser_doc.documentElement.clientHeight
+			scene: _Browser_getScene(),
+			viewport: {
+				x: x,
+				y: y,
+				width: _Browser_doc.documentElement.clientWidth,
+				height: _Browser_doc.documentElement.clientHeight
 			},
-			dW: {
-				dk: x + rect.left,
-				dl: y + rect.top,
-				di: rect.width,
-				cB: rect.height
+			element: {
+				x: x + rect.left,
+				y: y + rect.top,
+				width: rect.width,
+				height: rect.height
 			}
 		};
 	});
@@ -4380,25 +4380,25 @@ var _Http_toTask = F3(function(router, toTask, request)
 	return _Scheduler_binding(function(callback)
 	{
 		function done(response) {
-			callback(toTask(request.bl.a(response)));
+			callback(toTask(request.expect.a(response)));
 		}
 
 		var xhr = new XMLHttpRequest();
 		xhr.addEventListener('error', function() { done($elm$http$Http$NetworkError_); });
 		xhr.addEventListener('timeout', function() { done($elm$http$Http$Timeout_); });
-		xhr.addEventListener('load', function() { done(_Http_toResponse(request.bl.b, xhr)); });
-		$elm$core$Maybe$isJust(request.by) && _Http_track(router, xhr, request.by.a);
+		xhr.addEventListener('load', function() { done(_Http_toResponse(request.expect.b, xhr)); });
+		$elm$core$Maybe$isJust(request.tracker) && _Http_track(router, xhr, request.tracker.a);
 
 		try {
-			xhr.open(request.bp, request.bz, true);
+			xhr.open(request.method, request.url, true);
 		} catch (e) {
-			return done($elm$http$Http$BadUrl_(request.bz));
+			return done($elm$http$Http$BadUrl_(request.url));
 		}
 
 		_Http_configureRequest(xhr, request);
 
-		request.aX.a && xhr.setRequestHeader('Content-Type', request.aX.a);
-		xhr.send(request.aX.b);
+		request.body.a && xhr.setRequestHeader('Content-Type', request.body.a);
+		xhr.send(request.body.b);
 
 		return function() { xhr.c = true; xhr.abort(); };
 	});
@@ -4409,13 +4409,13 @@ var _Http_toTask = F3(function(router, toTask, request)
 
 function _Http_configureRequest(xhr, request)
 {
-	for (var headers = request.bm; headers.b; headers = headers.b) // WHILE_CONS
+	for (var headers = request.headers; headers.b; headers = headers.b) // WHILE_CONS
 	{
 		xhr.setRequestHeader(headers.a.a, headers.a.b);
 	}
-	xhr.timeout = request.bv.a || 0;
-	xhr.responseType = request.bl.d;
-	xhr.withCredentials = request.ds;
+	xhr.timeout = request.timeout.a || 0;
+	xhr.responseType = request.expect.d;
+	xhr.withCredentials = request.allowCookiesFromOtherDomains;
 }
 
 
@@ -4436,10 +4436,10 @@ function _Http_toResponse(toBody, xhr)
 function _Http_toMetadata(xhr)
 {
 	return {
-		bz: xhr.responseURL,
-		e1: xhr.status,
-		cc: xhr.statusText,
-		bm: _Http_parseHeaders(xhr.getAllResponseHeaders())
+		url: xhr.responseURL,
+		statusCode: xhr.status,
+		statusText: xhr.statusText,
+		headers: _Http_parseHeaders(xhr.getAllResponseHeaders())
 	};
 }
 
@@ -4534,15 +4534,15 @@ function _Http_track(router, xhr, tracker)
 	xhr.upload.addEventListener('progress', function(event) {
 		if (xhr.c) { return; }
 		_Scheduler_rawSpawn(A2($elm$core$Platform$sendToSelf, router, _Utils_Tuple2(tracker, $elm$http$Http$Sending({
-			eZ: event.loaded,
-			c7: event.total
+			sent: event.loaded,
+			size: event.total
 		}))));
 	});
 	xhr.addEventListener('progress', function(event) {
 		if (xhr.c) { return; }
 		_Scheduler_rawSpawn(A2($elm$core$Platform$sendToSelf, router, _Utils_Tuple2(tracker, $elm$http$Http$Receiving({
-			eU: event.loaded,
-			c7: event.lengthComputable ? $elm$core$Maybe$Just(event.total) : $elm$core$Maybe$Nothing
+			received: event.loaded,
+			size: event.lengthComputable ? $elm$core$Maybe$Just(event.total) : $elm$core$Maybe$Nothing
 		}))));
 	});
 }
@@ -4563,14 +4563,14 @@ function _Url_percentDecode(string)
 		return $elm$core$Maybe$Nothing;
 	}
 }var $elm$core$Maybe$Just = function (a) {
-	return {$: 0, a: a};
+	return {$: 'Just', a: a};
 };
-var $elm$core$Maybe$Nothing = {$: 1};
+var $elm$core$Maybe$Nothing = {$: 'Nothing'};
 var $author$project$Main$UrlChanged = function (a) {
-	return {$: 1, a: a};
+	return {$: 'UrlChanged', a: a};
 };
 var $author$project$Main$UrlRequested = function (a) {
-	return {$: 0, a: a};
+	return {$: 'UrlRequested', a: a};
 };
 var $elm$core$List$cons = _List_cons;
 var $elm$core$Elm$JsArray$foldr = _JsArray_foldr;
@@ -4580,7 +4580,7 @@ var $elm$core$Array$foldr = F3(
 		var tail = _v0.d;
 		var helper = F2(
 			function (node, acc) {
-				if (!node.$) {
+				if (node.$ === 'SubTree') {
 					var subTree = node.a;
 					return A3($elm$core$Elm$JsArray$foldr, helper, acc, subTree);
 				} else {
@@ -4601,7 +4601,7 @@ var $elm$core$Dict$foldr = F3(
 	function (func, acc, t) {
 		foldr:
 		while (true) {
-			if (t.$ === -2) {
+			if (t.$ === 'RBEmpty_elm_builtin') {
 				return acc;
 			} else {
 				var key = t.b;
@@ -4646,34 +4646,34 @@ var $elm$core$Dict$keys = function (dict) {
 		dict);
 };
 var $elm$core$Set$toList = function (_v0) {
-	var dict = _v0;
+	var dict = _v0.a;
 	return $elm$core$Dict$keys(dict);
 };
-var $elm$core$Basics$EQ = 1;
-var $elm$core$Basics$GT = 2;
-var $elm$core$Basics$LT = 0;
+var $elm$core$Basics$EQ = {$: 'EQ'};
+var $elm$core$Basics$GT = {$: 'GT'};
+var $elm$core$Basics$LT = {$: 'LT'};
 var $elm$core$Result$Err = function (a) {
-	return {$: 1, a: a};
+	return {$: 'Err', a: a};
 };
 var $elm$json$Json$Decode$Failure = F2(
 	function (a, b) {
-		return {$: 3, a: a, b: b};
+		return {$: 'Failure', a: a, b: b};
 	});
 var $elm$json$Json$Decode$Field = F2(
 	function (a, b) {
-		return {$: 0, a: a, b: b};
+		return {$: 'Field', a: a, b: b};
 	});
 var $elm$json$Json$Decode$Index = F2(
 	function (a, b) {
-		return {$: 1, a: a, b: b};
+		return {$: 'Index', a: a, b: b};
 	});
 var $elm$core$Result$Ok = function (a) {
-	return {$: 0, a: a};
+	return {$: 'Ok', a: a};
 };
 var $elm$json$Json$Decode$OneOf = function (a) {
-	return {$: 2, a: a};
+	return {$: 'OneOf', a: a};
 };
-var $elm$core$Basics$False = 1;
+var $elm$core$Basics$False = {$: 'False'};
 var $elm$core$Basics$add = _Basics_add;
 var $elm$core$String$all = _String_all;
 var $elm$core$Basics$and = _Basics_and;
@@ -4799,12 +4799,12 @@ var $elm$json$Json$Decode$errorToStringHelp = F2(
 		errorToStringHelp:
 		while (true) {
 			switch (error.$) {
-				case 0:
+				case 'Field':
 					var f = error.a;
 					var err = error.b;
 					var isSimple = function () {
 						var _v1 = $elm$core$String$uncons(f);
-						if (_v1.$ === 1) {
+						if (_v1.$ === 'Nothing') {
 							return false;
 						} else {
 							var _v2 = _v1.a;
@@ -4819,7 +4819,7 @@ var $elm$json$Json$Decode$errorToStringHelp = F2(
 					error = $temp$error;
 					context = $temp$context;
 					continue errorToStringHelp;
-				case 1:
+				case 'Index':
 					var i = error.a;
 					var err = error.b;
 					var indexName = '[' + ($elm$core$String$fromInt(i) + ']');
@@ -4828,7 +4828,7 @@ var $elm$json$Json$Decode$errorToStringHelp = F2(
 					error = $temp$error;
 					context = $temp$context;
 					continue errorToStringHelp;
-				case 2:
+				case 'OneOf':
 					var errors = error.a;
 					if (!errors.b) {
 						return 'Ran into a Json.Decode.oneOf with no possibilities' + function () {
@@ -4892,7 +4892,7 @@ var $elm$json$Json$Decode$errorToStringHelp = F2(
 var $elm$core$Array$branchFactor = 32;
 var $elm$core$Array$Array_elm_builtin = F4(
 	function (a, b, c, d) {
-		return {$: 0, a: a, b: b, c: c, d: d};
+		return {$: 'Array_elm_builtin', a: a, b: b, c: c, d: d};
 	});
 var $elm$core$Elm$JsArray$empty = _JsArray_empty;
 var $elm$core$Basics$ceiling = _Basics_ceiling;
@@ -4907,7 +4907,7 @@ var $elm$core$Array$shiftStep = $elm$core$Basics$ceiling(
 var $elm$core$Array$empty = A4($elm$core$Array$Array_elm_builtin, 0, $elm$core$Array$shiftStep, $elm$core$Elm$JsArray$empty, $elm$core$Elm$JsArray$empty);
 var $elm$core$Elm$JsArray$initialize = _JsArray_initialize;
 var $elm$core$Array$Leaf = function (a) {
-	return {$: 1, a: a};
+	return {$: 'Leaf', a: a};
 };
 var $elm$core$Basics$apL = F2(
 	function (f, x) {
@@ -4927,7 +4927,7 @@ var $elm$core$Basics$max = F2(
 	});
 var $elm$core$Basics$mul = _Basics_mul;
 var $elm$core$Array$SubTree = function (a) {
-	return {$: 0, a: a};
+	return {$: 'SubTree', a: a};
 };
 var $elm$core$Elm$JsArray$initializeFromList = _JsArray_initializeFromList;
 var $elm$core$Array$compressNodes = F2(
@@ -4974,25 +4974,25 @@ var $elm$core$Array$treeFromBuilder = F2(
 	});
 var $elm$core$Array$builderToArray = F2(
 	function (reverseNodeList, builder) {
-		if (!builder.n) {
+		if (!builder.nodeListSize) {
 			return A4(
 				$elm$core$Array$Array_elm_builtin,
-				$elm$core$Elm$JsArray$length(builder.u),
+				$elm$core$Elm$JsArray$length(builder.tail),
 				$elm$core$Array$shiftStep,
 				$elm$core$Elm$JsArray$empty,
-				builder.u);
+				builder.tail);
 		} else {
-			var treeLen = builder.n * $elm$core$Array$branchFactor;
+			var treeLen = builder.nodeListSize * $elm$core$Array$branchFactor;
 			var depth = $elm$core$Basics$floor(
 				A2($elm$core$Basics$logBase, $elm$core$Array$branchFactor, treeLen - 1));
-			var correctNodeList = reverseNodeList ? $elm$core$List$reverse(builder.v) : builder.v;
-			var tree = A2($elm$core$Array$treeFromBuilder, correctNodeList, builder.n);
+			var correctNodeList = reverseNodeList ? $elm$core$List$reverse(builder.nodeList) : builder.nodeList;
+			var tree = A2($elm$core$Array$treeFromBuilder, correctNodeList, builder.nodeListSize);
 			return A4(
 				$elm$core$Array$Array_elm_builtin,
-				$elm$core$Elm$JsArray$length(builder.u) + treeLen,
+				$elm$core$Elm$JsArray$length(builder.tail) + treeLen,
 				A2($elm$core$Basics$max, 5, depth * $elm$core$Array$shiftStep),
 				tree,
-				builder.u);
+				builder.tail);
 		}
 	});
 var $elm$core$Basics$idiv = _Basics_idiv;
@@ -5005,7 +5005,7 @@ var $elm$core$Array$initializeHelp = F5(
 				return A2(
 					$elm$core$Array$builderToArray,
 					false,
-					{v: nodeList, n: (len / $elm$core$Array$branchFactor) | 0, u: tail});
+					{nodeList: nodeList, nodeListSize: (len / $elm$core$Array$branchFactor) | 0, tail: tail});
 			} else {
 				var leaf = $elm$core$Array$Leaf(
 					A3($elm$core$Elm$JsArray$initialize, $elm$core$Array$branchFactor, fromIndex, fn));
@@ -5035,9 +5035,9 @@ var $elm$core$Array$initialize = F2(
 			return A5($elm$core$Array$initializeHelp, fn, initialFromIndex, len, _List_Nil, tail);
 		}
 	});
-var $elm$core$Basics$True = 0;
+var $elm$core$Basics$True = {$: 'True'};
 var $elm$core$Result$isOk = function (result) {
-	if (!result.$) {
+	if (result.$ === 'Ok') {
 		return true;
 	} else {
 		return false;
@@ -5049,31 +5049,33 @@ var $elm$json$Json$Decode$map2 = _Json_map2;
 var $elm$json$Json$Decode$succeed = _Json_succeed;
 var $elm$virtual_dom$VirtualDom$toHandlerInt = function (handler) {
 	switch (handler.$) {
-		case 0:
+		case 'Normal':
 			return 0;
-		case 1:
+		case 'MayStopPropagation':
 			return 1;
-		case 2:
+		case 'MayPreventDefault':
 			return 2;
 		default:
 			return 3;
 	}
 };
 var $elm$browser$Browser$External = function (a) {
-	return {$: 1, a: a};
+	return {$: 'External', a: a};
 };
 var $elm$browser$Browser$Internal = function (a) {
-	return {$: 0, a: a};
+	return {$: 'Internal', a: a};
 };
 var $elm$core$Basics$identity = function (x) {
 	return x;
 };
-var $elm$browser$Browser$Dom$NotFound = $elm$core$Basics$identity;
-var $elm$url$Url$Http = 0;
-var $elm$url$Url$Https = 1;
+var $elm$browser$Browser$Dom$NotFound = function (a) {
+	return {$: 'NotFound', a: a};
+};
+var $elm$url$Url$Http = {$: 'Http'};
+var $elm$url$Url$Https = {$: 'Https'};
 var $elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
-		return {cz: fragment, cD: host, cQ: path, cS: port_, cW: protocol, cX: query};
+		return {fragment: fragment, host: host, path: path, port_: port_, protocol: protocol, query: query};
 	});
 var $elm$core$String$contains = _String_contains;
 var $elm$core$String$length = _String_length;
@@ -5109,7 +5111,7 @@ var $elm$url$Url$chompBeforePath = F5(
 					var i = _v0.a;
 					var _v1 = $elm$core$String$toInt(
 						A2($elm$core$String$dropLeft, i + 1, str));
-					if (_v1.$ === 1) {
+					if (_v1.$ === 'Nothing') {
 						return $elm$core$Maybe$Nothing;
 					} else {
 						var port_ = _v1;
@@ -5192,24 +5194,26 @@ var $elm$core$String$startsWith = _String_startsWith;
 var $elm$url$Url$fromString = function (str) {
 	return A2($elm$core$String$startsWith, 'http://', str) ? A2(
 		$elm$url$Url$chompAfterProtocol,
-		0,
+		$elm$url$Url$Http,
 		A2($elm$core$String$dropLeft, 7, str)) : (A2($elm$core$String$startsWith, 'https://', str) ? A2(
 		$elm$url$Url$chompAfterProtocol,
-		1,
+		$elm$url$Url$Https,
 		A2($elm$core$String$dropLeft, 8, str)) : $elm$core$Maybe$Nothing);
 };
 var $elm$core$Basics$never = function (_v0) {
 	never:
 	while (true) {
-		var nvr = _v0;
+		var nvr = _v0.a;
 		var $temp$_v0 = nvr;
 		_v0 = $temp$_v0;
 		continue never;
 	}
 };
-var $elm$core$Task$Perform = $elm$core$Basics$identity;
+var $elm$core$Task$Perform = function (a) {
+	return {$: 'Perform', a: a};
+};
 var $elm$core$Task$succeed = _Scheduler_succeed;
-var $elm$core$Task$init = $elm$core$Task$succeed(0);
+var $elm$core$Task$init = $elm$core$Task$succeed(_Utils_Tuple0);
 var $elm$core$List$foldrHelper = F4(
 	function (fn, acc, ctr, ls) {
 		if (!ls.b) {
@@ -5315,7 +5319,7 @@ var $elm$core$Task$sequence = function (tasks) {
 var $elm$core$Platform$sendToApp = _Platform_sendToApp;
 var $elm$core$Task$spawnCmd = F2(
 	function (router, _v0) {
-		var task = _v0;
+		var task = _v0.a;
 		return _Scheduler_spawn(
 			A2(
 				$elm$core$Task$andThen,
@@ -5327,7 +5331,7 @@ var $elm$core$Task$onEffects = F3(
 		return A2(
 			$elm$core$Task$map,
 			function (_v0) {
-				return 0;
+				return _Utils_Tuple0;
 			},
 			$elm$core$Task$sequence(
 				A2(
@@ -5337,67 +5341,69 @@ var $elm$core$Task$onEffects = F3(
 	});
 var $elm$core$Task$onSelfMsg = F3(
 	function (_v0, _v1, _v2) {
-		return $elm$core$Task$succeed(0);
+		return $elm$core$Task$succeed(_Utils_Tuple0);
 	});
 var $elm$core$Task$cmdMap = F2(
 	function (tagger, _v0) {
-		var task = _v0;
-		return A2($elm$core$Task$map, tagger, task);
+		var task = _v0.a;
+		return $elm$core$Task$Perform(
+			A2($elm$core$Task$map, tagger, task));
 	});
 _Platform_effectManagers['Task'] = _Platform_createManager($elm$core$Task$init, $elm$core$Task$onEffects, $elm$core$Task$onSelfMsg, $elm$core$Task$cmdMap);
 var $elm$core$Task$command = _Platform_leaf('Task');
 var $elm$core$Task$perform = F2(
 	function (toMessage, task) {
 		return $elm$core$Task$command(
-			A2($elm$core$Task$map, toMessage, task));
+			$elm$core$Task$Perform(
+				A2($elm$core$Task$map, toMessage, task)));
 	});
 var $elm$browser$Browser$application = _Browser_application;
 var $elm$json$Json$Decode$field = _Json_decodeField;
-var $author$project$Main$Guest = {$: 0};
+var $author$project$Main$Guest = {$: 'Guest'};
 var $author$project$Main$LoggedIn = F2(
 	function (a, b) {
-		return {$: 1, a: a, b: b};
+		return {$: 'LoggedIn', a: a, b: b};
 	});
-var $author$project$Main$NotFoundPage = {$: 5};
-var $author$project$Route$Dashboard = {$: 2};
+var $author$project$Main$NotFoundPage = {$: 'NotFoundPage'};
+var $author$project$Route$Dashboard = {$: 'Dashboard'};
 var $author$project$Main$DashboardMsg = function (a) {
-	return {$: 4, a: a};
+	return {$: 'DashboardMsg', a: a};
 };
 var $author$project$Main$DashboardPage = function (a) {
-	return {$: 2, a: a};
+	return {$: 'DashboardPage', a: a};
 };
 var $author$project$Main$GameDetailMsg = function (a) {
-	return {$: 6, a: a};
+	return {$: 'GameDetailMsg', a: a};
 };
 var $author$project$Main$GameDetailPage = function (a) {
-	return {$: 4, a: a};
+	return {$: 'GameDetailPage', a: a};
 };
-var $author$project$Route$Login = {$: 0};
+var $author$project$Route$Login = {$: 'Login'};
 var $author$project$Main$LoginPage = function (a) {
-	return {$: 0, a: a};
+	return {$: 'LoginPage', a: a};
 };
 var $author$project$Main$RegisterPage = function (a) {
-	return {$: 1, a: a};
+	return {$: 'RegisterPage', a: a};
 };
 var $author$project$Main$StudentDetailMsg = function (a) {
-	return {$: 5, a: a};
+	return {$: 'StudentDetailMsg', a: a};
 };
 var $author$project$Main$StudentDetailPage = function (a) {
-	return {$: 3, a: a};
+	return {$: 'StudentDetailPage', a: a};
 };
-var $author$project$Pages$Dashboard$FilterAll = 0;
+var $author$project$Pages$Dashboard$FilterAll = {$: 'FilterAll'};
 var $author$project$Pages$Dashboard$GotStudents = function (a) {
-	return {$: 0, a: a};
+	return {$: 'GotStudents', a: a};
 };
-var $author$project$Types$Loading = {$: 1};
-var $author$project$Pages$Dashboard$SortRecent = 0;
+var $author$project$Types$Loading = {$: 'Loading'};
+var $author$project$Pages$Dashboard$SortRecent = {$: 'SortRecent'};
 var $elm$http$Http$Header = F2(
 	function (a, b) {
-		return {$: 0, a: a, b: b};
+		return {$: 'Header', a: a, b: b};
 	});
 var $elm$http$Http$header = $elm$http$Http$Header;
 var $author$project$Api$authHeader = function (maybeToken) {
-	if (!maybeToken.$) {
+	if (maybeToken.$ === 'Just') {
 		var token = maybeToken.a;
 		return _List_fromArray(
 			[
@@ -5409,27 +5415,27 @@ var $author$project$Api$authHeader = function (maybeToken) {
 };
 var $elm$http$Http$BadStatus_ = F2(
 	function (a, b) {
-		return {$: 3, a: a, b: b};
+		return {$: 'BadStatus_', a: a, b: b};
 	});
 var $elm$http$Http$BadUrl_ = function (a) {
-	return {$: 0, a: a};
+	return {$: 'BadUrl_', a: a};
 };
 var $elm$http$Http$GoodStatus_ = F2(
 	function (a, b) {
-		return {$: 4, a: a, b: b};
+		return {$: 'GoodStatus_', a: a, b: b};
 	});
-var $elm$http$Http$NetworkError_ = {$: 2};
+var $elm$http$Http$NetworkError_ = {$: 'NetworkError_'};
 var $elm$http$Http$Receiving = function (a) {
-	return {$: 1, a: a};
+	return {$: 'Receiving', a: a};
 };
 var $elm$http$Http$Sending = function (a) {
-	return {$: 0, a: a};
+	return {$: 'Sending', a: a};
 };
-var $elm$http$Http$Timeout_ = {$: 1};
-var $elm$core$Dict$RBEmpty_elm_builtin = {$: -2};
+var $elm$http$Http$Timeout_ = {$: 'Timeout_'};
+var $elm$core$Dict$RBEmpty_elm_builtin = {$: 'RBEmpty_elm_builtin'};
 var $elm$core$Dict$empty = $elm$core$Dict$RBEmpty_elm_builtin;
 var $elm$core$Maybe$isJust = function (maybe) {
-	if (!maybe.$) {
+	if (maybe.$ === 'Just') {
 		return true;
 	} else {
 		return false;
@@ -5441,7 +5447,7 @@ var $elm$core$Dict$get = F2(
 	function (targetKey, dict) {
 		get:
 		while (true) {
-			if (dict.$ === -2) {
+			if (dict.$ === 'RBEmpty_elm_builtin') {
 				return $elm$core$Maybe$Nothing;
 			} else {
 				var key = dict.b;
@@ -5449,14 +5455,14 @@ var $elm$core$Dict$get = F2(
 				var left = dict.d;
 				var right = dict.e;
 				var _v1 = A2($elm$core$Basics$compare, targetKey, key);
-				switch (_v1) {
-					case 0:
+				switch (_v1.$) {
+					case 'LT':
 						var $temp$targetKey = targetKey,
 							$temp$dict = left;
 						targetKey = $temp$targetKey;
 						dict = $temp$dict;
 						continue get;
-					case 1:
+					case 'EQ':
 						return $elm$core$Maybe$Just(value);
 					default:
 						var $temp$targetKey = targetKey,
@@ -5468,21 +5474,21 @@ var $elm$core$Dict$get = F2(
 			}
 		}
 	});
-var $elm$core$Dict$Black = 1;
+var $elm$core$Dict$Black = {$: 'Black'};
 var $elm$core$Dict$RBNode_elm_builtin = F5(
 	function (a, b, c, d, e) {
-		return {$: -1, a: a, b: b, c: c, d: d, e: e};
+		return {$: 'RBNode_elm_builtin', a: a, b: b, c: c, d: d, e: e};
 	});
-var $elm$core$Dict$Red = 0;
+var $elm$core$Dict$Red = {$: 'Red'};
 var $elm$core$Dict$balance = F5(
 	function (color, key, value, left, right) {
-		if ((right.$ === -1) && (!right.a)) {
+		if ((right.$ === 'RBNode_elm_builtin') && (right.a.$ === 'Red')) {
 			var _v1 = right.a;
 			var rK = right.b;
 			var rV = right.c;
 			var rLeft = right.d;
 			var rRight = right.e;
-			if ((left.$ === -1) && (!left.a)) {
+			if ((left.$ === 'RBNode_elm_builtin') && (left.a.$ === 'Red')) {
 				var _v3 = left.a;
 				var lK = left.b;
 				var lV = left.c;
@@ -5490,22 +5496,22 @@ var $elm$core$Dict$balance = F5(
 				var lRight = left.e;
 				return A5(
 					$elm$core$Dict$RBNode_elm_builtin,
-					0,
+					$elm$core$Dict$Red,
 					key,
 					value,
-					A5($elm$core$Dict$RBNode_elm_builtin, 1, lK, lV, lLeft, lRight),
-					A5($elm$core$Dict$RBNode_elm_builtin, 1, rK, rV, rLeft, rRight));
+					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Black, lK, lV, lLeft, lRight),
+					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Black, rK, rV, rLeft, rRight));
 			} else {
 				return A5(
 					$elm$core$Dict$RBNode_elm_builtin,
 					color,
 					rK,
 					rV,
-					A5($elm$core$Dict$RBNode_elm_builtin, 0, key, value, left, rLeft),
+					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Red, key, value, left, rLeft),
 					rRight);
 			}
 		} else {
-			if ((((left.$ === -1) && (!left.a)) && (left.d.$ === -1)) && (!left.d.a)) {
+			if ((((left.$ === 'RBNode_elm_builtin') && (left.a.$ === 'Red')) && (left.d.$ === 'RBNode_elm_builtin')) && (left.d.a.$ === 'Red')) {
 				var _v5 = left.a;
 				var lK = left.b;
 				var lV = left.c;
@@ -5518,11 +5524,11 @@ var $elm$core$Dict$balance = F5(
 				var lRight = left.e;
 				return A5(
 					$elm$core$Dict$RBNode_elm_builtin,
-					0,
+					$elm$core$Dict$Red,
 					lK,
 					lV,
-					A5($elm$core$Dict$RBNode_elm_builtin, 1, llK, llV, llLeft, llRight),
-					A5($elm$core$Dict$RBNode_elm_builtin, 1, key, value, lRight, right));
+					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Black, llK, llV, llLeft, llRight),
+					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Black, key, value, lRight, right));
 			} else {
 				return A5($elm$core$Dict$RBNode_elm_builtin, color, key, value, left, right);
 			}
@@ -5530,8 +5536,8 @@ var $elm$core$Dict$balance = F5(
 	});
 var $elm$core$Dict$insertHelp = F3(
 	function (key, value, dict) {
-		if (dict.$ === -2) {
-			return A5($elm$core$Dict$RBNode_elm_builtin, 0, key, value, $elm$core$Dict$RBEmpty_elm_builtin, $elm$core$Dict$RBEmpty_elm_builtin);
+		if (dict.$ === 'RBEmpty_elm_builtin') {
+			return A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Red, key, value, $elm$core$Dict$RBEmpty_elm_builtin, $elm$core$Dict$RBEmpty_elm_builtin);
 		} else {
 			var nColor = dict.a;
 			var nKey = dict.b;
@@ -5539,8 +5545,8 @@ var $elm$core$Dict$insertHelp = F3(
 			var nLeft = dict.d;
 			var nRight = dict.e;
 			var _v1 = A2($elm$core$Basics$compare, key, nKey);
-			switch (_v1) {
-				case 0:
+			switch (_v1.$) {
+				case 'LT':
 					return A5(
 						$elm$core$Dict$balance,
 						nColor,
@@ -5548,7 +5554,7 @@ var $elm$core$Dict$insertHelp = F3(
 						nValue,
 						A3($elm$core$Dict$insertHelp, key, value, nLeft),
 						nRight);
-				case 1:
+				case 'EQ':
 					return A5($elm$core$Dict$RBNode_elm_builtin, nColor, nKey, value, nLeft, nRight);
 				default:
 					return A5(
@@ -5564,13 +5570,13 @@ var $elm$core$Dict$insertHelp = F3(
 var $elm$core$Dict$insert = F3(
 	function (key, value, dict) {
 		var _v0 = A3($elm$core$Dict$insertHelp, key, value, dict);
-		if ((_v0.$ === -1) && (!_v0.a)) {
+		if ((_v0.$ === 'RBNode_elm_builtin') && (_v0.a.$ === 'Red')) {
 			var _v1 = _v0.a;
 			var k = _v0.b;
 			var v = _v0.c;
 			var l = _v0.d;
 			var r = _v0.e;
-			return A5($elm$core$Dict$RBNode_elm_builtin, 1, k, v, l, r);
+			return A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Black, k, v, l, r);
 		} else {
 			var x = _v0;
 			return x;
@@ -5579,7 +5585,7 @@ var $elm$core$Dict$insert = F3(
 var $elm$core$Dict$getMin = function (dict) {
 	getMin:
 	while (true) {
-		if ((dict.$ === -1) && (dict.d.$ === -1)) {
+		if ((dict.$ === 'RBNode_elm_builtin') && (dict.d.$ === 'RBNode_elm_builtin')) {
 			var left = dict.d;
 			var $temp$dict = left;
 			dict = $temp$dict;
@@ -5590,8 +5596,8 @@ var $elm$core$Dict$getMin = function (dict) {
 	}
 };
 var $elm$core$Dict$moveRedLeft = function (dict) {
-	if (((dict.$ === -1) && (dict.d.$ === -1)) && (dict.e.$ === -1)) {
-		if ((dict.e.d.$ === -1) && (!dict.e.d.a)) {
+	if (((dict.$ === 'RBNode_elm_builtin') && (dict.d.$ === 'RBNode_elm_builtin')) && (dict.e.$ === 'RBNode_elm_builtin')) {
+		if ((dict.e.d.$ === 'RBNode_elm_builtin') && (dict.e.d.a.$ === 'Red')) {
 			var clr = dict.a;
 			var k = dict.b;
 			var v = dict.c;
@@ -5614,17 +5620,17 @@ var $elm$core$Dict$moveRedLeft = function (dict) {
 			var rRight = _v2.e;
 			return A5(
 				$elm$core$Dict$RBNode_elm_builtin,
-				0,
+				$elm$core$Dict$Red,
 				rlK,
 				rlV,
 				A5(
 					$elm$core$Dict$RBNode_elm_builtin,
-					1,
+					$elm$core$Dict$Black,
 					k,
 					v,
-					A5($elm$core$Dict$RBNode_elm_builtin, 0, lK, lV, lLeft, lRight),
+					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Red, lK, lV, lLeft, lRight),
 					rlL),
-				A5($elm$core$Dict$RBNode_elm_builtin, 1, rK, rV, rlR, rRight));
+				A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Black, rK, rV, rlR, rRight));
 		} else {
 			var clr = dict.a;
 			var k = dict.b;
@@ -5641,22 +5647,22 @@ var $elm$core$Dict$moveRedLeft = function (dict) {
 			var rV = _v5.c;
 			var rLeft = _v5.d;
 			var rRight = _v5.e;
-			if (clr === 1) {
+			if (clr.$ === 'Black') {
 				return A5(
 					$elm$core$Dict$RBNode_elm_builtin,
-					1,
+					$elm$core$Dict$Black,
 					k,
 					v,
-					A5($elm$core$Dict$RBNode_elm_builtin, 0, lK, lV, lLeft, lRight),
-					A5($elm$core$Dict$RBNode_elm_builtin, 0, rK, rV, rLeft, rRight));
+					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Red, lK, lV, lLeft, lRight),
+					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Red, rK, rV, rLeft, rRight));
 			} else {
 				return A5(
 					$elm$core$Dict$RBNode_elm_builtin,
-					1,
+					$elm$core$Dict$Black,
 					k,
 					v,
-					A5($elm$core$Dict$RBNode_elm_builtin, 0, lK, lV, lLeft, lRight),
-					A5($elm$core$Dict$RBNode_elm_builtin, 0, rK, rV, rLeft, rRight));
+					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Red, lK, lV, lLeft, lRight),
+					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Red, rK, rV, rLeft, rRight));
 			}
 		}
 	} else {
@@ -5664,8 +5670,8 @@ var $elm$core$Dict$moveRedLeft = function (dict) {
 	}
 };
 var $elm$core$Dict$moveRedRight = function (dict) {
-	if (((dict.$ === -1) && (dict.d.$ === -1)) && (dict.e.$ === -1)) {
-		if ((dict.d.d.$ === -1) && (!dict.d.d.a)) {
+	if (((dict.$ === 'RBNode_elm_builtin') && (dict.d.$ === 'RBNode_elm_builtin')) && (dict.e.$ === 'RBNode_elm_builtin')) {
+		if ((dict.d.d.$ === 'RBNode_elm_builtin') && (dict.d.d.a.$ === 'Red')) {
 			var clr = dict.a;
 			var k = dict.b;
 			var v = dict.c;
@@ -5688,17 +5694,17 @@ var $elm$core$Dict$moveRedRight = function (dict) {
 			var rRight = _v4.e;
 			return A5(
 				$elm$core$Dict$RBNode_elm_builtin,
-				0,
+				$elm$core$Dict$Red,
 				lK,
 				lV,
-				A5($elm$core$Dict$RBNode_elm_builtin, 1, llK, llV, llLeft, llRight),
+				A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Black, llK, llV, llLeft, llRight),
 				A5(
 					$elm$core$Dict$RBNode_elm_builtin,
-					1,
+					$elm$core$Dict$Black,
 					k,
 					v,
 					lRight,
-					A5($elm$core$Dict$RBNode_elm_builtin, 0, rK, rV, rLeft, rRight)));
+					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Red, rK, rV, rLeft, rRight)));
 		} else {
 			var clr = dict.a;
 			var k = dict.b;
@@ -5715,22 +5721,22 @@ var $elm$core$Dict$moveRedRight = function (dict) {
 			var rV = _v6.c;
 			var rLeft = _v6.d;
 			var rRight = _v6.e;
-			if (clr === 1) {
+			if (clr.$ === 'Black') {
 				return A5(
 					$elm$core$Dict$RBNode_elm_builtin,
-					1,
+					$elm$core$Dict$Black,
 					k,
 					v,
-					A5($elm$core$Dict$RBNode_elm_builtin, 0, lK, lV, lLeft, lRight),
-					A5($elm$core$Dict$RBNode_elm_builtin, 0, rK, rV, rLeft, rRight));
+					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Red, lK, lV, lLeft, lRight),
+					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Red, rK, rV, rLeft, rRight));
 			} else {
 				return A5(
 					$elm$core$Dict$RBNode_elm_builtin,
-					1,
+					$elm$core$Dict$Black,
 					k,
 					v,
-					A5($elm$core$Dict$RBNode_elm_builtin, 0, lK, lV, lLeft, lRight),
-					A5($elm$core$Dict$RBNode_elm_builtin, 0, rK, rV, rLeft, rRight));
+					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Red, lK, lV, lLeft, lRight),
+					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Red, rK, rV, rLeft, rRight));
 			}
 		}
 	} else {
@@ -5739,7 +5745,7 @@ var $elm$core$Dict$moveRedRight = function (dict) {
 };
 var $elm$core$Dict$removeHelpPrepEQGT = F7(
 	function (targetKey, dict, color, key, value, left, right) {
-		if ((left.$ === -1) && (!left.a)) {
+		if ((left.$ === 'RBNode_elm_builtin') && (left.a.$ === 'Red')) {
 			var _v1 = left.a;
 			var lK = left.b;
 			var lV = left.c;
@@ -5751,13 +5757,13 @@ var $elm$core$Dict$removeHelpPrepEQGT = F7(
 				lK,
 				lV,
 				lLeft,
-				A5($elm$core$Dict$RBNode_elm_builtin, 0, key, value, lRight, right));
+				A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Red, key, value, lRight, right));
 		} else {
 			_v2$2:
 			while (true) {
-				if ((right.$ === -1) && (right.a === 1)) {
-					if (right.d.$ === -1) {
-						if (right.d.a === 1) {
+				if ((right.$ === 'RBNode_elm_builtin') && (right.a.$ === 'Black')) {
+					if (right.d.$ === 'RBNode_elm_builtin') {
+						if (right.d.a.$ === 'Black') {
 							var _v3 = right.a;
 							var _v4 = right.d;
 							var _v5 = _v4.a;
@@ -5778,7 +5784,7 @@ var $elm$core$Dict$removeHelpPrepEQGT = F7(
 		}
 	});
 var $elm$core$Dict$removeMin = function (dict) {
-	if ((dict.$ === -1) && (dict.d.$ === -1)) {
+	if ((dict.$ === 'RBNode_elm_builtin') && (dict.d.$ === 'RBNode_elm_builtin')) {
 		var color = dict.a;
 		var key = dict.b;
 		var value = dict.c;
@@ -5786,8 +5792,8 @@ var $elm$core$Dict$removeMin = function (dict) {
 		var lColor = left.a;
 		var lLeft = left.d;
 		var right = dict.e;
-		if (lColor === 1) {
-			if ((lLeft.$ === -1) && (!lLeft.a)) {
+		if (lColor.$ === 'Black') {
+			if ((lLeft.$ === 'RBNode_elm_builtin') && (lLeft.a.$ === 'Red')) {
 				var _v3 = lLeft.a;
 				return A5(
 					$elm$core$Dict$RBNode_elm_builtin,
@@ -5798,7 +5804,7 @@ var $elm$core$Dict$removeMin = function (dict) {
 					right);
 			} else {
 				var _v4 = $elm$core$Dict$moveRedLeft(dict);
-				if (_v4.$ === -1) {
+				if (_v4.$ === 'RBNode_elm_builtin') {
 					var nColor = _v4.a;
 					var nKey = _v4.b;
 					var nValue = _v4.c;
@@ -5830,7 +5836,7 @@ var $elm$core$Dict$removeMin = function (dict) {
 };
 var $elm$core$Dict$removeHelp = F2(
 	function (targetKey, dict) {
-		if (dict.$ === -2) {
+		if (dict.$ === 'RBEmpty_elm_builtin') {
 			return $elm$core$Dict$RBEmpty_elm_builtin;
 		} else {
 			var color = dict.a;
@@ -5839,10 +5845,10 @@ var $elm$core$Dict$removeHelp = F2(
 			var left = dict.d;
 			var right = dict.e;
 			if (_Utils_cmp(targetKey, key) < 0) {
-				if ((left.$ === -1) && (left.a === 1)) {
+				if ((left.$ === 'RBNode_elm_builtin') && (left.a.$ === 'Black')) {
 					var _v4 = left.a;
 					var lLeft = left.d;
-					if ((lLeft.$ === -1) && (!lLeft.a)) {
+					if ((lLeft.$ === 'RBNode_elm_builtin') && (lLeft.a.$ === 'Red')) {
 						var _v6 = lLeft.a;
 						return A5(
 							$elm$core$Dict$RBNode_elm_builtin,
@@ -5853,7 +5859,7 @@ var $elm$core$Dict$removeHelp = F2(
 							right);
 					} else {
 						var _v7 = $elm$core$Dict$moveRedLeft(dict);
-						if (_v7.$ === -1) {
+						if (_v7.$ === 'RBNode_elm_builtin') {
 							var nColor = _v7.a;
 							var nKey = _v7.b;
 							var nValue = _v7.c;
@@ -5889,7 +5895,7 @@ var $elm$core$Dict$removeHelp = F2(
 	});
 var $elm$core$Dict$removeHelpEQGT = F2(
 	function (targetKey, dict) {
-		if (dict.$ === -1) {
+		if (dict.$ === 'RBNode_elm_builtin') {
 			var color = dict.a;
 			var key = dict.b;
 			var value = dict.c;
@@ -5897,7 +5903,7 @@ var $elm$core$Dict$removeHelpEQGT = F2(
 			var right = dict.e;
 			if (_Utils_eq(targetKey, key)) {
 				var _v1 = $elm$core$Dict$getMin(right);
-				if (_v1.$ === -1) {
+				if (_v1.$ === 'RBNode_elm_builtin') {
 					var minKey = _v1.b;
 					var minValue = _v1.c;
 					return A5(
@@ -5926,13 +5932,13 @@ var $elm$core$Dict$removeHelpEQGT = F2(
 var $elm$core$Dict$remove = F2(
 	function (key, dict) {
 		var _v0 = A2($elm$core$Dict$removeHelp, key, dict);
-		if ((_v0.$ === -1) && (!_v0.a)) {
+		if ((_v0.$ === 'RBNode_elm_builtin') && (_v0.a.$ === 'Red')) {
 			var _v1 = _v0.a;
 			var k = _v0.b;
 			var v = _v0.c;
 			var l = _v0.d;
 			var r = _v0.e;
-			return A5($elm$core$Dict$RBNode_elm_builtin, 1, k, v, l, r);
+			return A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Black, k, v, l, r);
 		} else {
 			var x = _v0;
 			return x;
@@ -5942,7 +5948,7 @@ var $elm$core$Dict$update = F3(
 	function (targetKey, alter, dictionary) {
 		var _v0 = alter(
 			A2($elm$core$Dict$get, targetKey, dictionary));
-		if (!_v0.$) {
+		if (_v0.$ === 'Just') {
 			var value = _v0.a;
 			return A3($elm$core$Dict$insert, targetKey, value, dictionary);
 		} else {
@@ -5966,7 +5972,7 @@ var $elm$http$Http$expectStringResponse = F2(
 	});
 var $elm$core$Result$mapError = F2(
 	function (f, result) {
-		if (!result.$) {
+		if (result.$ === 'Ok') {
 			var v = result.a;
 			return $elm$core$Result$Ok(v);
 		} else {
@@ -5976,31 +5982,31 @@ var $elm$core$Result$mapError = F2(
 		}
 	});
 var $elm$http$Http$BadBody = function (a) {
-	return {$: 4, a: a};
+	return {$: 'BadBody', a: a};
 };
 var $elm$http$Http$BadStatus = function (a) {
-	return {$: 3, a: a};
+	return {$: 'BadStatus', a: a};
 };
 var $elm$http$Http$BadUrl = function (a) {
-	return {$: 0, a: a};
+	return {$: 'BadUrl', a: a};
 };
-var $elm$http$Http$NetworkError = {$: 2};
-var $elm$http$Http$Timeout = {$: 1};
+var $elm$http$Http$NetworkError = {$: 'NetworkError'};
+var $elm$http$Http$Timeout = {$: 'Timeout'};
 var $elm$http$Http$resolve = F2(
 	function (toResult, response) {
 		switch (response.$) {
-			case 0:
+			case 'BadUrl_':
 				var url = response.a;
 				return $elm$core$Result$Err(
 					$elm$http$Http$BadUrl(url));
-			case 1:
+			case 'Timeout_':
 				return $elm$core$Result$Err($elm$http$Http$Timeout);
-			case 2:
+			case 'NetworkError_':
 				return $elm$core$Result$Err($elm$http$Http$NetworkError);
-			case 3:
+			case 'BadStatus_':
 				var metadata = response.a;
 				return $elm$core$Result$Err(
-					$elm$http$Http$BadStatus(metadata.e1));
+					$elm$http$Http$BadStatus(metadata.statusCode));
 			default:
 				var body = response.b;
 				return A2(
@@ -6023,11 +6029,11 @@ var $elm$http$Http$expectJson = F2(
 				}));
 	});
 var $elm$http$Http$Request = function (a) {
-	return {$: 1, a: a};
+	return {$: 'Request', a: a};
 };
 var $elm$http$Http$State = F2(
 	function (reqs, subs) {
-		return {c$: reqs, c9: subs};
+		return {reqs: reqs, subs: subs};
 	});
 var $elm$http$Http$init = $elm$core$Task$succeed(
 	A2($elm$http$Http$State, $elm$core$Dict$empty, _List_Nil));
@@ -6042,10 +6048,10 @@ var $elm$http$Http$updateReqs = F3(
 			} else {
 				var cmd = cmds.a;
 				var otherCmds = cmds.b;
-				if (!cmd.$) {
+				if (cmd.$ === 'Cancel') {
 					var tracker = cmd.a;
 					var _v2 = A2($elm$core$Dict$get, tracker, reqs);
-					if (_v2.$ === 1) {
+					if (_v2.$ === 'Nothing') {
 						var $temp$router = router,
 							$temp$cmds = otherCmds,
 							$temp$reqs = reqs;
@@ -6071,8 +6077,8 @@ var $elm$http$Http$updateReqs = F3(
 					return A2(
 						$elm$core$Task$andThen,
 						function (pid) {
-							var _v4 = req.by;
-							if (_v4.$ === 1) {
+							var _v4 = req.tracker;
+							if (_v4.$ === 'Nothing') {
 								return A3($elm$http$Http$updateReqs, router, otherCmds, reqs);
 							} else {
 								var tracker = _v4.a;
@@ -6101,12 +6107,12 @@ var $elm$http$Http$onEffects = F4(
 				return $elm$core$Task$succeed(
 					A2($elm$http$Http$State, reqs, subs));
 			},
-			A3($elm$http$Http$updateReqs, router, cmds, state.c$));
+			A3($elm$http$Http$updateReqs, router, cmds, state.reqs));
 	});
 var $elm$core$List$maybeCons = F3(
 	function (f, mx, xs) {
 		var _v0 = f(mx);
-		if (!_v0.$) {
+		if (_v0.$ === 'Just') {
 			var x = _v0.a;
 			return A2($elm$core$List$cons, x, xs);
 		} else {
@@ -6144,34 +6150,34 @@ var $elm$http$Http$onSelfMsg = F3(
 				A2(
 					$elm$core$List$filterMap,
 					A3($elm$http$Http$maybeSend, router, tracker, progress),
-					state.c9)));
+					state.subs)));
 	});
 var $elm$http$Http$Cancel = function (a) {
-	return {$: 0, a: a};
+	return {$: 'Cancel', a: a};
 };
 var $elm$http$Http$cmdMap = F2(
 	function (func, cmd) {
-		if (!cmd.$) {
+		if (cmd.$ === 'Cancel') {
 			var tracker = cmd.a;
 			return $elm$http$Http$Cancel(tracker);
 		} else {
 			var r = cmd.a;
 			return $elm$http$Http$Request(
 				{
-					ds: r.ds,
-					aX: r.aX,
-					bl: A2(_Http_mapExpect, func, r.bl),
-					bm: r.bm,
-					bp: r.bp,
-					bv: r.bv,
-					by: r.by,
-					bz: r.bz
+					allowCookiesFromOtherDomains: r.allowCookiesFromOtherDomains,
+					body: r.body,
+					expect: A2(_Http_mapExpect, func, r.expect),
+					headers: r.headers,
+					method: r.method,
+					timeout: r.timeout,
+					tracker: r.tracker,
+					url: r.url
 				});
 		}
 	});
 var $elm$http$Http$MySub = F2(
 	function (a, b) {
-		return {$: 0, a: a, b: b};
+		return {$: 'MySub', a: a, b: b};
 	});
 var $elm$http$Http$subMap = F2(
 	function (func, _v0) {
@@ -6188,28 +6194,28 @@ var $elm$http$Http$subscription = _Platform_leaf('Http');
 var $elm$http$Http$request = function (r) {
 	return $elm$http$Http$command(
 		$elm$http$Http$Request(
-			{ds: false, aX: r.aX, bl: r.bl, bm: r.bm, bp: r.bp, bv: r.bv, by: r.by, bz: r.bz}));
+			{allowCookiesFromOtherDomains: false, body: r.body, expect: r.expect, headers: r.headers, method: r.method, timeout: r.timeout, tracker: r.tracker, url: r.url}));
 };
 var $author$project$Api$unwrap = function (_v0) {
-	var str = _v0;
+	var str = _v0.a;
 	return str;
 };
 var $author$project$Api$get = function (config) {
 	return $elm$http$Http$request(
 		{
-			aX: $elm$http$Http$emptyBody,
-			bl: A2($elm$http$Http$expectJson, config.bs, config.bE),
-			bm: $author$project$Api$authHeader(config.bx),
-			bp: 'GET',
-			bv: $elm$core$Maybe$Nothing,
-			by: $elm$core$Maybe$Nothing,
-			bz: $author$project$Api$unwrap(config.bi)
+			body: $elm$http$Http$emptyBody,
+			expect: A2($elm$http$Http$expectJson, config.onResponse, config.decoder),
+			headers: $author$project$Api$authHeader(config.token),
+			method: 'GET',
+			timeout: $elm$core$Maybe$Nothing,
+			tracker: $elm$core$Maybe$Nothing,
+			url: $author$project$Api$unwrap(config.endpoint)
 		});
 };
 var $elm$json$Json$Decode$list = _Json_decodeList;
 var $author$project$Types$Student = F9(
 	function (id, coachId, displayName, chessComUsername, lastImportedAt, lastInsightAt, avatarUrl, createdAt, stats) {
-		return {dw: avatarUrl, dG: chessComUsername, dI: coachId, cq: createdAt, bg: displayName, ea: id, cI: lastImportedAt, ei: lastInsightAt, A: stats};
+		return {avatarUrl: avatarUrl, chessComUsername: chessComUsername, coachId: coachId, createdAt: createdAt, displayName: displayName, id: id, lastImportedAt: lastImportedAt, lastInsightAt: lastInsightAt, stats: stats};
 	});
 var $elm$json$Json$Decode$null = _Json_decodeNull;
 var $elm$json$Json$Decode$oneOf = _Json_oneOf;
@@ -6243,13 +6249,13 @@ var $NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$optionalDecoder = F3
 				$elm$json$Json$Decode$decodeValue,
 				A2($elm$json$Json$Decode$at, path, $elm$json$Json$Decode$value),
 				input);
-			if (!_v0.$) {
+			if (_v0.$ === 'Ok') {
 				var rawValue = _v0.a;
 				var _v1 = A2(
 					$elm$json$Json$Decode$decodeValue,
 					nullOr(valDecoder),
 					rawValue);
-				if (!_v1.$) {
+				if (_v1.$ === 'Ok') {
 					var finalResult = _v1.a;
 					return $elm$json$Json$Decode$succeed(finalResult);
 				} else {
@@ -6286,7 +6292,7 @@ var $NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required = F3(
 var $elm$json$Json$Decode$string = _Json_decodeString;
 var $author$project$Types$StudentStats = F6(
 	function (gameCount, winCount, lossCount, drawCount, winRate, avgAccuracy) {
-		return {bA: avgAccuracy, dV: drawCount, X: gameCount, em: lossCount, fm: winCount, dj: winRate};
+		return {avgAccuracy: avgAccuracy, drawCount: drawCount, gameCount: gameCount, lossCount: lossCount, winCount: winCount, winRate: winRate};
 	});
 var $elm$json$Json$Decode$float = _Json_decodeFloat;
 var $elm$json$Json$Decode$int = _Json_decodeInt;
@@ -6362,35 +6368,40 @@ var $author$project$Types$studentsDecoder = A2(
 	$elm$json$Json$Decode$field,
 	'students',
 	$elm$json$Json$Decode$list($author$project$Types$studentDecoder));
-var $author$project$Api$Endpoint = $elm$core$Basics$identity;
+var $author$project$Api$Endpoint = function (a) {
+	return {$: 'Endpoint', a: a};
+};
 var $author$project$Api$url = F2(
 	function (apiUrl, paths) {
-		return apiUrl + ('/' + A2($elm$core$String$join, '/', paths));
+		return $author$project$Api$Endpoint(
+			apiUrl + ('/' + A2($elm$core$String$join, '/', paths)));
 	});
 var $author$project$Api$Students$getStudents = function (config) {
 	return $author$project$Api$get(
 		{
-			bE: $author$project$Types$studentsDecoder,
-			bi: A2(
+			decoder: $author$project$Types$studentsDecoder,
+			endpoint: A2(
 				$author$project$Api$url,
-				config.ck,
+				config.apiUrl,
 				_List_fromArray(
 					['api', 'students'])),
-			bs: config.bs,
-			bx: $elm$core$Maybe$Just(config.bx)
+			onResponse: config.onResponse,
+			token: $elm$core$Maybe$Just(config.token)
 		});
 };
 var $author$project$Pages$Dashboard$init = F2(
 	function (apiUrl, token) {
 		return _Utils_Tuple2(
-			{ak: $elm$core$Maybe$Nothing, az: 0, ae: false, aq: '', aQ: false, aE: 0, aG: $author$project$Types$Loading},
+			{addError: $elm$core$Maybe$Nothing, filterBy: $author$project$Pages$Dashboard$FilterAll, isAdding: false, newStudentChessCom: '', showAddModal: false, sortBy: $author$project$Pages$Dashboard$SortRecent, students: $author$project$Types$Loading},
 			$author$project$Api$Students$getStudents(
-				{ck: apiUrl, bs: $author$project$Pages$Dashboard$GotStudents, bx: token}));
+				{apiUrl: apiUrl, onResponse: $author$project$Pages$Dashboard$GotStudents, token: token}));
 	});
-var $author$project$Pages$GameDetail$GotGameDetail = $elm$core$Basics$identity;
+var $author$project$Pages$GameDetail$GotGameDetail = function (a) {
+	return {$: 'GotGameDetail', a: a};
+};
 var $author$project$Api$Games$GameDetail = F3(
 	function (game, pgn, moves) {
-		return {d3: game, ez: moves, eH: pgn};
+		return {game: game, moves: moves, pgn: pgn};
 	});
 var $author$project$Types$Game = function (id) {
 	return function (studentId) {
@@ -6405,7 +6416,7 @@ var $author$project$Types$Game = function (id) {
 										return function (analyzed) {
 											return function (openingName) {
 												return function (createdAt) {
-													return {dt: analyzed, bB: blackElo, dB: blackUsername, cq: createdAt, ea: id, eF: openingName, eL: platform, eM: platformGameId, eN: playedAt, eV: result, bu: studentId, cf: whiteElo, fl: whiteUsername};
+													return {analyzed: analyzed, blackElo: blackElo, blackUsername: blackUsername, createdAt: createdAt, id: id, openingName: openingName, platform: platform, platformGameId: platformGameId, playedAt: playedAt, result: result, studentId: studentId, whiteElo: whiteElo, whiteUsername: whiteUsername};
 												};
 											};
 										};
@@ -6488,7 +6499,7 @@ var $author$project$Types$MoveAnalysis = function (id) {
 									return function (evalDiff) {
 										return function (classification) {
 											return function (phase) {
-												return {dy: bestMove, aN: classification, dJ: color, dY: evalAfterCp, dZ: evalBeforeCp, d_: evalDiff, d1: fenBefore, d4: gameId, ea: id, ex: moveNumber, cN: movePlayed, eI: phase};
+												return {bestMove: bestMove, classification: classification, color: color, evalAfterCp: evalAfterCp, evalBeforeCp: evalBeforeCp, evalDiff: evalDiff, fenBefore: fenBefore, gameId: gameId, id: id, moveNumber: moveNumber, movePlayed: movePlayed, phase: phase};
 											};
 										};
 									};
@@ -6572,45 +6583,48 @@ var $author$project$Api$Games$gameDetailDecoder = A3(
 var $author$project$Api$Games$getGame = function (config) {
 	return $author$project$Api$get(
 		{
-			bE: $author$project$Api$Games$gameDetailDecoder,
-			bi: A2(
+			decoder: $author$project$Api$Games$gameDetailDecoder,
+			endpoint: A2(
 				$author$project$Api$url,
-				config.ck,
+				config.apiUrl,
 				_List_fromArray(
-					['api', 'games', config.d4])),
-			bs: config.bs,
-			bx: $elm$core$Maybe$Just(config.bx)
+					['api', 'games', config.gameId])),
+			onResponse: config.onResponse,
+			token: $elm$core$Maybe$Just(config.token)
 		});
 };
 var $author$project$Pages$GameDetail$init = F3(
 	function (apiUrl, token, gameId) {
 		return _Utils_Tuple2(
-			{a0: $author$project$Types$Loading, d4: gameId},
+			{gameDetail: $author$project$Types$Loading, gameId: gameId},
 			$author$project$Api$Games$getGame(
-				{ck: apiUrl, d4: gameId, bs: $elm$core$Basics$identity, bx: token}));
+				{apiUrl: apiUrl, gameId: gameId, onResponse: $author$project$Pages$GameDetail$GotGameDetail, token: token}));
 	});
-var $author$project$Pages$Login$init = {cu: '', an: $elm$core$Maybe$Nothing, af: false, cP: ''};
-var $author$project$Pages$Register$init = {aY: '', cu: '', an: $elm$core$Maybe$Nothing, af: false, cP: ''};
-var $author$project$Types$AllColors = 0;
-var $author$project$Types$AllResults = 0;
-var $author$project$Types$AllTimeControls = 0;
-var $author$project$Pages$StudentDetail$DateNewest = 0;
+var $author$project$Pages$Login$init = {email: '', error: $elm$core$Maybe$Nothing, isLoading: false, password: ''};
+var $author$project$Pages$Register$init = {confirmPassword: '', email: '', error: $elm$core$Maybe$Nothing, isLoading: false, password: ''};
+var $author$project$Types$AllColors = {$: 'AllColors'};
+var $author$project$Types$AllResults = {$: 'AllResults'};
+var $author$project$Types$AllTimeControls = {$: 'AllTimeControls'};
+var $author$project$Pages$StudentDetail$DateNewest = {$: 'DateNewest'};
 var $author$project$Pages$StudentDetail$GotGames = function (a) {
-	return {$: 1, a: a};
+	return {$: 'GotGames', a: a};
 };
 var $author$project$Pages$StudentDetail$GotStudent = function (a) {
-	return {$: 0, a: a};
+	return {$: 'GotStudent', a: a};
 };
 var $author$project$Pages$StudentDetail$GotTags = function (a) {
-	return {$: 2, a: a};
+	return {$: 'GotTags', a: a};
 };
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
-var $elm$core$Set$Set_elm_builtin = $elm$core$Basics$identity;
-var $elm$core$Set$empty = $elm$core$Dict$empty;
+var $elm$core$Set$Set_elm_builtin = function (a) {
+	return {$: 'Set_elm_builtin', a: a};
+};
+var $elm$core$Set$empty = $elm$core$Set$Set_elm_builtin($elm$core$Dict$empty);
 var $elm$core$Set$insert = F2(
 	function (key, _v0) {
-		var dict = _v0;
-		return A3($elm$core$Dict$insert, key, 0, dict);
+		var dict = _v0.a;
+		return $elm$core$Set$Set_elm_builtin(
+			A3($elm$core$Dict$insert, key, _Utils_Tuple0, dict));
 	});
 var $elm$core$Set$fromList = function (list) {
 	return A3($elm$core$List$foldl, $elm$core$Set$insert, $elm$core$Set$empty, list);
@@ -6618,19 +6632,19 @@ var $elm$core$Set$fromList = function (list) {
 var $author$project$Api$Students$getStudent = function (config) {
 	return $author$project$Api$get(
 		{
-			bE: $author$project$Types$studentDecoder,
-			bi: A2(
+			decoder: $author$project$Types$studentDecoder,
+			endpoint: A2(
 				$author$project$Api$url,
-				config.ck,
+				config.apiUrl,
 				_List_fromArray(
-					['api', 'students', config.bu])),
-			bs: config.bs,
-			bx: $elm$core$Maybe$Just(config.bx)
+					['api', 'students', config.studentId])),
+			onResponse: config.onResponse,
+			token: $elm$core$Maybe$Just(config.token)
 		});
 };
 var $author$project$Types$GameWithInsights = F3(
 	function (game, insight, tags) {
-		return {d3: game, bP: insight, e3: tags};
+		return {game: game, insight: insight, tags: tags};
 	});
 var $author$project$Types$GameInsight = function (id) {
 	return function (gameId) {
@@ -6653,7 +6667,7 @@ var $author$project$Types$GameInsight = function (id) {
 																		return function (decisiveAdvantageReached) {
 																			return function (decisiveAdvantageSquandered) {
 																				return function (phaseDecided) {
-																					return {dp: accuracyEndgame, dq: accuracyMiddlegame, dr: accuracyOpening, bd: accuracyOverall, dz: bestMovesCount, dC: blundersCount, dM: criticalMomentsCount, dQ: decisiveAdvantageReached, dR: decisiveAdvantageSquandered, d$: excellentMovesCount, d4: gameId, ea: id, ed: inaccuraciesCount, eq: maxAdvantage, es: maxDisadvantage, ew: mistakesCount, eG: opponentRating, eJ: phaseDecided, eO: playerColor, eT: ratingDiff, fn: worstMoveEvalLoss};
+																					return {accuracyEndgame: accuracyEndgame, accuracyMiddlegame: accuracyMiddlegame, accuracyOpening: accuracyOpening, accuracyOverall: accuracyOverall, bestMovesCount: bestMovesCount, blundersCount: blundersCount, criticalMomentsCount: criticalMomentsCount, decisiveAdvantageReached: decisiveAdvantageReached, decisiveAdvantageSquandered: decisiveAdvantageSquandered, excellentMovesCount: excellentMovesCount, gameId: gameId, id: id, inaccuraciesCount: inaccuraciesCount, maxAdvantage: maxAdvantage, maxDisadvantage: maxDisadvantage, mistakesCount: mistakesCount, opponentRating: opponentRating, phaseDecided: phaseDecided, playerColor: playerColor, ratingDiff: ratingDiff, worstMoveEvalLoss: worstMoveEvalLoss};
 																				};
 																			};
 																		};
@@ -6772,11 +6786,11 @@ var $author$project$Types$gameInsightDecoder = A4(
 																					$elm$json$Json$Decode$succeed($author$project$Types$GameInsight))))))))))))))))))))));
 var $author$project$Types$GameTag = F6(
 	function (id, gameId, tag, moveNumbers, primaryMove, confidence) {
-		return {dK: confidence, d4: gameId, ea: id, ey: moveNumbers, eR: primaryMove, ai: tag};
+		return {confidence: confidence, gameId: gameId, id: id, moveNumbers: moveNumbers, primaryMove: primaryMove, tag: tag};
 	});
 var $author$project$Types$Tag = F7(
 	function (id, slug, name, category, description, color, priority) {
-		return {cm: category, dJ: color, dS: description, ea: id, bV: name, eS: priority, b3: slug};
+		return {category: category, color: color, description: description, id: id, name: name, priority: priority, slug: slug};
 	});
 var $author$project$Types$tagDecoder = A3(
 	$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
@@ -6862,7 +6876,7 @@ var $author$project$Types$gamesWithInsightsDecoder = A3(
 		$elm$json$Json$Decode$succeed(
 			F2(
 				function (games, total) {
-					return {f: games, a6: total};
+					return {games: games, total: total};
 				}))));
 var $elm$core$List$isEmpty = function (xs) {
 	if (!xs.b) {
@@ -6872,7 +6886,7 @@ var $elm$core$List$isEmpty = function (xs) {
 	}
 };
 var $author$project$Api$getWithQuery = function (config) {
-	var queryString = $elm$core$List$isEmpty(config.cY) ? '' : ('?' + A2(
+	var queryString = $elm$core$List$isEmpty(config.queryParams) ? '' : ('?' + A2(
 		$elm$core$String$join,
 		'&',
 		A2(
@@ -6882,25 +6896,25 @@ var $author$project$Api$getWithQuery = function (config) {
 				var v = _v0.b;
 				return k + ('=' + v);
 			},
-			config.cY)));
+			config.queryParams)));
 	var fullUrl = _Utils_ap(
-		$author$project$Api$unwrap(config.bi),
+		$author$project$Api$unwrap(config.endpoint),
 		queryString);
 	return $elm$http$Http$request(
 		{
-			aX: $elm$http$Http$emptyBody,
-			bl: A2($elm$http$Http$expectJson, config.bs, config.bE),
-			bm: $author$project$Api$authHeader(config.bx),
-			bp: 'GET',
-			bv: $elm$core$Maybe$Nothing,
-			by: $elm$core$Maybe$Nothing,
-			bz: fullUrl
+			body: $elm$http$Http$emptyBody,
+			expect: A2($elm$http$Http$expectJson, config.onResponse, config.decoder),
+			headers: $author$project$Api$authHeader(config.token),
+			method: 'GET',
+			timeout: $elm$core$Maybe$Nothing,
+			tracker: $elm$core$Maybe$Nothing,
+			url: fullUrl
 		});
 };
 var $author$project$Api$Students$getStudentGames = function (config) {
 	var tagParams = function () {
-		var _v5 = config.e3;
-		if (!_v5.$) {
+		var _v5 = config.tags;
+		if (_v5.$ === 'Just') {
 			var t = _v5.a;
 			return _List_fromArray(
 				[
@@ -6911,8 +6925,8 @@ var $author$project$Api$Students$getStudentGames = function (config) {
 		}
 	}();
 	var minRatingDiffParams = function () {
-		var _v4 = config.ev;
-		if (!_v4.$) {
+		var _v4 = config.minRatingDiff;
+		if (_v4.$ === 'Just') {
 			var rd = _v4.a;
 			return _List_fromArray(
 				[
@@ -6925,8 +6939,8 @@ var $author$project$Api$Students$getStudentGames = function (config) {
 		}
 	}();
 	var minAccuracyParams = function () {
-		var _v3 = config.eu;
-		if (!_v3.$) {
+		var _v3 = config.minAccuracy;
+		if (_v3.$ === 'Just') {
 			var acc = _v3.a;
 			return _List_fromArray(
 				[
@@ -6939,8 +6953,8 @@ var $author$project$Api$Students$getStudentGames = function (config) {
 		}
 	}();
 	var maxRatingDiffParams = function () {
-		var _v2 = config.et;
-		if (!_v2.$) {
+		var _v2 = config.maxRatingDiff;
+		if (_v2.$ === 'Just') {
 			var rd = _v2.a;
 			return _List_fromArray(
 				[
@@ -6953,8 +6967,8 @@ var $author$project$Api$Students$getStudentGames = function (config) {
 		}
 	}();
 	var maxBlundersParams = function () {
-		var _v1 = config.er;
-		if (!_v1.$) {
+		var _v1 = config.maxBlunders;
+		if (_v1.$ === 'Just') {
 			var b = _v1.a;
 			return _List_fromArray(
 				[
@@ -6967,8 +6981,8 @@ var $author$project$Api$Students$getStudentGames = function (config) {
 		}
 	}();
 	var maxAccuracyParams = function () {
-		var _v0 = config.ep;
-		if (!_v0.$) {
+		var _v0 = config.maxAccuracy;
+		if (_v0.$ === 'Just') {
 			var acc = _v0.a;
 			return _List_fromArray(
 				[
@@ -6982,15 +6996,15 @@ var $author$project$Api$Students$getStudentGames = function (config) {
 	}();
 	var baseParams = _List_fromArray(
 		[
-			_Utils_Tuple2('time_control', config.e6),
-			_Utils_Tuple2('result', config.eV),
-			_Utils_Tuple2('color', config.dJ),
+			_Utils_Tuple2('time_control', config.timeControl),
+			_Utils_Tuple2('result', config.result),
+			_Utils_Tuple2('color', config.color),
 			_Utils_Tuple2(
 			'limit',
-			$elm$core$String$fromInt(config.ej)),
+			$elm$core$String$fromInt(config.limit)),
 			_Utils_Tuple2(
 			'offset',
-			$elm$core$String$fromInt(config.eB))
+			$elm$core$String$fromInt(config.offset))
 		]);
 	var allParams = _Utils_ap(
 		baseParams,
@@ -7005,20 +7019,20 @@ var $author$project$Api$Students$getStudentGames = function (config) {
 						_Utils_ap(minRatingDiffParams, maxRatingDiffParams))))));
 	return $author$project$Api$getWithQuery(
 		{
-			bE: $author$project$Types$gamesWithInsightsDecoder,
-			bi: A2(
+			decoder: $author$project$Types$gamesWithInsightsDecoder,
+			endpoint: A2(
 				$author$project$Api$url,
-				config.ck,
+				config.apiUrl,
 				_List_fromArray(
-					['api', 'students', config.bu, 'games', 'insights'])),
-			bs: config.bs,
-			cY: allParams,
-			bx: $elm$core$Maybe$Just(config.bx)
+					['api', 'students', config.studentId, 'games', 'insights'])),
+			onResponse: config.onResponse,
+			queryParams: allParams,
+			token: $elm$core$Maybe$Just(config.token)
 		});
 };
 var $author$project$Types$TagWithCount = F2(
 	function (tag, count) {
-		return {cp: count, ai: tag};
+		return {count: count, tag: tag};
 	});
 var $author$project$Types$tagWithCountDecoder = A3(
 	$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
@@ -7036,54 +7050,54 @@ var $author$project$Types$tagsWithCountsDecoder = A2(
 var $author$project$Api$Students$getStudentTags = function (config) {
 	return $author$project$Api$get(
 		{
-			bE: $author$project$Types$tagsWithCountsDecoder,
-			bi: A2(
+			decoder: $author$project$Types$tagsWithCountsDecoder,
+			endpoint: A2(
 				$author$project$Api$url,
-				config.ck,
+				config.apiUrl,
 				_List_fromArray(
-					['api', 'students', config.bu, 'tags'])),
-			bs: config.bs,
-			bx: $elm$core$Maybe$Just(config.bx)
+					['api', 'students', config.studentId, 'tags'])),
+			onResponse: config.onResponse,
+			token: $elm$core$Maybe$Just(config.token)
 		});
 };
 var $author$project$Pages$StudentDetail$init = F3(
 	function (apiUrl, token, studentId) {
 		return _Utils_Tuple2(
 			{
-				ck: apiUrl,
-				O: 0,
-				ax: $elm$core$Set$fromList(
+				apiUrl: apiUrl,
+				colorFilter: $author$project$Types$AllColors,
+				expandedFilterSections: $elm$core$Set$fromList(
 					_List_fromArray(
 						['result', 'timeControl'])),
-				ay: $elm$core$Set$empty,
-				f: $author$project$Types$Loading,
-				bn: $elm$core$Maybe$Nothing,
-				ej: 25,
-				ep: $elm$core$Maybe$Nothing,
-				er: $elm$core$Maybe$Nothing,
-				eu: $elm$core$Maybe$Nothing,
-				eB: 0,
-				R: 'all',
-				ah: '',
-				M: 0,
-				x: _List_Nil,
-				aR: true,
-				S: 0,
-				aF: $author$project$Types$Loading,
-				bu: studentId,
-				e3: $author$project$Types$Loading,
-				N: 0,
-				bx: token
+				expandedGames: $elm$core$Set$empty,
+				games: $author$project$Types$Loading,
+				hoveredGameId: $elm$core$Maybe$Nothing,
+				limit: 25,
+				maxAccuracy: $elm$core$Maybe$Nothing,
+				maxBlunders: $elm$core$Maybe$Nothing,
+				minAccuracy: $elm$core$Maybe$Nothing,
+				offset: 0,
+				opponentRatingFilter: 'all',
+				opponentSearch: '',
+				resultFilter: $author$project$Types$AllResults,
+				selectedTags: _List_Nil,
+				sidebarVisible: true,
+				sortOrder: $author$project$Pages$StudentDetail$DateNewest,
+				student: $author$project$Types$Loading,
+				studentId: studentId,
+				tags: $author$project$Types$Loading,
+				timeControlFilter: $author$project$Types$AllTimeControls,
+				token: token
 			},
 			$elm$core$Platform$Cmd$batch(
 				_List_fromArray(
 					[
 						$author$project$Api$Students$getStudent(
-						{ck: apiUrl, bs: $author$project$Pages$StudentDetail$GotStudent, bu: studentId, bx: token}),
+						{apiUrl: apiUrl, onResponse: $author$project$Pages$StudentDetail$GotStudent, studentId: studentId, token: token}),
 						$author$project$Api$Students$getStudentGames(
-						{ck: apiUrl, dJ: 'all', ej: 25, ep: $elm$core$Maybe$Nothing, er: $elm$core$Maybe$Nothing, et: $elm$core$Maybe$Nothing, eu: $elm$core$Maybe$Nothing, ev: $elm$core$Maybe$Nothing, eB: 0, bs: $author$project$Pages$StudentDetail$GotGames, eV: 'all', bu: studentId, e3: $elm$core$Maybe$Nothing, e6: 'all', bx: token}),
+						{apiUrl: apiUrl, color: 'all', limit: 25, maxAccuracy: $elm$core$Maybe$Nothing, maxBlunders: $elm$core$Maybe$Nothing, maxRatingDiff: $elm$core$Maybe$Nothing, minAccuracy: $elm$core$Maybe$Nothing, minRatingDiff: $elm$core$Maybe$Nothing, offset: 0, onResponse: $author$project$Pages$StudentDetail$GotGames, result: 'all', studentId: studentId, tags: $elm$core$Maybe$Nothing, timeControl: 'all', token: token}),
 						$author$project$Api$Students$getStudentTags(
-						{ck: apiUrl, bs: $author$project$Pages$StudentDetail$GotTags, bu: studentId, bx: token})
+						{apiUrl: apiUrl, onResponse: $author$project$Pages$StudentDetail$GotTags, studentId: studentId, token: token})
 					])));
 	});
 var $elm$core$Platform$Cmd$map = _Platform_map;
@@ -7091,20 +7105,20 @@ var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $elm$browser$Browser$Navigation$replaceUrl = _Browser_replaceUrl;
 var $author$project$Route$routeToPieces = function (route) {
 	switch (route.$) {
-		case 0:
+		case 'Login':
 			return _List_fromArray(
 				['login']);
-		case 1:
+		case 'Register':
 			return _List_fromArray(
 				['register']);
-		case 2:
+		case 'Dashboard':
 			return _List_fromArray(
 				['dashboard']);
-		case 3:
+		case 'StudentDetail':
 			var id = route.a;
 			return _List_fromArray(
 				['students', id]);
-		case 4:
+		case 'GameDetail':
 			var id = route.a;
 			return _List_fromArray(
 				['games', id]);
@@ -7129,107 +7143,107 @@ var $author$project$Route$replaceUrl = F2(
 var $author$project$Main$changeRouteTo = F2(
 	function (route, model) {
 		switch (route.$) {
-			case 0:
-				var _v1 = model.B;
-				if (_v1.$ === 1) {
+			case 'Login':
+				var _v1 = model.session;
+				if (_v1.$ === 'LoggedIn') {
 					return _Utils_Tuple2(
 						model,
-						A2($author$project$Route$replaceUrl, model.K, $author$project$Route$Dashboard));
+						A2($author$project$Route$replaceUrl, model.key, $author$project$Route$Dashboard));
 				} else {
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								z: $author$project$Main$LoginPage($author$project$Pages$Login$init)
+								page: $author$project$Main$LoginPage($author$project$Pages$Login$init)
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
-			case 1:
-				var _v2 = model.B;
-				if (_v2.$ === 1) {
+			case 'Register':
+				var _v2 = model.session;
+				if (_v2.$ === 'LoggedIn') {
 					return _Utils_Tuple2(
 						model,
-						A2($author$project$Route$replaceUrl, model.K, $author$project$Route$Dashboard));
+						A2($author$project$Route$replaceUrl, model.key, $author$project$Route$Dashboard));
 				} else {
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								z: $author$project$Main$RegisterPage($author$project$Pages$Register$init)
+								page: $author$project$Main$RegisterPage($author$project$Pages$Register$init)
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
-			case 2:
-				var _v3 = model.B;
-				if (_v3.$ === 1) {
+			case 'Dashboard':
+				var _v3 = model.session;
+				if (_v3.$ === 'LoggedIn') {
 					var token = _v3.a;
-					var _v4 = A2($author$project$Pages$Dashboard$init, model.ck, token);
+					var _v4 = A2($author$project$Pages$Dashboard$init, model.apiUrl, token);
 					var subModel = _v4.a;
 					var subCmd = _v4.b;
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								z: $author$project$Main$DashboardPage(subModel)
+								page: $author$project$Main$DashboardPage(subModel)
 							}),
 						A2($elm$core$Platform$Cmd$map, $author$project$Main$DashboardMsg, subCmd));
 				} else {
 					return _Utils_Tuple2(
 						model,
-						A2($author$project$Route$replaceUrl, model.K, $author$project$Route$Login));
+						A2($author$project$Route$replaceUrl, model.key, $author$project$Route$Login));
 				}
-			case 3:
+			case 'StudentDetail':
 				var studentId = route.a;
-				var _v5 = model.B;
-				if (_v5.$ === 1) {
+				var _v5 = model.session;
+				if (_v5.$ === 'LoggedIn') {
 					var token = _v5.a;
-					var _v6 = A3($author$project$Pages$StudentDetail$init, model.ck, token, studentId);
+					var _v6 = A3($author$project$Pages$StudentDetail$init, model.apiUrl, token, studentId);
 					var subModel = _v6.a;
 					var subCmd = _v6.b;
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								z: $author$project$Main$StudentDetailPage(subModel)
+								page: $author$project$Main$StudentDetailPage(subModel)
 							}),
 						A2($elm$core$Platform$Cmd$map, $author$project$Main$StudentDetailMsg, subCmd));
 				} else {
 					return _Utils_Tuple2(
 						model,
-						A2($author$project$Route$replaceUrl, model.K, $author$project$Route$Login));
+						A2($author$project$Route$replaceUrl, model.key, $author$project$Route$Login));
 				}
-			case 4:
+			case 'GameDetail':
 				var gameId = route.a;
-				var _v7 = model.B;
-				if (_v7.$ === 1) {
+				var _v7 = model.session;
+				if (_v7.$ === 'LoggedIn') {
 					var token = _v7.a;
-					var _v8 = A3($author$project$Pages$GameDetail$init, model.ck, token, gameId);
+					var _v8 = A3($author$project$Pages$GameDetail$init, model.apiUrl, token, gameId);
 					var subModel = _v8.a;
 					var subCmd = _v8.b;
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								z: $author$project$Main$GameDetailPage(subModel)
+								page: $author$project$Main$GameDetailPage(subModel)
 							}),
 						A2($elm$core$Platform$Cmd$map, $author$project$Main$GameDetailMsg, subCmd));
 				} else {
 					return _Utils_Tuple2(
 						model,
-						A2($author$project$Route$replaceUrl, model.K, $author$project$Route$Login));
+						A2($author$project$Route$replaceUrl, model.key, $author$project$Route$Login));
 				}
 			default:
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{z: $author$project$Main$NotFoundPage}),
+						{page: $author$project$Main$NotFoundPage}),
 					$elm$core$Platform$Cmd$none);
 		}
 	});
-var $author$project$Route$NotFound = {$: 5};
+var $author$project$Route$NotFound = {$: 'NotFound'};
 var $elm$url$Url$Parser$State = F5(
 	function (visited, unvisited, params, frag, value) {
-		return {aA: frag, aB: params, at: unvisited, aj: value, aI: visited};
+		return {frag: frag, params: params, unvisited: unvisited, value: value, visited: visited};
 	});
 var $elm$url$Url$Parser$getFirstMatch = function (states) {
 	getFirstMatch:
@@ -7239,12 +7253,12 @@ var $elm$url$Url$Parser$getFirstMatch = function (states) {
 		} else {
 			var state = states.a;
 			var rest = states.b;
-			var _v1 = state.at;
+			var _v1 = state.unvisited;
 			if (!_v1.b) {
-				return $elm$core$Maybe$Just(state.aj);
+				return $elm$core$Maybe$Just(state.value);
 			} else {
 				if ((_v1.a === '') && (!_v1.b.b)) {
-					return $elm$core$Maybe$Just(state.aj);
+					return $elm$core$Maybe$Just(state.value);
 				} else {
 					var $temp$states = rest;
 					states = $temp$states;
@@ -7282,7 +7296,7 @@ var $elm$url$Url$Parser$preparePath = function (path) {
 };
 var $elm$url$Url$Parser$addToParametersHelp = F2(
 	function (value, maybeList) {
-		if (maybeList.$ === 1) {
+		if (maybeList.$ === 'Nothing') {
 			return $elm$core$Maybe$Just(
 				_List_fromArray(
 					[value]));
@@ -7301,12 +7315,12 @@ var $elm$url$Url$Parser$addParam = F2(
 			var _v1 = _v0.b;
 			var rawValue = _v1.a;
 			var _v2 = $elm$url$Url$percentDecode(rawKey);
-			if (_v2.$ === 1) {
+			if (_v2.$ === 'Nothing') {
 				return dict;
 			} else {
 				var key = _v2.a;
 				var _v3 = $elm$url$Url$percentDecode(rawValue);
-				if (_v3.$ === 1) {
+				if (_v3.$ === 'Nothing') {
 					return dict;
 				} else {
 					var value = _v3.a;
@@ -7322,7 +7336,7 @@ var $elm$url$Url$Parser$addParam = F2(
 		}
 	});
 var $elm$url$Url$Parser$prepareQuery = function (maybeQuery) {
-	if (maybeQuery.$ === 1) {
+	if (maybeQuery.$ === 'Nothing') {
 		return $elm$core$Dict$empty;
 	} else {
 		var qry = maybeQuery.a;
@@ -7335,32 +7349,34 @@ var $elm$url$Url$Parser$prepareQuery = function (maybeQuery) {
 };
 var $elm$url$Url$Parser$parse = F2(
 	function (_v0, url) {
-		var parser = _v0;
+		var parser = _v0.a;
 		return $elm$url$Url$Parser$getFirstMatch(
 			parser(
 				A5(
 					$elm$url$Url$Parser$State,
 					_List_Nil,
-					$elm$url$Url$Parser$preparePath(url.cQ),
-					$elm$url$Url$Parser$prepareQuery(url.cX),
-					url.cz,
+					$elm$url$Url$Parser$preparePath(url.path),
+					$elm$url$Url$Parser$prepareQuery(url.query),
+					url.fragment,
 					$elm$core$Basics$identity)));
 	});
 var $author$project$Route$GameDetail = function (a) {
-	return {$: 4, a: a};
+	return {$: 'GameDetail', a: a};
 };
-var $author$project$Route$Register = {$: 1};
+var $author$project$Route$Register = {$: 'Register'};
 var $author$project$Route$StudentDetail = function (a) {
-	return {$: 3, a: a};
+	return {$: 'StudentDetail', a: a};
 };
-var $elm$url$Url$Parser$Parser = $elm$core$Basics$identity;
+var $elm$url$Url$Parser$Parser = function (a) {
+	return {$: 'Parser', a: a};
+};
 var $elm$url$Url$Parser$mapState = F2(
 	function (func, _v0) {
-		var visited = _v0.aI;
-		var unvisited = _v0.at;
-		var params = _v0.aB;
-		var frag = _v0.aA;
-		var value = _v0.aj;
+		var visited = _v0.visited;
+		var unvisited = _v0.unvisited;
+		var params = _v0.params;
+		var frag = _v0.frag;
+		var value = _v0.value;
 		return A5(
 			$elm$url$Url$Parser$State,
 			visited,
@@ -7371,19 +7387,20 @@ var $elm$url$Url$Parser$mapState = F2(
 	});
 var $elm$url$Url$Parser$map = F2(
 	function (subValue, _v0) {
-		var parseArg = _v0;
-		return function (_v1) {
-			var visited = _v1.aI;
-			var unvisited = _v1.at;
-			var params = _v1.aB;
-			var frag = _v1.aA;
-			var value = _v1.aj;
-			return A2(
-				$elm$core$List$map,
-				$elm$url$Url$Parser$mapState(value),
-				parseArg(
-					A5($elm$url$Url$Parser$State, visited, unvisited, params, frag, subValue)));
-		};
+		var parseArg = _v0.a;
+		return $elm$url$Url$Parser$Parser(
+			function (_v1) {
+				var visited = _v1.visited;
+				var unvisited = _v1.unvisited;
+				var params = _v1.params;
+				var frag = _v1.frag;
+				var value = _v1.value;
+				return A2(
+					$elm$core$List$map,
+					$elm$url$Url$Parser$mapState(value),
+					parseArg(
+						A5($elm$url$Url$Parser$State, visited, unvisited, params, frag, subValue)));
+			});
 	});
 var $elm$core$List$append = F2(
 	function (xs, ys) {
@@ -7402,89 +7419,94 @@ var $elm$core$List$concatMap = F2(
 			A2($elm$core$List$map, f, list));
 	});
 var $elm$url$Url$Parser$oneOf = function (parsers) {
-	return function (state) {
-		return A2(
-			$elm$core$List$concatMap,
-			function (_v0) {
-				var parser = _v0;
-				return parser(state);
-			},
-			parsers);
-	};
-};
-var $elm$url$Url$Parser$s = function (str) {
-	return function (_v0) {
-		var visited = _v0.aI;
-		var unvisited = _v0.at;
-		var params = _v0.aB;
-		var frag = _v0.aA;
-		var value = _v0.aj;
-		if (!unvisited.b) {
-			return _List_Nil;
-		} else {
-			var next = unvisited.a;
-			var rest = unvisited.b;
-			return _Utils_eq(next, str) ? _List_fromArray(
-				[
-					A5(
-					$elm$url$Url$Parser$State,
-					A2($elm$core$List$cons, next, visited),
-					rest,
-					params,
-					frag,
-					value)
-				]) : _List_Nil;
-		}
-	};
-};
-var $elm$url$Url$Parser$slash = F2(
-	function (_v0, _v1) {
-		var parseBefore = _v0;
-		var parseAfter = _v1;
-		return function (state) {
+	return $elm$url$Url$Parser$Parser(
+		function (state) {
 			return A2(
 				$elm$core$List$concatMap,
-				parseAfter,
-				parseBefore(state));
-		};
-	});
-var $elm$url$Url$Parser$custom = F2(
-	function (tipe, stringToSomething) {
-		return function (_v0) {
-			var visited = _v0.aI;
-			var unvisited = _v0.at;
-			var params = _v0.aB;
-			var frag = _v0.aA;
-			var value = _v0.aj;
+				function (_v0) {
+					var parser = _v0.a;
+					return parser(state);
+				},
+				parsers);
+		});
+};
+var $elm$url$Url$Parser$s = function (str) {
+	return $elm$url$Url$Parser$Parser(
+		function (_v0) {
+			var visited = _v0.visited;
+			var unvisited = _v0.unvisited;
+			var params = _v0.params;
+			var frag = _v0.frag;
+			var value = _v0.value;
 			if (!unvisited.b) {
 				return _List_Nil;
 			} else {
 				var next = unvisited.a;
 				var rest = unvisited.b;
-				var _v2 = stringToSomething(next);
-				if (!_v2.$) {
-					var nextValue = _v2.a;
-					return _List_fromArray(
-						[
-							A5(
-							$elm$url$Url$Parser$State,
-							A2($elm$core$List$cons, next, visited),
-							rest,
-							params,
-							frag,
-							value(nextValue))
-						]);
-				} else {
-					return _List_Nil;
-				}
+				return _Utils_eq(next, str) ? _List_fromArray(
+					[
+						A5(
+						$elm$url$Url$Parser$State,
+						A2($elm$core$List$cons, next, visited),
+						rest,
+						params,
+						frag,
+						value)
+					]) : _List_Nil;
 			}
-		};
+		});
+};
+var $elm$url$Url$Parser$slash = F2(
+	function (_v0, _v1) {
+		var parseBefore = _v0.a;
+		var parseAfter = _v1.a;
+		return $elm$url$Url$Parser$Parser(
+			function (state) {
+				return A2(
+					$elm$core$List$concatMap,
+					parseAfter,
+					parseBefore(state));
+			});
+	});
+var $elm$url$Url$Parser$custom = F2(
+	function (tipe, stringToSomething) {
+		return $elm$url$Url$Parser$Parser(
+			function (_v0) {
+				var visited = _v0.visited;
+				var unvisited = _v0.unvisited;
+				var params = _v0.params;
+				var frag = _v0.frag;
+				var value = _v0.value;
+				if (!unvisited.b) {
+					return _List_Nil;
+				} else {
+					var next = unvisited.a;
+					var rest = unvisited.b;
+					var _v2 = stringToSomething(next);
+					if (_v2.$ === 'Just') {
+						var nextValue = _v2.a;
+						return _List_fromArray(
+							[
+								A5(
+								$elm$url$Url$Parser$State,
+								A2($elm$core$List$cons, next, visited),
+								rest,
+								params,
+								frag,
+								value(nextValue))
+							]);
+					} else {
+						return _List_Nil;
+					}
+				}
+			});
 	});
 var $elm$url$Url$Parser$string = A2($elm$url$Url$Parser$custom, 'STRING', $elm$core$Maybe$Just);
-var $elm$url$Url$Parser$top = function (state) {
-	return _List_fromArray(
-		[state]);
-};
+var $elm$url$Url$Parser$top = $elm$url$Url$Parser$Parser(
+	function (state) {
+		return _List_fromArray(
+			[state]);
+	});
 var $author$project$Route$parser = $elm$url$Url$Parser$oneOf(
 	_List_fromArray(
 		[
@@ -7518,7 +7540,7 @@ var $author$project$Route$parser = $elm$url$Url$Parser$oneOf(
 		]));
 var $elm$core$Maybe$withDefault = F2(
 	function (_default, maybe) {
-		if (!maybe.$) {
+		if (maybe.$ === 'Just') {
 			var value = maybe.a;
 			return value;
 		} else {
@@ -7534,13 +7556,13 @@ var $author$project$Route$fromUrl = function (url) {
 var $author$project$Main$init = F3(
 	function (flags, url, key) {
 		var session = function () {
-			var _v1 = flags.bx;
-			if (!_v1.$) {
+			var _v1 = flags.token;
+			if (_v1.$ === 'Just') {
 				var token = _v1.a;
 				return A2(
 					$author$project$Main$LoggedIn,
 					token,
-					{cu: '', ea: ''});
+					{email: '', id: ''});
 			} else {
 				return $author$project$Main$Guest;
 			}
@@ -7548,7 +7570,7 @@ var $author$project$Main$init = F3(
 		var _v0 = A2(
 			$author$project$Main$changeRouteTo,
 			$author$project$Route$fromUrl(url),
-			{ck: flags.ck, K: key, z: $author$project$Main$NotFoundPage, B: session});
+			{apiUrl: flags.apiUrl, key: key, page: $author$project$Main$NotFoundPage, session: session});
 		var model = _v0.a;
 		var cmd = _v0.b;
 		return _Utils_Tuple2(model, cmd);
@@ -7559,10 +7581,10 @@ var $author$project$Main$subscriptions = function (_v0) {
 	return $elm$core$Platform$Sub$none;
 };
 var $author$project$Main$LoginMsg = function (a) {
-	return {$: 2, a: a};
+	return {$: 'LoginMsg', a: a};
 };
 var $author$project$Main$RegisterMsg = function (a) {
-	return {$: 3, a: a};
+	return {$: 'RegisterMsg', a: a};
 };
 var $elm$json$Json$Encode$null = _Json_encodeNull;
 var $author$project$Main$clearToken = _Platform_outgoingPort(
@@ -7576,7 +7598,7 @@ var $elm$json$Json$Encode$string = _Json_wrap;
 var $author$project$Main$saveToken = _Platform_outgoingPort('saveToken', $elm$json$Json$Encode$string);
 var $elm$url$Url$addPort = F2(
 	function (maybePort, starter) {
-		if (maybePort.$ === 1) {
+		if (maybePort.$ === 'Nothing') {
 			return starter;
 		} else {
 			var port_ = maybePort.a;
@@ -7585,7 +7607,7 @@ var $elm$url$Url$addPort = F2(
 	});
 var $elm$url$Url$addPrefixed = F3(
 	function (prefix, maybeSegment, starter) {
-		if (maybeSegment.$ === 1) {
+		if (maybeSegment.$ === 'Nothing') {
 			return starter;
 		} else {
 			var segment = maybeSegment.a;
@@ -7596,8 +7618,8 @@ var $elm$url$Url$addPrefixed = F3(
 	});
 var $elm$url$Url$toString = function (url) {
 	var http = function () {
-		var _v0 = url.cW;
-		if (!_v0) {
+		var _v0 = url.protocol;
+		if (_v0.$ === 'Http') {
 			return 'http://';
 		} else {
 			return 'https://';
@@ -7606,26 +7628,26 @@ var $elm$url$Url$toString = function (url) {
 	return A3(
 		$elm$url$Url$addPrefixed,
 		'#',
-		url.cz,
+		url.fragment,
 		A3(
 			$elm$url$Url$addPrefixed,
 			'?',
-			url.cX,
+			url.query,
 			_Utils_ap(
 				A2(
 					$elm$url$Url$addPort,
-					url.cS,
-					_Utils_ap(http, url.cD)),
-				url.cQ)));
+					url.port_,
+					_Utils_ap(http, url.host)),
+				url.path)));
 };
 var $author$project$Types$Failure = function (a) {
-	return {$: 2, a: a};
+	return {$: 'Failure', a: a};
 };
 var $author$project$Pages$Dashboard$GotNewStudent = function (a) {
-	return {$: 5, a: a};
+	return {$: 'GotNewStudent', a: a};
 };
 var $author$project$Types$Success = function (a) {
-	return {$: 3, a: a};
+	return {$: 'Success', a: a};
 };
 var $elm$json$Json$Encode$object = function (pairs) {
 	return _Json_wrap(
@@ -7637,7 +7659,7 @@ var $elm$json$Json$Encode$object = function (pairs) {
 					var v = _v0.b;
 					return A3(_Json_addField, k, v, obj);
 				}),
-			_Json_emptyObject(0),
+			_Json_emptyObject(_Utils_Tuple0),
 			pairs));
 };
 var $elm$http$Http$jsonBody = function (value) {
@@ -7649,44 +7671,44 @@ var $elm$http$Http$jsonBody = function (value) {
 var $author$project$Api$post = function (config) {
 	return $elm$http$Http$request(
 		{
-			aX: $elm$http$Http$jsonBody(config.aX),
-			bl: A2($elm$http$Http$expectJson, config.bs, config.bE),
-			bm: $author$project$Api$authHeader(config.bx),
-			bp: 'POST',
-			bv: $elm$core$Maybe$Nothing,
-			by: $elm$core$Maybe$Nothing,
-			bz: $author$project$Api$unwrap(config.bi)
+			body: $elm$http$Http$jsonBody(config.body),
+			expect: A2($elm$http$Http$expectJson, config.onResponse, config.decoder),
+			headers: $author$project$Api$authHeader(config.token),
+			method: 'POST',
+			timeout: $elm$core$Maybe$Nothing,
+			tracker: $elm$core$Maybe$Nothing,
+			url: $author$project$Api$unwrap(config.endpoint)
 		});
 };
 var $author$project$Api$Students$createStudent = function (config) {
 	return $author$project$Api$post(
 		{
-			aX: $elm$json$Json$Encode$object(
+			body: $elm$json$Json$Encode$object(
 				_List_fromArray(
 					[
 						_Utils_Tuple2(
 						'chess_com_username',
-						$elm$json$Json$Encode$string(config.dG))
+						$elm$json$Json$Encode$string(config.chessComUsername))
 					])),
-			bE: $author$project$Types$studentDecoder,
-			bi: A2(
+			decoder: $author$project$Types$studentDecoder,
+			endpoint: A2(
 				$author$project$Api$url,
-				config.ck,
+				config.apiUrl,
 				_List_fromArray(
 					['api', 'students'])),
-			bs: config.bs,
-			bx: $elm$core$Maybe$Just(config.bx)
+			onResponse: config.onResponse,
+			token: $elm$core$Maybe$Just(config.token)
 		});
 };
 var $author$project$Pages$Dashboard$httpErrorToString = function (error) {
 	switch (error.$) {
-		case 0:
+		case 'BadUrl':
 			return 'Invalid URL';
-		case 1:
+		case 'Timeout':
 			return 'Request timed out';
-		case 2:
+		case 'NetworkError':
 			return 'Network error';
-		case 3:
+		case 'BadStatus':
 			var status = error.a;
 			return 'Server error (status ' + ($elm$core$String$fromInt(status) + ')');
 		default:
@@ -7697,15 +7719,15 @@ var $author$project$Pages$Dashboard$httpErrorToString = function (error) {
 var $author$project$Pages$Dashboard$update = F4(
 	function (apiUrl, token, msg, model) {
 		switch (msg.$) {
-			case 0:
+			case 'GotStudents':
 				var result = msg.a;
-				if (!result.$) {
+				if (result.$ === 'Ok') {
 					var students = result.a;
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								aG: $author$project$Types$Success(students)
+								students: $author$project$Types$Success(students)
 							}),
 						$elm$core$Platform$Cmd$none);
 				} else {
@@ -7714,51 +7736,51 @@ var $author$project$Pages$Dashboard$update = F4(
 						_Utils_update(
 							model,
 							{
-								aG: $author$project$Types$Failure(
+								students: $author$project$Types$Failure(
 									$author$project$Pages$Dashboard$httpErrorToString(error))
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
-			case 1:
+			case 'ShowAddModal':
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{ak: $elm$core$Maybe$Nothing, aq: '', aQ: true}),
+						{addError: $elm$core$Maybe$Nothing, newStudentChessCom: '', showAddModal: true}),
 					$elm$core$Platform$Cmd$none);
-			case 2:
+			case 'HideAddModal':
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{aQ: false}),
+						{showAddModal: false}),
 					$elm$core$Platform$Cmd$none);
-			case 3:
+			case 'NewStudentChessComChanged':
 				var username = msg.a;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{ak: $elm$core$Maybe$Nothing, aq: username}),
+						{addError: $elm$core$Maybe$Nothing, newStudentChessCom: username}),
 					$elm$core$Platform$Cmd$none);
-			case 4:
+			case 'SubmitNewStudent':
 				var config = msg.a;
-				return $elm$core$String$isEmpty(model.aq) ? _Utils_Tuple2(
+				return $elm$core$String$isEmpty(model.newStudentChessCom) ? _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							ak: $elm$core$Maybe$Just('Please enter a Chess.com username')
+							addError: $elm$core$Maybe$Just('Please enter a Chess.com username')
 						}),
 					$elm$core$Platform$Cmd$none) : _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{ak: $elm$core$Maybe$Nothing, ae: true}),
+						{addError: $elm$core$Maybe$Nothing, isAdding: true}),
 					$author$project$Api$Students$createStudent(
-						{ck: config.ck, dG: model.aq, bs: $author$project$Pages$Dashboard$GotNewStudent, bx: config.bx}));
-			case 5:
+						{apiUrl: config.apiUrl, chessComUsername: model.newStudentChessCom, onResponse: $author$project$Pages$Dashboard$GotNewStudent, token: config.token}));
+			case 'GotNewStudent':
 				var result = msg.a;
-				if (!result.$) {
+				if (result.$ === 'Ok') {
 					var newStudent = result.a;
 					var updatedStudents = function () {
-						var _v3 = model.aG;
-						if (_v3.$ === 3) {
+						var _v3 = model.students;
+						if (_v3.$ === 'Success') {
 							var students = _v3.a;
 							return $author$project$Types$Success(
 								_Utils_ap(
@@ -7774,7 +7796,7 @@ var $author$project$Pages$Dashboard$update = F4(
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{ae: false, aq: '', aQ: false, aG: updatedStudents}),
+							{isAdding: false, newStudentChessCom: '', showAddModal: false, students: updatedStudents}),
 						$elm$core$Platform$Cmd$none);
 				} else {
 					var error = result.a;
@@ -7782,25 +7804,25 @@ var $author$project$Pages$Dashboard$update = F4(
 						_Utils_update(
 							model,
 							{
-								ak: $elm$core$Maybe$Just(
+								addError: $elm$core$Maybe$Just(
 									$author$project$Pages$Dashboard$httpErrorToString(error)),
-								ae: false
+								isAdding: false
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
-			case 6:
+			case 'SetSortBy':
 				var option = msg.a;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{aE: option}),
+						{sortBy: option}),
 					$elm$core$Platform$Cmd$none);
-			case 7:
+			case 'SetFilterBy':
 				var option = msg.a;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{az: option}),
+						{filterBy: option}),
 					$elm$core$Platform$Cmd$none);
 			default:
 				return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
@@ -7808,13 +7830,13 @@ var $author$project$Pages$Dashboard$update = F4(
 	});
 var $author$project$Pages$GameDetail$httpErrorToString = function (error) {
 	switch (error.$) {
-		case 0:
+		case 'BadUrl':
 			return 'Invalid URL';
-		case 1:
+		case 'Timeout':
 			return 'Request timed out';
-		case 2:
+		case 'NetworkError':
 			return 'Network error';
-		case 3:
+		case 'BadStatus':
 			var status = error.a;
 			return (status === 404) ? 'Game not found' : ('Server error (status ' + ($elm$core$String$fromInt(status) + ')'));
 		default:
@@ -7824,14 +7846,14 @@ var $author$project$Pages$GameDetail$httpErrorToString = function (error) {
 };
 var $author$project$Pages$GameDetail$update = F2(
 	function (msg, model) {
-		var result = msg;
-		if (!result.$) {
+		var result = msg.a;
+		if (result.$ === 'Ok') {
 			var detail = result.a;
 			return _Utils_Tuple2(
 				_Utils_update(
 					model,
 					{
-						a0: $author$project$Types$Success(detail)
+						gameDetail: $author$project$Types$Success(detail)
 					}),
 				$elm$core$Platform$Cmd$none);
 		} else {
@@ -7840,24 +7862,24 @@ var $author$project$Pages$GameDetail$update = F2(
 				_Utils_update(
 					model,
 					{
-						a0: $author$project$Types$Failure(
+						gameDetail: $author$project$Types$Failure(
 							$author$project$Pages$GameDetail$httpErrorToString(error))
 					}),
 				$elm$core$Platform$Cmd$none);
 		}
 	});
 var $author$project$Pages$Login$GotLoginResponse = function (a) {
-	return {$: 3, a: a};
+	return {$: 'GotLoginResponse', a: a};
 };
 var $author$project$Pages$Login$httpErrorToString = function (error) {
 	switch (error.$) {
-		case 0:
+		case 'BadUrl':
 			return 'Invalid URL';
-		case 1:
+		case 'Timeout':
 			return 'Request timed out';
-		case 2:
+		case 'NetworkError':
 			return 'Network error - please check your connection';
-		case 3:
+		case 'BadStatus':
 			var status = error.a;
 			return (status === 401) ? 'Invalid email or password' : ((status === 400) ? 'Invalid request - please check your input' : ('Server error (status ' + ($elm$core$String$fromInt(status) + ')')));
 		default:
@@ -7867,11 +7889,11 @@ var $author$project$Pages$Login$httpErrorToString = function (error) {
 };
 var $author$project$Api$Auth$AuthResponse = F2(
 	function (token, coach) {
-		return {dH: coach, bx: token};
+		return {coach: coach, token: token};
 	});
 var $author$project$Types$Coach = F2(
 	function (id, email) {
-		return {cu: email, ea: id};
+		return {email: email, id: id};
 	});
 var $author$project$Types$coachDecoder = A3(
 	$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
@@ -7890,68 +7912,68 @@ var $author$project$Api$Auth$authResponseDecoder = A3(
 var $author$project$Api$Auth$login = function (config) {
 	return $author$project$Api$post(
 		{
-			aX: $elm$json$Json$Encode$object(
+			body: $elm$json$Json$Encode$object(
 				_List_fromArray(
 					[
 						_Utils_Tuple2(
 						'email',
-						$elm$json$Json$Encode$string(config.cu)),
+						$elm$json$Json$Encode$string(config.email)),
 						_Utils_Tuple2(
 						'password',
-						$elm$json$Json$Encode$string(config.cP))
+						$elm$json$Json$Encode$string(config.password))
 					])),
-			bE: $author$project$Api$Auth$authResponseDecoder,
-			bi: A2(
+			decoder: $author$project$Api$Auth$authResponseDecoder,
+			endpoint: A2(
 				$author$project$Api$url,
-				config.ck,
+				config.apiUrl,
 				_List_fromArray(
 					['api', 'auth', 'login'])),
-			bs: config.bs,
-			bx: $elm$core$Maybe$Nothing
+			onResponse: config.onResponse,
+			token: $elm$core$Maybe$Nothing
 		});
 };
 var $author$project$Pages$Login$update = F3(
 	function (apiUrl, msg, model) {
 		switch (msg.$) {
-			case 0:
+			case 'EmailChanged':
 				var email = msg.a;
 				return _Utils_Tuple3(
 					_Utils_update(
 						model,
-						{cu: email, an: $elm$core$Maybe$Nothing}),
+						{email: email, error: $elm$core$Maybe$Nothing}),
 					$elm$core$Platform$Cmd$none,
 					$elm$core$Maybe$Nothing);
-			case 1:
+			case 'PasswordChanged':
 				var password = msg.a;
 				return _Utils_Tuple3(
 					_Utils_update(
 						model,
-						{an: $elm$core$Maybe$Nothing, cP: password}),
+						{error: $elm$core$Maybe$Nothing, password: password}),
 					$elm$core$Platform$Cmd$none,
 					$elm$core$Maybe$Nothing);
-			case 2:
-				return ($elm$core$String$isEmpty(model.cu) || $elm$core$String$isEmpty(model.cP)) ? _Utils_Tuple3(
+			case 'SubmitForm':
+				return ($elm$core$String$isEmpty(model.email) || $elm$core$String$isEmpty(model.password)) ? _Utils_Tuple3(
 					_Utils_update(
 						model,
 						{
-							an: $elm$core$Maybe$Just('Please fill in all fields')
+							error: $elm$core$Maybe$Just('Please fill in all fields')
 						}),
 					$elm$core$Platform$Cmd$none,
 					$elm$core$Maybe$Nothing) : _Utils_Tuple3(
 					_Utils_update(
 						model,
-						{an: $elm$core$Maybe$Nothing, af: true}),
+						{error: $elm$core$Maybe$Nothing, isLoading: true}),
 					$author$project$Api$Auth$login(
-						{ck: apiUrl, cu: model.cu, bs: $author$project$Pages$Login$GotLoginResponse, cP: model.cP}),
+						{apiUrl: apiUrl, email: model.email, onResponse: $author$project$Pages$Login$GotLoginResponse, password: model.password}),
 					$elm$core$Maybe$Nothing);
 			default:
 				var result = msg.a;
-				if (!result.$) {
+				if (result.$ === 'Ok') {
 					var authResponse = result.a;
 					return _Utils_Tuple3(
 						_Utils_update(
 							model,
-							{af: false}),
+							{isLoading: false}),
 						$elm$core$Platform$Cmd$none,
 						$elm$core$Maybe$Just(authResponse));
 				} else {
@@ -7960,9 +7982,9 @@ var $author$project$Pages$Login$update = F3(
 						_Utils_update(
 							model,
 							{
-								an: $elm$core$Maybe$Just(
+								error: $elm$core$Maybe$Just(
 									$author$project$Pages$Login$httpErrorToString(error)),
-								af: false
+								isLoading: false
 							}),
 						$elm$core$Platform$Cmd$none,
 						$elm$core$Maybe$Nothing);
@@ -7970,17 +7992,17 @@ var $author$project$Pages$Login$update = F3(
 		}
 	});
 var $author$project$Pages$Register$GotRegisterResponse = function (a) {
-	return {$: 4, a: a};
+	return {$: 'GotRegisterResponse', a: a};
 };
 var $author$project$Pages$Register$httpErrorToString = function (error) {
 	switch (error.$) {
-		case 0:
+		case 'BadUrl':
 			return 'Invalid URL';
-		case 1:
+		case 'Timeout':
 			return 'Request timed out';
-		case 2:
+		case 'NetworkError':
 			return 'Network error - please check your connection';
-		case 3:
+		case 'BadStatus':
 			var status = error.a;
 			return (status === 409) ? 'An account with this email already exists' : ((status === 400) ? 'Invalid email format or password too short' : ('Server error (status ' + ($elm$core$String$fromInt(status) + ')')));
 		default:
@@ -7992,90 +8014,90 @@ var $elm$core$Basics$neq = _Utils_notEqual;
 var $author$project$Api$Auth$register = function (config) {
 	return $author$project$Api$post(
 		{
-			aX: $elm$json$Json$Encode$object(
+			body: $elm$json$Json$Encode$object(
 				_List_fromArray(
 					[
 						_Utils_Tuple2(
 						'email',
-						$elm$json$Json$Encode$string(config.cu)),
+						$elm$json$Json$Encode$string(config.email)),
 						_Utils_Tuple2(
 						'password',
-						$elm$json$Json$Encode$string(config.cP))
+						$elm$json$Json$Encode$string(config.password))
 					])),
-			bE: $author$project$Api$Auth$authResponseDecoder,
-			bi: A2(
+			decoder: $author$project$Api$Auth$authResponseDecoder,
+			endpoint: A2(
 				$author$project$Api$url,
-				config.ck,
+				config.apiUrl,
 				_List_fromArray(
 					['api', 'auth', 'register'])),
-			bs: config.bs,
-			bx: $elm$core$Maybe$Nothing
+			onResponse: config.onResponse,
+			token: $elm$core$Maybe$Nothing
 		});
 };
 var $author$project$Pages$Register$update = F3(
 	function (apiUrl, msg, model) {
 		switch (msg.$) {
-			case 0:
+			case 'EmailChanged':
 				var email = msg.a;
 				return _Utils_Tuple3(
 					_Utils_update(
 						model,
-						{cu: email, an: $elm$core$Maybe$Nothing}),
+						{email: email, error: $elm$core$Maybe$Nothing}),
 					$elm$core$Platform$Cmd$none,
 					$elm$core$Maybe$Nothing);
-			case 1:
+			case 'PasswordChanged':
 				var password = msg.a;
 				return _Utils_Tuple3(
 					_Utils_update(
 						model,
-						{an: $elm$core$Maybe$Nothing, cP: password}),
+						{error: $elm$core$Maybe$Nothing, password: password}),
 					$elm$core$Platform$Cmd$none,
 					$elm$core$Maybe$Nothing);
-			case 2:
+			case 'ConfirmPasswordChanged':
 				var confirmPassword = msg.a;
 				return _Utils_Tuple3(
 					_Utils_update(
 						model,
-						{aY: confirmPassword, an: $elm$core$Maybe$Nothing}),
+						{confirmPassword: confirmPassword, error: $elm$core$Maybe$Nothing}),
 					$elm$core$Platform$Cmd$none,
 					$elm$core$Maybe$Nothing);
-			case 3:
-				return ($elm$core$String$isEmpty(model.cu) || $elm$core$String$isEmpty(model.cP)) ? _Utils_Tuple3(
+			case 'SubmitForm':
+				return ($elm$core$String$isEmpty(model.email) || $elm$core$String$isEmpty(model.password)) ? _Utils_Tuple3(
 					_Utils_update(
 						model,
 						{
-							an: $elm$core$Maybe$Just('Please fill in all fields')
+							error: $elm$core$Maybe$Just('Please fill in all fields')
 						}),
 					$elm$core$Platform$Cmd$none,
-					$elm$core$Maybe$Nothing) : (($elm$core$String$length(model.cP) < 8) ? _Utils_Tuple3(
+					$elm$core$Maybe$Nothing) : (($elm$core$String$length(model.password) < 8) ? _Utils_Tuple3(
 					_Utils_update(
 						model,
 						{
-							an: $elm$core$Maybe$Just('Password must be at least 8 characters')
+							error: $elm$core$Maybe$Just('Password must be at least 8 characters')
 						}),
 					$elm$core$Platform$Cmd$none,
-					$elm$core$Maybe$Nothing) : ((!_Utils_eq(model.cP, model.aY)) ? _Utils_Tuple3(
+					$elm$core$Maybe$Nothing) : ((!_Utils_eq(model.password, model.confirmPassword)) ? _Utils_Tuple3(
 					_Utils_update(
 						model,
 						{
-							an: $elm$core$Maybe$Just('Passwords do not match')
+							error: $elm$core$Maybe$Just('Passwords do not match')
 						}),
 					$elm$core$Platform$Cmd$none,
 					$elm$core$Maybe$Nothing) : _Utils_Tuple3(
 					_Utils_update(
 						model,
-						{an: $elm$core$Maybe$Nothing, af: true}),
+						{error: $elm$core$Maybe$Nothing, isLoading: true}),
 					$author$project$Api$Auth$register(
-						{ck: apiUrl, cu: model.cu, bs: $author$project$Pages$Register$GotRegisterResponse, cP: model.cP}),
+						{apiUrl: apiUrl, email: model.email, onResponse: $author$project$Pages$Register$GotRegisterResponse, password: model.password}),
 					$elm$core$Maybe$Nothing)));
 			default:
 				var result = msg.a;
-				if (!result.$) {
+				if (result.$ === 'Ok') {
 					var authResponse = result.a;
 					return _Utils_Tuple3(
 						_Utils_update(
 							model,
-							{af: false}),
+							{isLoading: false}),
 						$elm$core$Platform$Cmd$none,
 						$elm$core$Maybe$Just(authResponse));
 				} else {
@@ -8084,9 +8106,9 @@ var $author$project$Pages$Register$update = F3(
 						_Utils_update(
 							model,
 							{
-								an: $elm$core$Maybe$Just(
+								error: $elm$core$Maybe$Just(
 									$author$project$Pages$Register$httpErrorToString(error)),
-								af: false
+								isLoading: false
 							}),
 						$elm$core$Platform$Cmd$none,
 						$elm$core$Maybe$Nothing);
@@ -8094,10 +8116,10 @@ var $author$project$Pages$Register$update = F3(
 		}
 	});
 var $author$project$Types$colorFilterToString = function (cf) {
-	switch (cf) {
-		case 0:
+	switch (cf.$) {
+		case 'AllColors':
 			return 'all';
-		case 1:
+		case 'WhiteOnly':
 			return 'white';
 		default:
 			return 'black';
@@ -8107,34 +8129,34 @@ var $elm$core$Basics$negate = function (n) {
 	return -n;
 };
 var $author$project$Types$resultFilterToString = function (rf) {
-	switch (rf) {
-		case 0:
+	switch (rf.$) {
+		case 'AllResults':
 			return 'all';
-		case 1:
+		case 'WinsOnly':
 			return 'win';
-		case 2:
+		case 'LossesOnly':
 			return 'loss';
 		default:
 			return 'draw';
 	}
 };
 var $author$project$Types$timeControlToString = function (tc) {
-	switch (tc) {
-		case 0:
+	switch (tc.$) {
+		case 'AllTimeControls':
 			return 'all';
-		case 1:
+		case 'Bullet':
 			return 'bullet';
-		case 2:
+		case 'Blitz':
 			return 'blitz';
 		default:
 			return 'rapid';
 	}
 };
 var $author$project$Pages$StudentDetail$fetchFilteredGames = function (model) {
-	var tagsParam = $elm$core$List$isEmpty(model.x) ? $elm$core$Maybe$Nothing : $elm$core$Maybe$Just(
-		A2($elm$core$String$join, ',', model.x));
+	var tagsParam = $elm$core$List$isEmpty(model.selectedTags) ? $elm$core$Maybe$Nothing : $elm$core$Maybe$Just(
+		A2($elm$core$String$join, ',', model.selectedTags));
 	var _v0 = function () {
-		var _v1 = model.R;
+		var _v1 = model.opponentRatingFilter;
 		switch (_v1) {
 			case 'higher':
 				return _Utils_Tuple2(
@@ -8152,21 +8174,21 @@ var $author$project$Pages$StudentDetail$fetchFilteredGames = function (model) {
 	var maxRatingDiff = _v0.b;
 	return $author$project$Api$Students$getStudentGames(
 		{
-			ck: model.ck,
-			dJ: $author$project$Types$colorFilterToString(model.O),
-			ej: model.ej,
-			ep: model.ep,
-			er: model.er,
-			et: maxRatingDiff,
-			eu: model.eu,
-			ev: minRatingDiff,
-			eB: model.eB,
-			bs: $author$project$Pages$StudentDetail$GotGames,
-			eV: $author$project$Types$resultFilterToString(model.M),
-			bu: model.bu,
-			e3: tagsParam,
-			e6: $author$project$Types$timeControlToString(model.N),
-			bx: model.bx
+			apiUrl: model.apiUrl,
+			color: $author$project$Types$colorFilterToString(model.colorFilter),
+			limit: model.limit,
+			maxAccuracy: model.maxAccuracy,
+			maxBlunders: model.maxBlunders,
+			maxRatingDiff: maxRatingDiff,
+			minAccuracy: model.minAccuracy,
+			minRatingDiff: minRatingDiff,
+			offset: model.offset,
+			onResponse: $author$project$Pages$StudentDetail$GotGames,
+			result: $author$project$Types$resultFilterToString(model.resultFilter),
+			studentId: model.studentId,
+			tags: tagsParam,
+			timeControl: $author$project$Types$timeControlToString(model.timeControlFilter),
+			token: model.token
 		});
 };
 var $elm$core$List$filter = F2(
@@ -8182,13 +8204,13 @@ var $elm$core$List$filter = F2(
 	});
 var $author$project$Pages$StudentDetail$httpErrorToString = function (error) {
 	switch (error.$) {
-		case 0:
+		case 'BadUrl':
 			return 'Invalid URL';
-		case 1:
+		case 'Timeout':
 			return 'Request timed out';
-		case 2:
+		case 'NetworkError':
 			return 'Network error';
-		case 3:
+		case 'BadStatus':
 			var status = error.a;
 			return 'Server error (status ' + ($elm$core$String$fromInt(status) + ')');
 		default:
@@ -8229,7 +8251,7 @@ var $elm$core$List$member = F2(
 var $elm$core$Dict$member = F2(
 	function (key, dict) {
 		var _v0 = A2($elm$core$Dict$get, key, dict);
-		if (!_v0.$) {
+		if (_v0.$ === 'Just') {
 			return true;
 		} else {
 			return false;
@@ -8237,27 +8259,28 @@ var $elm$core$Dict$member = F2(
 	});
 var $elm$core$Set$member = F2(
 	function (key, _v0) {
-		var dict = _v0;
+		var dict = _v0.a;
 		return A2($elm$core$Dict$member, key, dict);
 	});
 var $elm$core$Basics$not = _Basics_not;
 var $elm$core$Set$remove = F2(
 	function (key, _v0) {
-		var dict = _v0;
-		return A2($elm$core$Dict$remove, key, dict);
+		var dict = _v0.a;
+		return $elm$core$Set$Set_elm_builtin(
+			A2($elm$core$Dict$remove, key, dict));
 	});
 var $author$project$Pages$StudentDetail$update = F2(
 	function (msg, model) {
 		switch (msg.$) {
-			case 0:
+			case 'GotStudent':
 				var result = msg.a;
-				if (!result.$) {
+				if (result.$ === 'Ok') {
 					var student = result.a;
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								aF: $author$project$Types$Success(student)
+								student: $author$project$Types$Success(student)
 							}),
 						$elm$core$Platform$Cmd$none);
 				} else {
@@ -8266,20 +8289,20 @@ var $author$project$Pages$StudentDetail$update = F2(
 						_Utils_update(
 							model,
 							{
-								aF: $author$project$Types$Failure(
+								student: $author$project$Types$Failure(
 									$author$project$Pages$StudentDetail$httpErrorToString(error))
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
-			case 1:
+			case 'GotGames':
 				var result = msg.a;
-				if (!result.$) {
+				if (result.$ === 'Ok') {
 					var gamesData = result.a;
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								f: $author$project$Types$Success(gamesData)
+								games: $author$project$Types$Success(gamesData)
 							}),
 						$elm$core$Platform$Cmd$none);
 				} else {
@@ -8288,20 +8311,20 @@ var $author$project$Pages$StudentDetail$update = F2(
 						_Utils_update(
 							model,
 							{
-								f: $author$project$Types$Failure(
+								games: $author$project$Types$Failure(
 									$author$project$Pages$StudentDetail$httpErrorToString(error))
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
-			case 2:
+			case 'GotTags':
 				var result = msg.a;
-				if (!result.$) {
+				if (result.$ === 'Ok') {
 					var tagsData = result.a;
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								e3: $author$project$Types$Success(tagsData)
+								tags: $author$project$Types$Success(tagsData)
 							}),
 						$elm$core$Platform$Cmd$none);
 				} else {
@@ -8310,169 +8333,169 @@ var $author$project$Pages$StudentDetail$update = F2(
 						_Utils_update(
 							model,
 							{
-								e3: $author$project$Types$Failure(
+								tags: $author$project$Types$Failure(
 									$author$project$Pages$StudentDetail$httpErrorToString(error))
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
-			case 3:
+			case 'SetTimeControlFilter':
 				var filter = msg.a;
 				var newModel = _Utils_update(
 					model,
-					{f: $author$project$Types$Loading, eB: 0, N: filter});
+					{games: $author$project$Types$Loading, offset: 0, timeControlFilter: filter});
 				return _Utils_Tuple2(
 					newModel,
 					$author$project$Pages$StudentDetail$fetchFilteredGames(newModel));
-			case 4:
+			case 'SetResultFilter':
 				var filter = msg.a;
 				var newModel = _Utils_update(
 					model,
-					{f: $author$project$Types$Loading, eB: 0, M: filter});
+					{games: $author$project$Types$Loading, offset: 0, resultFilter: filter});
 				return _Utils_Tuple2(
 					newModel,
 					$author$project$Pages$StudentDetail$fetchFilteredGames(newModel));
-			case 5:
+			case 'SetColorFilter':
 				var filter = msg.a;
 				var newModel = _Utils_update(
 					model,
-					{O: filter, f: $author$project$Types$Loading, eB: 0});
+					{colorFilter: filter, games: $author$project$Types$Loading, offset: 0});
 				return _Utils_Tuple2(
 					newModel,
 					$author$project$Pages$StudentDetail$fetchFilteredGames(newModel));
-			case 6:
+			case 'ToggleTag':
 				var tagSlug = msg.a;
-				var newTags = A2($elm$core$List$member, tagSlug, model.x) ? A2(
+				var newTags = A2($elm$core$List$member, tagSlug, model.selectedTags) ? A2(
 					$elm$core$List$filter,
 					function (t) {
 						return !_Utils_eq(t, tagSlug);
 					},
-					model.x) : A2($elm$core$List$cons, tagSlug, model.x);
+					model.selectedTags) : A2($elm$core$List$cons, tagSlug, model.selectedTags);
 				var newModel = _Utils_update(
 					model,
-					{f: $author$project$Types$Loading, eB: 0, x: newTags});
+					{games: $author$project$Types$Loading, offset: 0, selectedTags: newTags});
 				return _Utils_Tuple2(
 					newModel,
 					$author$project$Pages$StudentDetail$fetchFilteredGames(newModel));
-			case 7:
+			case 'ClearTags':
 				var newModel = _Utils_update(
 					model,
-					{f: $author$project$Types$Loading, eB: 0, x: _List_Nil});
+					{games: $author$project$Types$Loading, offset: 0, selectedTags: _List_Nil});
 				return _Utils_Tuple2(
 					newModel,
 					$author$project$Pages$StudentDetail$fetchFilteredGames(newModel));
-			case 8:
+			case 'SetMinAccuracy':
 				var str = msg.a;
 				var newModel = _Utils_update(
 					model,
 					{
-						f: $author$project$Types$Loading,
-						eu: $elm$core$String$toInt(str),
-						eB: 0
+						games: $author$project$Types$Loading,
+						minAccuracy: $elm$core$String$toInt(str),
+						offset: 0
 					});
 				return _Utils_Tuple2(
 					newModel,
 					$author$project$Pages$StudentDetail$fetchFilteredGames(newModel));
-			case 9:
+			case 'SetMaxAccuracy':
 				var str = msg.a;
 				var newModel = _Utils_update(
 					model,
 					{
-						f: $author$project$Types$Loading,
-						ep: $elm$core$String$toInt(str),
-						eB: 0
+						games: $author$project$Types$Loading,
+						maxAccuracy: $elm$core$String$toInt(str),
+						offset: 0
 					});
 				return _Utils_Tuple2(
 					newModel,
 					$author$project$Pages$StudentDetail$fetchFilteredGames(newModel));
-			case 10:
+			case 'ClearAccuracy':
 				var newModel = _Utils_update(
 					model,
-					{f: $author$project$Types$Loading, ep: $elm$core$Maybe$Nothing, eu: $elm$core$Maybe$Nothing, eB: 0});
+					{games: $author$project$Types$Loading, maxAccuracy: $elm$core$Maybe$Nothing, minAccuracy: $elm$core$Maybe$Nothing, offset: 0});
 				return _Utils_Tuple2(
 					newModel,
 					$author$project$Pages$StudentDetail$fetchFilteredGames(newModel));
-			case 11:
+			case 'SetMaxBlunders':
 				var str = msg.a;
 				var newModel = _Utils_update(
 					model,
 					{
-						f: $author$project$Types$Loading,
-						er: $elm$core$String$toInt(str),
-						eB: 0
+						games: $author$project$Types$Loading,
+						maxBlunders: $elm$core$String$toInt(str),
+						offset: 0
 					});
 				return _Utils_Tuple2(
 					newModel,
 					$author$project$Pages$StudentDetail$fetchFilteredGames(newModel));
-			case 12:
+			case 'ClearBlunders':
 				var newModel = _Utils_update(
 					model,
-					{f: $author$project$Types$Loading, er: $elm$core$Maybe$Nothing, eB: 0});
+					{games: $author$project$Types$Loading, maxBlunders: $elm$core$Maybe$Nothing, offset: 0});
 				return _Utils_Tuple2(
 					newModel,
 					$author$project$Pages$StudentDetail$fetchFilteredGames(newModel));
-			case 13:
+			case 'SetOpponentRatingFilter':
 				var filter = msg.a;
 				var newModel = _Utils_update(
 					model,
-					{f: $author$project$Types$Loading, eB: 0, R: filter});
+					{games: $author$project$Types$Loading, offset: 0, opponentRatingFilter: filter});
 				return _Utils_Tuple2(
 					newModel,
 					$author$project$Pages$StudentDetail$fetchFilteredGames(newModel));
-			case 14:
+			case 'SetOpponentSearch':
 				var searchStr = msg.a;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{ah: searchStr}),
+						{opponentSearch: searchStr}),
 					$elm$core$Platform$Cmd$none);
-			case 15:
+			case 'SetSortOrder':
 				var order = msg.a;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{S: order}),
+						{sortOrder: order}),
 					$elm$core$Platform$Cmd$none);
-			case 16:
+			case 'ClearAllFilters':
 				var newModel = _Utils_update(
 					model,
-					{O: 0, f: $author$project$Types$Loading, ep: $elm$core$Maybe$Nothing, er: $elm$core$Maybe$Nothing, eu: $elm$core$Maybe$Nothing, eB: 0, R: 'all', ah: '', M: 0, x: _List_Nil, S: 0, N: 0});
+					{colorFilter: $author$project$Types$AllColors, games: $author$project$Types$Loading, maxAccuracy: $elm$core$Maybe$Nothing, maxBlunders: $elm$core$Maybe$Nothing, minAccuracy: $elm$core$Maybe$Nothing, offset: 0, opponentRatingFilter: 'all', opponentSearch: '', resultFilter: $author$project$Types$AllResults, selectedTags: _List_Nil, sortOrder: $author$project$Pages$StudentDetail$DateNewest, timeControlFilter: $author$project$Types$AllTimeControls});
 				return _Utils_Tuple2(
 					newModel,
 					$author$project$Pages$StudentDetail$fetchFilteredGames(newModel));
-			case 17:
+			case 'ToggleGameExpanded':
 				var gameId = msg.a;
-				var newExpanded = A2($elm$core$Set$member, gameId, model.ay) ? A2($elm$core$Set$remove, gameId, model.ay) : A2($elm$core$Set$insert, gameId, model.ay);
+				var newExpanded = A2($elm$core$Set$member, gameId, model.expandedGames) ? A2($elm$core$Set$remove, gameId, model.expandedGames) : A2($elm$core$Set$insert, gameId, model.expandedGames);
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{ay: newExpanded}),
+						{expandedGames: newExpanded}),
 					$elm$core$Platform$Cmd$none);
-			case 18:
+			case 'ToggleFilterSection':
 				var section = msg.a;
-				var newSections = A2($elm$core$Set$member, section, model.ax) ? A2($elm$core$Set$remove, section, model.ax) : A2($elm$core$Set$insert, section, model.ax);
+				var newSections = A2($elm$core$Set$member, section, model.expandedFilterSections) ? A2($elm$core$Set$remove, section, model.expandedFilterSections) : A2($elm$core$Set$insert, section, model.expandedFilterSections);
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{ax: newSections}),
+						{expandedFilterSections: newSections}),
 					$elm$core$Platform$Cmd$none);
-			case 19:
+			case 'ToggleSidebar':
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{aR: !model.aR}),
+						{sidebarVisible: !model.sidebarVisible}),
 					$elm$core$Platform$Cmd$none);
-			case 20:
+			case 'LoadMore':
 				var newModel = _Utils_update(
 					model,
-					{f: $author$project$Types$Loading, eB: model.eB + model.ej});
+					{games: $author$project$Types$Loading, offset: model.offset + model.limit});
 				return _Utils_Tuple2(
 					newModel,
 					$author$project$Pages$StudentDetail$fetchFilteredGames(newModel));
-			case 21:
+			case 'GoToPage':
 				var page = msg.a;
 				var newModel = _Utils_update(
 					model,
-					{f: $author$project$Types$Loading, eB: page * model.ej});
+					{games: $author$project$Types$Loading, offset: page * model.limit});
 				return _Utils_Tuple2(
 					newModel,
 					$author$project$Pages$StudentDetail$fetchFilteredGames(newModel));
@@ -8481,25 +8504,25 @@ var $author$project$Pages$StudentDetail$update = F2(
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{bn: maybeId}),
+						{hoveredGameId: maybeId}),
 					$elm$core$Platform$Cmd$none);
 		}
 	});
 var $author$project$Main$update = F2(
 	function (msg, model) {
-		var _v0 = _Utils_Tuple2(msg, model.z);
+		var _v0 = _Utils_Tuple2(msg, model.page);
 		_v0$8:
 		while (true) {
 			switch (_v0.a.$) {
-				case 0:
+				case 'UrlRequested':
 					var urlRequest = _v0.a.a;
-					if (!urlRequest.$) {
+					if (urlRequest.$ === 'Internal') {
 						var url = urlRequest.a;
 						return _Utils_Tuple2(
 							model,
 							A2(
 								$elm$browser$Browser$Navigation$pushUrl,
-								model.K,
+								model.key,
 								$elm$url$Url$toString(url)));
 					} else {
 						var href = urlRequest.a;
@@ -8507,109 +8530,109 @@ var $author$project$Main$update = F2(
 							model,
 							$elm$browser$Browser$Navigation$load(href));
 					}
-				case 1:
+				case 'UrlChanged':
 					var url = _v0.a.a;
 					return A2(
 						$author$project$Main$changeRouteTo,
 						$author$project$Route$fromUrl(url),
 						model);
-				case 2:
-					if (!_v0.b.$) {
+				case 'LoginMsg':
+					if (_v0.b.$ === 'LoginPage') {
 						var subMsg = _v0.a.a;
 						var subModel = _v0.b.a;
-						var _v2 = A3($author$project$Pages$Login$update, model.ck, subMsg, subModel);
+						var _v2 = A3($author$project$Pages$Login$update, model.apiUrl, subMsg, subModel);
 						var newSubModel = _v2.a;
 						var subCmd = _v2.b;
 						var maybeAuth = _v2.c;
-						if (!maybeAuth.$) {
-							var token = maybeAuth.a.bx;
-							var coach = maybeAuth.a.dH;
+						if (maybeAuth.$ === 'Just') {
+							var token = maybeAuth.a.token;
+							var coach = maybeAuth.a.coach;
 							return _Utils_Tuple2(
 								_Utils_update(
 									model,
 									{
-										B: A2($author$project$Main$LoggedIn, token, coach)
+										session: A2($author$project$Main$LoggedIn, token, coach)
 									}),
 								$elm$core$Platform$Cmd$batch(
 									_List_fromArray(
 										[
 											$author$project$Main$saveToken(token),
-											A2($author$project$Route$replaceUrl, model.K, $author$project$Route$Dashboard)
+											A2($author$project$Route$replaceUrl, model.key, $author$project$Route$Dashboard)
 										])));
 						} else {
 							return _Utils_Tuple2(
 								_Utils_update(
 									model,
 									{
-										z: $author$project$Main$LoginPage(newSubModel)
+										page: $author$project$Main$LoginPage(newSubModel)
 									}),
 								A2($elm$core$Platform$Cmd$map, $author$project$Main$LoginMsg, subCmd));
 						}
 					} else {
 						break _v0$8;
 					}
-				case 3:
-					if (_v0.b.$ === 1) {
+				case 'RegisterMsg':
+					if (_v0.b.$ === 'RegisterPage') {
 						var subMsg = _v0.a.a;
 						var subModel = _v0.b.a;
-						var _v4 = A3($author$project$Pages$Register$update, model.ck, subMsg, subModel);
+						var _v4 = A3($author$project$Pages$Register$update, model.apiUrl, subMsg, subModel);
 						var newSubModel = _v4.a;
 						var subCmd = _v4.b;
 						var maybeAuth = _v4.c;
-						if (!maybeAuth.$) {
-							var token = maybeAuth.a.bx;
-							var coach = maybeAuth.a.dH;
+						if (maybeAuth.$ === 'Just') {
+							var token = maybeAuth.a.token;
+							var coach = maybeAuth.a.coach;
 							return _Utils_Tuple2(
 								_Utils_update(
 									model,
 									{
-										B: A2($author$project$Main$LoggedIn, token, coach)
+										session: A2($author$project$Main$LoggedIn, token, coach)
 									}),
 								$elm$core$Platform$Cmd$batch(
 									_List_fromArray(
 										[
 											$author$project$Main$saveToken(token),
-											A2($author$project$Route$replaceUrl, model.K, $author$project$Route$Dashboard)
+											A2($author$project$Route$replaceUrl, model.key, $author$project$Route$Dashboard)
 										])));
 						} else {
 							return _Utils_Tuple2(
 								_Utils_update(
 									model,
 									{
-										z: $author$project$Main$RegisterPage(newSubModel)
+										page: $author$project$Main$RegisterPage(newSubModel)
 									}),
 								A2($elm$core$Platform$Cmd$map, $author$project$Main$RegisterMsg, subCmd));
 						}
 					} else {
 						break _v0$8;
 					}
-				case 4:
-					if (_v0.b.$ === 2) {
+				case 'DashboardMsg':
+					if (_v0.b.$ === 'DashboardPage') {
 						var subMsg = _v0.a.a;
 						var subModel = _v0.b.a;
-						var _v6 = model.B;
-						if (_v6.$ === 1) {
+						var _v6 = model.session;
+						if (_v6.$ === 'LoggedIn') {
 							var token = _v6.a;
-							var _v7 = A4($author$project$Pages$Dashboard$update, model.ck, token, subMsg, subModel);
+							var _v7 = A4($author$project$Pages$Dashboard$update, model.apiUrl, token, subMsg, subModel);
 							var newSubModel = _v7.a;
 							var subCmd = _v7.b;
 							return _Utils_Tuple2(
 								_Utils_update(
 									model,
 									{
-										z: $author$project$Main$DashboardPage(newSubModel)
+										page: $author$project$Main$DashboardPage(newSubModel)
 									}),
 								A2($elm$core$Platform$Cmd$map, $author$project$Main$DashboardMsg, subCmd));
 						} else {
 							return _Utils_Tuple2(
 								model,
-								A2($author$project$Route$replaceUrl, model.K, $author$project$Route$Login));
+								A2($author$project$Route$replaceUrl, model.key, $author$project$Route$Login));
 						}
 					} else {
 						break _v0$8;
 					}
-				case 5:
-					if (_v0.b.$ === 3) {
+				case 'StudentDetailMsg':
+					if (_v0.b.$ === 'StudentDetailPage') {
 						var subMsg = _v0.a.a;
 						var subModel = _v0.b.a;
 						var _v8 = A2($author$project$Pages$StudentDetail$update, subMsg, subModel);
@@ -8619,14 +8642,14 @@ var $author$project$Main$update = F2(
 							_Utils_update(
 								model,
 								{
-									z: $author$project$Main$StudentDetailPage(newSubModel)
+									page: $author$project$Main$StudentDetailPage(newSubModel)
 								}),
 							A2($elm$core$Platform$Cmd$map, $author$project$Main$StudentDetailMsg, subCmd));
 					} else {
 						break _v0$8;
 					}
-				case 6:
-					if (_v0.b.$ === 4) {
+				case 'GameDetailMsg':
+					if (_v0.b.$ === 'GameDetailPage') {
 						var subMsg = _v0.a.a;
 						var subModel = _v0.b.a;
 						var _v9 = A2($author$project$Pages$GameDetail$update, subMsg, subModel);
@@ -8636,7 +8659,7 @@ var $author$project$Main$update = F2(
 							_Utils_update(
 								model,
 								{
-									z: $author$project$Main$GameDetailPage(newSubModel)
+									page: $author$project$Main$GameDetailPage(newSubModel)
 								}),
 							A2($elm$core$Platform$Cmd$map, $author$project$Main$GameDetailMsg, subCmd));
 					} else {
@@ -8647,18 +8670,18 @@ var $author$project$Main$update = F2(
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{B: $author$project$Main$Guest}),
+							{session: $author$project$Main$Guest}),
 						$elm$core$Platform$Cmd$batch(
 							_List_fromArray(
 								[
-									$author$project$Main$clearToken(0),
-									A2($author$project$Route$replaceUrl, model.K, $author$project$Route$Login)
+									$author$project$Main$clearToken(_Utils_Tuple0),
+									A2($author$project$Route$replaceUrl, model.key, $author$project$Route$Login)
 								])));
 			}
 		}
 		return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 	});
-var $author$project$Main$Logout = {$: 7};
+var $author$project$Main$Logout = {$: 'Logout'};
 var $elm$html$Html$Attributes$stringProperty = F2(
 	function (key, string) {
 		return A2(
@@ -8683,7 +8706,7 @@ var $author$project$Route$href = function (route) {
 		$author$project$Route$routeToString(route));
 };
 var $elm$virtual_dom$VirtualDom$Normal = function (a) {
-	return {$: 0, a: a};
+	return {$: 'Normal', a: a};
 };
 var $elm$virtual_dom$VirtualDom$on = _VirtualDom_on;
 var $elm$html$Html$Events$on = F2(
@@ -8793,14 +8816,14 @@ var $author$project$View$Layout$viewHeader = F2(
 										]),
 									_List_fromArray(
 										[
-											$elm$html$Html$text(coach.cu)
+											$elm$html$Html$text(coach.email)
 										])),
 									A2(
 									$elm$html$Html$button,
 									_List_fromArray(
 										[
 											$elm$html$Html$Events$onClick(onLogout),
-											$elm$html$Html$Attributes$class('text-sm text-anthro-gray hover:text-anthro-dark transition')
+											$elm$html$Html$Attributes$class('text-sm text-anthro-gray hover:text-anthro-dark transition-colors px-3 py-1.5 rounded-lg hover:bg-anthro-cream')
 										]),
 									_List_fromArray(
 										[
@@ -8819,7 +8842,7 @@ var $author$project$View$Layout$layout = function (config) {
 			]),
 		_List_fromArray(
 			[
-				A2($author$project$View$Layout$viewHeader, config.dH, config.bY),
+				A2($author$project$View$Layout$viewHeader, config.coach, config.onLogout),
 				A2(
 				$elm$html$Html$main_,
 				_List_fromArray(
@@ -8827,18 +8850,18 @@ var $author$project$View$Layout$layout = function (config) {
 						$elm$html$Html$Attributes$class('max-w-6xl mx-auto px-4 py-8')
 					]),
 				_List_fromArray(
-					[config.bC]))
+					[config.content]))
 			]));
 };
 var $elm$virtual_dom$VirtualDom$map = _VirtualDom_map;
 var $elm$html$Html$map = $elm$virtual_dom$VirtualDom$map;
-var $author$project$Pages$Dashboard$HideAddModal = {$: 2};
+var $author$project$Pages$Dashboard$HideAddModal = {$: 'HideAddModal'};
 var $author$project$Pages$Dashboard$NewStudentChessComChanged = function (a) {
-	return {$: 3, a: a};
+	return {$: 'NewStudentChessComChanged', a: a};
 };
-var $author$project$Pages$Dashboard$NoOp = {$: 8};
+var $author$project$Pages$Dashboard$NoOp = {$: 'NoOp'};
 var $author$project$Pages$Dashboard$SubmitNewStudent = function (a) {
-	return {$: 4, a: a};
+	return {$: 'SubmitNewStudent', a: a};
 };
 var $elm$json$Json$Encode$bool = _Json_wrap;
 var $elm$html$Html$Attributes$boolProperty = F2(
@@ -8857,7 +8880,7 @@ var $elm$html$Html$Events$alwaysStop = function (x) {
 	return _Utils_Tuple2(x, true);
 };
 var $elm$virtual_dom$VirtualDom$MayStopPropagation = function (a) {
-	return {$: 1, a: a};
+	return {$: 'MayStopPropagation', a: a};
 };
 var $elm$html$Html$Events$stopPropagationOn = F2(
 	function (event, decoder) {
@@ -8884,7 +8907,7 @@ var $elm$html$Html$Events$alwaysPreventDefault = function (msg) {
 	return _Utils_Tuple2(msg, true);
 };
 var $elm$virtual_dom$VirtualDom$MayPreventDefault = function (a) {
-	return {$: 2, a: a};
+	return {$: 'MayPreventDefault', a: a};
 };
 var $elm$html$Html$Events$preventDefaultOn = F2(
 	function (event, decoder) {
@@ -8920,7 +8943,7 @@ var $author$project$Pages$Dashboard$viewAddModal = F3(
 					$elm$html$Html$div,
 					_List_fromArray(
 						[
-							$elm$html$Html$Attributes$class('bg-white rounded-xl shadow-xl max-w-md w-full'),
+							$elm$html$Html$Attributes$class('bg-white rounded-xl shadow-modal max-w-md w-full'),
 							A2(
 							$elm$html$Html$Events$stopPropagationOn,
 							'click',
@@ -8965,14 +8988,14 @@ var $author$project$Pages$Dashboard$viewAddModal = F3(
 								[
 									$elm$html$Html$Events$onSubmit(
 									$author$project$Pages$Dashboard$SubmitNewStudent(
-										{ck: apiUrl, bx: token})),
+										{apiUrl: apiUrl, token: token})),
 									$elm$html$Html$Attributes$class('p-5')
 								]),
 							_List_fromArray(
 								[
 									function () {
-									var _v0 = model.ak;
-									if (!_v0.$) {
+									var _v0 = model.addError;
+									if (_v0.$ === 'Just') {
 										var errorMsg = _v0.a;
 										return A2(
 											$elm$html$Html$div,
@@ -9011,11 +9034,11 @@ var $author$project$Pages$Dashboard$viewAddModal = F3(
 											_List_fromArray(
 												[
 													$elm$html$Html$Attributes$type_('text'),
-													$elm$html$Html$Attributes$class('w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-gray-900 outline-none transition-shadow'),
+													$elm$html$Html$Attributes$class('w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-anthro-dark focus:border-anthro-dark outline-none transition-shadow'),
 													$elm$html$Html$Attributes$placeholder('Enter username'),
-													$elm$html$Html$Attributes$value(model.aq),
+													$elm$html$Html$Attributes$value(model.newStudentChessCom),
 													$elm$html$Html$Events$onInput($author$project$Pages$Dashboard$NewStudentChessComChanged),
-													$elm$html$Html$Attributes$disabled(model.ae)
+													$elm$html$Html$Attributes$disabled(model.isAdding)
 												]),
 											_List_Nil)
 										])),
@@ -9054,7 +9077,7 @@ var $author$project$Pages$Dashboard$viewAddModal = F3(
 													$elm$html$Html$Attributes$type_('button'),
 													$elm$html$Html$Events$onClick($author$project$Pages$Dashboard$HideAddModal),
 													$elm$html$Html$Attributes$class('px-4 py-2.5 text-gray-600 hover:text-gray-900 font-medium transition-colors'),
-													$elm$html$Html$Attributes$disabled(model.ae)
+													$elm$html$Html$Attributes$disabled(model.isAdding)
 												]),
 											_List_fromArray(
 												[
@@ -9066,45 +9089,45 @@ var $author$project$Pages$Dashboard$viewAddModal = F3(
 												[
 													$elm$html$Html$Attributes$type_('submit'),
 													$elm$html$Html$Attributes$class('bg-gray-900 hover:bg-gray-800 text-white font-medium py-2.5 px-5 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed'),
-													$elm$html$Html$Attributes$disabled(model.ae)
+													$elm$html$Html$Attributes$disabled(model.isAdding)
 												]),
 											_List_fromArray(
 												[
-													model.ae ? $elm$html$Html$text('Adding...') : $elm$html$Html$text('Add Student')
+													model.isAdding ? $elm$html$Html$text('Adding...') : $elm$html$Html$text('Add Student')
 												]))
 										]))
 								]))
 						]))
 				]));
 	});
-var $author$project$Pages$Dashboard$FilterActive = 1;
-var $author$project$Pages$Dashboard$FilterInactive = 2;
+var $author$project$Pages$Dashboard$FilterActive = {$: 'FilterActive'};
+var $author$project$Pages$Dashboard$FilterInactive = {$: 'FilterInactive'};
 var $author$project$Pages$Dashboard$SetFilterBy = function (a) {
-	return {$: 7, a: a};
+	return {$: 'SetFilterBy', a: a};
 };
 var $author$project$Pages$Dashboard$SetSortBy = function (a) {
-	return {$: 6, a: a};
+	return {$: 'SetSortBy', a: a};
 };
-var $author$project$Pages$Dashboard$ShowAddModal = {$: 1};
-var $author$project$Pages$Dashboard$SortAlphabetical = 1;
-var $author$project$Pages$Dashboard$SortNeedsAttention = 2;
+var $author$project$Pages$Dashboard$ShowAddModal = {$: 'ShowAddModal'};
+var $author$project$Pages$Dashboard$SortAlphabetical = {$: 'SortAlphabetical'};
+var $author$project$Pages$Dashboard$SortNeedsAttention = {$: 'SortNeedsAttention'};
 var $author$project$Pages$Dashboard$filterStudents = F2(
 	function (option, students) {
-		switch (option) {
-			case 0:
+		switch (option.$) {
+			case 'FilterAll':
 				return students;
-			case 1:
+			case 'FilterActive':
 				return A2(
 					$elm$core$List$filter,
 					function (s) {
-						return s.A.X > 0;
+						return s.stats.gameCount > 0;
 					},
 					students);
 			default:
 				return A2(
 					$elm$core$List$filter,
 					function (s) {
-						return !s.A.X;
+						return !s.stats.gameCount;
 					},
 					students);
 		}
@@ -9121,14 +9144,14 @@ var $elm$html$Html$Attributes$selected = $elm$html$Html$Attributes$boolProperty(
 var $elm$core$List$sortBy = _List_sortBy;
 var $author$project$Pages$Dashboard$sortStudents = F2(
 	function (option, students) {
-		switch (option) {
-			case 0:
+		switch (option.$) {
+			case 'SortRecent':
 				return $elm$core$List$reverse(
 					A2(
 						$elm$core$List$sortBy,
 						function (s) {
-							var _v1 = s.cI;
-							if (!_v1.$) {
+							var _v1 = s.lastImportedAt;
+							if (_v1.$ === 'Just') {
 								var date = _v1.a;
 								return date;
 							} else {
@@ -9136,22 +9159,22 @@ var $author$project$Pages$Dashboard$sortStudents = F2(
 							}
 						},
 						students));
-			case 1:
+			case 'SortAlphabetical':
 				return A2(
 					$elm$core$List$sortBy,
 					function ($) {
-						return $.bg;
+						return $.displayName;
 					},
 					students);
 			default:
 				return A2(
 					$elm$core$List$sortBy,
 					function (s) {
-						if (!s.A.X) {
+						if (!s.stats.gameCount) {
 							return 0;
 						} else {
-							var _v2 = s.A.bA;
-							if (!_v2.$) {
+							var _v2 = s.stats.avgAccuracy;
+							if (_v2.$ === 'Just') {
 								var acc = _v2.a;
 								return (acc < 50) ? 1 : 2;
 							} else {
@@ -9311,11 +9334,11 @@ var $author$project$Pages$Dashboard$getInitials = function (name) {
 };
 var $elm$core$Basics$round = _Basics_round;
 var $author$project$Pages$Dashboard$getStudentAlerts = function (student) {
-	var noGames = (!student.A.X) ? _List_fromArray(
+	var noGames = (!student.stats.gameCount) ? _List_fromArray(
 		['Games not imported yet']) : _List_Nil;
 	var lowAccuracy = function () {
-		var _v1 = student.A.bA;
-		if (!_v1.$) {
+		var _v1 = student.stats.avgAccuracy;
+		if (_v1.$ === 'Just') {
 			var acc = _v1.a;
 			return (acc < 50) ? _List_fromArray(
 				[
@@ -9327,9 +9350,9 @@ var $author$project$Pages$Dashboard$getStudentAlerts = function (student) {
 		}
 	}();
 	var losingRecord = function () {
-		if (student.A.X > 5) {
-			var _v0 = student.A.dj;
-			if (!_v0.$) {
+		if (student.stats.gameCount > 5) {
+			var _v0 = student.stats.winRate;
+			if (_v0.$ === 'Just') {
 				var rate = _v0.a;
 				return (rate < 30) ? _List_fromArray(
 					['Struggling with recent games']) : _List_Nil;
@@ -9364,7 +9387,7 @@ var $elm$core$List$head = function (list) {
 var $author$project$Pages$Dashboard$viewAlertRow = function (student) {
 	var alerts = $author$project$Pages$Dashboard$getStudentAlerts(student);
 	var _v0 = $elm$core$List$head(alerts);
-	if (!_v0.$) {
+	if (_v0.$ === 'Just') {
 		var alert = _v0.a;
 		return A2(
 			$elm$html$Html$div,
@@ -9393,7 +9416,7 @@ var $author$project$Pages$Dashboard$viewStatCell = F3(
 			$elm$html$Html$div,
 			_List_fromArray(
 				[
-					$elm$html$Html$Attributes$class('bg-gray-50 rounded-lg p-3 text-center')
+					$elm$html$Html$Attributes$class('text-center px-3')
 				]),
 			_List_fromArray(
 				[
@@ -9418,7 +9441,7 @@ var $author$project$Pages$Dashboard$viewStatCell = F3(
 							$elm$html$Html$text(label)
 						])),
 					function () {
-					if (!maybeTrend.$) {
+					if (maybeTrend.$ === 'Just') {
 						var trend = maybeTrend.a;
 						return A2(
 							$elm$html$Html$div,
@@ -9438,11 +9461,11 @@ var $author$project$Pages$Dashboard$viewStatCell = F3(
 				]));
 	});
 var $author$project$Pages$Dashboard$viewStudentCard = function (student) {
-	var needsSetup = !student.A.X;
-	var statusInfo = needsSetup ? {bG: 'bg-amber-400', cb: 'text-amber-600', cc: 'Awaiting import'} : {
-		bG: 'bg-green-500',
-		cb: 'text-green-600',
-		cc: $elm$core$String$fromInt(student.A.X) + ' games'
+	var needsSetup = !student.stats.gameCount;
+	var statusInfo = needsSetup ? {dotColor: 'bg-amber-400', statusClass: 'text-amber-600', statusText: 'Awaiting import'} : {
+		dotColor: 'bg-green-500',
+		statusClass: 'text-green-600',
+		statusText: $elm$core$String$fromInt(student.stats.gameCount) + ' games'
 	};
 	var hasAlerts = !$elm$core$List$isEmpty(
 		$author$project$Pages$Dashboard$getStudentAlerts(student));
@@ -9451,9 +9474,9 @@ var $author$project$Pages$Dashboard$viewStudentCard = function (student) {
 		_List_fromArray(
 			[
 				$author$project$Route$href(
-				$author$project$Route$StudentDetail(student.ea)),
+				$author$project$Route$StudentDetail(student.id)),
 				$elm$html$Html$Attributes$class(
-				'block bg-white rounded-xl border overflow-hidden transition-all group ' + (hasAlerts ? 'border-l-4 border-l-amber-400 border-gray-200 hover:border-gray-300 hover:shadow-md' : 'border-gray-200 hover:border-gray-300 hover:shadow-md'))
+				'block bg-white rounded-xl overflow-hidden transition-all group shadow-card hover:shadow-elevated ' + (hasAlerts ? 'border-l-4 border-l-amber-400' : ''))
 			]),
 		_List_fromArray(
 			[
@@ -9474,15 +9497,15 @@ var $author$project$Pages$Dashboard$viewStudentCard = function (student) {
 						_List_fromArray(
 							[
 								function () {
-								var _v0 = student.dw;
-								if (!_v0.$) {
+								var _v0 = student.avatarUrl;
+								if (_v0.$ === 'Just') {
 									var url = _v0.a;
 									return A2(
 										$elm$html$Html$img,
 										_List_fromArray(
 											[
 												$elm$html$Html$Attributes$src(url),
-												$elm$html$Html$Attributes$alt(student.bg),
+												$elm$html$Html$Attributes$alt(student.displayName),
 												$elm$html$Html$Attributes$class('w-14 h-14 rounded-full object-cover flex-shrink-0')
 											]),
 										_List_Nil);
@@ -9504,7 +9527,7 @@ var $author$project$Pages$Dashboard$viewStudentCard = function (student) {
 												_List_fromArray(
 													[
 														$elm$html$Html$text(
-														$author$project$Pages$Dashboard$getInitials(student.bg))
+														$author$project$Pages$Dashboard$getInitials(student.displayName))
 													]))
 											]));
 								}
@@ -9525,11 +9548,11 @@ var $author$project$Pages$Dashboard$viewStudentCard = function (student) {
 											]),
 										_List_fromArray(
 											[
-												$elm$html$Html$text(student.bg)
+												$elm$html$Html$text(student.displayName)
 											])),
 										function () {
-										var _v1 = student.dG;
-										if (!_v1.$) {
+										var _v1 = student.chessComUsername;
+										if (_v1.$ === 'Just') {
 											var username = _v1.a;
 											return A2(
 												$elm$html$Html$p,
@@ -9564,8 +9587,8 @@ var $author$project$Pages$Dashboard$viewStudentCard = function (student) {
 											[
 												$elm$html$Html$text(
 												function () {
-													var _v2 = student.cI;
-													if (!_v2.$) {
+													var _v2 = student.lastImportedAt;
+													if (_v2.$ === 'Just') {
 														var date = _v2.a;
 														return A2($elm$core$String$left, 10, date);
 													} else {
@@ -9579,18 +9602,18 @@ var $author$project$Pages$Dashboard$viewStudentCard = function (student) {
 						$elm$html$Html$div,
 						_List_fromArray(
 							[
-								$elm$html$Html$Attributes$class('grid grid-cols-3 gap-3 mt-4')
+								$elm$html$Html$Attributes$class('flex items-center justify-around mt-4 pt-4 border-t border-anthro-gray-light')
 							]),
 						_List_fromArray(
 							[
 								A3(
 								$author$project$Pages$Dashboard$viewStatCell,
-								$elm$core$String$fromInt(student.A.X),
+								$elm$core$String$fromInt(student.stats.gameCount),
 								'games',
 								$elm$core$Maybe$Nothing),
 								function () {
-								var _v3 = student.A.dj;
-								if (!_v3.$) {
+								var _v3 = student.stats.winRate;
+								if (_v3.$ === 'Just') {
 									var rate = _v3.a;
 									return A3(
 										$author$project$Pages$Dashboard$viewStatCell,
@@ -9603,8 +9626,8 @@ var $author$project$Pages$Dashboard$viewStudentCard = function (student) {
 								}
 							}(),
 								function () {
-								var _v4 = student.A.bA;
-								if (!_v4.$) {
+								var _v4 = student.stats.avgAccuracy;
+								if (_v4.$ === 'Just') {
 									var acc = _v4.a;
 									return A3(
 										$author$project$Pages$Dashboard$viewStatCell,
@@ -9640,7 +9663,7 @@ var $author$project$Pages$Dashboard$viewStudentCard = function (student) {
 								$elm$html$Html$span,
 								_List_fromArray(
 									[
-										$elm$html$Html$Attributes$class('text-xs flex items-center gap-1.5 ' + statusInfo.cb)
+										$elm$html$Html$Attributes$class('text-xs flex items-center gap-1.5 ' + statusInfo.statusClass)
 									]),
 								_List_fromArray(
 									[
@@ -9648,10 +9671,10 @@ var $author$project$Pages$Dashboard$viewStudentCard = function (student) {
 										$elm$html$Html$span,
 										_List_fromArray(
 											[
-												$elm$html$Html$Attributes$class('w-1.5 h-1.5 rounded-full ' + statusInfo.bG)
+												$elm$html$Html$Attributes$class('w-1.5 h-1.5 rounded-full ' + statusInfo.dotColor)
 											]),
 										_List_Nil),
-										$elm$html$Html$text(statusInfo.cc)
+										$elm$html$Html$text(statusInfo.statusText)
 									]))
 							]))
 					]))
@@ -9663,19 +9686,19 @@ var $author$project$Pages$Dashboard$viewDashboard = F2(
 			A2(
 				$elm$core$List$map,
 				function (s) {
-					return s.A.X;
+					return s.stats.gameCount;
 				},
 				students));
 		var studentCount = $elm$core$List$length(students);
 		var filteredStudents = A2(
 			$author$project$Pages$Dashboard$sortStudents,
-			model.aE,
-			A2($author$project$Pages$Dashboard$filterStudents, model.az, students));
+			model.sortBy,
+			A2($author$project$Pages$Dashboard$filterStudents, model.filterBy, students));
 		var activeCount = $elm$core$List$length(
 			A2(
 				$elm$core$List$filter,
 				function (s) {
-					return s.A.X > 0;
+					return s.stats.gameCount > 0;
 				},
 				students));
 		return A2(
@@ -9742,7 +9765,7 @@ var $author$project$Pages$Dashboard$viewDashboard = F2(
 									_List_fromArray(
 										[
 											$elm$html$Html$Events$onClick($author$project$Pages$Dashboard$ShowAddModal),
-											$elm$html$Html$Attributes$class('bg-gray-900 hover:bg-gray-800 text-white font-medium py-2.5 px-4 rounded-lg transition-colors flex items-center gap-2')
+											$elm$html$Html$Attributes$class('bg-anthro-dark hover:bg-gray-800 text-white font-medium py-2.5 px-4 rounded-lg transition-all shadow-subtle hover:shadow-card flex items-center gap-2')
 										]),
 									_List_fromArray(
 										[
@@ -9794,13 +9817,13 @@ var $author$project$Pages$Dashboard$viewDashboard = F2(
 													function (str) {
 														switch (str) {
 															case 'recent':
-																return $author$project$Pages$Dashboard$SetSortBy(0);
+																return $author$project$Pages$Dashboard$SetSortBy($author$project$Pages$Dashboard$SortRecent);
 															case 'alphabetical':
-																return $author$project$Pages$Dashboard$SetSortBy(1);
+																return $author$project$Pages$Dashboard$SetSortBy($author$project$Pages$Dashboard$SortAlphabetical);
 															case 'attention':
-																return $author$project$Pages$Dashboard$SetSortBy(2);
+																return $author$project$Pages$Dashboard$SetSortBy($author$project$Pages$Dashboard$SortNeedsAttention);
 															default:
-																return $author$project$Pages$Dashboard$SetSortBy(0);
+																return $author$project$Pages$Dashboard$SetSortBy($author$project$Pages$Dashboard$SortRecent);
 														}
 													})
 												]),
@@ -9811,7 +9834,8 @@ var $author$project$Pages$Dashboard$viewDashboard = F2(
 													_List_fromArray(
 														[
 															$elm$html$Html$Attributes$value('recent'),
-															$elm$html$Html$Attributes$selected(!model.aE)
+															$elm$html$Html$Attributes$selected(
+															_Utils_eq(model.sortBy, $author$project$Pages$Dashboard$SortRecent))
 														]),
 													_List_fromArray(
 														[
@@ -9822,7 +9846,8 @@ var $author$project$Pages$Dashboard$viewDashboard = F2(
 													_List_fromArray(
 														[
 															$elm$html$Html$Attributes$value('alphabetical'),
-															$elm$html$Html$Attributes$selected(model.aE === 1)
+															$elm$html$Html$Attributes$selected(
+															_Utils_eq(model.sortBy, $author$project$Pages$Dashboard$SortAlphabetical))
 														]),
 													_List_fromArray(
 														[
@@ -9833,7 +9858,8 @@ var $author$project$Pages$Dashboard$viewDashboard = F2(
 													_List_fromArray(
 														[
 															$elm$html$Html$Attributes$value('attention'),
-															$elm$html$Html$Attributes$selected(model.aE === 2)
+															$elm$html$Html$Attributes$selected(
+															_Utils_eq(model.sortBy, $author$project$Pages$Dashboard$SortNeedsAttention))
 														]),
 													_List_fromArray(
 														[
@@ -9868,13 +9894,13 @@ var $author$project$Pages$Dashboard$viewDashboard = F2(
 													function (str) {
 														switch (str) {
 															case 'all':
-																return $author$project$Pages$Dashboard$SetFilterBy(0);
+																return $author$project$Pages$Dashboard$SetFilterBy($author$project$Pages$Dashboard$FilterAll);
 															case 'active':
-																return $author$project$Pages$Dashboard$SetFilterBy(1);
+																return $author$project$Pages$Dashboard$SetFilterBy($author$project$Pages$Dashboard$FilterActive);
 															case 'inactive':
-																return $author$project$Pages$Dashboard$SetFilterBy(2);
+																return $author$project$Pages$Dashboard$SetFilterBy($author$project$Pages$Dashboard$FilterInactive);
 															default:
-																return $author$project$Pages$Dashboard$SetFilterBy(0);
+																return $author$project$Pages$Dashboard$SetFilterBy($author$project$Pages$Dashboard$FilterAll);
 														}
 													})
 												]),
@@ -9885,7 +9911,8 @@ var $author$project$Pages$Dashboard$viewDashboard = F2(
 													_List_fromArray(
 														[
 															$elm$html$Html$Attributes$value('all'),
-															$elm$html$Html$Attributes$selected(!model.az)
+															$elm$html$Html$Attributes$selected(
+															_Utils_eq(model.filterBy, $author$project$Pages$Dashboard$FilterAll))
 														]),
 													_List_fromArray(
 														[
@@ -9896,7 +9923,8 @@ var $author$project$Pages$Dashboard$viewDashboard = F2(
 													_List_fromArray(
 														[
 															$elm$html$Html$Attributes$value('active'),
-															$elm$html$Html$Attributes$selected(model.az === 1)
+															$elm$html$Html$Attributes$selected(
+															_Utils_eq(model.filterBy, $author$project$Pages$Dashboard$FilterActive))
 														]),
 													_List_fromArray(
 														[
@@ -9907,7 +9935,8 @@ var $author$project$Pages$Dashboard$viewDashboard = F2(
 													_List_fromArray(
 														[
 															$elm$html$Html$Attributes$value('inactive'),
-															$elm$html$Html$Attributes$selected(model.az === 2)
+															$elm$html$Html$Attributes$selected(
+															_Utils_eq(model.filterBy, $author$project$Pages$Dashboard$FilterInactive))
 														]),
 													_List_fromArray(
 														[
@@ -9940,7 +9969,7 @@ var $author$project$Pages$Dashboard$viewDashboard = F2(
 							_List_fromArray(
 								[
 									$elm$html$Html$Events$onClick(
-									$author$project$Pages$Dashboard$SetFilterBy(0)),
+									$author$project$Pages$Dashboard$SetFilterBy($author$project$Pages$Dashboard$FilterAll)),
 									$elm$html$Html$Attributes$class('mt-2 text-sm text-gray-600 hover:text-gray-900 underline')
 								]),
 							_List_fromArray(
@@ -10017,7 +10046,7 @@ var $author$project$Pages$Dashboard$viewEmptyState = A2(
 					_List_fromArray(
 						[
 							$elm$html$Html$Events$onClick($author$project$Pages$Dashboard$ShowAddModal),
-							$elm$html$Html$Attributes$class('bg-gray-900 hover:bg-gray-800 text-white font-medium py-3 px-6 rounded-lg transition-colors inline-flex items-center gap-2')
+							$elm$html$Html$Attributes$class('bg-anthro-dark hover:bg-gray-800 text-white font-medium py-3 px-6 rounded-lg transition-all shadow-subtle hover:shadow-card inline-flex items-center gap-2')
 						]),
 					_List_fromArray(
 						[
@@ -10261,13 +10290,13 @@ var $author$project$Pages$Dashboard$view = F3(
 			_List_fromArray(
 				[
 					function () {
-					var _v0 = model.aG;
+					var _v0 = model.students;
 					switch (_v0.$) {
-						case 0:
+						case 'NotAsked':
 							return $elm$html$Html$text('');
-						case 1:
+						case 'Loading':
 							return $author$project$Pages$Dashboard$viewLoading;
-						case 2:
+						case 'Failure':
 							var error = _v0.a;
 							return $author$project$Pages$Dashboard$viewError(error);
 						default:
@@ -10275,7 +10304,7 @@ var $author$project$Pages$Dashboard$view = F3(
 							return $elm$core$List$isEmpty(students) ? $author$project$Pages$Dashboard$viewEmptyState : A2($author$project$Pages$Dashboard$viewDashboard, model, students);
 					}
 				}(),
-					model.aQ ? A3($author$project$Pages$Dashboard$viewAddModal, apiUrl, token, model) : $elm$html$Html$text('')
+					model.showAddModal ? A3($author$project$Pages$Dashboard$viewAddModal, apiUrl, token, model) : $elm$html$Html$text('')
 				]));
 	});
 var $author$project$Pages$GameDetail$formatDate = function (dateStr) {
@@ -10298,7 +10327,7 @@ var $author$project$Pages$GameDetail$viewGameHeader = function (game) {
 		$elm$html$Html$div,
 		_List_fromArray(
 			[
-				$elm$html$Html$Attributes$class('bg-white rounded-lg border border-gray-200 p-6 mb-6')
+				$elm$html$Html$Attributes$class('bg-white rounded-lg shadow-card p-6 mb-6')
 			]),
 		_List_fromArray(
 			[
@@ -10319,7 +10348,7 @@ var $author$project$Pages$GameDetail$viewGameHeader = function (game) {
 						_List_fromArray(
 							[
 								$elm$html$Html$text(
-								(game.eL === 'chess_com') ? '♞' : '♘')
+								(game.platform === 'chess_com') ? '♞' : '♘')
 							])),
 						A2(
 						$elm$html$Html$div,
@@ -10334,7 +10363,7 @@ var $author$project$Pages$GameDetail$viewGameHeader = function (game) {
 									]),
 								_List_fromArray(
 									[
-										$elm$html$Html$text(game.fl + (' vs ' + game.dB))
+										$elm$html$Html$text(game.whiteUsername + (' vs ' + game.blackUsername))
 									])),
 								A2(
 								$elm$html$Html$div,
@@ -10345,7 +10374,7 @@ var $author$project$Pages$GameDetail$viewGameHeader = function (game) {
 								_List_fromArray(
 									[
 										$elm$html$Html$text(
-										$author$project$Pages$GameDetail$formatDate(game.eN))
+										$author$project$Pages$GameDetail$formatDate(game.playedAt))
 									]))
 							]))
 					])),
@@ -10362,24 +10391,24 @@ var $author$project$Pages$GameDetail$viewGameHeader = function (game) {
 						_List_fromArray(
 							[
 								$elm$html$Html$Attributes$class(
-								'px-3 py-1 rounded-full font-medium ' + function () {
-									var _v0 = game.eV;
+								'px-3 py-1 rounded font-medium bg-anthro-gray-light text-anthro-gray border-l-2 ' + function () {
+									var _v0 = game.result;
 									switch (_v0) {
 										case '1-0':
-											return 'bg-green-100 text-green-700';
+											return 'border-anthro-green';
 										case '0-1':
-											return 'bg-red-100 text-red-700';
+											return 'border-red-500';
 										default:
-											return 'bg-gray-100 text-gray-700';
+											return 'border-anthro-gray-mid';
 									}
 								}())
 							]),
 						_List_fromArray(
 							[
 								$elm$html$Html$text(
-								$author$project$Pages$GameDetail$resultToText(game.eV))
+								$author$project$Pages$GameDetail$resultToText(game.result))
 							])),
-						game.dt ? A2(
+						game.analyzed ? A2(
 						$elm$html$Html$span,
 						_List_fromArray(
 							[
@@ -10420,7 +10449,7 @@ var $author$project$Pages$GameDetail$classificationLabel = function (class_) {
 };
 var $author$project$Pages$GameDetail$viewMoveRow = function (move) {
 	var phaseLabel = function () {
-		var _v5 = move.eI;
+		var _v5 = move.phase;
 		switch (_v5) {
 			case 'opening':
 				return 'Opening';
@@ -10434,10 +10463,10 @@ var $author$project$Pages$GameDetail$viewMoveRow = function (move) {
 		}
 	}();
 	var _v0 = function () {
-		var _v1 = move.aN;
+		var _v1 = move.classification;
 		_v1$5:
 		while (true) {
-			if (!_v1.$) {
+			if (_v1.$ === 'Just') {
 				switch (_v1.a) {
 					case 'blunder':
 						return _Utils_Tuple3('bg-red-50', 'text-red-700', '??');
@@ -10494,7 +10523,7 @@ var $author$project$Pages$GameDetail$viewMoveRow = function (move) {
 								_List_fromArray(
 									[
 										$elm$html$Html$text(
-										$elm$core$String$fromInt(move.ex) + '.')
+										$elm$core$String$fromInt(move.moveNumber) + '.')
 									])),
 								A2(
 								$elm$html$Html$span,
@@ -10505,7 +10534,7 @@ var $author$project$Pages$GameDetail$viewMoveRow = function (move) {
 								_List_fromArray(
 									[
 										$elm$html$Html$text(
-										(move.dJ === 'white') ? move.cN : ('...' + move.cN))
+										(move.color === 'white') ? move.movePlayed : ('...' + move.movePlayed))
 									])),
 								(icon !== '') ? A2(
 								$elm$html$Html$span,
@@ -10537,8 +10566,8 @@ var $author$project$Pages$GameDetail$viewMoveRow = function (move) {
 										$elm$html$Html$text(phaseLabel)
 									])),
 								function () {
-								var _v2 = move.aN;
-								if (!_v2.$) {
+								var _v2 = move.classification;
+								if (_v2.$ === 'Just') {
 									var class_ = _v2.a;
 									return A2(
 										$elm$html$Html$span,
@@ -10556,8 +10585,8 @@ var $author$project$Pages$GameDetail$viewMoveRow = function (move) {
 								}
 							}(),
 								function () {
-								var _v3 = move.d_;
-								if (!_v3.$) {
+								var _v3 = move.evalDiff;
+								if (_v3.$ === 'Just') {
 									var diff = _v3.a;
 									return (diff > 0) ? A2(
 										$elm$html$Html$span,
@@ -10577,8 +10606,8 @@ var $author$project$Pages$GameDetail$viewMoveRow = function (move) {
 							]))
 					])),
 				function () {
-				var _v4 = _Utils_Tuple2(move.aN, move.dy);
-				if ((!_v4.a.$) && (!_v4.b.$)) {
+				var _v4 = _Utils_Tuple2(move.classification, move.bestMove);
+				if ((_v4.a.$ === 'Just') && (_v4.b.$ === 'Just')) {
 					var c = _v4.a.a;
 					var best = _v4.b.a;
 					return ((c === 'blunder') || ((c === 'mistake') || (c === 'inaccuracy'))) ? A2(
@@ -10603,7 +10632,7 @@ var $author$project$Pages$GameDetail$viewMoveSummary = function (moves) {
 			$elm$core$List$filter,
 			function (m) {
 				return _Utils_eq(
-					m.aN,
+					m.classification,
 					$elm$core$Maybe$Just('mistake'));
 			},
 			moves));
@@ -10612,7 +10641,7 @@ var $author$project$Pages$GameDetail$viewMoveSummary = function (moves) {
 			$elm$core$List$filter,
 			function (m) {
 				return _Utils_eq(
-					m.aN,
+					m.classification,
 					$elm$core$Maybe$Just('inaccuracy'));
 			},
 			moves));
@@ -10621,7 +10650,7 @@ var $author$project$Pages$GameDetail$viewMoveSummary = function (moves) {
 			$elm$core$List$filter,
 			function (m) {
 				return _Utils_eq(
-					m.aN,
+					m.classification,
 					$elm$core$Maybe$Just('blunder'));
 			},
 			moves));
@@ -10629,7 +10658,7 @@ var $author$project$Pages$GameDetail$viewMoveSummary = function (moves) {
 		$elm$html$Html$div,
 		_List_fromArray(
 			[
-				$elm$html$Html$Attributes$class('bg-white rounded-lg border border-gray-200 p-6')
+				$elm$html$Html$Attributes$class('bg-white rounded-lg shadow-card p-6')
 			]),
 		_List_fromArray(
 			[
@@ -10750,8 +10779,8 @@ var $author$project$Pages$GameDetail$viewGameDetail = function (detail) {
 		_List_Nil,
 		_List_fromArray(
 			[
-				$author$project$Pages$GameDetail$viewGameHeader(detail.d3),
-				$author$project$Pages$GameDetail$viewMoveSummary(detail.ez),
+				$author$project$Pages$GameDetail$viewGameHeader(detail.game),
+				$author$project$Pages$GameDetail$viewMoveSummary(detail.moves),
 				A2(
 				$elm$html$Html$div,
 				_List_fromArray(
@@ -10770,11 +10799,11 @@ var $author$project$Pages$GameDetail$viewGameDetail = function (detail) {
 							[
 								$elm$html$Html$text('Move Analysis')
 							])),
-						$elm$core$List$isEmpty(detail.ez) ? A2(
+						$elm$core$List$isEmpty(detail.moves) ? A2(
 						$elm$html$Html$div,
 						_List_fromArray(
 							[
-								$elm$html$Html$Attributes$class('bg-white rounded-lg border border-gray-200 p-6 text-center text-gray-500')
+								$elm$html$Html$Attributes$class('bg-white rounded-lg shadow-card p-6 text-center text-gray-500')
 							]),
 						_List_fromArray(
 							[
@@ -10783,9 +10812,9 @@ var $author$project$Pages$GameDetail$viewGameDetail = function (detail) {
 						$elm$html$Html$div,
 						_List_fromArray(
 							[
-								$elm$html$Html$Attributes$class('bg-white rounded-lg border border-gray-200 divide-y divide-gray-100')
+								$elm$html$Html$Attributes$class('bg-white rounded-lg shadow-card divide-y divide-gray-100')
 							]),
-						A2($elm$core$List$map, $author$project$Pages$GameDetail$viewMoveRow, detail.ez))
+						A2($elm$core$List$map, $author$project$Pages$GameDetail$viewMoveRow, detail.moves))
 					]))
 			]));
 };
@@ -10800,7 +10829,7 @@ var $author$project$Pages$GameDetail$view = function (model) {
 				_List_fromArray(
 					[
 						$author$project$Route$href($author$project$Route$Dashboard),
-						$elm$html$Html$Attributes$class('inline-flex items-center gap-1 text-gray-600 hover:text-gray-900 mb-6')
+						$elm$html$Html$Attributes$class('inline-flex items-center gap-1 text-anthro-gray hover:text-anthro-dark mb-6')
 					]),
 				_List_fromArray(
 					[
@@ -10814,11 +10843,11 @@ var $author$project$Pages$GameDetail$view = function (model) {
 						$elm$html$Html$text('Back')
 					])),
 				function () {
-				var _v0 = model.a0;
+				var _v0 = model.gameDetail;
 				switch (_v0.$) {
-					case 0:
+					case 'NotAsked':
 						return $elm$html$Html$text('');
-					case 1:
+					case 'Loading':
 						return A2(
 							$elm$html$Html$div,
 							_List_fromArray(
@@ -10829,7 +10858,7 @@ var $author$project$Pages$GameDetail$view = function (model) {
 								[
 									$elm$html$Html$text('Loading game analysis...')
 								]));
-					case 2:
+					case 'Failure':
 						var error = _v0.a;
 						return A2(
 							$elm$html$Html$div,
@@ -10849,12 +10878,12 @@ var $author$project$Pages$GameDetail$view = function (model) {
 			]));
 };
 var $author$project$Pages$Login$EmailChanged = function (a) {
-	return {$: 0, a: a};
+	return {$: 'EmailChanged', a: a};
 };
 var $author$project$Pages$Login$PasswordChanged = function (a) {
-	return {$: 1, a: a};
+	return {$: 'PasswordChanged', a: a};
 };
-var $author$project$Pages$Login$SubmitForm = {$: 2};
+var $author$project$Pages$Login$SubmitForm = {$: 'SubmitForm'};
 var $elm$html$Html$Attributes$for = $elm$html$Html$Attributes$stringProperty('htmlFor');
 var $elm$html$Html$Attributes$id = $elm$html$Html$Attributes$stringProperty('id');
 var $author$project$Pages$Login$view = function (model) {
@@ -10878,7 +10907,7 @@ var $author$project$Pages$Login$view = function (model) {
 						$elm$html$Html$div,
 						_List_fromArray(
 							[
-								$elm$html$Html$Attributes$class('bg-white rounded-2xl shadow-sm border border-anthro-gray-light p-8')
+								$elm$html$Html$Attributes$class('bg-white rounded-2xl shadow-card p-8')
 							]),
 						_List_fromArray(
 							[
@@ -10966,8 +10995,8 @@ var $author$project$Pages$Login$view = function (model) {
 								_List_fromArray(
 									[
 										function () {
-										var _v0 = model.an;
-										if (!_v0.$) {
+										var _v0 = model.error;
+										if (_v0.$ === 'Just') {
 											var errorMsg = _v0.a;
 											return A2(
 												$elm$html$Html$div,
@@ -11008,11 +11037,11 @@ var $author$project$Pages$Login$view = function (model) {
 													[
 														$elm$html$Html$Attributes$type_('email'),
 														$elm$html$Html$Attributes$id('email'),
-														$elm$html$Html$Attributes$class('w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition-colors'),
+														$elm$html$Html$Attributes$class('w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-anthro-dark focus:border-anthro-dark outline-none transition-colors'),
 														$elm$html$Html$Attributes$placeholder('coach@example.com'),
-														$elm$html$Html$Attributes$value(model.cu),
+														$elm$html$Html$Attributes$value(model.email),
 														$elm$html$Html$Events$onInput($author$project$Pages$Login$EmailChanged),
-														$elm$html$Html$Attributes$disabled(model.af)
+														$elm$html$Html$Attributes$disabled(model.isLoading)
 													]),
 												_List_Nil)
 											])),
@@ -11041,11 +11070,11 @@ var $author$project$Pages$Login$view = function (model) {
 													[
 														$elm$html$Html$Attributes$type_('password'),
 														$elm$html$Html$Attributes$id('password'),
-														$elm$html$Html$Attributes$class('w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition-colors'),
+														$elm$html$Html$Attributes$class('w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-anthro-dark focus:border-anthro-dark outline-none transition-colors'),
 														$elm$html$Html$Attributes$placeholder('Enter your password'),
-														$elm$html$Html$Attributes$value(model.cP),
+														$elm$html$Html$Attributes$value(model.password),
 														$elm$html$Html$Events$onInput($author$project$Pages$Login$PasswordChanged),
-														$elm$html$Html$Attributes$disabled(model.af)
+														$elm$html$Html$Attributes$disabled(model.isLoading)
 													]),
 												_List_Nil)
 											])),
@@ -11054,12 +11083,12 @@ var $author$project$Pages$Login$view = function (model) {
 										_List_fromArray(
 											[
 												$elm$html$Html$Attributes$type_('submit'),
-												$elm$html$Html$Attributes$class('w-full bg-anthro-orange hover:bg-anthro-orange-dark text-white font-medium py-2 px-4 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed'),
-												$elm$html$Html$Attributes$disabled(model.af)
+												$elm$html$Html$Attributes$class('w-full bg-anthro-dark hover:bg-gray-800 text-white font-medium py-2 px-4 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed'),
+												$elm$html$Html$Attributes$disabled(model.isLoading)
 											]),
 										_List_fromArray(
 											[
-												model.af ? $elm$html$Html$text('Signing in...') : $elm$html$Html$text('Sign in')
+												model.isLoading ? $elm$html$Html$text('Signing in...') : $elm$html$Html$text('Sign in')
 											]))
 									])),
 								A2(
@@ -11076,7 +11105,7 @@ var $author$project$Pages$Login$view = function (model) {
 										_List_fromArray(
 											[
 												$author$project$Route$href($author$project$Route$Register),
-												$elm$html$Html$Attributes$class('text-orange-600 hover:text-orange-700 font-medium')
+												$elm$html$Html$Attributes$class('text-anthro-dark hover:underline font-medium')
 											]),
 										_List_fromArray(
 											[
@@ -11088,15 +11117,15 @@ var $author$project$Pages$Login$view = function (model) {
 			]));
 };
 var $author$project$Pages$Register$ConfirmPasswordChanged = function (a) {
-	return {$: 2, a: a};
+	return {$: 'ConfirmPasswordChanged', a: a};
 };
 var $author$project$Pages$Register$EmailChanged = function (a) {
-	return {$: 0, a: a};
+	return {$: 'EmailChanged', a: a};
 };
 var $author$project$Pages$Register$PasswordChanged = function (a) {
-	return {$: 1, a: a};
+	return {$: 'PasswordChanged', a: a};
 };
-var $author$project$Pages$Register$SubmitForm = {$: 3};
+var $author$project$Pages$Register$SubmitForm = {$: 'SubmitForm'};
 var $author$project$Pages$Register$view = function (model) {
 	return A2(
 		$elm$html$Html$div,
@@ -11118,7 +11147,7 @@ var $author$project$Pages$Register$view = function (model) {
 						$elm$html$Html$div,
 						_List_fromArray(
 							[
-								$elm$html$Html$Attributes$class('bg-white rounded-2xl shadow-sm border border-anthro-gray-light p-8')
+								$elm$html$Html$Attributes$class('bg-white rounded-2xl shadow-card p-8')
 							]),
 						_List_fromArray(
 							[
@@ -11206,8 +11235,8 @@ var $author$project$Pages$Register$view = function (model) {
 								_List_fromArray(
 									[
 										function () {
-										var _v0 = model.an;
-										if (!_v0.$) {
+										var _v0 = model.error;
+										if (_v0.$ === 'Just') {
 											var errorMsg = _v0.a;
 											return A2(
 												$elm$html$Html$div,
@@ -11248,11 +11277,11 @@ var $author$project$Pages$Register$view = function (model) {
 													[
 														$elm$html$Html$Attributes$type_('email'),
 														$elm$html$Html$Attributes$id('email'),
-														$elm$html$Html$Attributes$class('w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition-colors'),
+														$elm$html$Html$Attributes$class('w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-anthro-dark focus:border-anthro-dark outline-none transition-colors'),
 														$elm$html$Html$Attributes$placeholder('coach@example.com'),
-														$elm$html$Html$Attributes$value(model.cu),
+														$elm$html$Html$Attributes$value(model.email),
 														$elm$html$Html$Events$onInput($author$project$Pages$Register$EmailChanged),
-														$elm$html$Html$Attributes$disabled(model.af)
+														$elm$html$Html$Attributes$disabled(model.isLoading)
 													]),
 												_List_Nil)
 											])),
@@ -11281,11 +11310,11 @@ var $author$project$Pages$Register$view = function (model) {
 													[
 														$elm$html$Html$Attributes$type_('password'),
 														$elm$html$Html$Attributes$id('password'),
-														$elm$html$Html$Attributes$class('w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition-colors'),
+														$elm$html$Html$Attributes$class('w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-anthro-dark focus:border-anthro-dark outline-none transition-colors'),
 														$elm$html$Html$Attributes$placeholder('At least 8 characters'),
-														$elm$html$Html$Attributes$value(model.cP),
+														$elm$html$Html$Attributes$value(model.password),
 														$elm$html$Html$Events$onInput($author$project$Pages$Register$PasswordChanged),
-														$elm$html$Html$Attributes$disabled(model.af)
+														$elm$html$Html$Attributes$disabled(model.isLoading)
 													]),
 												_List_Nil)
 											])),
@@ -11314,11 +11343,11 @@ var $author$project$Pages$Register$view = function (model) {
 													[
 														$elm$html$Html$Attributes$type_('password'),
 														$elm$html$Html$Attributes$id('confirmPassword'),
-														$elm$html$Html$Attributes$class('w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition-colors'),
+														$elm$html$Html$Attributes$class('w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-anthro-dark focus:border-anthro-dark outline-none transition-colors'),
 														$elm$html$Html$Attributes$placeholder('Confirm your password'),
-														$elm$html$Html$Attributes$value(model.aY),
+														$elm$html$Html$Attributes$value(model.confirmPassword),
 														$elm$html$Html$Events$onInput($author$project$Pages$Register$ConfirmPasswordChanged),
-														$elm$html$Html$Attributes$disabled(model.af)
+														$elm$html$Html$Attributes$disabled(model.isLoading)
 													]),
 												_List_Nil)
 											])),
@@ -11327,12 +11356,12 @@ var $author$project$Pages$Register$view = function (model) {
 										_List_fromArray(
 											[
 												$elm$html$Html$Attributes$type_('submit'),
-												$elm$html$Html$Attributes$class('w-full bg-anthro-orange hover:bg-anthro-orange-dark text-white font-medium py-2 px-4 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed'),
-												$elm$html$Html$Attributes$disabled(model.af)
+												$elm$html$Html$Attributes$class('w-full bg-anthro-dark hover:bg-gray-800 text-white font-medium py-2 px-4 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed'),
+												$elm$html$Html$Attributes$disabled(model.isLoading)
 											]),
 										_List_fromArray(
 											[
-												model.af ? $elm$html$Html$text('Creating account...') : $elm$html$Html$text('Create account')
+												model.isLoading ? $elm$html$Html$text('Creating account...') : $elm$html$Html$text('Create account')
 											]))
 									])),
 								A2(
@@ -11349,7 +11378,7 @@ var $author$project$Pages$Register$view = function (model) {
 										_List_fromArray(
 											[
 												$author$project$Route$href($author$project$Route$Login),
-												$elm$html$Html$Attributes$class('text-orange-600 hover:text-orange-700 font-medium')
+												$elm$html$Html$Attributes$class('text-anthro-dark hover:underline font-medium')
 											]),
 										_List_fromArray(
 											[
@@ -11360,7 +11389,7 @@ var $author$project$Pages$Register$view = function (model) {
 					]))
 			]));
 };
-var $author$project$Pages$StudentDetail$ToggleSidebar = {$: 19};
+var $author$project$Pages$StudentDetail$ToggleSidebar = {$: 'ToggleSidebar'};
 var $author$project$Pages$StudentDetail$countActiveFilters = function (model) {
 	return $elm$core$List$length(
 		A2(
@@ -11368,17 +11397,17 @@ var $author$project$Pages$StudentDetail$countActiveFilters = function (model) {
 			$elm$core$Basics$identity,
 			_List_fromArray(
 				[
-					!(!model.N),
-					!(!model.M),
-					!(!model.O),
-					!$elm$core$List$isEmpty(model.x),
-					(!_Utils_eq(model.eu, $elm$core$Maybe$Nothing)) || (!_Utils_eq(model.ep, $elm$core$Maybe$Nothing)),
-					!_Utils_eq(model.er, $elm$core$Maybe$Nothing),
-					model.R !== 'all',
-					model.ah !== ''
+					!_Utils_eq(model.timeControlFilter, $author$project$Types$AllTimeControls),
+					!_Utils_eq(model.resultFilter, $author$project$Types$AllResults),
+					!_Utils_eq(model.colorFilter, $author$project$Types$AllColors),
+					!$elm$core$List$isEmpty(model.selectedTags),
+					(!_Utils_eq(model.minAccuracy, $elm$core$Maybe$Nothing)) || (!_Utils_eq(model.maxAccuracy, $elm$core$Maybe$Nothing)),
+					!_Utils_eq(model.maxBlunders, $elm$core$Maybe$Nothing),
+					model.opponentRatingFilter !== 'all',
+					model.opponentSearch !== ''
 				])));
 };
-var $author$project$Pages$StudentDetail$ClearAllFilters = {$: 16};
+var $author$project$Pages$StudentDetail$ClearAllFilters = {$: 'ClearAllFilters'};
 var $elm$core$String$toLower = _String_toLower;
 var $author$project$Pages$StudentDetail$filterByOpponentName = F3(
 	function (searchStr, student, games) {
@@ -11392,17 +11421,17 @@ var $author$project$Pages$StudentDetail$filterByOpponentName = F3(
 					$elm$core$List$filterMap,
 					$elm$core$Basics$identity,
 					_List_fromArray(
-						[student.dG])));
+						[student.chessComUsername])));
 			var search = $elm$core$String$toLower(searchStr);
 			return A2(
 				$elm$core$List$filter,
 				function (g) {
 					var isWhite = A2(
 						$elm$core$List$member,
-						$elm$core$String$toLower(g.d3.fl),
+						$elm$core$String$toLower(g.game.whiteUsername),
 						studentUsernames);
 					var opponent = $elm$core$String$toLower(
-						isWhite ? g.d3.dB : g.d3.fl);
+						isWhite ? g.game.blackUsername : g.game.whiteUsername);
 					return A2($elm$core$String$contains, search, opponent);
 				},
 				games);
@@ -11414,7 +11443,7 @@ var $author$project$Pages$StudentDetail$groupGamesByDate = function (games) {
 			$elm$core$List$foldl,
 			F2(
 				function (game, acc) {
-					var dateStr = A2($elm$core$String$left, 10, game.d3.eN);
+					var dateStr = A2($elm$core$String$left, 10, game.game.playedAt);
 					if (!acc.b) {
 						return _List_fromArray(
 							[
@@ -11449,11 +11478,11 @@ var $author$project$Pages$StudentDetail$groupGamesByDate = function (games) {
 			games));
 };
 var $author$project$Pages$StudentDetail$hasActiveFilters = function (model) {
-	return (!(!model.N)) || ((!(!model.M)) || ((!(!model.O)) || ((!$elm$core$List$isEmpty(model.x)) || ((!_Utils_eq(model.eu, $elm$core$Maybe$Nothing)) || ((!_Utils_eq(model.ep, $elm$core$Maybe$Nothing)) || ((!_Utils_eq(model.er, $elm$core$Maybe$Nothing)) || ((model.R !== 'all') || (model.ah !== ''))))))));
+	return (!_Utils_eq(model.timeControlFilter, $author$project$Types$AllTimeControls)) || ((!_Utils_eq(model.resultFilter, $author$project$Types$AllResults)) || ((!_Utils_eq(model.colorFilter, $author$project$Types$AllColors)) || ((!$elm$core$List$isEmpty(model.selectedTags)) || ((!_Utils_eq(model.minAccuracy, $elm$core$Maybe$Nothing)) || ((!_Utils_eq(model.maxAccuracy, $elm$core$Maybe$Nothing)) || ((!_Utils_eq(model.maxBlunders, $elm$core$Maybe$Nothing)) || ((model.opponentRatingFilter !== 'all') || (model.opponentSearch !== ''))))))));
 };
 var $elm$core$Maybe$andThen = F2(
 	function (callback, maybeValue) {
-		if (!maybeValue.$) {
+		if (maybeValue.$ === 'Just') {
 			var value = maybeValue.a;
 			return callback(value);
 		} else {
@@ -11466,13 +11495,13 @@ var $author$project$Pages$StudentDetail$sortGames = F3(
 			$elm$core$List$filterMap,
 			$elm$core$Basics$identity,
 			_List_fromArray(
-				[student.dG]));
+				[student.chessComUsername]));
 		var getOpponentRating = function (g) {
 			var isWhite = A2(
 				$elm$core$List$member,
-				$elm$core$String$toLower(g.d3.fl),
+				$elm$core$String$toLower(g.game.whiteUsername),
 				A2($elm$core$List$map, $elm$core$String$toLower, studentUsernames));
-			return isWhite ? A2($elm$core$Maybe$withDefault, 0, g.d3.bB) : A2($elm$core$Maybe$withDefault, 0, g.d3.cf);
+			return isWhite ? A2($elm$core$Maybe$withDefault, 0, g.game.blackElo) : A2($elm$core$Maybe$withDefault, 0, g.game.whiteElo);
 		};
 		var getAccuracy = function (g) {
 			return A2(
@@ -11481,25 +11510,25 @@ var $author$project$Pages$StudentDetail$sortGames = F3(
 				A2(
 					$elm$core$Maybe$andThen,
 					function ($) {
-						return $.bd;
+						return $.accuracyOverall;
 					},
-					g.bP));
+					g.insight));
 		};
-		switch (order) {
-			case 0:
+		switch (order.$) {
+			case 'DateNewest':
 				return games;
-			case 1:
+			case 'DateOldest':
 				return $elm$core$List$reverse(games);
-			case 2:
+			case 'AccuracyHigh':
 				return A2(
 					$elm$core$List$sortBy,
 					function (g) {
 						return -getAccuracy(g);
 					},
 					games);
-			case 3:
+			case 'AccuracyLow':
 				return A2($elm$core$List$sortBy, getAccuracy, games);
-			case 4:
+			case 'OpponentRatingHigh':
 				return A2(
 					$elm$core$List$sortBy,
 					function (g) {
@@ -11559,10 +11588,10 @@ var $author$project$Pages$StudentDetail$formatDateLabel = function (dateStr) {
 	}
 };
 var $author$project$Pages$StudentDetail$HoverGame = function (a) {
-	return {$: 22, a: a};
+	return {$: 'HoverGame', a: a};
 };
 var $author$project$Pages$StudentDetail$ToggleGameExpanded = function (a) {
-	return {$: 17, a: a};
+	return {$: 'ToggleGameExpanded', a: a};
 };
 var $author$project$Pages$StudentDetail$getPriorityTags = function (tags) {
 	return A2($elm$core$List$take, 3, tags);
@@ -11571,22 +11600,22 @@ var $author$project$Pages$StudentDetail$getResultInfo = F2(
 	function (isStudentWhite, result) {
 		switch (result) {
 			case '1-0':
-				return isStudentWhite ? {am: 'bg-green-100 text-green-700 border border-green-200', ao: 'WIN'} : {am: 'bg-red-100 text-red-700 border border-red-200', ao: 'LOSS'};
+				return isStudentWhite ? {barColor: 'bg-anthro-green', label: 'WIN'} : {barColor: 'bg-red-500', label: 'LOSS'};
 			case '0-1':
-				return isStudentWhite ? {am: 'bg-red-100 text-red-700 border border-red-200', ao: 'LOSS'} : {am: 'bg-green-100 text-green-700 border border-green-200', ao: 'WIN'};
+				return isStudentWhite ? {barColor: 'bg-red-500', label: 'LOSS'} : {barColor: 'bg-anthro-green', label: 'WIN'};
 			case '1/2-1/2':
-				return {am: 'bg-gray-100 text-gray-600 border border-gray-200', ao: 'DRAW'};
+				return {barColor: 'bg-anthro-gray-mid', label: 'DRAW'};
 			default:
-				return {am: 'bg-gray-100 text-gray-600 border border-gray-200', ao: result};
+				return {barColor: 'bg-anthro-gray-mid', label: result};
 		}
 	});
 var $elm$core$Maybe$map2 = F3(
 	function (func, ma, mb) {
-		if (ma.$ === 1) {
+		if (ma.$ === 'Nothing') {
 			return $elm$core$Maybe$Nothing;
 		} else {
 			var a = ma.a;
-			if (mb.$ === 1) {
+			if (mb.$ === 'Nothing') {
 				return $elm$core$Maybe$Nothing;
 			} else {
 				var b = mb.a;
@@ -11612,20 +11641,20 @@ var $elm$html$Html$Attributes$style = $elm$virtual_dom$VirtualDom$style;
 var $elm$html$Html$Attributes$target = $elm$html$Html$Attributes$stringProperty('target');
 var $elm$html$Html$Attributes$title = $elm$html$Html$Attributes$stringProperty('title');
 var $author$project$Pages$StudentDetail$accuracyColors = function (accuracy) {
-	return (accuracy <= 40) ? {aL: 'bg-red-500', aM: 'bg-red-50', as: 'text-red-700'} : ((accuracy <= 60) ? {aL: 'bg-orange-500', aM: 'bg-orange-50', as: 'text-orange-700'} : ((accuracy <= 80) ? {aL: 'bg-yellow-500', aM: 'bg-yellow-50', as: 'text-yellow-700'} : {aL: 'bg-green-500', aM: 'bg-green-50', as: 'text-green-700'}));
+	return (accuracy <= 40) ? {bar: 'bg-red-500', bg: 'bg-red-50', text: 'text-red-700'} : ((accuracy <= 60) ? {bar: 'bg-orange-500', bg: 'bg-orange-50', text: 'text-orange-700'} : ((accuracy <= 80) ? {bar: 'bg-yellow-500', bg: 'bg-yellow-50', text: 'text-yellow-700'} : {bar: 'bg-green-500', bg: 'bg-green-50', text: 'text-green-700'}));
 };
 var $author$project$Pages$StudentDetail$viewAccuracyBadge = function (maybeInsight) {
-	if (!maybeInsight.$) {
+	if (maybeInsight.$ === 'Just') {
 		var ins = maybeInsight.a;
-		var _v1 = ins.bd;
-		if (!_v1.$) {
+		var _v1 = ins.accuracyOverall;
+		if (_v1.$ === 'Just') {
 			var acc = _v1.a;
 			var colors = $author$project$Pages$StudentDetail$accuracyColors(acc);
 			return A2(
 				$elm$html$Html$span,
 				_List_fromArray(
 					[
-						$elm$html$Html$Attributes$class('px-2 py-0.5 rounded text-xs font-semibold ' + (colors.aM + (' ' + colors.as)))
+						$elm$html$Html$Attributes$class('px-2 py-0.5 rounded text-xs font-semibold ' + (colors.bg + (' ' + colors.text)))
 					]),
 				_List_fromArray(
 					[
@@ -11658,7 +11687,7 @@ var $author$project$Pages$StudentDetail$groupTagsByCategory = function (tags) {
 		A2(
 			$elm$core$List$map,
 			function (gt) {
-				return gt.ai.cm;
+				return gt.tag.category;
 			},
 			tags));
 	return A2(
@@ -11675,7 +11704,7 @@ var $author$project$Pages$StudentDetail$groupTagsByCategory = function (tags) {
 					A2(
 						$elm$core$List$filter,
 						function (gt) {
-							return _Utils_eq(gt.ai.cm, cat);
+							return _Utils_eq(gt.tag.category, cat);
 						},
 						tags));
 			},
@@ -11683,8 +11712,8 @@ var $author$project$Pages$StudentDetail$groupTagsByCategory = function (tags) {
 };
 var $elm$core$String$fromFloat = _String_fromNumber;
 var $author$project$Pages$StudentDetail$viewAccuracyBar = function (ins) {
-	var _v0 = ins.bd;
-	if (!_v0.$) {
+	var _v0 = ins.accuracyOverall;
+	if (_v0.$ === 'Just') {
 		var acc = _v0.a;
 		var colors = $author$project$Pages$StudentDetail$accuracyColors(acc);
 		return A2(
@@ -11715,7 +11744,7 @@ var $author$project$Pages$StudentDetail$viewAccuracyBar = function (ins) {
 									$elm$html$Html$div,
 									_List_fromArray(
 										[
-											$elm$html$Html$Attributes$class('h-full rounded-full ' + colors.aL),
+											$elm$html$Html$Attributes$class('h-full rounded-full ' + colors.bar),
 											A2(
 											$elm$html$Html$Attributes$style,
 											'width',
@@ -11727,7 +11756,7 @@ var $author$project$Pages$StudentDetail$viewAccuracyBar = function (ins) {
 							$elm$html$Html$span,
 							_List_fromArray(
 								[
-									$elm$html$Html$Attributes$class('text-sm font-bold ' + colors.as)
+									$elm$html$Html$Attributes$class('text-sm font-bold ' + colors.text)
 								]),
 							_List_fromArray(
 								[
@@ -11745,8 +11774,8 @@ var $author$project$Pages$StudentDetail$viewAccuracyBar = function (ins) {
 					_List_fromArray(
 						[
 							function () {
-							var _v1 = ins.dr;
-							if (!_v1.$) {
+							var _v1 = ins.accuracyOpening;
+							if (_v1.$ === 'Just') {
 								var a = _v1.a;
 								return A2(
 									$elm$html$Html$span,
@@ -11762,8 +11791,8 @@ var $author$project$Pages$StudentDetail$viewAccuracyBar = function (ins) {
 							}
 						}(),
 							function () {
-							var _v2 = ins.dq;
-							if (!_v2.$) {
+							var _v2 = ins.accuracyMiddlegame;
+							if (_v2.$ === 'Just') {
 								var a = _v2.a;
 								return A2(
 									$elm$html$Html$span,
@@ -11779,8 +11808,8 @@ var $author$project$Pages$StudentDetail$viewAccuracyBar = function (ins) {
 							}
 						}(),
 							function () {
-							var _v3 = ins.dp;
-							if (!_v3.$) {
+							var _v3 = ins.accuracyEndgame;
+							if (_v3.$ === 'Just') {
 								var a = _v3.a;
 								return A2(
 									$elm$html$Html$span,
@@ -11813,9 +11842,9 @@ var $author$project$Pages$StudentDetail$viewErrorSummary = function (ins) {
 		},
 		_List_fromArray(
 			[
-				_Utils_Tuple3(ins.dC, 'Blunder', 'bg-red-500'),
-				_Utils_Tuple3(ins.ew, 'Mistake', 'bg-orange-500'),
-				_Utils_Tuple3(ins.ed, 'Inaccuracy', 'bg-yellow-500')
+				_Utils_Tuple3(ins.blundersCount, 'Blunder', 'bg-red-500'),
+				_Utils_Tuple3(ins.mistakesCount, 'Mistake', 'bg-orange-500'),
+				_Utils_Tuple3(ins.inaccuraciesCount, 'Inaccuracy', 'bg-yellow-500')
 			]));
 	return $elm$core$List$isEmpty(items) ? A2(
 		$elm$html$Html$div,
@@ -11885,45 +11914,112 @@ var $elm$core$String$replace = F3(
 			after,
 			A2($elm$core$String$split, before, string));
 	});
-var $author$project$Pages$StudentDetail$Negative = 1;
-var $author$project$Pages$StudentDetail$Neutral = 2;
-var $author$project$Pages$StudentDetail$Positive = 0;
-var $author$project$Pages$StudentDetail$getTagSentiment = function (tag) {
-	var slug = $elm$core$String$toLower(tag.b3);
+var $elm$virtual_dom$VirtualDom$attribute = F2(
+	function (key, value) {
+		return A2(
+			_VirtualDom_attribute,
+			_VirtualDom_noOnOrFormAction(key),
+			_VirtualDom_noJavaScriptOrHtmlUri(value));
+	});
+var $elm$html$Html$Attributes$attribute = $elm$virtual_dom$VirtualDom$attribute;
+var $elm$html$Html$Attributes$tabindex = function (n) {
 	return A2(
-		$elm$core$List$member,
-		slug,
-		_List_fromArray(
-			['fork-executed', 'pin-created', 'discovered-attack', 'winning-converted', 'clean-game', 'high-accuracy', 'delivered-checkmate', 'comeback', 'upset-victory', 'well-prepared', 'castled-kingside', 'castled-queenside', 'brilliant', 'great-find', 'best-move'])) ? 0 : (A2(
-		$elm$core$List$member,
-		slug,
-		_List_fromArray(
-			['fork-missed', 'pin-missed', 'opening-blunder', 'got-checkmated', 'winning-squandered', 'low-accuracy', 'collapsed-after-blunder', 'flagged', 'upset-loss', 'back-rank-victim', 'did-not-castle', 'blunder'])) ? 1 : 2);
+		_VirtualDom_attribute,
+		'tabIndex',
+		$elm$core$String$fromInt(n));
 };
-var $author$project$Pages$StudentDetail$tagClasses = function (tag) {
-	var _v0 = $author$project$Pages$StudentDetail$getTagSentiment(tag);
-	switch (_v0) {
-		case 0:
-			return 'bg-green-100 text-green-700 border border-green-200';
-		case 1:
-			return 'bg-red-100 text-red-700 border border-red-200';
-		default:
-			return 'bg-gray-100 text-gray-600 border border-gray-200';
-	}
+var $author$project$Pages$StudentDetail$tagClasses = function (_v0) {
+	return 'px-2.5 py-1 text-xs rounded-full font-medium bg-anthro-gray-light text-anthro-gray';
 };
 var $author$project$Pages$StudentDetail$viewTagBadge = function (gameTag) {
-	return A2(
-		$elm$html$Html$span,
+	var hasTooltipContent = (!_Utils_eq(gameTag.tag.description, $elm$core$Maybe$Nothing)) || (!_Utils_eq(gameTag.primaryMove, $elm$core$Maybe$Nothing));
+	var tooltipContent = hasTooltipContent ? A2(
+		$elm$html$Html$div,
 		_List_fromArray(
 			[
-				$elm$html$Html$Attributes$class(
-				'px-2.5 py-1 text-xs rounded-full font-medium ' + $author$project$Pages$StudentDetail$tagClasses(gameTag.ai)),
-				$elm$html$Html$Attributes$title(
-				A2($elm$core$Maybe$withDefault, gameTag.ai.bV, gameTag.ai.dS))
+				$elm$html$Html$Attributes$class('tag-tooltip'),
+				A2($elm$html$Html$Attributes$attribute, 'role', 'tooltip')
+			]),
+		_Utils_ap(
+			_List_fromArray(
+				[
+					A2(
+					$elm$html$Html$div,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('tag-tooltip-title')
+						]),
+					_List_fromArray(
+						[
+							$elm$html$Html$text(gameTag.tag.name)
+						]))
+				]),
+			_Utils_ap(
+				function () {
+					var _v0 = gameTag.tag.description;
+					if (_v0.$ === 'Just') {
+						var desc = _v0.a;
+						return _List_fromArray(
+							[
+								A2(
+								$elm$html$Html$div,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('tag-tooltip-desc')
+									]),
+								_List_fromArray(
+									[
+										$elm$html$Html$text(desc)
+									]))
+							]);
+					} else {
+						return _List_Nil;
+					}
+				}(),
+				function () {
+					var _v1 = gameTag.primaryMove;
+					if (_v1.$ === 'Just') {
+						var moveNum = _v1.a;
+						return _List_fromArray(
+							[
+								A2(
+								$elm$html$Html$div,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('tag-tooltip-move')
+									]),
+								_List_fromArray(
+									[
+										$elm$html$Html$text(
+										'Move ' + $elm$core$String$fromInt(moveNum))
+									]))
+							]);
+					} else {
+						return _List_Nil;
+					}
+				}()))) : $elm$html$Html$text('');
+	return A2(
+		$elm$html$Html$div,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$class('tag-tooltip-wrapper'),
+				$elm$html$Html$Attributes$tabindex(0),
+				A2($elm$html$Html$Attributes$attribute, 'aria-describedby', 'tooltip')
 			]),
 		_List_fromArray(
 			[
-				$elm$html$Html$text(gameTag.ai.bV)
+				A2(
+				$elm$html$Html$span,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class(
+						$author$project$Pages$StudentDetail$tagClasses(gameTag.tag))
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text(gameTag.tag.name)
+					])),
+				tooltipContent
 			]));
 };
 var $author$project$Pages$StudentDetail$viewTagGroup = function (_v0) {
@@ -11954,8 +12050,8 @@ var $author$project$Pages$StudentDetail$viewTagGroup = function (_v0) {
 				A2($elm$core$List$map, $author$project$Pages$StudentDetail$viewTagBadge, tags))
 			]));
 };
-var $author$project$Pages$StudentDetail$viewExpandedContent = F3(
-	function (maybeInsight, tags, chessComUrl) {
+var $author$project$Pages$StudentDetail$viewExpandedContent = F4(
+	function (isAnalyzed, maybeInsight, tags, chessComUrl) {
 		return A2(
 			$elm$html$Html$div,
 			_List_fromArray(
@@ -11965,28 +12061,76 @@ var $author$project$Pages$StudentDetail$viewExpandedContent = F3(
 			_List_fromArray(
 				[
 					function () {
-					if (!maybeInsight.$) {
-						var ins = maybeInsight.a;
+					if (!isAnalyzed) {
 						return A2(
 							$elm$html$Html$div,
-							_List_Nil,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('bg-amber-50 border border-amber-200 rounded-lg p-4')
+								]),
 							_List_fromArray(
 								[
 									A2(
 									$elm$html$Html$div,
 									_List_fromArray(
 										[
-											$elm$html$Html$Attributes$class('text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2')
+											$elm$html$Html$Attributes$class('flex items-center gap-2 text-amber-800')
 										]),
 									_List_fromArray(
 										[
-											$elm$html$Html$text('Performance')
+											A2(
+											$elm$html$Html$span,
+											_List_fromArray(
+												[
+													$elm$html$Html$Attributes$class('inline-block w-2 h-2 rounded-full bg-amber-500 animate-pulse')
+												]),
+											_List_Nil),
+											A2(
+											$elm$html$Html$span,
+											_List_fromArray(
+												[
+													$elm$html$Html$Attributes$class('font-medium')
+												]),
+											_List_fromArray(
+												[
+													$elm$html$Html$text('Analysis pending')
+												]))
 										])),
-									$author$project$Pages$StudentDetail$viewAccuracyBar(ins),
-									$author$project$Pages$StudentDetail$viewErrorSummary(ins)
+									A2(
+									$elm$html$Html$p,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('text-sm text-amber-700 mt-1')
+										]),
+									_List_fromArray(
+										[
+											$elm$html$Html$text('This game is queued for analysis. Performance metrics and tags will appear once processing is complete.')
+										]))
 								]));
 					} else {
-						return $elm$html$Html$text('');
+						if (maybeInsight.$ === 'Just') {
+							var ins = maybeInsight.a;
+							return A2(
+								$elm$html$Html$div,
+								_List_Nil,
+								_List_fromArray(
+									[
+										A2(
+										$elm$html$Html$div,
+										_List_fromArray(
+											[
+												$elm$html$Html$Attributes$class('text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2')
+											]),
+										_List_fromArray(
+											[
+												$elm$html$Html$text('Performance')
+											])),
+										$author$project$Pages$StudentDetail$viewAccuracyBar(ins),
+										$author$project$Pages$StudentDetail$viewErrorSummary(ins)
+									]));
+						} else {
+							return $elm$html$Html$text('');
+						}
 					}
 				}(),
 					function () {
@@ -12017,7 +12161,7 @@ var $author$project$Pages$StudentDetail$viewExpandedContent = F3(
 								[
 									$elm$html$Html$Attributes$href(chessComUrl),
 									$elm$html$Html$Attributes$target('_blank'),
-									$elm$html$Html$Attributes$class('inline-flex items-center gap-1.5 text-sm bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-800 font-medium'),
+									$elm$html$Html$Attributes$class('inline-flex items-center gap-1.5 text-sm bg-anthro-dark text-white px-4 py-2 rounded-lg shadow-subtle hover:shadow-card hover:bg-gray-800 font-medium transition-all'),
 									A2(
 									$elm$html$Html$Events$stopPropagationOn,
 									'click',
@@ -12042,40 +12186,40 @@ var $author$project$Pages$StudentDetail$viewExpandedContent = F3(
 	});
 var $author$project$Pages$StudentDetail$viewGameCard = F3(
 	function (model, student, gameWithInsights) {
-		var tags = gameWithInsights.e3;
+		var tags = gameWithInsights.tags;
 		var studentUsernames = A2(
 			$elm$core$List$filterMap,
 			$elm$core$Basics$identity,
 			_List_fromArray(
-				[student.dG]));
+				[student.chessComUsername]));
 		var priorityTags = $author$project$Pages$StudentDetail$getPriorityTags(tags);
-		var insight = gameWithInsights.bP;
-		var game = gameWithInsights.d3;
-		var isExpanded = A2($elm$core$Set$member, game.ea, model.ay);
+		var insight = gameWithInsights.insight;
+		var game = gameWithInsights.game;
+		var isExpanded = A2($elm$core$Set$member, game.id, model.expandedGames);
 		var isHovered = _Utils_eq(
-			model.bn,
-			$elm$core$Maybe$Just(game.ea));
+			model.hoveredGameId,
+			$elm$core$Maybe$Just(game.id));
 		var isStudentWhite = A2(
 			$elm$core$List$member,
-			$elm$core$String$toLower(game.fl),
+			$elm$core$String$toLower(game.whiteUsername),
 			A2($elm$core$List$map, $elm$core$String$toLower, studentUsernames));
-		var opponent = isStudentWhite ? game.dB : game.fl;
-		var opponentRating = isStudentWhite ? game.bB : game.cf;
-		var result = A2($author$project$Pages$StudentDetail$getResultInfo, isStudentWhite, game.eV);
-		var studentRating = isStudentWhite ? game.cf : game.bB;
+		var opponent = isStudentWhite ? game.blackUsername : game.whiteUsername;
+		var opponentRating = isStudentWhite ? game.blackElo : game.whiteElo;
+		var result = A2($author$project$Pages$StudentDetail$getResultInfo, isStudentWhite, game.result);
+		var studentRating = isStudentWhite ? game.whiteElo : game.blackElo;
 		var ratingDiff = A3($elm$core$Maybe$map2, $elm$core$Basics$sub, opponentRating, studentRating);
-		var chessComUrl = 'https://www.chess.com/analysis/game/live/' + game.eM;
+		var chessComUrl = 'https://www.chess.com/analysis/game/live/' + game.platformGameId;
 		return A2(
 			$elm$html$Html$div,
 			_List_fromArray(
 				[
 					$elm$html$Html$Attributes$class(
-					'bg-white rounded-xl border transition-all duration-200 cursor-pointer ' + (isExpanded ? 'border-gray-300 shadow-md' : (isHovered ? 'border-gray-300 shadow-sm' : 'border-gray-200 hover:border-gray-300 hover:shadow-sm'))),
+					'bg-white rounded-xl transition-all duration-200 cursor-pointer flex shadow-card ' + (isExpanded ? 'shadow-elevated' : (isHovered ? 'shadow-elevated' : 'hover:shadow-elevated'))),
 					$elm$html$Html$Events$onClick(
-					$author$project$Pages$StudentDetail$ToggleGameExpanded(game.ea)),
+					$author$project$Pages$StudentDetail$ToggleGameExpanded(game.id)),
 					$elm$html$Html$Events$onMouseEnter(
 					$author$project$Pages$StudentDetail$HoverGame(
-						$elm$core$Maybe$Just(game.ea))),
+						$elm$core$Maybe$Just(game.id))),
 					$elm$html$Html$Events$onMouseLeave(
 					$author$project$Pages$StudentDetail$HoverGame($elm$core$Maybe$Nothing))
 				]),
@@ -12085,7 +12229,14 @@ var $author$project$Pages$StudentDetail$viewGameCard = F3(
 					$elm$html$Html$div,
 					_List_fromArray(
 						[
-							$elm$html$Html$Attributes$class('p-4')
+							$elm$html$Html$Attributes$class('w-1 flex-shrink-0 rounded-l-xl ' + result.barColor)
+						]),
+					_List_Nil),
+					A2(
+					$elm$html$Html$div,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('flex-1 p-5')
 						]),
 					_List_fromArray(
 						[
@@ -12097,16 +12248,6 @@ var $author$project$Pages$StudentDetail$viewGameCard = F3(
 								]),
 							_List_fromArray(
 								[
-									A2(
-									$elm$html$Html$div,
-									_List_fromArray(
-										[
-											$elm$html$Html$Attributes$class('flex-shrink-0 w-16 h-10 rounded-lg flex items-center justify-center font-bold text-sm ' + result.am)
-										]),
-									_List_fromArray(
-										[
-											$elm$html$Html$text(result.ao)
-										])),
 									A2(
 									$elm$html$Html$div,
 									_List_fromArray(
@@ -12134,7 +12275,7 @@ var $author$project$Pages$StudentDetail$viewGameCard = F3(
 															$elm$html$Html$text(opponent)
 														])),
 													function () {
-													if (!opponentRating.$) {
+													if (opponentRating.$ === 'Just') {
 														var rating = opponentRating.a;
 														return A2(
 															$elm$html$Html$span,
@@ -12152,13 +12293,13 @@ var $author$project$Pages$StudentDetail$viewGameCard = F3(
 													}
 												}(),
 													function () {
-													if (!ratingDiff.$) {
+													if (ratingDiff.$ === 'Just') {
 														var diff = ratingDiff.a;
 														return (diff > 0) ? A2(
 															$elm$html$Html$span,
 															_List_fromArray(
 																[
-																	$elm$html$Html$Attributes$class('text-xs px-1.5 py-0.5 rounded bg-green-100 text-green-700 font-medium')
+																	$elm$html$Html$Attributes$class('text-xs px-2 py-0.5 rounded bg-anthro-gray-light text-anthro-gray font-medium border-l-2 border-anthro-green')
 																]),
 															_List_fromArray(
 																[
@@ -12168,7 +12309,7 @@ var $author$project$Pages$StudentDetail$viewGameCard = F3(
 															$elm$html$Html$span,
 															_List_fromArray(
 																[
-																	$elm$html$Html$Attributes$class('text-xs px-1.5 py-0.5 rounded bg-red-100 text-red-700 font-medium')
+																	$elm$html$Html$Attributes$class('text-xs px-2 py-0.5 rounded bg-anthro-gray-light text-anthro-gray font-medium border-l-2 border-red-500')
 																]),
 															_List_fromArray(
 																[
@@ -12194,8 +12335,8 @@ var $author$project$Pages$StudentDetail$viewGameCard = F3(
 													_List_Nil)
 												])),
 											function () {
-											var _v2 = game.eF;
-											if (!_v2.$) {
+											var _v2 = game.openingName;
+											if (_v2.$ === 'Just') {
 												var opening = _v2.a;
 												return A2(
 													$elm$html$Html$div,
@@ -12228,11 +12369,27 @@ var $author$project$Pages$StudentDetail$viewGameCard = F3(
 													_List_fromArray(
 														[
 															$elm$html$Html$text(
-															A2($elm$core$String$left, 10, game.eN))
+															A2($elm$core$String$left, 10, game.playedAt))
 														])),
-													$author$project$Pages$StudentDetail$viewAccuracyBadge(insight)
+													(!game.analyzed) ? A2(
+													$elm$html$Html$span,
+													_List_fromArray(
+														[
+															$elm$html$Html$Attributes$class('px-2 py-0.5 rounded text-xs font-medium bg-amber-50 text-amber-700 flex items-center gap-1')
+														]),
+													_List_fromArray(
+														[
+															A2(
+															$elm$html$Html$span,
+															_List_fromArray(
+																[
+																	$elm$html$Html$Attributes$class('inline-block w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse')
+																]),
+															_List_Nil),
+															$elm$html$Html$text('Pending analysis')
+														])) : $author$project$Pages$StudentDetail$viewAccuracyBadge(insight)
 												])),
-											isExpanded ? A3($author$project$Pages$StudentDetail$viewExpandedContent, insight, tags, chessComUrl) : ((!$elm$core$List$isEmpty(priorityTags)) ? A2(
+											isExpanded ? A4($author$project$Pages$StudentDetail$viewExpandedContent, game.analyzed, insight, tags, chessComUrl) : ((!$elm$core$List$isEmpty(priorityTags)) ? A2(
 											$elm$html$Html$div,
 											_List_fromArray(
 												[
@@ -12381,7 +12538,7 @@ var $author$project$Pages$StudentDetail$viewDateGroup = F3(
 				]));
 	});
 var $author$project$Pages$StudentDetail$GoToPage = function (a) {
-	return {$: 21, a: a};
+	return {$: 'GoToPage', a: a};
 };
 var $author$project$Pages$StudentDetail$viewPagination = F2(
 	function (currentPage, totalPages) {
@@ -12445,11 +12602,11 @@ var $author$project$Pages$StudentDetail$viewPagination = F2(
 						]))));
 	});
 var $author$project$Pages$StudentDetail$viewGamesList = function (model) {
-	var _v0 = model.f;
+	var _v0 = model.games;
 	switch (_v0.$) {
-		case 0:
+		case 'NotAsked':
 			return $elm$html$Html$text('');
-		case 1:
+		case 'Loading':
 			return A2(
 				$elm$html$Html$div,
 				_List_fromArray(
@@ -12514,7 +12671,7 @@ var $author$project$Pages$StudentDetail$viewGamesList = function (model) {
 										_List_Nil)
 									]))
 							]))));
-		case 2:
+		case 'Failure':
 			var error = _v0.a;
 			return A2(
 				$elm$html$Html$div,
@@ -12528,17 +12685,17 @@ var $author$project$Pages$StudentDetail$viewGamesList = function (model) {
 					]));
 		default:
 			var gamesData = _v0.a;
-			var _v1 = model.aF;
-			if (_v1.$ === 3) {
+			var _v1 = model.student;
+			if (_v1.$ === 'Success') {
 				var student = _v1.a;
-				var totalPages = $elm$core$Basics$ceiling(gamesData.a6 / model.ej);
+				var totalPages = $elm$core$Basics$ceiling(gamesData.total / model.limit);
 				var filteredGames = A3(
 					$author$project$Pages$StudentDetail$sortGames,
-					model.S,
+					model.sortOrder,
 					student,
-					A3($author$project$Pages$StudentDetail$filterByOpponentName, model.ah, student, gamesData.f));
+					A3($author$project$Pages$StudentDetail$filterByOpponentName, model.opponentSearch, student, gamesData.games));
 				var groupedGames = $author$project$Pages$StudentDetail$groupGamesByDate(filteredGames);
-				var currentPage = (model.eB / model.ej) | 0;
+				var currentPage = (model.offset / model.limit) | 0;
 				return $elm$core$List$isEmpty(filteredGames) ? A2(
 					$elm$html$Html$div,
 					_List_fromArray(
@@ -12610,8 +12767,8 @@ var $author$project$Pages$StudentDetail$viewGamesList = function (model) {
 									_List_fromArray(
 										[
 											$elm$html$Html$text(
-											'Showing ' + ($elm$core$String$fromInt(model.eB + 1) + ('-' + ($elm$core$String$fromInt(
-												model.eB + $elm$core$List$length(filteredGames)) + (' of ' + ($elm$core$String$fromInt(gamesData.a6) + ' games'))))))
+											'Showing ' + ($elm$core$String$fromInt(model.offset + 1) + ('-' + ($elm$core$String$fromInt(
+												model.offset + $elm$core$List$length(filteredGames)) + (' of ' + ($elm$core$String$fromInt(gamesData.total) + ' games'))))))
 										]))
 								])),
 							A2(
@@ -12631,24 +12788,24 @@ var $author$project$Pages$StudentDetail$viewGamesList = function (model) {
 			}
 	}
 };
-var $author$project$Pages$StudentDetail$AccuracyHigh = 2;
-var $author$project$Pages$StudentDetail$AccuracyLow = 3;
-var $author$project$Pages$StudentDetail$DateOldest = 1;
-var $author$project$Pages$StudentDetail$OpponentRatingHigh = 4;
-var $author$project$Pages$StudentDetail$OpponentRatingLow = 5;
+var $author$project$Pages$StudentDetail$AccuracyHigh = {$: 'AccuracyHigh'};
+var $author$project$Pages$StudentDetail$AccuracyLow = {$: 'AccuracyLow'};
+var $author$project$Pages$StudentDetail$DateOldest = {$: 'DateOldest'};
+var $author$project$Pages$StudentDetail$OpponentRatingHigh = {$: 'OpponentRatingHigh'};
+var $author$project$Pages$StudentDetail$OpponentRatingLow = {$: 'OpponentRatingLow'};
 var $author$project$Pages$StudentDetail$SetSortOrder = function (a) {
-	return {$: 15, a: a};
+	return {$: 'SetSortOrder', a: a};
 };
-var $author$project$Pages$StudentDetail$ClearAccuracy = {$: 10};
+var $author$project$Pages$StudentDetail$ClearAccuracy = {$: 'ClearAccuracy'};
 var $author$project$Pages$StudentDetail$SetMaxAccuracy = function (a) {
-	return {$: 9, a: a};
+	return {$: 'SetMaxAccuracy', a: a};
 };
 var $author$project$Pages$StudentDetail$SetMinAccuracy = function (a) {
-	return {$: 8, a: a};
+	return {$: 'SetMinAccuracy', a: a};
 };
 var $elm$core$Maybe$map = F2(
 	function (f, maybe) {
-		if (!maybe.$) {
+		if (maybe.$ === 'Just') {
 			var value = maybe.a;
 			return $elm$core$Maybe$Just(
 				f(value));
@@ -12672,7 +12829,7 @@ var $author$project$Pages$StudentDetail$viewAccuracyFilter = function (model) {
 				_List_fromArray(
 					[
 						$elm$html$Html$Attributes$type_('number'),
-						$elm$html$Html$Attributes$class('w-16 px-2 py-1.5 text-sm border border-gray-200 rounded focus:ring-2 focus:ring-gray-900 focus:border-gray-900'),
+						$elm$html$Html$Attributes$class('w-16 px-2 py-1.5 text-sm border border-gray-200 rounded focus:ring-2 focus:ring-anthro-dark focus:border-anthro-dark'),
 						$elm$html$Html$Attributes$placeholder('Min'),
 						$elm$html$Html$Attributes$min('0'),
 						$elm$html$Html$Attributes$max('100'),
@@ -12680,7 +12837,7 @@ var $author$project$Pages$StudentDetail$viewAccuracyFilter = function (model) {
 						A2(
 							$elm$core$Maybe$withDefault,
 							'',
-							A2($elm$core$Maybe$map, $elm$core$String$fromInt, model.eu))),
+							A2($elm$core$Maybe$map, $elm$core$String$fromInt, model.minAccuracy))),
 						$elm$html$Html$Events$onInput($author$project$Pages$StudentDetail$SetMinAccuracy)
 					]),
 				_List_Nil),
@@ -12699,7 +12856,7 @@ var $author$project$Pages$StudentDetail$viewAccuracyFilter = function (model) {
 				_List_fromArray(
 					[
 						$elm$html$Html$Attributes$type_('number'),
-						$elm$html$Html$Attributes$class('w-16 px-2 py-1.5 text-sm border border-gray-200 rounded focus:ring-2 focus:ring-gray-900 focus:border-gray-900'),
+						$elm$html$Html$Attributes$class('w-16 px-2 py-1.5 text-sm border border-gray-200 rounded focus:ring-2 focus:ring-anthro-dark focus:border-anthro-dark'),
 						$elm$html$Html$Attributes$placeholder('Max'),
 						$elm$html$Html$Attributes$min('0'),
 						$elm$html$Html$Attributes$max('100'),
@@ -12707,11 +12864,11 @@ var $author$project$Pages$StudentDetail$viewAccuracyFilter = function (model) {
 						A2(
 							$elm$core$Maybe$withDefault,
 							'',
-							A2($elm$core$Maybe$map, $elm$core$String$fromInt, model.ep))),
+							A2($elm$core$Maybe$map, $elm$core$String$fromInt, model.maxAccuracy))),
 						$elm$html$Html$Events$onInput($author$project$Pages$StudentDetail$SetMaxAccuracy)
 					]),
 				_List_Nil),
-				((!_Utils_eq(model.eu, $elm$core$Maybe$Nothing)) || (!_Utils_eq(model.ep, $elm$core$Maybe$Nothing))) ? A2(
+				((!_Utils_eq(model.minAccuracy, $elm$core$Maybe$Nothing)) || (!_Utils_eq(model.maxAccuracy, $elm$core$Maybe$Nothing))) ? A2(
 				$elm$html$Html$button,
 				_List_fromArray(
 					[
@@ -12724,11 +12881,11 @@ var $author$project$Pages$StudentDetail$viewAccuracyFilter = function (model) {
 					])) : $elm$html$Html$text('')
 			]));
 };
-var $author$project$Types$BlackOnly = 2;
+var $author$project$Types$BlackOnly = {$: 'BlackOnly'};
 var $author$project$Pages$StudentDetail$SetColorFilter = function (a) {
-	return {$: 5, a: a};
+	return {$: 'SetColorFilter', a: a};
 };
-var $author$project$Types$WhiteOnly = 1;
+var $author$project$Types$WhiteOnly = {$: 'WhiteOnly'};
 var $author$project$Pages$StudentDetail$viewRadioOption = F3(
 	function (label, isSelected, msg) {
 		return A2(
@@ -12782,26 +12939,26 @@ var $author$project$Pages$StudentDetail$viewColorFilter = function (model) {
 				A3(
 				$author$project$Pages$StudentDetail$viewRadioOption,
 				'All',
-				!model.O,
-				$author$project$Pages$StudentDetail$SetColorFilter(0)),
+				_Utils_eq(model.colorFilter, $author$project$Types$AllColors),
+				$author$project$Pages$StudentDetail$SetColorFilter($author$project$Types$AllColors)),
 				A3(
 				$author$project$Pages$StudentDetail$viewRadioOption,
 				'White',
-				model.O === 1,
-				$author$project$Pages$StudentDetail$SetColorFilter(1)),
+				_Utils_eq(model.colorFilter, $author$project$Types$WhiteOnly),
+				$author$project$Pages$StudentDetail$SetColorFilter($author$project$Types$WhiteOnly)),
 				A3(
 				$author$project$Pages$StudentDetail$viewRadioOption,
 				'Black',
-				model.O === 2,
-				$author$project$Pages$StudentDetail$SetColorFilter(2))
+				_Utils_eq(model.colorFilter, $author$project$Types$BlackOnly),
+				$author$project$Pages$StudentDetail$SetColorFilter($author$project$Types$BlackOnly))
 			]));
 };
 var $author$project$Pages$StudentDetail$ToggleFilterSection = function (a) {
-	return {$: 18, a: a};
+	return {$: 'ToggleFilterSection', a: a};
 };
 var $author$project$Pages$StudentDetail$viewFilterSection = F5(
 	function (model, sectionId, label, hasActiveFilter, content) {
-		var isExpanded = A2($elm$core$Set$member, sectionId, model.ax);
+		var isExpanded = A2($elm$core$Set$member, sectionId, model.expandedFilterSections);
 		return A2(
 			$elm$html$Html$div,
 			_List_fromArray(
@@ -12869,10 +13026,10 @@ var $author$project$Pages$StudentDetail$viewFilterSection = F5(
 				]));
 	});
 var $author$project$Pages$StudentDetail$SetOpponentRatingFilter = function (a) {
-	return {$: 13, a: a};
+	return {$: 'SetOpponentRatingFilter', a: a};
 };
 var $author$project$Pages$StudentDetail$SetOpponentSearch = function (a) {
-	return {$: 14, a: a};
+	return {$: 'SetOpponentSearch', a: a};
 };
 var $author$project$Pages$StudentDetail$viewOpponentFilter = function (model) {
 	return A2(
@@ -12888,9 +13045,9 @@ var $author$project$Pages$StudentDetail$viewOpponentFilter = function (model) {
 				_List_fromArray(
 					[
 						$elm$html$Html$Attributes$type_('text'),
-						$elm$html$Html$Attributes$class('w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-gray-900'),
+						$elm$html$Html$Attributes$class('w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-anthro-dark focus:border-anthro-dark'),
 						$elm$html$Html$Attributes$placeholder('Search opponent...'),
-						$elm$html$Html$Attributes$value(model.ah),
+						$elm$html$Html$Attributes$value(model.opponentSearch),
 						$elm$html$Html$Events$onInput($author$project$Pages$StudentDetail$SetOpponentSearch)
 					]),
 				_List_Nil),
@@ -12905,27 +13062,27 @@ var $author$project$Pages$StudentDetail$viewOpponentFilter = function (model) {
 						A3(
 						$author$project$Pages$StudentDetail$viewRadioOption,
 						'Any rating',
-						model.R === 'all',
+						model.opponentRatingFilter === 'all',
 						$author$project$Pages$StudentDetail$SetOpponentRatingFilter('all')),
 						A3(
 						$author$project$Pages$StudentDetail$viewRadioOption,
 						'Higher rated',
-						model.R === 'higher',
+						model.opponentRatingFilter === 'higher',
 						$author$project$Pages$StudentDetail$SetOpponentRatingFilter('higher')),
 						A3(
 						$author$project$Pages$StudentDetail$viewRadioOption,
 						'Lower rated',
-						model.R === 'lower',
+						model.opponentRatingFilter === 'lower',
 						$author$project$Pages$StudentDetail$SetOpponentRatingFilter('lower'))
 					]))
 			]));
 };
-var $author$project$Types$DrawsOnly = 3;
-var $author$project$Types$LossesOnly = 2;
+var $author$project$Types$DrawsOnly = {$: 'DrawsOnly'};
+var $author$project$Types$LossesOnly = {$: 'LossesOnly'};
 var $author$project$Pages$StudentDetail$SetResultFilter = function (a) {
-	return {$: 4, a: a};
+	return {$: 'SetResultFilter', a: a};
 };
-var $author$project$Types$WinsOnly = 1;
+var $author$project$Types$WinsOnly = {$: 'WinsOnly'};
 var $author$project$Pages$StudentDetail$viewResultFilter = function (model) {
 	return A2(
 		$elm$html$Html$div,
@@ -12938,51 +13095,142 @@ var $author$project$Pages$StudentDetail$viewResultFilter = function (model) {
 				A3(
 				$author$project$Pages$StudentDetail$viewRadioOption,
 				'All',
-				!model.M,
-				$author$project$Pages$StudentDetail$SetResultFilter(0)),
+				_Utils_eq(model.resultFilter, $author$project$Types$AllResults),
+				$author$project$Pages$StudentDetail$SetResultFilter($author$project$Types$AllResults)),
 				A3(
 				$author$project$Pages$StudentDetail$viewRadioOption,
 				'Wins',
-				model.M === 1,
-				$author$project$Pages$StudentDetail$SetResultFilter(1)),
+				_Utils_eq(model.resultFilter, $author$project$Types$WinsOnly),
+				$author$project$Pages$StudentDetail$SetResultFilter($author$project$Types$WinsOnly)),
 				A3(
 				$author$project$Pages$StudentDetail$viewRadioOption,
 				'Losses',
-				model.M === 2,
-				$author$project$Pages$StudentDetail$SetResultFilter(2)),
+				_Utils_eq(model.resultFilter, $author$project$Types$LossesOnly),
+				$author$project$Pages$StudentDetail$SetResultFilter($author$project$Types$LossesOnly)),
 				A3(
 				$author$project$Pages$StudentDetail$viewRadioOption,
 				'Draws',
-				model.M === 3,
-				$author$project$Pages$StudentDetail$SetResultFilter(3))
+				_Utils_eq(model.resultFilter, $author$project$Types$DrawsOnly),
+				$author$project$Pages$StudentDetail$SetResultFilter($author$project$Types$DrawsOnly))
 			]));
 };
-var $author$project$Pages$StudentDetail$ClearTags = {$: 7};
+var $author$project$Pages$StudentDetail$ClearTags = {$: 'ClearTags'};
+var $author$project$Pages$StudentDetail$groupTagsWithCountByCategory = function (tags) {
+	var categories = $author$project$Pages$StudentDetail$unique(
+		A2(
+			$elm$core$List$map,
+			function (tc) {
+				return tc.tag.category;
+			},
+			tags));
+	return A2(
+		$elm$core$List$filter,
+		function (_v0) {
+			var tagList = _v0.b;
+			return !$elm$core$List$isEmpty(tagList);
+		},
+		A2(
+			$elm$core$List$map,
+			function (cat) {
+				return _Utils_Tuple2(
+					cat,
+					A2(
+						$elm$core$List$filter,
+						function (tc) {
+							return _Utils_eq(tc.tag.category, cat);
+						},
+						tags));
+			},
+			categories));
+};
+var $elm$core$String$cons = _String_cons;
+var $elm$core$String$fromChar = function (_char) {
+	return A2($elm$core$String$cons, _char, '');
+};
+var $elm$core$Char$toUpper = _Char_toUpper;
+var $author$project$Pages$StudentDetail$capitalizeFirst = function (str) {
+	var _v0 = $elm$core$String$uncons(str);
+	if (_v0.$ === 'Just') {
+		var _v1 = _v0.a;
+		var first = _v1.a;
+		var rest = _v1.b;
+		return _Utils_ap(
+			$elm$core$String$fromChar(
+				$elm$core$Char$toUpper(first)),
+			rest);
+	} else {
+		return str;
+	}
+};
+var $author$project$Pages$StudentDetail$formatCategoryName = function (category) {
+	return A2(
+		$elm$core$String$join,
+		' ',
+		A2(
+			$elm$core$List$map,
+			$author$project$Pages$StudentDetail$capitalizeFirst,
+			$elm$core$String$words(
+				A3($elm$core$String$replace, '_', ' ', category))));
+};
 var $author$project$Pages$StudentDetail$ToggleTag = function (a) {
-	return {$: 6, a: a};
+	return {$: 'ToggleTag', a: a};
 };
 var $author$project$Pages$StudentDetail$viewFilterTagChip = F2(
 	function (selectedTags, tc) {
-		var isSelected = A2($elm$core$List$member, tc.ai.b3, selectedTags);
+		var isSelected = A2($elm$core$List$member, tc.tag.slug, selectedTags);
 		return A2(
 			$elm$html$Html$button,
 			_List_fromArray(
 				[
 					$elm$html$Html$Events$onClick(
-					$author$project$Pages$StudentDetail$ToggleTag(tc.ai.b3)),
+					$author$project$Pages$StudentDetail$ToggleTag(tc.tag.slug)),
 					$elm$html$Html$Attributes$class(
-					isSelected ? 'px-2 py-1 text-xs rounded-full bg-gray-900 text-white' : 'px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200')
+					isSelected ? 'px-2 py-1 text-xs rounded-full bg-gray-900 text-white transition-colors' : 'px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors'),
+					$elm$html$Html$Attributes$title(
+					A2($elm$core$Maybe$withDefault, tc.tag.name, tc.tag.description))
 				]),
 			_List_fromArray(
 				[
 					$elm$html$Html$text(
-					tc.ai.bV + (' (' + ($elm$core$String$fromInt(tc.cp) + ')')))
+					tc.tag.name + (' (' + ($elm$core$String$fromInt(tc.count) + ')')))
+				]));
+	});
+var $author$project$Pages$StudentDetail$viewFilterTagGroup = F2(
+	function (selectedTags, _v0) {
+		var category = _v0.a;
+		var tags = _v0.b;
+		return A2(
+			$elm$html$Html$div,
+			_List_Nil,
+			_List_fromArray(
+				[
+					A2(
+					$elm$html$Html$div,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('text-xs font-medium text-gray-400 mb-1.5')
+						]),
+					_List_fromArray(
+						[
+							$elm$html$Html$text(
+							$author$project$Pages$StudentDetail$formatCategoryName(category))
+						])),
+					A2(
+					$elm$html$Html$div,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('flex flex-wrap gap-1')
+						]),
+					A2(
+						$elm$core$List$map,
+						$author$project$Pages$StudentDetail$viewFilterTagChip(selectedTags),
+						tags))
 				]));
 	});
 var $author$project$Pages$StudentDetail$viewTagFilters = function (model) {
-	var _v0 = model.e3;
+	var _v0 = model.tags;
 	switch (_v0.$) {
-		case 1:
+		case 'Loading':
 			return A2(
 				$elm$html$Html$div,
 				_List_fromArray(
@@ -12993,19 +13241,17 @@ var $author$project$Pages$StudentDetail$viewTagFilters = function (model) {
 					[
 						$elm$html$Html$text('Loading...')
 					]));
-		case 2:
+		case 'Failure':
 			return $elm$html$Html$text('');
-		case 0:
+		case 'NotAsked':
 			return $elm$html$Html$text('');
 		default:
 			var tagsWithCounts = _v0.a;
-			var sortedTags = A2(
-				$elm$core$List$take,
-				20,
+			var groupedTags = $author$project$Pages$StudentDetail$groupTagsWithCountByCategory(
 				A2(
 					$elm$core$List$sortBy,
 					function (tc) {
-						return -tc.cp;
+						return -tc.count;
 					},
 					tagsWithCounts));
 			return A2(
@@ -13013,11 +13259,11 @@ var $author$project$Pages$StudentDetail$viewTagFilters = function (model) {
 				_List_Nil,
 				_List_fromArray(
 					[
-						(!$elm$core$List$isEmpty(model.x)) ? A2(
+						(!$elm$core$List$isEmpty(model.selectedTags)) ? A2(
 						$elm$html$Html$div,
 						_List_fromArray(
 							[
-								$elm$html$Html$Attributes$class('flex items-center justify-between mb-2')
+								$elm$html$Html$Attributes$class('flex items-center justify-between mb-3')
 							]),
 						_List_fromArray(
 							[
@@ -13031,7 +13277,7 @@ var $author$project$Pages$StudentDetail$viewTagFilters = function (model) {
 									[
 										$elm$html$Html$text(
 										$elm$core$String$fromInt(
-											$elm$core$List$length(model.x)) + ' selected')
+											$elm$core$List$length(model.selectedTags)) + ' selected')
 									])),
 								A2(
 								$elm$html$Html$button,
@@ -13049,20 +13295,20 @@ var $author$project$Pages$StudentDetail$viewTagFilters = function (model) {
 						$elm$html$Html$div,
 						_List_fromArray(
 							[
-								$elm$html$Html$Attributes$class('flex flex-wrap gap-1')
+								$elm$html$Html$Attributes$class('space-y-3')
 							]),
 						A2(
 							$elm$core$List$map,
-							$author$project$Pages$StudentDetail$viewFilterTagChip(model.x),
-							sortedTags))
+							$author$project$Pages$StudentDetail$viewFilterTagGroup(model.selectedTags),
+							groupedTags))
 					]));
 	}
 };
-var $author$project$Types$Blitz = 2;
-var $author$project$Types$Bullet = 1;
-var $author$project$Types$Rapid = 3;
+var $author$project$Types$Blitz = {$: 'Blitz'};
+var $author$project$Types$Bullet = {$: 'Bullet'};
+var $author$project$Types$Rapid = {$: 'Rapid'};
 var $author$project$Pages$StudentDetail$SetTimeControlFilter = function (a) {
-	return {$: 3, a: a};
+	return {$: 'SetTimeControlFilter', a: a};
 };
 var $author$project$Pages$StudentDetail$viewTimeControlFilter = function (model) {
 	return A2(
@@ -13076,23 +13322,23 @@ var $author$project$Pages$StudentDetail$viewTimeControlFilter = function (model)
 				A3(
 				$author$project$Pages$StudentDetail$viewRadioOption,
 				'All',
-				!model.N,
-				$author$project$Pages$StudentDetail$SetTimeControlFilter(0)),
+				_Utils_eq(model.timeControlFilter, $author$project$Types$AllTimeControls),
+				$author$project$Pages$StudentDetail$SetTimeControlFilter($author$project$Types$AllTimeControls)),
 				A3(
 				$author$project$Pages$StudentDetail$viewRadioOption,
 				'Bullet',
-				model.N === 1,
-				$author$project$Pages$StudentDetail$SetTimeControlFilter(1)),
+				_Utils_eq(model.timeControlFilter, $author$project$Types$Bullet),
+				$author$project$Pages$StudentDetail$SetTimeControlFilter($author$project$Types$Bullet)),
 				A3(
 				$author$project$Pages$StudentDetail$viewRadioOption,
 				'Blitz',
-				model.N === 2,
-				$author$project$Pages$StudentDetail$SetTimeControlFilter(2)),
+				_Utils_eq(model.timeControlFilter, $author$project$Types$Blitz),
+				$author$project$Pages$StudentDetail$SetTimeControlFilter($author$project$Types$Blitz)),
 				A3(
 				$author$project$Pages$StudentDetail$viewRadioOption,
 				'Rapid',
-				model.N === 3,
-				$author$project$Pages$StudentDetail$SetTimeControlFilter(3))
+				_Utils_eq(model.timeControlFilter, $author$project$Types$Rapid),
+				$author$project$Pages$StudentDetail$SetTimeControlFilter($author$project$Types$Rapid))
 			]));
 };
 var $author$project$Pages$StudentDetail$viewSidebar = function (model) {
@@ -13101,7 +13347,7 @@ var $author$project$Pages$StudentDetail$viewSidebar = function (model) {
 		_List_fromArray(
 			[
 				$elm$html$Html$Attributes$class(
-				model.aR ? 'fixed lg:sticky inset-y-0 left-0 z-40 w-72 bg-white border-r border-gray-200 overflow-y-auto transform transition-transform duration-200 lg:translate-x-0 lg:top-0 lg:h-screen shadow-lg lg:shadow-none' : 'fixed lg:sticky inset-y-0 left-0 z-40 w-72 bg-white border-r border-gray-200 overflow-y-auto transform -translate-x-full lg:translate-x-0 transition-transform duration-200 lg:top-0 lg:h-screen')
+				model.sidebarVisible ? 'fixed lg:sticky inset-y-0 left-0 z-40 w-72 bg-white border-r border-gray-200 transform transition-transform duration-200 lg:translate-x-0 lg:top-0 lg:h-screen shadow-lg lg:shadow-none' : 'fixed lg:sticky inset-y-0 left-0 z-40 w-72 bg-white border-r border-gray-200 transform -translate-x-full lg:translate-x-0 transition-transform duration-200 lg:top-0 lg:h-screen')
 			]),
 		_List_fromArray(
 			[
@@ -13109,7 +13355,7 @@ var $author$project$Pages$StudentDetail$viewSidebar = function (model) {
 				$elm$html$Html$div,
 				_List_fromArray(
 					[
-						$elm$html$Html$Attributes$class('p-4')
+						$elm$html$Html$Attributes$class('h-full overflow-y-auto p-4')
 					]),
 				_List_fromArray(
 					[
@@ -13148,7 +13394,7 @@ var $author$project$Pages$StudentDetail$viewSidebar = function (model) {
 						_List_fromArray(
 							[
 								$author$project$Route$href($author$project$Route$Dashboard),
-								$elm$html$Html$Attributes$class('inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-700 mb-6')
+								$elm$html$Html$Attributes$class('inline-flex items-center gap-1.5 text-sm text-anthro-gray hover:text-anthro-dark mb-6')
 							]),
 						_List_fromArray(
 							[
@@ -13228,42 +13474,42 @@ var $author$project$Pages$StudentDetail$viewSidebar = function (model) {
 								model,
 								'result',
 								'Result',
-								!(!model.M),
+								!_Utils_eq(model.resultFilter, $author$project$Types$AllResults),
 								$author$project$Pages$StudentDetail$viewResultFilter(model)),
 								A5(
 								$author$project$Pages$StudentDetail$viewFilterSection,
 								model,
 								'timeControl',
 								'Time Control',
-								!(!model.N),
+								!_Utils_eq(model.timeControlFilter, $author$project$Types$AllTimeControls),
 								$author$project$Pages$StudentDetail$viewTimeControlFilter(model)),
 								A5(
 								$author$project$Pages$StudentDetail$viewFilterSection,
 								model,
 								'color',
 								'Played As',
-								!(!model.O),
+								!_Utils_eq(model.colorFilter, $author$project$Types$AllColors),
 								$author$project$Pages$StudentDetail$viewColorFilter(model)),
 								A5(
 								$author$project$Pages$StudentDetail$viewFilterSection,
 								model,
 								'accuracy',
 								'Accuracy',
-								(!_Utils_eq(model.eu, $elm$core$Maybe$Nothing)) || (!_Utils_eq(model.ep, $elm$core$Maybe$Nothing)),
+								(!_Utils_eq(model.minAccuracy, $elm$core$Maybe$Nothing)) || (!_Utils_eq(model.maxAccuracy, $elm$core$Maybe$Nothing)),
 								$author$project$Pages$StudentDetail$viewAccuracyFilter(model)),
 								A5(
 								$author$project$Pages$StudentDetail$viewFilterSection,
 								model,
 								'opponent',
 								'Opponent',
-								(model.R !== 'all') || (model.ah !== ''),
+								(model.opponentRatingFilter !== 'all') || (model.opponentSearch !== ''),
 								$author$project$Pages$StudentDetail$viewOpponentFilter(model)),
 								A5(
 								$author$project$Pages$StudentDetail$viewFilterSection,
 								model,
 								'tags',
 								'Tags',
-								!$elm$core$List$isEmpty(model.x),
+								!$elm$core$List$isEmpty(model.selectedTags),
 								$author$project$Pages$StudentDetail$viewTagFilters(model))
 							])),
 						A2(
@@ -13288,24 +13534,24 @@ var $author$project$Pages$StudentDetail$viewSidebar = function (model) {
 								$elm$html$Html$select,
 								_List_fromArray(
 									[
-										$elm$html$Html$Attributes$class('w-full px-3 py-2 text-sm border border-gray-200 rounded-lg bg-white focus:ring-2 focus:ring-gray-900 focus:border-gray-900'),
+										$elm$html$Html$Attributes$class('w-full px-3 py-2 text-sm border border-gray-200 rounded-lg bg-white focus:ring-2 focus:ring-anthro-dark focus:border-anthro-dark'),
 										$elm$html$Html$Events$onInput(
 										function (str) {
 											switch (str) {
 												case 'date-newest':
-													return $author$project$Pages$StudentDetail$SetSortOrder(0);
+													return $author$project$Pages$StudentDetail$SetSortOrder($author$project$Pages$StudentDetail$DateNewest);
 												case 'date-oldest':
-													return $author$project$Pages$StudentDetail$SetSortOrder(1);
+													return $author$project$Pages$StudentDetail$SetSortOrder($author$project$Pages$StudentDetail$DateOldest);
 												case 'accuracy-high':
-													return $author$project$Pages$StudentDetail$SetSortOrder(2);
+													return $author$project$Pages$StudentDetail$SetSortOrder($author$project$Pages$StudentDetail$AccuracyHigh);
 												case 'accuracy-low':
-													return $author$project$Pages$StudentDetail$SetSortOrder(3);
+													return $author$project$Pages$StudentDetail$SetSortOrder($author$project$Pages$StudentDetail$AccuracyLow);
 												case 'rating-high':
-													return $author$project$Pages$StudentDetail$SetSortOrder(4);
+													return $author$project$Pages$StudentDetail$SetSortOrder($author$project$Pages$StudentDetail$OpponentRatingHigh);
 												case 'rating-low':
-													return $author$project$Pages$StudentDetail$SetSortOrder(5);
+													return $author$project$Pages$StudentDetail$SetSortOrder($author$project$Pages$StudentDetail$OpponentRatingLow);
 												default:
-													return $author$project$Pages$StudentDetail$SetSortOrder(0);
+													return $author$project$Pages$StudentDetail$SetSortOrder($author$project$Pages$StudentDetail$DateNewest);
 											}
 										})
 									]),
@@ -13316,7 +13562,8 @@ var $author$project$Pages$StudentDetail$viewSidebar = function (model) {
 										_List_fromArray(
 											[
 												$elm$html$Html$Attributes$value('date-newest'),
-												$elm$html$Html$Attributes$selected(!model.S)
+												$elm$html$Html$Attributes$selected(
+												_Utils_eq(model.sortOrder, $author$project$Pages$StudentDetail$DateNewest))
 											]),
 										_List_fromArray(
 											[
@@ -13327,7 +13574,8 @@ var $author$project$Pages$StudentDetail$viewSidebar = function (model) {
 										_List_fromArray(
 											[
 												$elm$html$Html$Attributes$value('date-oldest'),
-												$elm$html$Html$Attributes$selected(model.S === 1)
+												$elm$html$Html$Attributes$selected(
+												_Utils_eq(model.sortOrder, $author$project$Pages$StudentDetail$DateOldest))
 											]),
 										_List_fromArray(
 											[
@@ -13338,7 +13586,8 @@ var $author$project$Pages$StudentDetail$viewSidebar = function (model) {
 										_List_fromArray(
 											[
 												$elm$html$Html$Attributes$value('accuracy-high'),
-												$elm$html$Html$Attributes$selected(model.S === 2)
+												$elm$html$Html$Attributes$selected(
+												_Utils_eq(model.sortOrder, $author$project$Pages$StudentDetail$AccuracyHigh))
 											]),
 										_List_fromArray(
 											[
@@ -13349,7 +13598,8 @@ var $author$project$Pages$StudentDetail$viewSidebar = function (model) {
 										_List_fromArray(
 											[
 												$elm$html$Html$Attributes$value('accuracy-low'),
-												$elm$html$Html$Attributes$selected(model.S === 3)
+												$elm$html$Html$Attributes$selected(
+												_Utils_eq(model.sortOrder, $author$project$Pages$StudentDetail$AccuracyLow))
 											]),
 										_List_fromArray(
 											[
@@ -13360,7 +13610,8 @@ var $author$project$Pages$StudentDetail$viewSidebar = function (model) {
 										_List_fromArray(
 											[
 												$elm$html$Html$Attributes$value('rating-high'),
-												$elm$html$Html$Attributes$selected(model.S === 4)
+												$elm$html$Html$Attributes$selected(
+												_Utils_eq(model.sortOrder, $author$project$Pages$StudentDetail$OpponentRatingHigh))
 											]),
 										_List_fromArray(
 											[
@@ -13371,7 +13622,8 @@ var $author$project$Pages$StudentDetail$viewSidebar = function (model) {
 										_List_fromArray(
 											[
 												$elm$html$Html$Attributes$value('rating-low'),
-												$elm$html$Html$Attributes$selected(model.S === 5)
+												$elm$html$Html$Attributes$selected(
+												_Utils_eq(model.sortOrder, $author$project$Pages$StudentDetail$OpponentRatingLow))
 											]),
 										_List_fromArray(
 											[
@@ -13391,20 +13643,20 @@ var $author$project$Pages$StudentDetail$calculateStats = F2(
 				$elm$core$List$filterMap,
 				$elm$core$Basics$identity,
 				_List_fromArray(
-					[student.dG])));
+					[student.chessComUsername])));
 		var isWin = function (g) {
 			var isWhite = A2(
 				$elm$core$List$member,
-				$elm$core$String$toLower(g.d3.fl),
+				$elm$core$String$toLower(g.game.whiteUsername),
 				studentUsernames);
-			return (isWhite && (g.d3.eV === '1-0')) || ((!isWhite) && (g.d3.eV === '0-1'));
+			return (isWhite && (g.game.result === '1-0')) || ((!isWhite) && (g.game.result === '0-1'));
 		};
 		var isLoss = function (g) {
 			var isWhite = A2(
 				$elm$core$List$member,
-				$elm$core$String$toLower(g.d3.fl),
+				$elm$core$String$toLower(g.game.whiteUsername),
 				studentUsernames);
-			return (isWhite && (g.d3.eV === '0-1')) || ((!isWhite) && (g.d3.eV === '1-0'));
+			return (isWhite && (g.game.result === '0-1')) || ((!isWhite) && (g.game.result === '1-0'));
 		};
 		var accuracies = A2(
 			$elm$core$List$filterMap,
@@ -13412,44 +13664,44 @@ var $author$project$Pages$StudentDetail$calculateStats = F2(
 				return A2(
 					$elm$core$Maybe$andThen,
 					function ($) {
-						return $.bd;
+						return $.accuracyOverall;
 					},
-					g.bP);
+					g.insight);
 			},
 			games);
 		var avgAcc = $elm$core$List$isEmpty(accuracies) ? $elm$core$Maybe$Nothing : $elm$core$Maybe$Just(
 			$elm$core$List$sum(accuracies) / $elm$core$List$length(accuracies));
 		return {
-			bA: avgAcc,
-			a_: $elm$core$List$length(
+			avgAccuracy: avgAcc,
+			draws: $elm$core$List$length(
 				A2(
 					$elm$core$List$filter,
 					function (g) {
-						return g.d3.eV === '1/2-1/2';
+						return g.game.result === '1/2-1/2';
 					},
 					games)),
-			a2: $elm$core$List$length(
+			losses: $elm$core$List$length(
 				A2($elm$core$List$filter, isLoss, games)),
-			a6: $elm$core$List$length(games),
-			a9: $elm$core$List$length(
+			total: $elm$core$List$length(games),
+			wins: $elm$core$List$length(
 				A2($elm$core$List$filter, isWin, games))
 		};
 	});
 var $author$project$Pages$StudentDetail$viewStatsHeader = function (model) {
-	var _v0 = _Utils_Tuple2(model.aF, model.f);
-	if ((_v0.a.$ === 3) && (_v0.b.$ === 3)) {
+	var _v0 = _Utils_Tuple2(model.student, model.games);
+	if ((_v0.a.$ === 'Success') && (_v0.b.$ === 'Success')) {
 		var student = _v0.a.a;
 		var gamesData = _v0.b.a;
-		var stats = A2($author$project$Pages$StudentDetail$calculateStats, student, gamesData.f);
-		var totalGames = (stats.a9 + stats.a2) + stats.a_;
-		var winPercent = (totalGames > 0) ? ((stats.a9 / totalGames) * 100) : 0;
-		var lossPercent = (totalGames > 0) ? ((stats.a2 / totalGames) * 100) : 0;
-		var drawPercent = (totalGames > 0) ? ((stats.a_ / totalGames) * 100) : 0;
+		var stats = A2($author$project$Pages$StudentDetail$calculateStats, student, gamesData.games);
+		var totalGames = (stats.wins + stats.losses) + stats.draws;
+		var winPercent = (totalGames > 0) ? ((stats.wins / totalGames) * 100) : 0;
+		var lossPercent = (totalGames > 0) ? ((stats.losses / totalGames) * 100) : 0;
+		var drawPercent = (totalGames > 0) ? ((stats.draws / totalGames) * 100) : 0;
 		return A2(
 			$elm$html$Html$div,
 			_List_fromArray(
 				[
-					$elm$html$Html$Attributes$class('mb-6 bg-white rounded-xl border border-gray-200 p-5 shadow-sm')
+					$elm$html$Html$Attributes$class('mb-6 bg-white rounded-xl shadow-card p-5')
 				]),
 			_List_fromArray(
 				[
@@ -13457,7 +13709,7 @@ var $author$project$Pages$StudentDetail$viewStatsHeader = function (model) {
 					$elm$html$Html$div,
 					_List_fromArray(
 						[
-							$elm$html$Html$Attributes$class('grid grid-cols-2 lg:grid-cols-4 gap-6')
+							$elm$html$Html$Attributes$class('grid grid-cols-3 gap-6')
 						]),
 					_List_fromArray(
 						[
@@ -13473,18 +13725,18 @@ var $author$project$Pages$StudentDetail$viewStatsHeader = function (model) {
 									$elm$html$Html$div,
 									_List_fromArray(
 										[
-											$elm$html$Html$Attributes$class('text-3xl font-bold text-gray-900')
+											$elm$html$Html$Attributes$class('text-2xl font-bold text-gray-900')
 										]),
 									_List_fromArray(
 										[
 											$elm$html$Html$text(
-											$elm$core$String$fromInt(gamesData.a6))
+											$elm$core$String$fromInt(gamesData.total))
 										])),
 									A2(
 									$elm$html$Html$div,
 									_List_fromArray(
 										[
-											$elm$html$Html$Attributes$class('text-sm text-gray-500 mt-1')
+											$elm$html$Html$Attributes$class('text-xs text-gray-500 mt-1')
 										]),
 									_List_fromArray(
 										[
@@ -13500,8 +13752,8 @@ var $author$project$Pages$StudentDetail$viewStatsHeader = function (model) {
 							_List_fromArray(
 								[
 									function () {
-									var _v1 = stats.bA;
-									if (!_v1.$) {
+									var _v1 = stats.avgAccuracy;
+									if (_v1.$ === 'Just') {
 										var acc = _v1.a;
 										var colors = $author$project$Pages$StudentDetail$accuracyColors(acc);
 										return A2(
@@ -13513,7 +13765,7 @@ var $author$project$Pages$StudentDetail$viewStatsHeader = function (model) {
 													$elm$html$Html$div,
 													_List_fromArray(
 														[
-															$elm$html$Html$Attributes$class('text-3xl font-bold ' + colors.as)
+															$elm$html$Html$Attributes$class('text-2xl font-bold ' + colors.text)
 														]),
 													_List_fromArray(
 														[
@@ -13525,7 +13777,7 @@ var $author$project$Pages$StudentDetail$viewStatsHeader = function (model) {
 													$elm$html$Html$div,
 													_List_fromArray(
 														[
-															$elm$html$Html$Attributes$class('text-sm text-gray-500 mt-1')
+															$elm$html$Html$Attributes$class('text-xs text-gray-500 mt-1')
 														]),
 													_List_fromArray(
 														[
@@ -13542,7 +13794,7 @@ var $author$project$Pages$StudentDetail$viewStatsHeader = function (model) {
 													$elm$html$Html$div,
 													_List_fromArray(
 														[
-															$elm$html$Html$Attributes$class('text-3xl font-bold text-gray-300')
+															$elm$html$Html$Attributes$class('text-2xl font-bold text-gray-300')
 														]),
 													_List_fromArray(
 														[
@@ -13552,7 +13804,7 @@ var $author$project$Pages$StudentDetail$viewStatsHeader = function (model) {
 													$elm$html$Html$div,
 													_List_fromArray(
 														[
-															$elm$html$Html$Attributes$class('text-sm text-gray-500 mt-1')
+															$elm$html$Html$Attributes$class('text-xs text-gray-500 mt-1')
 														]),
 													_List_fromArray(
 														[
@@ -13574,7 +13826,7 @@ var $author$project$Pages$StudentDetail$viewStatsHeader = function (model) {
 									$elm$html$Html$div,
 									_List_fromArray(
 										[
-											$elm$html$Html$Attributes$class('text-3xl font-bold text-gray-900')
+											$elm$html$Html$Attributes$class('text-2xl font-bold text-gray-900')
 										]),
 									_List_fromArray(
 										[
@@ -13586,123 +13838,113 @@ var $author$project$Pages$StudentDetail$viewStatsHeader = function (model) {
 									$elm$html$Html$div,
 									_List_fromArray(
 										[
-											$elm$html$Html$Attributes$class('text-sm text-gray-500 mt-1')
+											$elm$html$Html$Attributes$class('text-xs text-gray-500 mt-1')
 										]),
 									_List_fromArray(
 										[
 											$elm$html$Html$text('Win Rate')
 										]))
+								]))
+						])),
+					A2(
+					$elm$html$Html$div,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('mt-5 pt-4 border-t border-gray-100')
+						]),
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$div,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('h-3 rounded-full overflow-hidden bg-gray-100 flex')
+								]),
+							_List_fromArray(
+								[
+									(winPercent > 0) ? A2(
+									$elm$html$Html$div,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('bg-green-500 transition-all'),
+											A2(
+											$elm$html$Html$Attributes$style,
+											'width',
+											$elm$core$String$fromFloat(winPercent) + '%'),
+											$elm$html$Html$Attributes$title(
+											$elm$core$String$fromInt(
+												$elm$core$Basics$round(winPercent)) + '% wins')
+										]),
+									_List_Nil) : $elm$html$Html$text(''),
+									(drawPercent > 0) ? A2(
+									$elm$html$Html$div,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('bg-gray-400 transition-all'),
+											A2(
+											$elm$html$Html$Attributes$style,
+											'width',
+											$elm$core$String$fromFloat(drawPercent) + '%'),
+											$elm$html$Html$Attributes$title(
+											$elm$core$String$fromInt(
+												$elm$core$Basics$round(drawPercent)) + '% draws')
+										]),
+									_List_Nil) : $elm$html$Html$text(''),
+									(lossPercent > 0) ? A2(
+									$elm$html$Html$div,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('bg-red-500 transition-all'),
+											A2(
+											$elm$html$Html$Attributes$style,
+											'width',
+											$elm$core$String$fromFloat(lossPercent) + '%'),
+											$elm$html$Html$Attributes$title(
+											$elm$core$String$fromInt(
+												$elm$core$Basics$round(lossPercent)) + '% losses')
+										]),
+									_List_Nil) : $elm$html$Html$text('')
 								])),
 							A2(
 							$elm$html$Html$div,
 							_List_fromArray(
 								[
-									$elm$html$Html$Attributes$class('col-span-2 lg:col-span-1')
+									$elm$html$Html$Attributes$class('flex justify-between text-xs mt-2 font-medium')
 								]),
 							_List_fromArray(
 								[
 									A2(
-									$elm$html$Html$div,
+									$elm$html$Html$span,
 									_List_fromArray(
 										[
-											$elm$html$Html$Attributes$class('text-sm text-gray-500 mb-2 text-center')
+											$elm$html$Html$Attributes$class('text-green-600')
 										]),
 									_List_fromArray(
 										[
-											$elm$html$Html$text('Results')
+											$elm$html$Html$text(
+											$elm$core$String$fromInt(stats.wins) + ' wins')
 										])),
 									A2(
-									$elm$html$Html$div,
+									$elm$html$Html$span,
 									_List_fromArray(
 										[
-											$elm$html$Html$Attributes$class('h-4 rounded-full overflow-hidden bg-gray-100 flex')
+											$elm$html$Html$Attributes$class('text-gray-500')
 										]),
 									_List_fromArray(
 										[
-											(winPercent > 0) ? A2(
-											$elm$html$Html$div,
-											_List_fromArray(
-												[
-													$elm$html$Html$Attributes$class('bg-green-500 transition-all'),
-													A2(
-													$elm$html$Html$Attributes$style,
-													'width',
-													$elm$core$String$fromFloat(winPercent) + '%'),
-													$elm$html$Html$Attributes$title(
-													$elm$core$String$fromInt(
-														$elm$core$Basics$round(winPercent)) + '% wins')
-												]),
-											_List_Nil) : $elm$html$Html$text(''),
-											(drawPercent > 0) ? A2(
-											$elm$html$Html$div,
-											_List_fromArray(
-												[
-													$elm$html$Html$Attributes$class('bg-gray-400 transition-all'),
-													A2(
-													$elm$html$Html$Attributes$style,
-													'width',
-													$elm$core$String$fromFloat(drawPercent) + '%'),
-													$elm$html$Html$Attributes$title(
-													$elm$core$String$fromInt(
-														$elm$core$Basics$round(drawPercent)) + '% draws')
-												]),
-											_List_Nil) : $elm$html$Html$text(''),
-											(lossPercent > 0) ? A2(
-											$elm$html$Html$div,
-											_List_fromArray(
-												[
-													$elm$html$Html$Attributes$class('bg-red-500 transition-all'),
-													A2(
-													$elm$html$Html$Attributes$style,
-													'width',
-													$elm$core$String$fromFloat(lossPercent) + '%'),
-													$elm$html$Html$Attributes$title(
-													$elm$core$String$fromInt(
-														$elm$core$Basics$round(lossPercent)) + '% losses')
-												]),
-											_List_Nil) : $elm$html$Html$text('')
+											$elm$html$Html$text(
+											$elm$core$String$fromInt(stats.draws) + ' draws')
 										])),
 									A2(
-									$elm$html$Html$div,
+									$elm$html$Html$span,
 									_List_fromArray(
 										[
-											$elm$html$Html$Attributes$class('flex justify-between text-xs mt-2 font-medium')
+											$elm$html$Html$Attributes$class('text-red-600')
 										]),
 									_List_fromArray(
 										[
-											A2(
-											$elm$html$Html$span,
-											_List_fromArray(
-												[
-													$elm$html$Html$Attributes$class('text-green-600')
-												]),
-											_List_fromArray(
-												[
-													$elm$html$Html$text(
-													$elm$core$String$fromInt(stats.a9) + 'W')
-												])),
-											A2(
-											$elm$html$Html$span,
-											_List_fromArray(
-												[
-													$elm$html$Html$Attributes$class('text-gray-500')
-												]),
-											_List_fromArray(
-												[
-													$elm$html$Html$text(
-													$elm$core$String$fromInt(stats.a_) + 'D')
-												])),
-											A2(
-											$elm$html$Html$span,
-											_List_fromArray(
-												[
-													$elm$html$Html$Attributes$class('text-red-600')
-												]),
-											_List_fromArray(
-												[
-													$elm$html$Html$text(
-													$elm$core$String$fromInt(stats.a2) + 'L')
-												]))
+											$elm$html$Html$text(
+											$elm$core$String$fromInt(stats.losses) + ' losses')
 										]))
 								]))
 						]))
@@ -13711,9 +13953,10 @@ var $author$project$Pages$StudentDetail$viewStatsHeader = function (model) {
 		return $elm$html$Html$text('');
 	}
 };
+var $elm$html$Html$nav = _VirtualDom_node('nav');
 var $author$project$Pages$StudentDetail$viewStudentHeader = function (studentData) {
 	switch (studentData.$) {
-		case 1:
+		case 'Loading':
 			return A2(
 				$elm$html$Html$div,
 				_List_fromArray(
@@ -13762,7 +14005,7 @@ var $author$project$Pages$StudentDetail$viewStudentHeader = function (studentDat
 									]))
 							]))
 					]));
-		case 2:
+		case 'Failure':
 			var error = studentData.a;
 			return A2(
 				$elm$html$Html$div,
@@ -13783,7 +14026,7 @@ var $author$project$Pages$StudentDetail$viewStudentHeader = function (studentDat
 								$elm$html$Html$text(error)
 							]))
 					]));
-		case 0:
+		case 'NotAsked':
 			return $elm$html$Html$text('');
 		default:
 			var student = studentData.a;
@@ -13796,6 +14039,46 @@ var $author$project$Pages$StudentDetail$viewStudentHeader = function (studentDat
 				_List_fromArray(
 					[
 						A2(
+						$elm$html$Html$nav,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('flex items-center gap-2 text-sm mb-4')
+							]),
+						_List_fromArray(
+							[
+								A2(
+								$elm$html$Html$a,
+								_List_fromArray(
+									[
+										$author$project$Route$href($author$project$Route$Dashboard),
+										$elm$html$Html$Attributes$class('text-anthro-gray hover:text-anthro-dark')
+									]),
+								_List_fromArray(
+									[
+										$elm$html$Html$text('Dashboard')
+									])),
+								A2(
+								$elm$html$Html$span,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('text-anthro-gray-light')
+									]),
+								_List_fromArray(
+									[
+										$elm$html$Html$text('/')
+									])),
+								A2(
+								$elm$html$Html$span,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('text-anthro-dark font-medium')
+									]),
+								_List_fromArray(
+									[
+										$elm$html$Html$text(student.displayName)
+									]))
+							])),
+						A2(
 						$elm$html$Html$div,
 						_List_fromArray(
 							[
@@ -13804,8 +14087,8 @@ var $author$project$Pages$StudentDetail$viewStudentHeader = function (studentDat
 						_List_fromArray(
 							[
 								function () {
-								var _v1 = student.dw;
-								if (!_v1.$) {
+								var _v1 = student.avatarUrl;
+								if (_v1.$ === 'Just') {
 									var url = _v1.a;
 									return A2(
 										$elm$html$Html$img,
@@ -13813,7 +14096,7 @@ var $author$project$Pages$StudentDetail$viewStudentHeader = function (studentDat
 											[
 												$elm$html$Html$Attributes$src(url),
 												$elm$html$Html$Attributes$class('w-16 h-16 rounded-full border-2 border-gray-200 shadow-sm'),
-												$elm$html$Html$Attributes$alt(student.bg)
+												$elm$html$Html$Attributes$alt(student.displayName)
 											]),
 										_List_Nil);
 								} else {
@@ -13827,7 +14110,7 @@ var $author$project$Pages$StudentDetail$viewStudentHeader = function (studentDat
 											[
 												$elm$html$Html$text(
 												$elm$core$String$toUpper(
-													A2($elm$core$String$left, 1, student.bg)))
+													A2($elm$core$String$left, 1, student.displayName)))
 											]));
 								}
 							}(),
@@ -13844,11 +14127,11 @@ var $author$project$Pages$StudentDetail$viewStudentHeader = function (studentDat
 											]),
 										_List_fromArray(
 											[
-												$elm$html$Html$text(student.bg)
+												$elm$html$Html$text(student.displayName)
 											])),
 										function () {
-										var _v2 = student.dG;
-										if (!_v2.$) {
+										var _v2 = student.chessComUsername;
+										if (_v2.$ === 'Just') {
 											var username = _v2.a;
 											return A2(
 												$elm$html$Html$a,
@@ -13912,7 +14195,7 @@ var $author$project$Pages$StudentDetail$view = function (model) {
 									])) : $elm$html$Html$text('')
 							]))
 					])),
-				model.aR ? A2(
+				model.sidebarVisible ? A2(
 				$elm$html$Html$div,
 				_List_fromArray(
 					[
@@ -13945,7 +14228,7 @@ var $author$project$Pages$StudentDetail$view = function (model) {
 									]),
 								_List_fromArray(
 									[
-										$author$project$Pages$StudentDetail$viewStudentHeader(model.aF),
+										$author$project$Pages$StudentDetail$viewStudentHeader(model.student),
 										$author$project$Pages$StudentDetail$viewStatsHeader(model),
 										$author$project$Pages$StudentDetail$viewGamesList(model)
 									]))
@@ -14004,7 +14287,7 @@ var $author$project$Main$viewNotFound = A2(
 					_List_fromArray(
 						[
 							$author$project$Route$href($author$project$Route$Dashboard),
-							$elm$html$Html$Attributes$class('inline-block bg-anthro-orange hover:bg-anthro-orange-dark text-white font-medium py-2 px-4 rounded-lg transition-colors')
+							$elm$html$Html$Attributes$class('inline-block bg-anthro-dark hover:bg-gray-800 text-white font-medium py-2.5 px-4 rounded-lg transition-all shadow-subtle hover:shadow-card')
 						]),
 					_List_fromArray(
 						[
@@ -14014,71 +14297,71 @@ var $author$project$Main$viewNotFound = A2(
 		]));
 var $author$project$Main$view = function (model) {
 	return {
-		aX: _List_fromArray(
+		body: _List_fromArray(
 			[
 				function () {
-				var _v0 = model.z;
+				var _v0 = model.page;
 				switch (_v0.$) {
-					case 0:
+					case 'LoginPage':
 						var subModel = _v0.a;
 						return A2(
 							$elm$html$Html$map,
 							$author$project$Main$LoginMsg,
 							$author$project$Pages$Login$view(subModel));
-					case 1:
+					case 'RegisterPage':
 						var subModel = _v0.a;
 						return A2(
 							$elm$html$Html$map,
 							$author$project$Main$RegisterMsg,
 							$author$project$Pages$Register$view(subModel));
-					case 2:
+					case 'DashboardPage':
 						var subModel = _v0.a;
-						var _v1 = model.B;
-						if (_v1.$ === 1) {
+						var _v1 = model.session;
+						if (_v1.$ === 'LoggedIn') {
 							var token = _v1.a;
 							var coach = _v1.b;
 							return $author$project$View$Layout$layout(
 								{
-									dH: coach,
-									bC: A2(
+									coach: coach,
+									content: A2(
 										$elm$html$Html$map,
 										$author$project$Main$DashboardMsg,
-										A3($author$project$Pages$Dashboard$view, model.ck, token, subModel)),
-									bY: $author$project$Main$Logout
+										A3($author$project$Pages$Dashboard$view, model.apiUrl, token, subModel)),
+									onLogout: $author$project$Main$Logout
 								});
 						} else {
 							return $elm$html$Html$text('');
 						}
-					case 3:
+					case 'StudentDetailPage':
 						var subModel = _v0.a;
-						var _v2 = model.B;
-						if (_v2.$ === 1) {
+						var _v2 = model.session;
+						if (_v2.$ === 'LoggedIn') {
 							var coach = _v2.b;
 							return $author$project$View$Layout$layout(
 								{
-									dH: coach,
-									bC: A2(
+									coach: coach,
+									content: A2(
 										$elm$html$Html$map,
 										$author$project$Main$StudentDetailMsg,
 										$author$project$Pages$StudentDetail$view(subModel)),
-									bY: $author$project$Main$Logout
+									onLogout: $author$project$Main$Logout
 								});
 						} else {
 							return $elm$html$Html$text('');
 						}
-					case 4:
+					case 'GameDetailPage':
 						var subModel = _v0.a;
-						var _v3 = model.B;
-						if (_v3.$ === 1) {
+						var _v3 = model.session;
+						if (_v3.$ === 'LoggedIn') {
 							var coach = _v3.b;
 							return $author$project$View$Layout$layout(
 								{
-									dH: coach,
-									bC: A2(
+									coach: coach,
+									content: A2(
 										$elm$html$Html$map,
 										$author$project$Main$GameDetailMsg,
 										$author$project$Pages$GameDetail$view(subModel)),
-									bY: $author$project$Main$Logout
+									onLogout: $author$project$Main$Logout
 								});
 						} else {
 							return $elm$html$Html$text('');
@@ -14088,11 +14371,11 @@ var $author$project$Main$view = function (model) {
 				}
 			}()
 			]),
-		e8: 'Insights64'
+		title: 'Insights64'
 	};
 };
 var $author$project$Main$main = $elm$browser$Browser$application(
-	{ee: $author$project$Main$init, eC: $author$project$Main$UrlChanged, eD: $author$project$Main$UrlRequested, e2: $author$project$Main$subscriptions, fi: $author$project$Main$update, fj: $author$project$Main$view});
+	{init: $author$project$Main$init, onUrlChange: $author$project$Main$UrlChanged, onUrlRequest: $author$project$Main$UrlRequested, subscriptions: $author$project$Main$subscriptions, update: $author$project$Main$update, view: $author$project$Main$view});
 _Platform_export({'Main':{'init':$author$project$Main$main(
 	A2(
 		$elm$json$Json$Decode$andThen,
@@ -14101,7 +14384,7 @@ _Platform_export({'Main':{'init':$author$project$Main$main(
 				$elm$json$Json$Decode$andThen,
 				function (apiUrl) {
 					return $elm$json$Json$Decode$succeed(
-						{ck: apiUrl, bx: token});
+						{apiUrl: apiUrl, token: token});
 				},
 				A2($elm$json$Json$Decode$field, 'apiUrl', $elm$json$Json$Decode$string));
 		},
