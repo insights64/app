@@ -212,7 +212,7 @@ hasAnalysisInProgress : List Student -> Bool
 hasAnalysisInProgress students =
     List.any
         (\s ->
-            s.stats.gameCount > 0 && s.stats.analyzedCount < s.stats.gameCount
+            s.stats.gameCount == 0 || s.stats.analyzedCount < s.stats.gameCount
         )
         students
 
