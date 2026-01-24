@@ -329,7 +329,7 @@ viewNotFound =
             , p [ class "text-gray-600 mb-6" ] [ text "The page you're looking for doesn't exist." ]
             , a
                 [ Route.href Route.Dashboard
-                , class "inline-block bg-anthro-orange hover:bg-anthro-orange-dark text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                , class "inline-block bg-anthro-dark hover:bg-gray-800 text-white font-medium py-2.5 px-4 rounded-lg transition-all shadow-subtle hover:shadow-card"
                 ]
                 [ text "Go to Dashboard" ]
             ]

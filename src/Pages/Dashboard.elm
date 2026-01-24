@@ -378,7 +378,7 @@ viewDashboard model students =
                     ]
                 , button
                     [ onClick ShowAddModal
-                    , class "bg-gray-900 hover:bg-gray-800 text-white font-medium py-2.5 px-4 rounded-lg transition-colors flex items-center gap-2"
+                    , class "bg-anthro-dark hover:bg-gray-800 text-white font-medium py-2.5 px-4 rounded-lg transition-all shadow-subtle hover:shadow-card flex items-center gap-2"
                     ]
                     [ span [ class "text-lg leading-none" ] [ text "+" ]
                     , text "Add Student"
@@ -497,12 +497,12 @@ viewStudentCard student =
     a
         [ Route.href (Route.StudentDetail student.id)
         , class
-            ("block bg-white rounded-xl border overflow-hidden transition-all group "
+            ("block bg-white rounded-xl overflow-hidden transition-all group shadow-card hover:shadow-elevated "
                 ++ (if hasAlerts then
-                        "border-l-4 border-l-amber-400 border-gray-200 hover:border-gray-300 hover:shadow-md"
+                        "border-l-4 border-l-amber-400"
 
                     else
-                        "border-gray-200 hover:border-gray-300 hover:shadow-md"
+                        ""
                    )
             )
         ]
@@ -554,7 +554,7 @@ viewStudentCard student =
                 ]
 
             -- Stats row
-            , div [ class "grid grid-cols-3 gap-3 mt-4" ]
+            , div [ class "flex items-center justify-around mt-4 pt-4 border-t border-anthro-gray-light" ]
                 [ viewStatCell (String.fromInt student.stats.gameCount) "games" Nothing
                 , case student.stats.winRate of
                     Just rate ->
@@ -646,7 +646,7 @@ getStudentAlerts student =
 
 viewStatCell : String -> String -> Maybe String -> Html Msg
 viewStatCell value label maybeTrend =
-    div [ class "bg-gray-50 rounded-lg p-3 text-center" ]
+    div [ class "text-center px-3" ]
         [ div [ class "text-lg font-bold text-gray-900" ] [ text value ]
         , div [ class "text-xs text-gray-500 mt-0.5" ] [ text label ]
         , case maybeTrend of
@@ -688,7 +688,7 @@ viewEmptyState =
             -- CTA
             , button
                 [ onClick ShowAddModal
-                , class "bg-gray-900 hover:bg-gray-800 text-white font-medium py-3 px-6 rounded-lg transition-colors inline-flex items-center gap-2"
+                , class "bg-anthro-dark hover:bg-gray-800 text-white font-medium py-3 px-6 rounded-lg transition-all shadow-subtle hover:shadow-card inline-flex items-center gap-2"
                 ]
                 [ span [ class "text-lg leading-none" ] [ text "+" ]
                 , text "Add Student"
@@ -704,7 +704,7 @@ viewAddModal apiUrl token model =
         , onClick HideAddModal
         ]
         [ div
-            [ class "bg-white rounded-xl shadow-xl max-w-md w-full"
+            [ class "bg-white rounded-xl shadow-modal max-w-md w-full"
             , Html.Events.stopPropagationOn "click" (Decode.succeed ( NoOp, True ))
             ]
             [ -- Header
@@ -737,7 +737,7 @@ viewAddModal apiUrl token model =
                         [ text "Chess.com Username" ]
                     , input
                         [ type_ "text"
-                        , class "w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-gray-900 outline-none transition-shadow"
+                        , class "w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-anthro-dark focus:border-anthro-dark outline-none transition-shadow"
                         , placeholder "Enter username"
                         , value model.newStudentChessCom
                         , onInput NewStudentChessComChanged

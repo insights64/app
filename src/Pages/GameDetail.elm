@@ -73,7 +73,7 @@ view model =
         [ -- Back link
           a
             [ Route.href Route.Dashboard
-            , class "inline-flex items-center gap-1 text-gray-600 hover:text-gray-900 mb-6"
+            , class "inline-flex items-center gap-1 text-anthro-gray hover:text-anthro-dark mb-6"
             ]
             [ span [] [ text "←" ]
             , text "Back"
@@ -108,11 +108,11 @@ viewGameDetail detail =
         , div [ class "mt-6" ]
             [ h2 [ class "text-lg font-medium text-gray-900 mb-4" ] [ text "Move Analysis" ]
             , if List.isEmpty detail.moves then
-                div [ class "bg-white rounded-lg border border-gray-200 p-6 text-center text-gray-500" ]
+                div [ class "bg-white rounded-lg shadow-card p-6 text-center text-gray-500" ]
                     [ text "Move analysis not available yet." ]
 
               else
-                div [ class "bg-white rounded-lg border border-gray-200 divide-y divide-gray-100" ]
+                div [ class "bg-white rounded-lg shadow-card divide-y divide-gray-100" ]
                     (List.map viewMoveRow detail.moves)
             ]
         ]
@@ -120,7 +120,7 @@ viewGameDetail detail =
 
 viewGameHeader : Game -> Html Msg
 viewGameHeader game =
-    div [ class "bg-white rounded-lg border border-gray-200 p-6 mb-6" ]
+    div [ class "bg-white rounded-lg shadow-card p-6 mb-6" ]
         [ div [ class "flex items-center gap-3 mb-4" ]
             [ span [ class "text-2xl text-gray-600" ]
                 [ text
@@ -141,16 +141,16 @@ viewGameHeader game =
         , div [ class "flex items-center gap-4 text-sm" ]
             [ div
                 [ class
-                    ("px-3 py-1 rounded-full font-medium "
+                    ("px-3 py-1 rounded font-medium bg-anthro-gray-light text-anthro-gray border-l-2 "
                         ++ (case game.result of
                                 "1-0" ->
-                                    "bg-green-100 text-green-700"
+                                    "border-anthro-green"
 
                                 "0-1" ->
-                                    "bg-red-100 text-red-700"
+                                    "border-red-500"
 
                                 _ ->
-                                    "bg-gray-100 text-gray-700"
+                                    "border-anthro-gray-mid"
                            )
                     )
                 ]
@@ -176,7 +176,7 @@ viewMoveSummary moves =
         inaccuracies =
             List.length (List.filter (\m -> m.classification == Just "inaccuracy") moves)
     in
-    div [ class "bg-white rounded-lg border border-gray-200 p-6" ]
+    div [ class "bg-white rounded-lg shadow-card p-6" ]
         [ h2 [ class "text-lg font-medium text-gray-900 mb-4" ] [ text "Summary" ]
         , div [ class "grid grid-cols-3 gap-4" ]
             [ div [ class "text-center" ]

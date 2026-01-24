@@ -41,7 +41,7 @@ viewHeader coach onLogout =
                 [ span [ class "text-sm text-anthro-gray" ] [ text coach.email ]
                 , button
                     [ onClick onLogout
-                    , class "text-sm text-anthro-gray hover:text-anthro-dark transition"
+                    , class "text-sm text-anthro-gray hover:text-anthro-dark transition-colors px-3 py-1.5 rounded-lg hover:bg-anthro-cream"
                     ]
                     [ text "Sign out" ]
                 ]

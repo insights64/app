@@ -135,7 +135,7 @@ view : Model -> Html Msg
 view model =
     div [ class "min-h-screen flex items-center justify-center bg-anthro-light" ]
         [ div [ class "max-w-md w-full mx-4" ]
-            [ div [ class "bg-white rounded-2xl shadow-sm border border-anthro-gray-light p-8" ]
+            [ div [ class "bg-white rounded-2xl shadow-card p-8" ]
                 [ -- Logo
                   div [ class "flex flex-col items-center mb-8" ]
                     [ div [ class "flex items-center gap-3 mb-2" ]
@@ -168,7 +168,7 @@ view model =
                         , input
                             [ type_ "email"
                             , id "email"
-                            , class "w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition-colors"
+                            , class "w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-anthro-dark focus:border-anthro-dark outline-none transition-colors"
                             , placeholder "coach@example.com"
                             , value model.email
                             , onInput EmailChanged
@@ -184,7 +184,7 @@ view model =
                         , input
                             [ type_ "password"
                             , id "password"
-                            , class "w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition-colors"
+                            , class "w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-anthro-dark focus:border-anthro-dark outline-none transition-colors"
                             , placeholder "At least 8 characters"
                             , value model.password
                             , onInput PasswordChanged
@@ -200,7 +200,7 @@ view model =
                         , input
                             [ type_ "password"
                             , id "confirmPassword"
-                            , class "w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition-colors"
+                            , class "w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-anthro-dark focus:border-anthro-dark outline-none transition-colors"
                             , placeholder "Confirm your password"
                             , value model.confirmPassword
                             , onInput ConfirmPasswordChanged
@@ -212,7 +212,7 @@ view model =
                     -- Submit button
                     , button
                         [ type_ "submit"
-                        , class "w-full bg-anthro-orange hover:bg-anthro-orange-dark text-white font-medium py-2 px-4 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        , class "w-full bg-anthro-dark hover:bg-gray-800 text-white font-medium py-2 px-4 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                         , disabled model.isLoading
                         ]
                         [ if model.isLoading then
@@ -228,7 +228,7 @@ view model =
                     [ text "Already have an account? "
                     , a
                         [ Route.href Route.Login
-                        , class "text-orange-600 hover:text-orange-700 font-medium"
+                        , class "text-anthro-dark hover:underline font-medium"
                         ]
                         [ text "Sign in" ]
                     ]
