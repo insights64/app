@@ -694,7 +694,7 @@ view : Model -> Html Msg
 view model =
     div [ class "min-h-screen" ]
         [ -- Mobile filter toggle
-          div [ class "lg:hidden fixed bottom-4 right-4 z-40" ]
+          div [ class "lg:hidden fixed bottom-4 left-4 z-40" ]
             [ button
                 [ onClick ToggleSidebar
                 , class "bg-gray-900 text-white px-4 py-3 rounded-full shadow-lg flex items-center gap-2 hover:bg-gray-800 transition-colors"
