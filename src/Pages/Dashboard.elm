@@ -391,7 +391,7 @@ viewStudentCard student =
     a
         [ Route.href (Route.StudentDetail student.id)
         , class
-            ("block bg-white rounded-xl overflow-hidden transition-all group shadow-card hover:shadow-elevated "
+            ("block bg-white rounded-xl overflow-hidden transition-all duration-200 group shadow-card hover:shadow-elevated hover:scale-[1.02] border border-transparent hover:border-gray-200 "
                 ++ (if hasAlerts then
                         "border-l-4 border-l-amber-400"
 
