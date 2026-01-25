@@ -748,10 +748,6 @@ viewSidebar model =
                 , button [ onClick ToggleSidebar, class "text-gray-400 hover:text-gray-600 p-1" ] [ text "✕" ]
                 ]
 
-            -- Back link
-            , a [ Route.href Route.Dashboard, class "inline-flex items-center gap-1.5 text-sm text-anthro-gray hover:text-anthro-dark mb-6" ]
-                [ span [ class "text-lg" ] [ text "←" ], text "Dashboard" ]
-
             -- Filter header
             , div [ class "flex items-center justify-between mb-4" ]
                 [ div [ class "flex items-center gap-2" ]
