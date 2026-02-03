@@ -11013,7 +11013,7 @@ var $author$project$Pages$Dashboard$viewDashboard = F3(
 											$elm$html$Html$p,
 											_List_fromArray(
 												[
-													$elm$html$Html$Attributes$class('text-gray-500 mt-1')
+													$elm$html$Html$Attributes$class('text-gray-500 mt-1 flex items-center gap-1')
 												]),
 											_List_fromArray(
 												[
@@ -11028,6 +11028,19 @@ var $author$project$Pages$Dashboard$viewDashboard = F3(
 														[
 															$elm$html$Html$text(
 															' · ' + ($elm$core$String$fromInt(totalGames) + ' games analyzed'))
+														])) : $elm$html$Html$text(''),
+													(archivedCount > 0) ? A2(
+													$elm$html$Html$button,
+													_List_fromArray(
+														[
+															$elm$html$Html$Events$onClick($author$project$Pages$Dashboard$ToggleShowArchived),
+															$elm$html$Html$Attributes$class(
+															model.aB ? 'text-gray-600 hover:text-gray-800 transition-colors ml-1' : 'text-gray-400 hover:text-gray-600 transition-colors ml-1')
+														]),
+													_List_fromArray(
+														[
+															$elm$html$Html$text(
+															' · ' + (model.aB ? ('Hide archived (' + ($elm$core$String$fromInt(archivedCount) + ')')) : ('Show archived (' + ($elm$core$String$fromInt(archivedCount) + ')'))))
 														])) : $elm$html$Html$text('')
 												]))
 										])),
@@ -11040,19 +11053,6 @@ var $author$project$Pages$Dashboard$viewDashboard = F3(
 									_List_fromArray(
 										[
 											$author$project$Pages$Dashboard$viewTimeRangeFilter(model.y),
-											(archivedCount > 0) ? A2(
-											$elm$html$Html$button,
-											_List_fromArray(
-												[
-													$elm$html$Html$Events$onClick($author$project$Pages$Dashboard$ToggleShowArchived),
-													$elm$html$Html$Attributes$class(
-													model.aB ? 'text-sm font-medium text-gray-700 bg-gray-100 px-3 py-1.5 rounded-full hover:bg-gray-200 transition-colors' : 'text-sm font-medium text-gray-500 hover:text-gray-700 transition-colors')
-												]),
-											_List_fromArray(
-												[
-													$elm$html$Html$text(
-													model.aB ? ('Hide archived (' + ($elm$core$String$fromInt(archivedCount) + ')')) : ('Show archived (' + ($elm$core$String$fromInt(archivedCount) + ')')))
-												])) : $elm$html$Html$text(''),
 											A2(
 											$elm$html$Html$button,
 											_List_fromArray(

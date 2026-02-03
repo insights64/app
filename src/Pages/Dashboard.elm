@@ -526,7 +526,7 @@ viewDashboard model students archivedCount =
             [ div [ class "flex items-start justify-between" ]
                 [ div []
                     [ h1 [ class "text-2xl font-bold text-gray-900" ] [ text "Your Students" ]
-                    , p [ class "text-gray-500 mt-1" ]
+                    , p [ class "text-gray-500 mt-1 flex items-center gap-1" ]
                         [ text studentCountText
                         , if totalGames > 0 then
                             span [ class "text-gray-400" ]
@@ -534,32 +534,34 @@ viewDashboard model students archivedCount =
 
                           else
                             text ""
+                        , if archivedCount > 0 then
+                            button
+                                [ onClick ToggleShowArchived
+                                , class
+                                    (if model.showArchived then
+                                        "text-gray-600 hover:text-gray-800 transition-colors ml-1"
+
+                                     else
+                                        "text-gray-400 hover:text-gray-600 transition-colors ml-1"
+                                    )
+                                ]
+                                [ text
+                                    (" · "
+                                        ++ (if model.showArchived then
+                                                "Hide archived (" ++ String.fromInt archivedCount ++ ")"
+
+                                            else
+                                                "Show archived (" ++ String.fromInt archivedCount ++ ")"
+                                           )
+                                    )
+                                ]
+
+                          else
+                            text ""
                         ]
                     ]
                 , div [ class "flex items-center gap-4" ]
                     [ viewTimeRangeFilter model.timeRangeFilter
-                    , if archivedCount > 0 then
-                        button
-                            [ onClick ToggleShowArchived
-                            , class
-                                (if model.showArchived then
-                                    "text-sm font-medium text-gray-700 bg-gray-100 px-3 py-1.5 rounded-full hover:bg-gray-200 transition-colors"
-
-                                 else
-                                    "text-sm font-medium text-gray-500 hover:text-gray-700 transition-colors"
-                                )
-                            ]
-                            [ text
-                                (if model.showArchived then
-                                    "Hide archived (" ++ String.fromInt archivedCount ++ ")"
-
-                                 else
-                                    "Show archived (" ++ String.fromInt archivedCount ++ ")"
-                                )
-                            ]
-
-                      else
-                        text ""
                     , button
                         [ onClick ShowAddModal
                         , class "bg-anthro-dark hover:bg-gray-800 text-white font-medium py-2.5 px-4 rounded-lg transition-all shadow-subtle hover:shadow-card flex items-center gap-2"
