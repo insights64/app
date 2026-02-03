@@ -14,6 +14,10 @@ type Route
     | StudentDetail String
     | GameDetail String
     | Subscription
+    | ForgotPassword
+    | ResetPassword String
+    | VerifyEmail String
+    | EmailPreferences
     | NotFound
 
 
@@ -27,6 +31,10 @@ parser =
         , Parser.map StudentDetail (s "students" </> string)
         , Parser.map GameDetail (s "games" </> string)
         , Parser.map Subscription (s "subscription")
+        , Parser.map ForgotPassword (s "forgot-password")
+        , Parser.map ResetPassword (s "reset-password" </> string)
+        , Parser.map VerifyEmail (s "verify-email" </> string)
+        , Parser.map EmailPreferences (s "email-preferences")
         ]
 
 
@@ -76,6 +84,18 @@ routeToPieces route =
 
         Subscription ->
             [ "subscription" ]
+
+        ForgotPassword ->
+            [ "forgot-password" ]
+
+        ResetPassword token ->
+            [ "reset-password", token ]
+
+        VerifyEmail token ->
+            [ "verify-email", token ]
+
+        EmailPreferences ->
+            [ "email-preferences" ]
 
         NotFound ->
             [ "not-found" ]

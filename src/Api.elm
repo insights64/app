@@ -5,6 +5,7 @@ module Api exposing
     , getWithQuery
     , patch
     , post
+    , put
     , url
     )
 
@@ -131,6 +132,26 @@ patch config =
     Http.request
         { method = "PATCH"
         , headers = authHeader (Just config.token)
+        , url = unwrap config.endpoint
+        , body = Http.jsonBody config.body
+        , expect = Http.expectJson config.onResponse config.decoder
+        , timeout = Nothing
+        , tracker = Nothing
+        }
+
+
+put :
+    { endpoint : Endpoint
+    , token : Maybe String
+    , body : Encode.Value
+    , decoder : Decoder a
+    , onResponse : Result Http.Error a -> msg
+    }
+    -> Cmd msg
+put config =
+    Http.request
+        { method = "PUT"
+        , headers = authHeader config.token
         , url = unwrap config.endpoint
         , body = Http.jsonBody config.body
         , expect = Http.expectJson config.onResponse config.decoder

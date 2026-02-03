@@ -7,13 +7,17 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Http
 import Pages.Dashboard as Dashboard
+import Pages.EmailPreferences as EmailPreferences
+import Pages.ForgotPassword as ForgotPassword
 import Pages.GameDetail as GameDetail
 import Pages.Login as Login
 import Pages.Register as Register
+import Pages.ResetPassword as ResetPassword
 import Pages.StudentDetail as StudentDetail
 import Pages.Subscription as Subscription
+import Pages.VerifyEmail as VerifyEmail
 import Route exposing (Route)
-import Types exposing (CoachWithSubscription, UserInfo, TimeRangeFilter(..), timeRangeFilterFromString, timeRangeFilterToString)
+import Types exposing (CoachWithSubscription, RemoteData(..), UserInfo, TimeRangeFilter(..), timeRangeFilterFromString, timeRangeFilterToString)
 import Url exposing (Url)
 import View.Layout as Layout
 
@@ -65,6 +69,10 @@ type Page
     | StudentDetailPage StudentDetail.Model
     | GameDetailPage GameDetail.Model
     | SubscriptionPage Subscription.Model
+    | ForgotPasswordPage ForgotPassword.Model
+    | ResetPasswordPage ResetPassword.Model
+    | VerifyEmailPage VerifyEmail.Model
+    | EmailPreferencesPage EmailPreferences.Model
     | NotFoundPage
 
 
@@ -145,6 +153,10 @@ type Msg
     | StudentDetailMsg StudentDetail.Msg
     | GameDetailMsg GameDetail.Msg
     | SubscriptionMsg Subscription.Msg
+    | ForgotPasswordMsg ForgotPassword.Msg
+    | ResetPasswordMsg ResetPassword.Msg
+    | VerifyEmailMsg VerifyEmail.Msg
+    | EmailPreferencesMsg EmailPreferences.Msg
     | GotUserInfo (Result Http.Error UserInfo)
     | Logout
     | SetTimeRangeFilter TimeRangeFilter
@@ -277,15 +289,63 @@ update msg model =
             , Cmd.map SubscriptionMsg subCmd
             )
 
+        ( ForgotPasswordMsg subMsg, ForgotPasswordPage subModel ) ->
+            let
+                ( newSubModel, subCmd ) =
+                    ForgotPassword.update model.apiUrl subMsg subModel
+            in
+            ( { model | page = ForgotPasswordPage newSubModel }
+            , Cmd.map ForgotPasswordMsg subCmd
+            )
+
+        ( ResetPasswordMsg subMsg, ResetPasswordPage subModel ) ->
+            let
+                ( newSubModel, subCmd ) =
+                    ResetPassword.update model.apiUrl subMsg subModel
+            in
+            ( { model | page = ResetPasswordPage newSubModel }
+            , Cmd.map ResetPasswordMsg subCmd
+            )
+
+        ( VerifyEmailMsg subMsg, VerifyEmailPage subModel ) ->
+            let
+                ( newSubModel, subCmd ) =
+                    VerifyEmail.update subMsg subModel
+            in
+            ( { model | page = VerifyEmailPage newSubModel }
+            , Cmd.map VerifyEmailMsg subCmd
+            )
+
+        ( EmailPreferencesMsg subMsg, EmailPreferencesPage subModel ) ->
+            let
+                ( newSubModel, subCmd ) =
+                    EmailPreferences.update subMsg subModel
+            in
+            ( { model | page = EmailPreferencesPage newSubModel }
+            , Cmd.map EmailPreferencesMsg subCmd
+            )
+
         ( GotUserInfo result, _ ) ->
             case result of
                 Ok userInfo ->
                     case model.session of
                         LoggedIn token coach ->
+                            let
+                                updatedSession =
+                                    LoggedIn token { coach | subscription = Just userInfo }
+
+                                -- Also update Dashboard page if it's currently active
+                                updatedPage =
+                                    case model.page of
+                                        DashboardPage dashModel ->
+                                            DashboardPage { dashModel | userInfo = Success userInfo }
+
+                                        other ->
+                                            other
+                            in
                             ( { model
-                                | session =
-                                    LoggedIn token
-                                        { coach | subscription = Just userInfo }
+                                | session = updatedSession
+                                , page = updatedPage
                               }
                             , Cmd.none
                             )
@@ -336,10 +396,10 @@ changeRouteTo route model =
 
         Route.Dashboard ->
             case model.session of
-                LoggedIn token _ ->
+                LoggedIn token coach ->
                     let
                         ( subModel, subCmd ) =
-                            Dashboard.init model.apiUrl token model.timeRangeFilter
+                            Dashboard.init model.apiUrl token model.timeRangeFilter coach.subscription
                     in
                     ( { model | page = DashboardPage subModel }
                     , Cmd.map DashboardMsg subCmd
@@ -385,6 +445,40 @@ changeRouteTo route model =
                     in
                     ( { model | page = SubscriptionPage subModel }
                     , Cmd.map SubscriptionMsg subCmd
+                    )
+
+                Guest ->
+                    ( model, Route.replaceUrl model.key Route.Login )
+
+        Route.ForgotPassword ->
+            case model.session of
+                LoggedIn _ _ ->
+                    ( model, Route.replaceUrl model.key Route.Dashboard )
+
+                Guest ->
+                    ( { model | page = ForgotPasswordPage ForgotPassword.init }, Cmd.none )
+
+        Route.ResetPassword token ->
+            ( { model | page = ResetPasswordPage (ResetPassword.init token) }, Cmd.none )
+
+        Route.VerifyEmail token ->
+            let
+                ( subModel, subCmd ) =
+                    VerifyEmail.init model.apiUrl token
+            in
+            ( { model | page = VerifyEmailPage subModel }
+            , Cmd.map VerifyEmailMsg subCmd
+            )
+
+        Route.EmailPreferences ->
+            case model.session of
+                LoggedIn token _ ->
+                    let
+                        ( subModel, subCmd ) =
+                            EmailPreferences.init model.apiUrl token
+                    in
+                    ( { model | page = EmailPreferencesPage subModel }
+                    , Cmd.map EmailPreferencesMsg subCmd
                     )
 
                 Guest ->
@@ -452,6 +546,27 @@ view model =
                             { coach = coach
                             , onLogout = Logout
                             , content = Html.map SubscriptionMsg (Subscription.view subModel)
+                            }
+
+                    Guest ->
+                        text ""
+
+            ForgotPasswordPage subModel ->
+                Html.map ForgotPasswordMsg (ForgotPassword.view subModel)
+
+            ResetPasswordPage subModel ->
+                Html.map ResetPasswordMsg (ResetPassword.view subModel)
+
+            VerifyEmailPage subModel ->
+                Html.map VerifyEmailMsg (VerifyEmail.view subModel)
+
+            EmailPreferencesPage subModel ->
+                case model.session of
+                    LoggedIn _ coach ->
+                        Layout.layout
+                            { coach = coach
+                            , onLogout = Logout
+                            , content = Html.map EmailPreferencesMsg (EmailPreferences.view subModel)
                             }
 
                     Guest ->

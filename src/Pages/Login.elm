@@ -157,7 +157,7 @@ view model =
                         ]
 
                     -- Password field
-                    , div [ class "mb-6" ]
+                    , div [ class "mb-4" ]
                         [ label [ class "block text-sm font-medium text-gray-700 mb-1", for "password" ]
                             [ text "Password" ]
                         , input
@@ -170,6 +170,15 @@ view model =
                             , disabled model.isLoading
                             ]
                             []
+                        ]
+
+                    -- Forgot password link
+                    , div [ class "mb-6 text-right" ]
+                        [ a
+                            [ Route.href Route.ForgotPassword
+                            , class "text-sm text-anthro-dark hover:underline"
+                            ]
+                            [ text "Forgot password?" ]
                         ]
 
                     -- Submit button

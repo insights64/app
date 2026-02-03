@@ -40,12 +40,20 @@ type alias Model =
 -- ============================================================================
 
 
-init : String -> String -> TimeRangeFilter -> ( Model, Cmd Msg )
-init apiUrl token initialTimeRange =
+init : String -> String -> TimeRangeFilter -> Maybe UserInfo -> ( Model, Cmd Msg )
+init apiUrl token initialTimeRange maybeUserInfo =
     let
+        ( userInfoState, userInfoCmd ) =
+            case maybeUserInfo of
+                Just info ->
+                    ( Success info, Cmd.none )
+
+                Nothing ->
+                    ( Loading, Api.Subscription.getUserInfo { apiUrl = apiUrl, token = token, onResponse = GotUserInfo } )
+
         model =
             { students = Loading
-            , userInfo = Loading
+            , userInfo = userInfoState
             , showAddModal = False
             , newStudentChessCom = ""
             , addError = Nothing
@@ -61,7 +69,7 @@ init apiUrl token initialTimeRange =
     ( model
     , Cmd.batch
         [ fetchStudents model
-        , fetchUserInfo model
+        , userInfoCmd
         ]
     )
 
