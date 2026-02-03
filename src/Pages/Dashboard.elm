@@ -330,6 +330,30 @@ hasAnalysisInProgress students =
 -- ============================================================================
 
 
+type StudentLimitStatus
+    = UnderLimit
+    | AtLimit
+    | LimitUnknown
+
+
+isAtStudentLimit : Maybe Int -> List Student -> StudentLimitStatus
+isAtStudentLimit maybeLimit students =
+    let
+        activeCount =
+            List.length (List.filter (\s -> s.archivedAt == Nothing) students)
+    in
+    case maybeLimit of
+        Just limit ->
+            if activeCount >= limit then
+                AtLimit
+
+            else
+                UnderLimit
+
+        Nothing ->
+            LimitUnknown
+
+
 getInitials : String -> String
 getInitials name =
     name
@@ -396,7 +420,7 @@ view apiUrl token model =
                 div []
                     [ if List.isEmpty filteredStudents then
                         if model.showArchived || archivedCount == 0 then
-                            viewEmptyState
+                            viewEmptyState model
 
                         else
                             div [ class "py-12 text-center" ]
@@ -433,13 +457,7 @@ viewLoading model =
                     ]
                 , div [ class "flex items-center gap-4" ]
                     [ viewTimeRangeFilter model.timeRangeFilter
-                    , button
-                        [ onClick ShowAddModal
-                        , class "bg-anthro-dark hover:bg-gray-800 text-white font-medium py-2.5 px-4 rounded-lg transition-all shadow-subtle hover:shadow-card flex items-center gap-2"
-                        ]
-                        [ span [ class "text-lg leading-none" ] [ text "+" ]
-                        , text "Add Student"
-                        ]
+                    , viewAddStudentButton
                     ]
                 ]
             ]
@@ -496,6 +514,28 @@ viewTimeRangeFilter currentFilter =
     div [ class "flex items-center gap-2" ]
         [ pillButton Last7Days "Last 7 days"
         , pillButton Last30Days "Last 30 days"
+        ]
+
+
+viewAddStudentButton : Html Msg
+viewAddStudentButton =
+    button
+        [ onClick ShowAddModal
+        , class "bg-anthro-dark hover:bg-gray-800 text-white font-medium py-2.5 px-4 rounded-lg transition-all shadow-subtle hover:shadow-card flex items-center gap-2"
+        ]
+        [ span [ class "text-lg leading-none" ] [ text "+" ]
+        , text "Add Student"
+        ]
+
+
+viewUpgradeButton : Html Msg
+viewUpgradeButton =
+    a
+        [ Route.href Route.Subscription
+        , class "bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-medium py-2.5 px-4 rounded-lg transition-all shadow-subtle hover:shadow-card flex items-center gap-2"
+        ]
+        [ span [ class "text-lg leading-none" ] [ text "↑" ]
+        , text "Upgrade Plan"
         ]
 
 
@@ -562,13 +602,12 @@ viewDashboard model students archivedCount =
                     ]
                 , div [ class "flex items-center gap-4" ]
                     [ viewTimeRangeFilter model.timeRangeFilter
-                    , button
-                        [ onClick ShowAddModal
-                        , class "bg-anthro-dark hover:bg-gray-800 text-white font-medium py-2.5 px-4 rounded-lg transition-all shadow-subtle hover:shadow-card flex items-center gap-2"
-                        ]
-                        [ span [ class "text-lg leading-none" ] [ text "+" ]
-                        , text "Add Student"
-                        ]
+                    , case isAtStudentLimit model.studentLimit students of
+                        AtLimit ->
+                            viewUpgradeButton
+
+                        _ ->
+                            viewAddStudentButton
                     ]
                 ]
             ]
@@ -896,8 +935,8 @@ viewStatCell value label maybeTrend =
         ]
 
 
-viewEmptyState : Html Msg
-viewEmptyState =
+viewEmptyState : Model -> Html Msg
+viewEmptyState model =
     div [ class "py-16" ]
         [ div [ class "max-w-md mx-auto text-center" ]
             [ -- Icon
@@ -912,13 +951,22 @@ viewEmptyState =
                 [ text "Add your first student to start tracking their chess progress and identifying areas for improvement." ]
 
             -- CTA
-            , button
-                [ onClick ShowAddModal
-                , class "bg-anthro-dark hover:bg-gray-800 text-white font-medium py-3 px-6 rounded-lg transition-all shadow-subtle hover:shadow-card inline-flex items-center gap-2"
-                ]
-                [ span [ class "text-lg leading-none" ] [ text "+" ]
-                , text "Add Student"
-                ]
+            , case isAtStudentLimit model.studentLimit [] of
+                AtLimit ->
+                    a
+                        [ Route.href Route.Subscription
+                        , class "bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-medium py-3 px-6 rounded-lg transition-all shadow-subtle hover:shadow-card inline-flex items-center gap-2"
+                        ]
+                        [ text "Upgrade to Add Students" ]
+
+                _ ->
+                    button
+                        [ onClick ShowAddModal
+                        , class "bg-anthro-dark hover:bg-gray-800 text-white font-medium py-3 px-6 rounded-lg transition-all shadow-subtle hover:shadow-card inline-flex items-center gap-2"
+                        ]
+                        [ span [ class "text-lg leading-none" ] [ text "+" ]
+                        , text "Add Student"
+                        ]
             ]
         ]
 
