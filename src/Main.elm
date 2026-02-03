@@ -13,7 +13,7 @@ import Pages.Register as Register
 import Pages.StudentDetail as StudentDetail
 import Pages.Subscription as Subscription
 import Route exposing (Route)
-import Types exposing (CoachWithSubscription, SubscriptionWithPlan, TimeRangeFilter(..), timeRangeFilterFromString, timeRangeFilterToString)
+import Types exposing (CoachWithSubscription, UserInfo, TimeRangeFilter(..), timeRangeFilterFromString, timeRangeFilterToString)
 import Url exposing (Url)
 import View.Layout as Layout
 
@@ -116,14 +116,14 @@ init flags url key =
                 , timeRangeFilter = timeRangeFilter
                 }
 
-        -- Fetch subscription if we have a token (to populate badge on page reload)
+        -- Fetch user info if we have a token (to populate badge on page reload)
         subscriptionCmd =
             case flags.token of
                 Just token ->
-                    Api.Subscription.getMySubscription
+                    Api.Subscription.getUserInfo
                         { apiUrl = flags.apiUrl
                         , token = token
-                        , onResponse = GotSubscription
+                        , onResponse = GotUserInfo
                         }
 
                 Nothing ->
@@ -145,7 +145,7 @@ type Msg
     | StudentDetailMsg StudentDetail.Msg
     | GameDetailMsg GameDetail.Msg
     | SubscriptionMsg Subscription.Msg
-    | GotSubscription (Result Http.Error SubscriptionWithPlan)
+    | GotUserInfo (Result Http.Error UserInfo)
     | Logout
     | SetTimeRangeFilter TimeRangeFilter
 
@@ -277,15 +277,15 @@ update msg model =
             , Cmd.map SubscriptionMsg subCmd
             )
 
-        ( GotSubscription result, _ ) ->
+        ( GotUserInfo result, _ ) ->
             case result of
-                Ok subWithPlan ->
+                Ok userInfo ->
                     case model.session of
                         LoggedIn token coach ->
                             ( { model
                                 | session =
                                     LoggedIn token
-                                        { coach | subscription = Just subWithPlan }
+                                        { coach | subscription = Just userInfo }
                               }
                             , Cmd.none
                             )

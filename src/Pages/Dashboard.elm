@@ -9,7 +9,7 @@ import Http
 import Json.Decode as Decode exposing (Decoder)
 import Route
 import Time
-import Types exposing (RemoteData(..), Student, SubscriptionWithPlan, TimeRangeFilter(..))
+import Types exposing (RemoteData(..), Student, UserInfo, TimeRangeFilter(..))
 
 
 
@@ -20,7 +20,7 @@ import Types exposing (RemoteData(..), Student, SubscriptionWithPlan, TimeRangeF
 
 type alias Model =
     { students : RemoteData String (List Student)
-    , studentLimit : Maybe Int
+    , userInfo : RemoteData String UserInfo
     , showAddModal : Bool
     , newStudentChessCom : String
     , addError : Maybe String
@@ -45,7 +45,7 @@ init apiUrl token initialTimeRange =
     let
         model =
             { students = Loading
-            , studentLimit = Nothing
+            , userInfo = Loading
             , showAddModal = False
             , newStudentChessCom = ""
             , addError = Nothing
@@ -61,7 +61,7 @@ init apiUrl token initialTimeRange =
     ( model
     , Cmd.batch
         [ fetchStudents model
-        , fetchSubscription model
+        , fetchUserInfo model
         ]
     )
 
@@ -74,7 +74,7 @@ init apiUrl token initialTimeRange =
 
 type Msg
     = GotStudents (Result Http.Error (List Student))
-    | GotSubscription (Result Http.Error SubscriptionWithPlan)
+    | GotUserInfo (Result Http.Error UserInfo)
     | SetTimeRangeFilter TimeRangeFilter
     | ShowAddModal
     | HideAddModal
@@ -111,12 +111,12 @@ fetchStudents model =
         }
 
 
-fetchSubscription : Model -> Cmd Msg
-fetchSubscription model =
-    Api.Subscription.getMySubscription
+fetchUserInfo : Model -> Cmd Msg
+fetchUserInfo model =
+    Api.Subscription.getUserInfo
         { apiUrl = model.apiUrl
         , token = model.token
-        , onResponse = GotSubscription
+        , onResponse = GotUserInfo
         }
 
 
@@ -131,14 +131,13 @@ update apiUrl token msg model =
                 Err error ->
                     ( { model | students = Failure (httpErrorToString error) }, Cmd.none )
 
-        GotSubscription result ->
+        GotUserInfo result ->
             case result of
-                Ok subWithPlan ->
-                    ( { model | studentLimit = Just subWithPlan.plan.studentLimit }, Cmd.none )
+                Ok info ->
+                    ( { model | userInfo = Success info }, Cmd.none )
 
-                Err _ ->
-                    -- Silently fail - limit just won't show
-                    ( model, Cmd.none )
+                Err error ->
+                    ( { model | userInfo = Failure (httpErrorToString error) }, Cmd.none )
 
         SetTimeRangeFilter filter ->
             let
@@ -190,9 +189,31 @@ update apiUrl token msg model =
 
                                 _ ->
                                     Success [ newStudent ]
+
+                        -- Update userInfo with incremented student count
+                        updatedUserInfo =
+                            case model.userInfo of
+                                Success info ->
+                                    let
+                                        newCount =
+                                            info.studentCount + 1
+
+                                        newIsAtLimit =
+                                            case info.plan of
+                                                Just plan ->
+                                                    newCount >= plan.studentLimit
+
+                                                Nothing ->
+                                                    False
+                                    in
+                                    Success { info | studentCount = newCount, isAtLimit = newIsAtLimit }
+
+                                other ->
+                                    other
                     in
                     ( { model
                         | students = updatedStudents
+                        , userInfo = updatedUserInfo
                         , showAddModal = False
                         , isAdding = False
                         , newStudentChessCom = ""
@@ -250,6 +271,18 @@ update apiUrl token msg model =
             case result of
                 Ok updatedStudent ->
                     let
+                        -- Find the old student to determine if archiving or unarchiving
+                        wasArchived =
+                            case model.students of
+                                Success students ->
+                                    List.any (\s -> s.id == updatedStudent.id && s.archivedAt /= Nothing) students
+
+                                _ ->
+                                    False
+
+                        isNowArchived =
+                            updatedStudent.archivedAt /= Nothing
+
                         updatedStudents =
                             case model.students of
                                 Success students ->
@@ -267,9 +300,41 @@ update apiUrl token msg model =
 
                                 _ ->
                                     model.students
+
+                        -- Update userInfo based on archive/unarchive action
+                        updatedUserInfo =
+                            case model.userInfo of
+                                Success info ->
+                                    let
+                                        countDelta =
+                                            if wasArchived && not isNowArchived then
+                                                1  -- Unarchiving: count goes up
+
+                                            else if not wasArchived && isNowArchived then
+                                                -1  -- Archiving: count goes down
+
+                                            else
+                                                0
+
+                                        newCount =
+                                            info.studentCount + countDelta
+
+                                        newIsAtLimit =
+                                            case info.plan of
+                                                Just plan ->
+                                                    newCount >= plan.studentLimit
+
+                                                Nothing ->
+                                                    False
+                                    in
+                                    Success { info | studentCount = newCount, isAtLimit = newIsAtLimit }
+
+                                other ->
+                                    other
                     in
                     ( { model
                         | students = updatedStudents
+                        , userInfo = updatedUserInfo
                         , archivingStudentId = Nothing
                       }
                     , Cmd.none
@@ -336,21 +401,17 @@ type StudentLimitStatus
     | LimitUnknown
 
 
-isAtStudentLimit : Maybe Int -> List Student -> StudentLimitStatus
-isAtStudentLimit maybeLimit students =
-    let
-        activeCount =
-            List.length (List.filter (\s -> s.archivedAt == Nothing) students)
-    in
-    case maybeLimit of
-        Just limit ->
-            if activeCount >= limit then
+isAtStudentLimitFromUserInfo : RemoteData String UserInfo -> StudentLimitStatus
+isAtStudentLimitFromUserInfo userInfoRemote =
+    case userInfoRemote of
+        Success info ->
+            if info.isAtLimit then
                 AtLimit
 
             else
                 UnderLimit
 
-        Nothing ->
+        _ ->
             LimitUnknown
 
 
@@ -542,10 +603,6 @@ viewUpgradeButton =
 viewDashboard : Model -> List Student -> Int -> Html Msg
 viewDashboard model students archivedCount =
     let
-        -- Count only non-archived students for the limit
-        activeStudentCount =
-            List.length (List.filter (\s -> s.archivedAt == Nothing) students)
-
         displayStudentCount =
             List.length students
 
@@ -553,11 +610,16 @@ viewDashboard model students archivedCount =
             List.sum (List.map (\s -> s.stats.gameCount) students)
 
         studentCountText =
-            case model.studentLimit of
-                Just limit ->
-                    String.fromInt activeStudentCount ++ "/" ++ String.fromInt limit ++ " students"
+            case model.userInfo of
+                Success info ->
+                    case info.plan of
+                        Just plan ->
+                            String.fromInt info.studentCount ++ "/" ++ String.fromInt plan.studentLimit ++ " students"
 
-                Nothing ->
+                        Nothing ->
+                            String.fromInt info.studentCount ++ " student" ++ pluralize info.studentCount
+
+                _ ->
                     String.fromInt displayStudentCount ++ " student" ++ pluralize displayStudentCount
     in
     div []
@@ -602,7 +664,7 @@ viewDashboard model students archivedCount =
                     ]
                 , div [ class "flex items-center gap-4" ]
                     [ viewTimeRangeFilter model.timeRangeFilter
-                    , case isAtStudentLimit model.studentLimit students of
+                    , case isAtStudentLimitFromUserInfo model.userInfo of
                         AtLimit ->
                             viewUpgradeButton
 
@@ -964,7 +1026,7 @@ viewEmptyState model =
                 [ text "Add your first student to start tracking their chess progress and identifying areas for improvement." ]
 
             -- CTA
-            , case isAtStudentLimit model.studentLimit [] of
+            , case isAtStudentLimitFromUserInfo model.userInfo of
                 AtLimit ->
                     a
                         [ Route.href Route.Subscription

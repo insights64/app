@@ -4,7 +4,7 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick)
 import Route
-import Types exposing (CoachWithSubscription, SubscriptionStatus(..), SubscriptionWithPlan)
+import Types exposing (CoachWithSubscription, SubscriptionStatus(..), UserInfo)
 
 
 type alias Config msg =
@@ -56,18 +56,23 @@ viewHeader coach onLogout =
         ]
 
 
-viewSubscriptionBadge : Maybe SubscriptionWithPlan -> Html msg
-viewSubscriptionBadge maybeSubscription =
-    case maybeSubscription of
-        Just subWithPlan ->
+viewSubscriptionBadge : Maybe UserInfo -> Html msg
+viewSubscriptionBadge maybeUserInfo =
+    case maybeUserInfo of
+        Just userInfo ->
             let
+                planName =
+                    userInfo.plan
+                        |> Maybe.map .displayName
+                        |> Maybe.withDefault "Free"
+
                 ( badgeClass, badgeText ) =
-                    case subWithPlan.subscription.status of
+                    case userInfo.subscription.status of
                         Trialing ->
                             ( "bg-blue-100 text-blue-700", "Trial" )
 
                         Active ->
-                            ( "bg-green-100 text-green-700", subWithPlan.plan.displayName )
+                            ( "bg-green-100 text-green-700", planName )
 
                         PastDue ->
                             ( "bg-yellow-100 text-yellow-700", "Payment Due" )

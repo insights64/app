@@ -1,7 +1,7 @@
 module Api.Subscription exposing
     ( createBillingPortalSession
-    , getMySubscription
     , getPlans
+    , getUserInfo
     )
 
 import Api
@@ -11,9 +11,9 @@ import Json.Encode as Encode
 import Types
     exposing
         ( SubscriptionPlan
-        , SubscriptionWithPlan
+        , UserInfo
         , subscriptionPlansDecoder
-        , subscriptionWithPlanDecoder
+        , userInfoDecoder
         )
 
 
@@ -32,21 +32,6 @@ getPlans config =
         }
 
 
-getMySubscription :
-    { apiUrl : String
-    , token : String
-    , onResponse : Result Http.Error SubscriptionWithPlan -> msg
-    }
-    -> Cmd msg
-getMySubscription config =
-    Api.get
-        { endpoint = Api.url config.apiUrl [ "api", "subscription" ]
-        , token = Just config.token
-        , decoder = subscriptionWithPlanDecoder
-        , onResponse = config.onResponse
-        }
-
-
 createBillingPortalSession :
     { apiUrl : String
     , token : String
@@ -59,5 +44,20 @@ createBillingPortalSession config =
         , token = Just config.token
         , body = Encode.object []
         , decoder = Decode.field "portal_url" Decode.string
+        , onResponse = config.onResponse
+        }
+
+
+getUserInfo :
+    { apiUrl : String
+    , token : String
+    , onResponse : Result Http.Error UserInfo -> msg
+    }
+    -> Cmd msg
+getUserInfo config =
+    Api.get
+        { endpoint = Api.url config.apiUrl [ "api", "user-info" ]
+        , token = Just config.token
+        , decoder = userInfoDecoder
         , onResponse = config.onResponse
         }

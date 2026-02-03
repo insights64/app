@@ -13,7 +13,7 @@ import Types
         , SubscriptionDetails
         , SubscriptionPlan
         , SubscriptionStatus(..)
-        , SubscriptionWithPlan
+        , UserInfo
         )
 
 
@@ -24,7 +24,7 @@ import Types
 
 
 type alias Model =
-    { subscription : RemoteData String SubscriptionWithPlan
+    { subscription : RemoteData String UserInfo
     , plans : RemoteData String (List SubscriptionPlan)
     , isLoading : Bool
     , error : Maybe String
@@ -66,7 +66,7 @@ init apiUrl token =
 
 
 type Msg
-    = GotSubscription (Result Http.Error SubscriptionWithPlan)
+    = GotUserInfo (Result Http.Error UserInfo)
     | GotPlans (Result Http.Error (List SubscriptionPlan))
     | OpenBillingPortal
     | GotPortalUrl (Result Http.Error String)
@@ -76,10 +76,10 @@ type Msg
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        GotSubscription result ->
+        GotUserInfo result ->
             case result of
-                Ok sub ->
-                    ( { model | subscription = Success sub }, Cmd.none )
+                Ok userInfo ->
+                    ( { model | subscription = Success userInfo }, Cmd.none )
 
                 Err err ->
                     ( { model | subscription = Failure (httpErrorToString err) }, Cmd.none )
@@ -115,10 +115,10 @@ update msg model =
 
 fetchSubscription : Model -> Cmd Msg
 fetchSubscription model =
-    Api.Subscription.getMySubscription
+    Api.Subscription.getUserInfo
         { apiUrl = model.apiUrl
         , token = model.token
-        , onResponse = GotSubscription
+        , onResponse = GotUserInfo
         }
 
 
@@ -226,36 +226,40 @@ viewLoadError err =
         [ p [ class "text-red-800" ] [ text err ] ]
 
 
-viewContent : Model -> SubscriptionWithPlan -> Html Msg
-viewContent model subWithPlan =
+viewContent : Model -> UserInfo -> Html Msg
+viewContent model userInfo =
     let
         sub =
-            subWithPlan.subscription
-
-        currentPlan =
-            subWithPlan.plan
+            userInfo.subscription
     in
     div [ class "space-y-6" ]
         [ -- Current Plan Card
-          viewCurrentPlan subWithPlan
+          viewCurrentPlan userInfo
         , -- Available Plans
-          viewAvailablePlans model currentPlan
+          viewAvailablePlans model userInfo.plan
         , -- Manage Subscription Button
           viewManageButton model sub
         ]
 
 
-viewCurrentPlan : SubscriptionWithPlan -> Html Msg
-viewCurrentPlan subWithPlan =
+viewCurrentPlan : UserInfo -> Html Msg
+viewCurrentPlan userInfo =
     let
         sub =
-            subWithPlan.subscription
+            userInfo.subscription
 
-        plan =
-            subWithPlan.plan
+        planName =
+            userInfo.plan
+                |> Maybe.map .displayName
+                |> Maybe.withDefault "Free"
+
+        studentLimit =
+            userInfo.plan
+                |> Maybe.map .studentLimit
+                |> Maybe.withDefault 0
 
         billingPeriod =
-            subWithPlan.details
+            userInfo.details
                 |> Maybe.andThen .planInterval
                 |> Maybe.map formatInterval
                 |> Maybe.withDefault ""
@@ -267,8 +271,8 @@ viewCurrentPlan subWithPlan =
                     [ text "Current Plan" ]
                 , div [ class "flex items-center gap-3 mt-2" ]
                     [ span [ class "text-2xl font-bold text-anthro-dark" ]
-                        [ text plan.displayName ]
-                    , viewStatusBadge sub.status subWithPlan.details
+                        [ text planName ]
+                    , viewStatusBadge sub.status userInfo.details
                     , if billingPeriod /= "" then
                         span [ class "text-sm text-anthro-gray bg-gray-100 px-2 py-0.5 rounded" ]
                             [ text billingPeriod ]
@@ -280,15 +284,15 @@ viewCurrentPlan subWithPlan =
             , div [ class "text-right" ]
                 [ div [ class "text-sm text-anthro-gray" ] [ text "Student limit" ]
                 , div [ class "text-2xl font-bold text-anthro-dark" ]
-                    [ text (String.fromInt plan.studentLimit) ]
+                    [ text (String.fromInt studentLimit) ]
                 ]
             ]
         , case sub.status of
             Trialing ->
-                viewTrialInfo subWithPlan.details
+                viewTrialInfo userInfo.details
 
             _ ->
-                viewBillingInfo subWithPlan.details
+                viewBillingInfo userInfo.details
         ]
 
 
@@ -415,15 +419,15 @@ viewBillingInfo maybeDetails =
             text ""
 
 
-viewAvailablePlans : Model -> SubscriptionPlan -> Html Msg
-viewAvailablePlans model currentPlan =
+viewAvailablePlans : Model -> Maybe SubscriptionPlan -> Html Msg
+viewAvailablePlans model maybeCurrentPlan =
     case model.plans of
         Success plans ->
             div [ class "bg-white rounded-lg shadow-sm border border-gray-200 p-6" ]
                 [ h3 [ class "text-lg font-semibold text-anthro-dark mb-4" ]
                     [ text "Available Plans" ]
                 , div [ class "grid grid-cols-1 md:grid-cols-2 gap-4" ]
-                    (List.map (viewPlanCard currentPlan) plans)
+                    (List.map (viewPlanCard maybeCurrentPlan) plans)
                 ]
 
         Loading ->
@@ -438,11 +442,13 @@ viewAvailablePlans model currentPlan =
             text ""
 
 
-viewPlanCard : SubscriptionPlan -> SubscriptionPlan -> Html Msg
-viewPlanCard currentPlan plan =
+viewPlanCard : Maybe SubscriptionPlan -> SubscriptionPlan -> Html Msg
+viewPlanCard maybeCurrentPlan plan =
     let
         isCurrentPlan =
-            plan.name == currentPlan.name
+            maybeCurrentPlan
+                |> Maybe.map (\current -> plan.name == current.name)
+                |> Maybe.withDefault False
 
         borderClass =
             if isCurrentPlan then

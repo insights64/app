@@ -19,6 +19,7 @@ module Types exposing
     , TagWithCount
     , TimeControl(..)
     , TimeRangeFilter(..)
+    , UserInfo
     , coachDecoder
     , coachWithSubscriptionDecoder
     , colorFilterToString
@@ -46,6 +47,7 @@ module Types exposing
     , timeControlToString
     , timeRangeFilterToString
     , timeRangeFilterFromString
+    , userInfoDecoder
     )
 
 import Json.Decode as Decode exposing (Decoder)
@@ -221,11 +223,31 @@ subscriptionWithPlanDecoder =
         |> Pipeline.required "plan" subscriptionPlanDecoder
 
 
+-- User info - consolidated dashboard data
+type alias UserInfo =
+    { subscription : Subscription
+    , details : Maybe SubscriptionDetails
+    , plan : Maybe SubscriptionPlan
+    , studentCount : Int
+    , isAtLimit : Bool
+    }
+
+
+userInfoDecoder : Decoder UserInfo
+userInfoDecoder =
+    Decode.succeed UserInfo
+        |> Pipeline.required "subscription" subscriptionDecoder
+        |> Pipeline.optional "details" (Decode.nullable subscriptionDetailsDecoder) Nothing
+        |> Pipeline.optional "plan" (Decode.nullable subscriptionPlanDecoder) Nothing
+        |> Pipeline.required "student_count" Decode.int
+        |> Pipeline.required "is_at_limit" Decode.bool
+
+
 type alias CoachWithSubscription =
     { id : String
     , email : String
     , createdAt : String
-    , subscription : Maybe SubscriptionWithPlan
+    , subscription : Maybe UserInfo
     }
 
 
@@ -235,7 +257,7 @@ coachWithSubscriptionDecoder =
         |> Pipeline.required "id" Decode.string
         |> Pipeline.required "email" Decode.string
         |> Pipeline.required "created_at" Decode.string
-        |> Pipeline.optional "subscription" (Decode.nullable subscriptionWithPlanDecoder) Nothing
+        |> Pipeline.optional "subscription" (Decode.nullable userInfoDecoder) Nothing
 
 
 
