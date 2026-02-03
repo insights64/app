@@ -1,5 +1,6 @@
 module Api.Students exposing
-    ( createStudent
+    ( archiveStudent
+    , createStudent
     , deleteStudent
     , getStudent
     , getStudentGames
@@ -25,13 +26,23 @@ import Types
 getStudents :
     { apiUrl : String
     , token : String
+    , period : String
     , onResponse : Result Http.Error (List Student) -> msg
     }
     -> Cmd msg
 getStudents config =
-    Api.get
+    let
+        queryParams =
+            if String.isEmpty config.period then
+                []
+
+            else
+                [ ( "period", config.period ) ]
+    in
+    Api.getWithQuery
         { endpoint = Api.url config.apiUrl [ "api", "students" ]
         , token = Just config.token
+        , queryParams = queryParams
         , decoder = studentsDecoder
         , onResponse = config.onResponse
         }
@@ -41,13 +52,23 @@ getStudent :
     { apiUrl : String
     , token : String
     , studentId : String
+    , period : String
     , onResponse : Result Http.Error Student -> msg
     }
     -> Cmd msg
 getStudent config =
-    Api.get
+    let
+        queryParams =
+            if String.isEmpty config.period then
+                []
+
+            else
+                [ ( "period", config.period ) ]
+    in
+    Api.getWithQuery
         { endpoint = Api.url config.apiUrl [ "api", "students", config.studentId ]
         , token = Just config.token
+        , queryParams = queryParams
         , decoder = studentDecoder
         , onResponse = config.onResponse
         }
@@ -104,6 +125,7 @@ getStudentGames :
     , maxBlunders : Maybe Int
     , minRatingDiff : Maybe Int
     , maxRatingDiff : Maybe Int
+    , period : String
     , limit : Int
     , offset : Int
     , onResponse : Result Http.Error { games : List GameWithInsights, total : Int } -> msg
@@ -118,6 +140,13 @@ getStudentGames config =
             , ( "limit", String.fromInt config.limit )
             , ( "offset", String.fromInt config.offset )
             ]
+
+        periodParams =
+            if String.isEmpty config.period then
+                []
+
+            else
+                [ ( "period", config.period ) ]
 
         tagParams =
             case config.tags of
@@ -168,7 +197,7 @@ getStudentGames config =
                     []
 
         allParams =
-            baseParams ++ tagParams ++ minAccuracyParams ++ maxAccuracyParams ++ maxBlundersParams ++ minRatingDiffParams ++ maxRatingDiffParams
+            baseParams ++ periodParams ++ tagParams ++ minAccuracyParams ++ maxAccuracyParams ++ maxBlundersParams ++ minRatingDiffParams ++ maxRatingDiffParams
     in
     Api.getWithQuery
         { endpoint = Api.url config.apiUrl [ "api", "students", config.studentId, "games", "insights" ]
@@ -185,13 +214,46 @@ getStudentTags :
     { apiUrl : String
     , token : String
     , studentId : String
+    , period : String
     , onResponse : Result Http.Error (List TagWithCount) -> msg
     }
     -> Cmd msg
 getStudentTags config =
-    Api.get
+    let
+        queryParams =
+            if String.isEmpty config.period then
+                []
+
+            else
+                [ ( "period", config.period ) ]
+    in
+    Api.getWithQuery
         { endpoint = Api.url config.apiUrl [ "api", "students", config.studentId, "tags" ]
         , token = Just config.token
+        , queryParams = queryParams
         , decoder = tagsWithCountsDecoder
+        , onResponse = config.onResponse
+        }
+
+
+{-| Archive or unarchive a student
+-}
+archiveStudent :
+    { apiUrl : String
+    , token : String
+    , studentId : String
+    , archived : Bool
+    , onResponse : Result Http.Error Student -> msg
+    }
+    -> Cmd msg
+archiveStudent config =
+    Api.patch
+        { endpoint = Api.url config.apiUrl [ "api", "students", config.studentId, "archive" ]
+        , token = config.token
+        , body =
+            Encode.object
+                [ ( "archived", Encode.bool config.archived )
+                ]
+        , decoder = studentDecoder
         , onResponse = config.onResponse
         }

@@ -1,14 +1,15 @@
-module Pages.Dashboard exposing (Model, Msg, init, subscriptions, update, view)
+module Pages.Dashboard exposing (Model, Msg(..), init, subscriptions, update, view)
 
 import Api.Students
+import Api.Subscription
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Html.Events exposing (onClick, onInput, onSubmit)
+import Html.Events exposing (onClick, onInput, onSubmit, stopPropagationOn)
 import Http
-import Json.Decode as Decode
+import Json.Decode as Decode exposing (Decoder)
 import Route
 import Time
-import Types exposing (RemoteData(..), Student)
+import Types exposing (RemoteData(..), Student, SubscriptionWithPlan, TimeRangeFilter(..))
 
 
 
@@ -19,10 +20,15 @@ import Types exposing (RemoteData(..), Student)
 
 type alias Model =
     { students : RemoteData String (List Student)
+    , studentLimit : Maybe Int
     , showAddModal : Bool
     , newStudentChessCom : String
     , addError : Maybe String
     , isAdding : Bool
+    , timeRangeFilter : TimeRangeFilter
+    , showArchived : Bool
+    , archivingStudentId : Maybe String
+    , openMenuStudentId : Maybe String
     , apiUrl : String
     , token : String
     }
@@ -34,21 +40,29 @@ type alias Model =
 -- ============================================================================
 
 
-init : String -> String -> ( Model, Cmd Msg )
-init apiUrl token =
-    ( { students = Loading
-      , showAddModal = False
-      , newStudentChessCom = ""
-      , addError = Nothing
-      , isAdding = False
-      , apiUrl = apiUrl
-      , token = token
-      }
-    , Api.Students.getStudents
-        { apiUrl = apiUrl
-        , token = token
-        , onResponse = GotStudents
-        }
+init : String -> String -> TimeRangeFilter -> ( Model, Cmd Msg )
+init apiUrl token initialTimeRange =
+    let
+        model =
+            { students = Loading
+            , studentLimit = Nothing
+            , showAddModal = False
+            , newStudentChessCom = ""
+            , addError = Nothing
+            , isAdding = False
+            , timeRangeFilter = initialTimeRange
+            , showArchived = False
+            , archivingStudentId = Nothing
+            , openMenuStudentId = Nothing
+            , apiUrl = apiUrl
+            , token = token
+            }
+    in
+    ( model
+    , Cmd.batch
+        [ fetchStudents model
+        , fetchSubscription model
+        ]
     )
 
 
@@ -60,13 +74,50 @@ init apiUrl token =
 
 type Msg
     = GotStudents (Result Http.Error (List Student))
+    | GotSubscription (Result Http.Error SubscriptionWithPlan)
+    | SetTimeRangeFilter TimeRangeFilter
     | ShowAddModal
     | HideAddModal
     | NewStudentChessComChanged String
     | SubmitNewStudent { apiUrl : String, token : String }
     | GotNewStudent (Result Http.Error Student)
     | PollProgress Time.Posix
+    | ToggleShowArchived
+    | ToggleStudentMenu String
+    | CloseStudentMenu
+    | ArchiveStudent String
+    | UnarchiveStudent String
+    | GotArchiveResult (Result Http.Error Student)
     | NoOp
+
+
+periodToString : TimeRangeFilter -> String
+periodToString filter =
+    case filter of
+        Last7Days ->
+            "7days"
+
+        Last30Days ->
+            "30days"
+
+
+fetchStudents : Model -> Cmd Msg
+fetchStudents model =
+    Api.Students.getStudents
+        { apiUrl = model.apiUrl
+        , token = model.token
+        , period = periodToString model.timeRangeFilter
+        , onResponse = GotStudents
+        }
+
+
+fetchSubscription : Model -> Cmd Msg
+fetchSubscription model =
+    Api.Subscription.getMySubscription
+        { apiUrl = model.apiUrl
+        , token = model.token
+        , onResponse = GotSubscription
+        }
 
 
 update : String -> String -> Msg -> Model -> ( Model, Cmd Msg )
@@ -79,6 +130,25 @@ update apiUrl token msg model =
 
                 Err error ->
                     ( { model | students = Failure (httpErrorToString error) }, Cmd.none )
+
+        GotSubscription result ->
+            case result of
+                Ok subWithPlan ->
+                    ( { model | studentLimit = Just subWithPlan.plan.studentLimit }, Cmd.none )
+
+                Err _ ->
+                    -- Silently fail - limit just won't show
+                    ( model, Cmd.none )
+
+        SetTimeRangeFilter filter ->
+            let
+                newModel =
+                    { model
+                        | timeRangeFilter = filter
+                        , students = Loading
+                    }
+            in
+            ( newModel, fetchStudents newModel )
 
         ShowAddModal ->
             ( { model
@@ -139,13 +209,74 @@ update apiUrl token msg model =
                     )
 
         PollProgress _ ->
-            ( model
-            , Api.Students.getStudents
-                { apiUrl = model.apiUrl
-                , token = model.token
-                , onResponse = GotStudents
+            ( model, fetchStudents model )
+
+        ToggleShowArchived ->
+            ( { model | showArchived = not model.showArchived }, Cmd.none )
+
+        ToggleStudentMenu studentId ->
+            if model.openMenuStudentId == Just studentId then
+                ( { model | openMenuStudentId = Nothing }, Cmd.none )
+
+            else
+                ( { model | openMenuStudentId = Just studentId }, Cmd.none )
+
+        CloseStudentMenu ->
+            ( { model | openMenuStudentId = Nothing }, Cmd.none )
+
+        ArchiveStudent studentId ->
+            ( { model | archivingStudentId = Just studentId, openMenuStudentId = Nothing }
+            , Api.Students.archiveStudent
+                { apiUrl = apiUrl
+                , token = token
+                , studentId = studentId
+                , archived = True
+                , onResponse = GotArchiveResult
                 }
             )
+
+        UnarchiveStudent studentId ->
+            ( { model | archivingStudentId = Just studentId, openMenuStudentId = Nothing }
+            , Api.Students.archiveStudent
+                { apiUrl = apiUrl
+                , token = token
+                , studentId = studentId
+                , archived = False
+                , onResponse = GotArchiveResult
+                }
+            )
+
+        GotArchiveResult result ->
+            case result of
+                Ok updatedStudent ->
+                    let
+                        updatedStudents =
+                            case model.students of
+                                Success students ->
+                                    Success
+                                        (List.map
+                                            (\s ->
+                                                if s.id == updatedStudent.id then
+                                                    updatedStudent
+
+                                                else
+                                                    s
+                                            )
+                                            students
+                                        )
+
+                                _ ->
+                                    model.students
+                    in
+                    ( { model
+                        | students = updatedStudents
+                        , archivingStudentId = Nothing
+                      }
+                    , Cmd.none
+                    )
+
+                Err _ ->
+                    ( { model | archivingStudentId = Nothing }, Cmd.none )
 
         NoOp ->
             ( model, Cmd.none )
@@ -228,23 +359,58 @@ formatRelativeTime maybeDate =
 view : String -> String -> Model -> Html Msg
 view apiUrl token model =
     div [ class "min-h-screen" ]
-        [ -- Dashboard content
-          case model.students of
+        [ -- Backdrop to close menu when clicking outside
+          if model.openMenuStudentId /= Nothing then
+            div
+                [ class "fixed inset-0 z-0"
+                , onClick CloseStudentMenu
+                ]
+                []
+
+          else
+            text ""
+
+        -- Dashboard content
+        , case model.students of
             NotAsked ->
                 text ""
 
             Loading ->
-                viewLoading
+                viewLoading model
 
             Failure error ->
                 viewError error
 
             Success students ->
-                if List.isEmpty students then
-                    viewEmptyState
+                let
+                    archivedCount =
+                        List.length (List.filter (\s -> s.archivedAt /= Nothing) students)
 
-                else
-                    viewDashboard model students
+                    filteredStudents =
+                        if model.showArchived then
+                            students
+
+                        else
+                            List.filter (\s -> s.archivedAt == Nothing) students
+                in
+                div []
+                    [ if List.isEmpty filteredStudents then
+                        if model.showArchived || archivedCount == 0 then
+                            viewEmptyState
+
+                        else
+                            div [ class "py-12 text-center" ]
+                                [ p [ class "text-gray-500" ] [ text "All students are archived." ]
+                                , button
+                                    [ onClick ToggleShowArchived
+                                    , class "mt-4 text-sm font-medium text-gray-700 hover:text-gray-900"
+                                    ]
+                                    [ text "Show archived students" ]
+                                ]
+
+                      else
+                        viewDashboard model filteredStudents archivedCount
+                    ]
 
         -- Add student modal
         , if model.showAddModal then
@@ -255,39 +421,48 @@ view apiUrl token model =
         ]
 
 
-viewLoading : Html Msg
-viewLoading =
-    div [ class "py-12" ]
-        [ div [ class "animate-pulse space-y-6" ]
-            [ -- Header skeleton
-              div [ class "flex items-center justify-between" ]
-                [ div [ class "space-y-2" ]
-                    [ div [ class "h-8 w-48 bg-gray-200 rounded" ] []
-                    , div [ class "h-4 w-64 bg-gray-200 rounded" ] []
+viewLoading : Model -> Html Msg
+viewLoading model =
+    div []
+        [ -- Header with title and controls (real content, not skeleton)
+          div [ class "mb-8" ]
+            [ div [ class "flex items-start justify-between" ]
+                [ div []
+                    [ h1 [ class "text-2xl font-bold text-gray-900" ] [ text "Your Students" ]
+                    , p [ class "text-gray-500 mt-1" ] [ text "Loading..." ]
                     ]
-                , div [ class "h-10 w-32 bg-gray-200 rounded-lg" ] []
+                , div [ class "flex items-center gap-4" ]
+                    [ viewTimeRangeFilter model.timeRangeFilter
+                    , button
+                        [ onClick ShowAddModal
+                        , class "bg-anthro-dark hover:bg-gray-800 text-white font-medium py-2.5 px-4 rounded-lg transition-all shadow-subtle hover:shadow-card flex items-center gap-2"
+                        ]
+                        [ span [ class "text-lg leading-none" ] [ text "+" ]
+                        , text "Add Student"
+                        ]
+                    ]
                 ]
+            ]
 
-            -- Card skeletons
-            , div [ class "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" ]
-                (List.repeat 3
-                    (div [ class "bg-white rounded-xl border border-gray-200 p-5" ]
-                        [ div [ class "flex items-center gap-4 mb-4" ]
-                            [ div [ class "w-14 h-14 bg-gray-200 rounded-full" ] []
-                            , div [ class "flex-1 space-y-2" ]
-                                [ div [ class "h-5 w-32 bg-gray-200 rounded" ] []
-                                , div [ class "h-4 w-24 bg-gray-200 rounded" ] []
-                                ]
-                            ]
-                        , div [ class "grid grid-cols-3 gap-3" ]
-                            [ div [ class "h-16 bg-gray-100 rounded-lg" ] []
-                            , div [ class "h-16 bg-gray-100 rounded-lg" ] []
-                            , div [ class "h-16 bg-gray-100 rounded-lg" ] []
+        -- Card skeletons only
+        , div [ class "grid grid-cols-1 md:grid-cols-2 gap-4" ]
+            (List.repeat 2
+                (div [ class "bg-white rounded-xl border border-gray-200 p-5 animate-pulse" ]
+                    [ div [ class "flex items-center gap-4 mb-4" ]
+                        [ div [ class "w-14 h-14 bg-gray-200 rounded-full" ] []
+                        , div [ class "flex-1 space-y-2" ]
+                            [ div [ class "h-5 w-32 bg-gray-200 rounded" ] []
+                            , div [ class "h-4 w-24 bg-gray-200 rounded" ] []
                             ]
                         ]
-                    )
+                    , div [ class "grid grid-cols-3 gap-3" ]
+                        [ div [ class "h-16 bg-gray-100 rounded-lg" ] []
+                        , div [ class "h-16 bg-gray-100 rounded-lg" ] []
+                        , div [ class "h-16 bg-gray-100 rounded-lg" ] []
+                        ]
+                    ]
                 )
-            ]
+            )
         ]
 
 
@@ -302,23 +477,57 @@ viewError error =
         ]
 
 
-viewDashboard : Model -> List Student -> Html Msg
-viewDashboard _ students =
+viewTimeRangeFilter : TimeRangeFilter -> Html Msg
+viewTimeRangeFilter currentFilter =
     let
-        studentCount =
+        pillButton filter label =
+            button
+                [ onClick (SetTimeRangeFilter filter)
+                , class
+                    (if currentFilter == filter then
+                        "px-4 py-2 text-sm font-medium rounded-full bg-gray-900 text-white transition-colors"
+
+                     else
+                        "px-4 py-2 text-sm font-medium rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors"
+                    )
+                ]
+                [ text label ]
+    in
+    div [ class "flex items-center gap-2" ]
+        [ pillButton Last7Days "Last 7 days"
+        , pillButton Last30Days "Last 30 days"
+        ]
+
+
+viewDashboard : Model -> List Student -> Int -> Html Msg
+viewDashboard model students archivedCount =
+    let
+        -- Count only non-archived students for the limit
+        activeStudentCount =
+            List.length (List.filter (\s -> s.archivedAt == Nothing) students)
+
+        displayStudentCount =
             List.length students
 
         totalGames =
             List.sum (List.map (\s -> s.stats.gameCount) students)
+
+        studentCountText =
+            case model.studentLimit of
+                Just limit ->
+                    String.fromInt activeStudentCount ++ "/" ++ String.fromInt limit ++ " students"
+
+                Nothing ->
+                    String.fromInt displayStudentCount ++ " student" ++ pluralize displayStudentCount
     in
     div []
-        [ -- Header with title and add button
+        [ -- Header with title, time range filter, archive toggle, and add button
           div [ class "mb-8" ]
             [ div [ class "flex items-start justify-between" ]
                 [ div []
                     [ h1 [ class "text-2xl font-bold text-gray-900" ] [ text "Your Students" ]
                     , p [ class "text-gray-500 mt-1" ]
-                        [ text (String.fromInt studentCount ++ " student" ++ pluralize studentCount)
+                        [ text studentCountText
                         , if totalGames > 0 then
                             span [ class "text-gray-400" ]
                                 [ text (" · " ++ String.fromInt totalGames ++ " games analyzed") ]
@@ -327,12 +536,37 @@ viewDashboard _ students =
                             text ""
                         ]
                     ]
-                , button
-                    [ onClick ShowAddModal
-                    , class "bg-anthro-dark hover:bg-gray-800 text-white font-medium py-2.5 px-4 rounded-lg transition-all shadow-subtle hover:shadow-card flex items-center gap-2"
-                    ]
-                    [ span [ class "text-lg leading-none" ] [ text "+" ]
-                    , text "Add Student"
+                , div [ class "flex items-center gap-4" ]
+                    [ viewTimeRangeFilter model.timeRangeFilter
+                    , if archivedCount > 0 then
+                        button
+                            [ onClick ToggleShowArchived
+                            , class
+                                (if model.showArchived then
+                                    "text-sm font-medium text-gray-700 bg-gray-100 px-3 py-1.5 rounded-full hover:bg-gray-200 transition-colors"
+
+                                 else
+                                    "text-sm font-medium text-gray-500 hover:text-gray-700 transition-colors"
+                                )
+                            ]
+                            [ text
+                                (if model.showArchived then
+                                    "Hide archived (" ++ String.fromInt archivedCount ++ ")"
+
+                                 else
+                                    "Show archived (" ++ String.fromInt archivedCount ++ ")"
+                                )
+                            ]
+
+                      else
+                        text ""
+                    , button
+                        [ onClick ShowAddModal
+                        , class "bg-anthro-dark hover:bg-gray-800 text-white font-medium py-2.5 px-4 rounded-lg transition-all shadow-subtle hover:shadow-card flex items-center gap-2"
+                        ]
+                        [ span [ class "text-lg leading-none" ] [ text "+" ]
+                        , text "Add Student"
+                        ]
                     ]
                 ]
             ]
@@ -340,22 +574,22 @@ viewDashboard _ students =
         -- Student cards grid
         , div
             [ class
-                (if studentCount == 1 then
+                (if displayStudentCount == 1 then
                     "max-w-md"
 
-                 else if studentCount == 2 then
+                 else if displayStudentCount == 2 then
                     "grid grid-cols-1 md:grid-cols-2 gap-4"
 
                  else
                     "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
                 )
             ]
-            (List.map viewStudentCard students)
+            (List.map (viewStudentCard model) students)
         ]
 
 
-viewStudentCard : Student -> Html Msg
-viewStudentCard student =
+viewStudentCard : Model -> Student -> Html Msg
+viewStudentCard model student =
     let
         needsSetup =
             student.stats.gameCount == 0
@@ -366,8 +600,24 @@ viewStudentCard student =
         analysisInProgress =
             student.stats.gameCount > 0 && student.stats.analyzedCount < student.stats.gameCount
 
+        isArchived =
+            student.archivedAt /= Nothing
+
+        isArchiving =
+            model.archivingStudentId == Just student.id
+
+        isMenuOpen =
+            model.openMenuStudentId == Just student.id
+
         statusInfo =
-            if needsSetup then
+            if isArchived then
+                { dotColor = "bg-gray-400"
+                , dotAnimation = ""
+                , statusText = "Archived"
+                , statusClass = "text-gray-500"
+                }
+
+            else if needsSetup then
                 { dotColor = "bg-amber-400"
                 , dotAnimation = ""
                 , statusText = "Awaiting import"
@@ -388,11 +638,13 @@ viewStudentCard student =
                 , statusClass = "text-green-600"
                 }
     in
-    a
-        [ Route.href (Route.StudentDetail student.id)
-        , class
-            ("block bg-white rounded-xl overflow-hidden transition-all duration-200 group shadow-card hover:shadow-elevated hover:scale-[1.02] border border-transparent hover:border-gray-200 "
-                ++ (if hasAlerts then
+    div
+        [ class
+            ("relative bg-white rounded-xl overflow-hidden transition-all duration-200 shadow-card hover:shadow-elevated border border-transparent hover:border-gray-200 "
+                ++ (if isArchived then
+                        "opacity-75"
+
+                    else if hasAlerts then
                         "border-l-4 border-l-amber-400"
 
                     else
@@ -400,7 +652,65 @@ viewStudentCard student =
                    )
             )
         ]
-        [ div [ class "p-5" ]
+        [ -- Three-dots menu button (positioned absolute top-right)
+          div [ class "absolute top-3 right-3 z-10" ]
+            [ button
+                [ onClick (ToggleStudentMenu student.id)
+                , class "w-8 h-8 flex items-center justify-center rounded-lg text-gray-300 hover:text-gray-500 hover:bg-gray-100 transition-colors"
+                , stopPropagationOn "click" (Decode.succeed ( ToggleStudentMenu student.id, True ))
+                ]
+                [ -- Three dots icon (vertical)
+                  span [ class "flex flex-col gap-1" ]
+                    [ span [ class "w-1 h-1 bg-current rounded-full" ] []
+                    , span [ class "w-1 h-1 bg-current rounded-full" ] []
+                    , span [ class "w-1 h-1 bg-current rounded-full" ] []
+                    ]
+                ]
+
+            -- Dropdown menu
+            , if isMenuOpen then
+                div
+                    [ class "absolute right-0 mt-1 w-36 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-20"
+                    , stopPropagationOn "click" (Decode.succeed ( NoOp, True ))
+                    ]
+                    [ if isArchived then
+                        button
+                            [ onClick (UnarchiveStudent student.id)
+                            , class "w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                            , disabled isArchiving
+                            ]
+                            [ text
+                                (if isArchiving then
+                                    "Unarchiving..."
+
+                                 else
+                                    "Unarchive"
+                                )
+                            ]
+
+                      else
+                        button
+                            [ onClick (ArchiveStudent student.id)
+                            , class "w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                            , disabled isArchiving
+                            ]
+                            [ text
+                                (if isArchiving then
+                                    "Archiving..."
+
+                                 else
+                                    "Archive"
+                                )
+                            ]
+                    ]
+
+              else
+                text ""
+            ]
+        , a
+            [ Route.href (Route.StudentDetail student.id)
+            , class "block p-5 group"
+            ]
             [ -- Header: Avatar, name, last active
               div [ class "flex items-start gap-4" ]
                 [ -- Avatar
@@ -409,7 +719,15 @@ viewStudentCard student =
                         img
                             [ src url
                             , alt student.displayName
-                            , class "w-14 h-14 rounded-full object-cover flex-shrink-0"
+                            , class
+                                ("w-14 h-14 rounded-full object-cover flex-shrink-0"
+                                    ++ (if isArchived then
+                                            " grayscale"
+
+                                        else
+                                            ""
+                                       )
+                                )
                             ]
                             []
 
@@ -420,9 +738,17 @@ viewStudentCard student =
                             ]
 
                 -- Name and username
-                , div [ class "flex-1 min-w-0" ]
-                    [ h3 [ class "font-semibold text-gray-900 group-hover:text-gray-700 transition-colors truncate" ]
-                        [ text student.displayName ]
+                , div [ class "flex-1 min-w-0 pr-6" ]
+                    [ div [ class "flex items-center gap-2" ]
+                        [ h3 [ class "font-semibold text-gray-900 group-hover:text-gray-700 transition-colors truncate" ]
+                            [ text student.displayName ]
+                        , if isArchived then
+                            span [ class "px-2 py-0.5 text-xs font-medium rounded bg-gray-100 text-gray-500" ]
+                                [ text "Archived" ]
+
+                          else
+                            text ""
+                        ]
                     , case student.chessComUsername of
                         Just username ->
                             p [ class "text-sm text-gray-500 truncate" ]
@@ -431,19 +757,19 @@ viewStudentCard student =
                         Nothing ->
                             text ""
                     ]
+                ]
 
-                -- Last active (right side)
-                , div [ class "text-right flex-shrink-0" ]
-                    [ p [ class "text-xs text-gray-400" ]
-                        [ text
-                            (case student.lastImportedAt of
-                                Just date ->
-                                    String.left 10 date
+            -- Last active (below avatar section)
+            , div [ class "mt-2 text-right" ]
+                [ p [ class "text-xs text-gray-400" ]
+                    [ text
+                        (case student.lastImportedAt of
+                            Just date ->
+                                "Last sync: " ++ String.left 10 date
 
-                                Nothing ->
-                                    "Not synced"
-                            )
-                        ]
+                            Nothing ->
+                                "Not synced"
+                        )
                     ]
                 ]
 
@@ -465,7 +791,11 @@ viewStudentCard student =
                 ]
 
             -- Alert row (shown when student needs attention)
-            , viewAlertRow student
+            , if not isArchived then
+                viewAlertRow student
+
+              else
+                text ""
 
             -- Footer: CTA and sync status
             , div [ class "mt-4 pt-4 border-t border-gray-100 flex items-center justify-between" ]

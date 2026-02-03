@@ -1,5 +1,6 @@
 module Types exposing
     ( Coach
+    , CoachWithSubscription
     , ColorFilter(..)
     , Game
     , GameInsight
@@ -9,10 +10,17 @@ module Types exposing
     , RemoteData(..)
     , ResultFilter(..)
     , Student
+    , Subscription
+    , SubscriptionDetails
+    , SubscriptionPlan
+    , SubscriptionStatus(..)
+    , SubscriptionWithPlan
     , Tag
     , TagWithCount
     , TimeControl(..)
+    , TimeRangeFilter(..)
     , coachDecoder
+    , coachWithSubscriptionDecoder
     , colorFilterToString
     , gameDecoder
     , gameInsightDecoder
@@ -24,11 +32,20 @@ module Types exposing
     , resultFilterToString
     , studentDecoder
     , studentsDecoder
+    , subscriptionDecoder
+    , subscriptionDetailsDecoder
+    , subscriptionPlanDecoder
+    , subscriptionPlansDecoder
+    , subscriptionStatusFromString
+    , subscriptionStatusToString
+    , subscriptionWithPlanDecoder
     , tagDecoder
     , tagWithCountDecoder
     , tagsDecoder
     , tagsWithCountsDecoder
     , timeControlToString
+    , timeRangeFilterToString
+    , timeRangeFilterFromString
     )
 
 import Json.Decode as Decode exposing (Decoder)
@@ -63,6 +80,165 @@ coachDecoder =
 
 
 
+-- SUBSCRIPTION
+
+
+type SubscriptionStatus
+    = Trialing
+    | Active
+    | PastDue
+    | Cancelled
+    | Expired
+
+
+subscriptionStatusFromString : String -> SubscriptionStatus
+subscriptionStatusFromString str =
+    case str of
+        "trialing" ->
+            Trialing
+
+        "active" ->
+            Active
+
+        "past_due" ->
+            PastDue
+
+        "cancelled" ->
+            Cancelled
+
+        "expired" ->
+            Expired
+
+        _ ->
+            Expired
+
+
+subscriptionStatusToString : SubscriptionStatus -> String
+subscriptionStatusToString status =
+    case status of
+        Trialing ->
+            "trialing"
+
+        Active ->
+            "active"
+
+        PastDue ->
+            "past_due"
+
+        Cancelled ->
+            "cancelled"
+
+        Expired ->
+            "expired"
+
+
+type alias SubscriptionPlan =
+    { id : String
+    , name : String
+    , displayName : String
+    , studentLimit : Int
+    , monthlyPriceCents : Int
+    , annualPriceCents : Int
+    , createdAt : String
+    }
+
+
+subscriptionPlanDecoder : Decoder SubscriptionPlan
+subscriptionPlanDecoder =
+    Decode.succeed SubscriptionPlan
+        |> Pipeline.required "id" Decode.string
+        |> Pipeline.required "name" Decode.string
+        |> Pipeline.required "display_name" Decode.string
+        |> Pipeline.required "student_limit" Decode.int
+        |> Pipeline.required "monthly_price_cents" Decode.int
+        |> Pipeline.required "annual_price_cents" Decode.int
+        |> Pipeline.required "created_at" Decode.string
+
+
+subscriptionPlansDecoder : Decoder (List SubscriptionPlan)
+subscriptionPlansDecoder =
+    Decode.field "plans" (Decode.list subscriptionPlanDecoder)
+
+
+-- Simplified subscription - Stripe IDs and cached status
+type alias Subscription =
+    { id : String
+    , coachId : String
+    , stripeCustomerId : String
+    , stripeSubscriptionId : Maybe String
+    , status : SubscriptionStatus
+    }
+
+
+subscriptionDecoder : Decoder Subscription
+subscriptionDecoder =
+    Decode.succeed Subscription
+        |> Pipeline.required "id" Decode.string
+        |> Pipeline.required "coach_id" Decode.string
+        |> Pipeline.required "stripe_customer_id" Decode.string
+        |> Pipeline.optional "stripe_subscription_id" (Decode.nullable Decode.string) Nothing
+        |> Pipeline.required "status" (Decode.map subscriptionStatusFromString Decode.string)
+
+
+-- Subscription details from Stripe API
+type alias SubscriptionDetails =
+    { status : SubscriptionStatus
+    , cancelAtPeriodEnd : Bool
+    , trialEnd : Maybe String
+    , currentPeriodStart : String
+    , currentPeriodEnd : String
+    , planId : Maybe String
+    , planAmount : Maybe Int
+    , planInterval : Maybe String
+    }
+
+
+subscriptionDetailsDecoder : Decoder SubscriptionDetails
+subscriptionDetailsDecoder =
+    Decode.succeed SubscriptionDetails
+        |> Pipeline.required "status" (Decode.map subscriptionStatusFromString Decode.string)
+        |> Pipeline.required "cancel_at_period_end" Decode.bool
+        |> Pipeline.optional "trial_end" (Decode.nullable Decode.string) Nothing
+        |> Pipeline.required "current_period_start" Decode.string
+        |> Pipeline.required "current_period_end" Decode.string
+        |> Pipeline.optional "plan_id" (Decode.nullable Decode.string) Nothing
+        |> Pipeline.optional "plan_amount" (Decode.nullable Decode.int) Nothing
+        |> Pipeline.optional "plan_interval" (Decode.nullable Decode.string) Nothing
+
+
+type alias SubscriptionWithPlan =
+    { subscription : Subscription
+    , details : Maybe SubscriptionDetails
+    , plan : SubscriptionPlan
+    }
+
+
+subscriptionWithPlanDecoder : Decoder SubscriptionWithPlan
+subscriptionWithPlanDecoder =
+    Decode.succeed SubscriptionWithPlan
+        |> Pipeline.required "subscription" subscriptionDecoder
+        |> Pipeline.optional "details" (Decode.nullable subscriptionDetailsDecoder) Nothing
+        |> Pipeline.required "plan" subscriptionPlanDecoder
+
+
+type alias CoachWithSubscription =
+    { id : String
+    , email : String
+    , createdAt : String
+    , subscription : Maybe SubscriptionWithPlan
+    }
+
+
+coachWithSubscriptionDecoder : Decoder CoachWithSubscription
+coachWithSubscriptionDecoder =
+    Decode.succeed CoachWithSubscription
+        |> Pipeline.required "id" Decode.string
+        |> Pipeline.required "email" Decode.string
+        |> Pipeline.required "created_at" Decode.string
+        |> Pipeline.optional "subscription" (Decode.nullable subscriptionWithPlanDecoder) Nothing
+
+
+
 -- STUDENT
 
 
@@ -86,6 +262,7 @@ type alias Student =
     , lastInsightAt : Maybe String
     , avatarUrl : Maybe String
     , createdAt : String
+    , archivedAt : Maybe String
     , stats : StudentStats
     }
 
@@ -113,6 +290,7 @@ studentDecoder =
         |> Pipeline.optional "last_insight_at" (Decode.nullable Decode.string) Nothing
         |> Pipeline.optional "avatar_url" (Decode.nullable Decode.string) Nothing
         |> Pipeline.required "created_at" Decode.string
+        |> Pipeline.optional "archived_at" (Decode.nullable Decode.string) Nothing
         |> Pipeline.required "stats" studentStatsDecoder
 
 
@@ -433,3 +611,32 @@ colorFilterToString cf =
 
         BlackOnly ->
             "black"
+
+
+
+-- TIME RANGE FILTER
+
+
+type TimeRangeFilter
+    = Last7Days
+    | Last30Days
+
+
+timeRangeFilterToString : TimeRangeFilter -> String
+timeRangeFilterToString filter =
+    case filter of
+        Last7Days ->
+            "7days"
+
+        Last30Days ->
+            "30days"
+
+
+timeRangeFilterFromString : String -> TimeRangeFilter
+timeRangeFilterFromString str =
+    case str of
+        "7days" ->
+            Last7Days
+
+        _ ->
+            Last30Days

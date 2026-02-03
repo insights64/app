@@ -1,16 +1,19 @@
 port module Main exposing (main)
 
+import Api.Subscription
 import Browser
 import Browser.Navigation as Nav
 import Html exposing (..)
 import Html.Attributes exposing (..)
+import Http
 import Pages.Dashboard as Dashboard
 import Pages.GameDetail as GameDetail
 import Pages.Login as Login
 import Pages.Register as Register
 import Pages.StudentDetail as StudentDetail
+import Pages.Subscription as Subscription
 import Route exposing (Route)
-import Types exposing (Coach)
+import Types exposing (CoachWithSubscription, SubscriptionWithPlan, TimeRangeFilter(..), timeRangeFilterFromString, timeRangeFilterToString)
 import Url exposing (Url)
 import View.Layout as Layout
 
@@ -31,6 +34,12 @@ port saveCoach : { id : String, email : String } -> Cmd msg
 port identifyUser : { id : String, email : String } -> Cmd msg
 
 
+port saveTimeRangeFilter : String -> Cmd msg
+
+
+port redirectToUrl : String -> Cmd msg
+
+
 
 -- MODEL
 
@@ -40,12 +49,13 @@ type alias Model =
     , session : Session
     , page : Page
     , apiUrl : String
+    , timeRangeFilter : TimeRangeFilter
     }
 
 
 type Session
     = Guest
-    | LoggedIn String Coach
+    | LoggedIn String CoachWithSubscription
 
 
 type Page
@@ -54,6 +64,7 @@ type Page
     | DashboardPage Dashboard.Model
     | StudentDetailPage StudentDetail.Model
     | GameDetailPage GameDetail.Model
+    | SubscriptionPage Subscription.Model
     | NotFoundPage
 
 
@@ -63,8 +74,9 @@ type Page
 
 type alias Flags =
     { token : Maybe String
-    , coach : Maybe Coach
+    , coach : Maybe { id : String, email : String }
     , apiUrl : String
+    , timeRangeFilter : Maybe String
     }
 
 
@@ -74,24 +86,50 @@ init flags url key =
         session =
             case ( flags.token, flags.coach ) of
                 ( Just token, Just coach ) ->
-                    LoggedIn token coach
+                    -- Convert simple coach from localStorage to CoachWithSubscription
+                    -- Subscription will be fetched when needed
+                    LoggedIn token
+                        { id = coach.id
+                        , email = coach.email
+                        , createdAt = ""
+                        , subscription = Nothing
+                        }
 
                 ( Just token, Nothing ) ->
                     -- Token exists but no coach data - use placeholder
-                    LoggedIn token { id = "", email = "" }
+                    LoggedIn token { id = "", email = "", createdAt = "", subscription = Nothing }
 
                 _ ->
                     Guest
 
-        ( model, cmd ) =
+        timeRangeFilter =
+            flags.timeRangeFilter
+                |> Maybe.map timeRangeFilterFromString
+                |> Maybe.withDefault Last30Days
+
+        ( model, routeCmd ) =
             changeRouteTo (Route.fromUrl url)
                 { key = key
                 , session = session
                 , page = NotFoundPage
                 , apiUrl = flags.apiUrl
+                , timeRangeFilter = timeRangeFilter
                 }
+
+        -- Fetch subscription if we have a token (to populate badge on page reload)
+        subscriptionCmd =
+            case flags.token of
+                Just token ->
+                    Api.Subscription.getMySubscription
+                        { apiUrl = flags.apiUrl
+                        , token = token
+                        , onResponse = GotSubscription
+                        }
+
+                Nothing ->
+                    Cmd.none
     in
-    ( model, cmd )
+    ( model, Cmd.batch [ routeCmd, subscriptionCmd ] )
 
 
 
@@ -106,7 +144,10 @@ type Msg
     | DashboardMsg Dashboard.Msg
     | StudentDetailMsg StudentDetail.Msg
     | GameDetailMsg GameDetail.Msg
+    | SubscriptionMsg Subscription.Msg
+    | GotSubscription (Result Http.Error SubscriptionWithPlan)
     | Logout
+    | SetTimeRangeFilter TimeRangeFilter
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -171,9 +212,24 @@ update msg model =
                     let
                         ( newSubModel, subCmd ) =
                             Dashboard.update model.apiUrl token subMsg subModel
+
+                        -- Check if the time range filter changed
+                        ( updatedModel, extraCmd ) =
+                            if newSubModel.timeRangeFilter /= model.timeRangeFilter then
+                                ( { model
+                                    | page = DashboardPage newSubModel
+                                    , timeRangeFilter = newSubModel.timeRangeFilter
+                                  }
+                                , saveTimeRangeFilter (timeRangeFilterToString newSubModel.timeRangeFilter)
+                                )
+
+                            else
+                                ( { model | page = DashboardPage newSubModel }
+                                , Cmd.none
+                                )
                     in
-                    ( { model | page = DashboardPage newSubModel }
-                    , Cmd.map DashboardMsg subCmd
+                    ( updatedModel
+                    , Cmd.batch [ Cmd.map DashboardMsg subCmd, extraCmd ]
                     )
 
                 Guest ->
@@ -183,9 +239,24 @@ update msg model =
             let
                 ( newSubModel, subCmd ) =
                     StudentDetail.update subMsg subModel
+
+                -- Check if the time range filter changed
+                ( updatedModel, extraCmd ) =
+                    if newSubModel.timeRangeFilter /= model.timeRangeFilter then
+                        ( { model
+                            | page = StudentDetailPage newSubModel
+                            , timeRangeFilter = newSubModel.timeRangeFilter
+                          }
+                        , saveTimeRangeFilter (timeRangeFilterToString newSubModel.timeRangeFilter)
+                        )
+
+                    else
+                        ( { model | page = StudentDetailPage newSubModel }
+                        , Cmd.none
+                        )
             in
-            ( { model | page = StudentDetailPage newSubModel }
-            , Cmd.map StudentDetailMsg subCmd
+            ( updatedModel
+            , Cmd.batch [ Cmd.map StudentDetailMsg subCmd, extraCmd ]
             )
 
         ( GameDetailMsg subMsg, GameDetailPage subModel ) ->
@@ -197,12 +268,46 @@ update msg model =
             , Cmd.map GameDetailMsg subCmd
             )
 
+        ( SubscriptionMsg subMsg, SubscriptionPage subModel ) ->
+            let
+                ( newSubModel, subCmd ) =
+                    Subscription.update subMsg subModel
+            in
+            ( { model | page = SubscriptionPage newSubModel }
+            , Cmd.map SubscriptionMsg subCmd
+            )
+
+        ( GotSubscription result, _ ) ->
+            case result of
+                Ok subWithPlan ->
+                    case model.session of
+                        LoggedIn token coach ->
+                            ( { model
+                                | session =
+                                    LoggedIn token
+                                        { coach | subscription = Just subWithPlan }
+                              }
+                            , Cmd.none
+                            )
+
+                        Guest ->
+                            ( model, Cmd.none )
+
+                Err _ ->
+                    -- Silently fail - badge just won't show
+                    ( model, Cmd.none )
+
         ( Logout, _ ) ->
             ( { model | session = Guest }
             , Cmd.batch
                 [ clearToken ()
                 , Route.replaceUrl model.key Route.Login
                 ]
+            )
+
+        ( SetTimeRangeFilter filter, _ ) ->
+            ( { model | timeRangeFilter = filter }
+            , saveTimeRangeFilter (timeRangeFilterToString filter)
             )
 
         -- Catch-all for mismatched messages and pages
@@ -234,7 +339,7 @@ changeRouteTo route model =
                 LoggedIn token _ ->
                     let
                         ( subModel, subCmd ) =
-                            Dashboard.init model.apiUrl token
+                            Dashboard.init model.apiUrl token model.timeRangeFilter
                     in
                     ( { model | page = DashboardPage subModel }
                     , Cmd.map DashboardMsg subCmd
@@ -248,7 +353,7 @@ changeRouteTo route model =
                 LoggedIn token _ ->
                     let
                         ( subModel, subCmd ) =
-                            StudentDetail.init model.apiUrl token studentId
+                            StudentDetail.init model.apiUrl token studentId model.timeRangeFilter
                     in
                     ( { model | page = StudentDetailPage subModel }
                     , Cmd.map StudentDetailMsg subCmd
@@ -266,6 +371,20 @@ changeRouteTo route model =
                     in
                     ( { model | page = GameDetailPage subModel }
                     , Cmd.map GameDetailMsg subCmd
+                    )
+
+                Guest ->
+                    ( model, Route.replaceUrl model.key Route.Login )
+
+        Route.Subscription ->
+            case model.session of
+                LoggedIn token _ ->
+                    let
+                        ( subModel, subCmd ) =
+                            Subscription.init model.apiUrl token
+                    in
+                    ( { model | page = SubscriptionPage subModel }
+                    , Cmd.map SubscriptionMsg subCmd
                     )
 
                 Guest ->
@@ -321,6 +440,18 @@ view model =
                             { coach = coach
                             , onLogout = Logout
                             , content = Html.map GameDetailMsg (GameDetail.view subModel)
+                            }
+
+                    Guest ->
+                        text ""
+
+            SubscriptionPage subModel ->
+                case model.session of
+                    LoggedIn _ coach ->
+                        Layout.layout
+                            { coach = coach
+                            , onLogout = Logout
+                            , content = Html.map SubscriptionMsg (Subscription.view subModel)
                             }
 
                     Guest ->

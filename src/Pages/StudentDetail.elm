@@ -1,4 +1,4 @@
-module Pages.StudentDetail exposing (Model, Msg, init, update, view)
+module Pages.StudentDetail exposing (Model, Msg(..), init, update, view)
 
 import Api.Students
 import Html exposing (..)
@@ -20,6 +20,7 @@ import Types
         , Tag
         , TagWithCount
         , TimeControl(..)
+        , TimeRangeFilter(..)
         , colorFilterToString
         , resultFilterToString
         , timeControlToString
@@ -35,6 +36,7 @@ type alias Model =
     , student : RemoteData String Student
     , games : RemoteData String { games : List GameWithInsights, total : Int }
     , tags : RemoteData String (List TagWithCount)
+    , timeRangeFilter : TimeRangeFilter
     , timeControlFilter : TimeControl
     , resultFilter : ResultFilter
     , colorFilter : ColorFilter
@@ -51,6 +53,7 @@ type alias Model =
     , hoveredGameId : Maybe String
     , limit : Int
     , offset : Int
+    , archivingStudent : Bool
     , apiUrl : String
     , token : String
     }
@@ -71,61 +74,41 @@ type TagSentiment
     | Neutral
 
 
-init : String -> String -> String -> ( Model, Cmd Msg )
-init apiUrl token studentId =
-    ( { studentId = studentId
-      , student = Loading
-      , games = Loading
-      , tags = Loading
-      , timeControlFilter = AllTimeControls
-      , resultFilter = AllResults
-      , colorFilter = AllColors
-      , selectedTags = []
-      , minAccuracy = Nothing
-      , maxAccuracy = Nothing
-      , maxBlunders = Nothing
-      , opponentRatingFilter = "all"
-      , opponentSearch = ""
-      , sortOrder = DateNewest
-      , expandedGames = Set.empty
-      , expandedFilterSections = Set.fromList [ "result", "timeControl" ]
-      , sidebarVisible = True
-      , hoveredGameId = Nothing
-      , limit = 25
-      , offset = 0
-      , apiUrl = apiUrl
-      , token = token
-      }
-    , Cmd.batch
-        [ Api.Students.getStudent
-            { apiUrl = apiUrl
-            , token = token
-            , studentId = studentId
-            , onResponse = GotStudent
-            }
-        , Api.Students.getStudentGames
-            { apiUrl = apiUrl
-            , token = token
-            , studentId = studentId
-            , timeControl = "all"
-            , result = "all"
-            , color = "all"
-            , tags = Nothing
+init : String -> String -> String -> TimeRangeFilter -> ( Model, Cmd Msg )
+init apiUrl token studentId initialTimeRange =
+    let
+        model =
+            { studentId = studentId
+            , student = Loading
+            , games = Loading
+            , tags = Loading
+            , timeRangeFilter = initialTimeRange
+            , timeControlFilter = AllTimeControls
+            , resultFilter = AllResults
+            , colorFilter = AllColors
+            , selectedTags = []
             , minAccuracy = Nothing
             , maxAccuracy = Nothing
             , maxBlunders = Nothing
-            , minRatingDiff = Nothing
-            , maxRatingDiff = Nothing
+            , opponentRatingFilter = "all"
+            , opponentSearch = ""
+            , sortOrder = DateNewest
+            , expandedGames = Set.empty
+            , expandedFilterSections = Set.fromList [ "result", "timeControl" ]
+            , sidebarVisible = True
+            , hoveredGameId = Nothing
             , limit = 25
             , offset = 0
-            , onResponse = GotGames
-            }
-        , Api.Students.getStudentTags
-            { apiUrl = apiUrl
+            , archivingStudent = False
+            , apiUrl = apiUrl
             , token = token
-            , studentId = studentId
-            , onResponse = GotTags
             }
+    in
+    ( model
+    , Cmd.batch
+        [ fetchStudent model
+        , fetchFilteredGames model
+        , fetchTags model
         ]
     )
 
@@ -138,6 +121,7 @@ type Msg
     = GotStudent (Result Http.Error Student)
     | GotGames (Result Http.Error { games : List GameWithInsights, total : Int })
     | GotTags (Result Http.Error (List TagWithCount))
+    | SetTimeRangeFilter TimeRangeFilter
     | SetTimeControlFilter TimeControl
     | SetResultFilter ResultFilter
     | SetColorFilter ColorFilter
@@ -158,6 +142,9 @@ type Msg
     | LoadMore
     | GoToPage Int
     | HoverGame (Maybe String)
+    | ArchiveStudent
+    | UnarchiveStudent
+    | GotArchiveResult (Result Http.Error Student)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -186,6 +173,25 @@ update msg model =
 
                 Err error ->
                     ( { model | tags = Failure (httpErrorToString error) }, Cmd.none )
+
+        SetTimeRangeFilter filter ->
+            let
+                newModel =
+                    { model
+                        | timeRangeFilter = filter
+                        , student = Loading
+                        , games = Loading
+                        , tags = Loading
+                        , offset = 0
+                    }
+            in
+            ( newModel
+            , Cmd.batch
+                [ fetchStudent newModel
+                , fetchFilteredGames newModel
+                , fetchTags newModel
+                ]
+            )
 
         SetTimeControlFilter filter ->
             let
@@ -339,6 +345,73 @@ update msg model =
         HoverGame maybeId ->
             ( { model | hoveredGameId = maybeId }, Cmd.none )
 
+        ArchiveStudent ->
+            ( { model | archivingStudent = True }
+            , Api.Students.archiveStudent
+                { apiUrl = model.apiUrl
+                , token = model.token
+                , studentId = model.studentId
+                , archived = True
+                , onResponse = GotArchiveResult
+                }
+            )
+
+        UnarchiveStudent ->
+            ( { model | archivingStudent = True }
+            , Api.Students.archiveStudent
+                { apiUrl = model.apiUrl
+                , token = model.token
+                , studentId = model.studentId
+                , archived = False
+                , onResponse = GotArchiveResult
+                }
+            )
+
+        GotArchiveResult result ->
+            case result of
+                Ok updatedStudent ->
+                    ( { model
+                        | student = Success updatedStudent
+                        , archivingStudent = False
+                      }
+                    , Cmd.none
+                    )
+
+                Err _ ->
+                    ( { model | archivingStudent = False }, Cmd.none )
+
+
+periodToString : TimeRangeFilter -> String
+periodToString filter =
+    case filter of
+        Last7Days ->
+            "7days"
+
+        Last30Days ->
+            "30days"
+
+
+fetchStudent : Model -> Cmd Msg
+fetchStudent model =
+    Api.Students.getStudent
+        { apiUrl = model.apiUrl
+        , token = model.token
+        , studentId = model.studentId
+        , period = periodToString model.timeRangeFilter
+        , onResponse = GotStudent
+        }
+
+
+fetchTags : Model -> Cmd Msg
+fetchTags model =
+    Api.Students.getStudentTags
+        { apiUrl = model.apiUrl
+        , token = model.token
+        , studentId = model.studentId
+        , period = periodToString model.timeRangeFilter
+        , onResponse = GotTags
+        }
+
 
 fetchFilteredGames : Model -> Cmd Msg
 fetchFilteredGames model =
@@ -374,6 +447,7 @@ fetchFilteredGames model =
         , maxBlunders = model.maxBlunders
         , minRatingDiff = minRatingDiff
         , maxRatingDiff = maxRatingDiff
+        , period = periodToString model.timeRangeFilter
         , limit = model.limit
         , offset = model.offset
         , onResponse = GotGames
@@ -721,7 +795,7 @@ view model =
             [ viewSidebar model
             , div [ class "flex-1 min-w-0 p-4 lg:p-6" ]
                 [ div [ class "max-w-4xl mx-auto" ]
-                    [ viewStudentHeader model.student
+                    [ viewStudentHeader model model.student
                     , viewStatsHeader model
                     , viewGamesList model
                     ]
@@ -1030,8 +1104,8 @@ viewFilterTagChip selectedTags tc =
         [ text (tc.tag.name ++ " (" ++ String.fromInt tc.count ++ ")") ]
 
 
-viewStudentHeader : RemoteData String Student -> Html Msg
-viewStudentHeader studentData =
+viewStudentHeader : Model -> RemoteData String Student -> Html Msg
+viewStudentHeader model studentData =
     case studentData of
         Loading ->
             div [ class "mb-6 animate-pulse" ]
@@ -1052,34 +1126,108 @@ viewStudentHeader studentData =
             text ""
 
         Success student ->
+            let
+                isArchived =
+                    student.archivedAt /= Nothing
+            in
             div [ class "mb-6" ]
-                [ -- Breadcrumb navigation
-                  nav [ class "flex items-center gap-2 text-sm mb-4" ]
+                [ -- Archived banner
+                  if isArchived then
+                    div [ class "mb-4 bg-gray-100 border border-gray-200 rounded-lg p-4 flex items-center justify-between" ]
+                        [ div [ class "flex items-center gap-2" ]
+                            [ span [ class "text-gray-600" ] [ text "This student is archived. Games are not being imported or analyzed." ]
+                            ]
+                        , button
+                            [ onClick UnarchiveStudent
+                            , class "text-sm font-medium text-gray-700 hover:text-gray-900 bg-white border border-gray-300 px-3 py-1.5 rounded-lg hover:bg-gray-50 transition-colors"
+                            , disabled model.archivingStudent
+                            ]
+                            [ text
+                                (if model.archivingStudent then
+                                    "Unarchiving..."
+
+                                 else
+                                    "Unarchive Student"
+                                )
+                            ]
+                        ]
+
+                  else
+                    text ""
+
+                -- Breadcrumb navigation
+                , nav [ class "flex items-center gap-2 text-sm mb-4" ]
                     [ a [ Route.href Route.Dashboard, class "text-anthro-gray hover:text-anthro-dark" ]
                         [ text "Dashboard" ]
                     , span [ class "text-anthro-gray-light" ] [ text "/" ]
                     , span [ class "text-anthro-dark font-medium" ] [ text student.displayName ]
                     ]
-                , div [ class "flex items-center gap-4" ]
-                    [ case student.avatarUrl of
-                        Just url ->
-                            img [ src url, class "w-16 h-16 rounded-full border-2 border-gray-200 shadow-sm", alt student.displayName ] []
+                , div [ class "flex items-center justify-between" ]
+                    [ div [ class "flex items-center gap-4" ]
+                        [ case student.avatarUrl of
+                            Just url ->
+                                img
+                                    [ src url
+                                    , class
+                                        ("w-16 h-16 rounded-full border-2 border-gray-200 shadow-sm"
+                                            ++ (if isArchived then
+                                                    " grayscale opacity-75"
 
-                        Nothing ->
-                            div [ class "w-16 h-16 rounded-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center text-xl text-gray-600 font-semibold shadow-sm" ]
-                                [ text (String.left 1 student.displayName |> String.toUpper) ]
-                    , div []
-                        [ h1 [ class "text-2xl font-bold text-gray-900" ] [ text student.displayName ]
-                        , case student.chessComUsername of
-                            Just username ->
-                                a [ href ("https://www.chess.com/member/" ++ username), target "_blank", class "text-sm text-gray-500 hover:text-gray-700" ]
-                                    [ text ("@" ++ username) ]
+                                                else
+                                                    ""
+                                               )
+                                        )
+                                    , alt student.displayName
+                                    ]
+                                    []
 
                             Nothing ->
-                                text ""
+                                div [ class "w-16 h-16 rounded-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center text-xl text-gray-600 font-semibold shadow-sm" ]
+                                    [ text (String.left 1 student.displayName |> String.toUpper) ]
+                        , div []
+                            [ div [ class "flex items-center gap-2" ]
+                                [ h1 [ class "text-2xl font-bold text-gray-900" ] [ text student.displayName ]
+                                , if isArchived then
+                                    span [ class "px-2 py-0.5 text-xs font-medium rounded bg-gray-200 text-gray-600" ]
+                                        [ text "Archived" ]
+
+                                  else
+                                    text ""
+                                ]
+                            , case student.chessComUsername of
+                                Just username ->
+                                    a [ href ("https://www.chess.com/member/" ++ username), target "_blank", class "text-sm text-gray-500 hover:text-gray-700" ]
+                                        [ text ("@" ++ username) ]
+
+                                Nothing ->
+                                    text ""
+                            ]
                         ]
+                    , viewTimeRangeFilter model.timeRangeFilter
                     ]
                 ]
+
+
+viewTimeRangeFilter : TimeRangeFilter -> Html Msg
+viewTimeRangeFilter currentFilter =
+    let
+        pillButton filter label =
+            button
+                [ onClick (SetTimeRangeFilter filter)
+                , class
+                    (if currentFilter == filter then
+                        "px-4 py-2 text-sm font-medium rounded-full bg-gray-900 text-white transition-colors"
+
+                     else
+                        "px-4 py-2 text-sm font-medium rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors"
+                    )
+                ]
+                [ text label ]
+    in
+    div [ class "flex items-center gap-2" ]
+        [ pillButton Last7Days "Last 7 days"
+        , pillButton Last30Days "Last 30 days"
+        ]
 
 
 viewStatsHeader : Model -> Html Msg
@@ -1196,7 +1344,23 @@ viewStatsHeader model =
                 ]
 
         _ ->
-            text ""
+            -- Loading skeleton for stats
+            div [ class "mb-6 bg-white rounded-xl shadow-card p-5 animate-pulse" ]
+                [ div [ class "grid grid-cols-3 gap-6" ]
+                    [ div [ class "text-center" ]
+                        [ div [ class "h-8 w-12 bg-gray-200 rounded mx-auto mb-2" ] []
+                        , div [ class "h-3 w-16 bg-gray-200 rounded mx-auto" ] []
+                        ]
+                    , div [ class "text-center" ]
+                        [ div [ class "h-8 w-12 bg-gray-200 rounded mx-auto mb-2" ] []
+                        , div [ class "h-3 w-16 bg-gray-200 rounded mx-auto" ] []
+                        ]
+                    , div [ class "text-center" ]
+                        [ div [ class "h-8 w-12 bg-gray-200 rounded mx-auto mb-2" ] []
+                        , div [ class "h-3 w-16 bg-gray-200 rounded mx-auto" ] []
+                        ]
+                    ]
+                ]
 
 
 viewGamesList : Model -> Html Msg

@@ -3,6 +3,7 @@ module Api exposing
     , delete
     , get
     , getWithQuery
+    , patch
     , post
     , url
     )
@@ -113,6 +114,26 @@ delete config =
         , url = unwrap config.endpoint
         , body = Http.emptyBody
         , expect = Http.expectWhatever config.onResponse
+        , timeout = Nothing
+        , tracker = Nothing
+        }
+
+
+patch :
+    { endpoint : Endpoint
+    , token : String
+    , body : Encode.Value
+    , decoder : Decoder a
+    , onResponse : Result Http.Error a -> msg
+    }
+    -> Cmd msg
+patch config =
+    Http.request
+        { method = "PATCH"
+        , headers = authHeader (Just config.token)
+        , url = unwrap config.endpoint
+        , body = Http.jsonBody config.body
+        , expect = Http.expectJson config.onResponse config.decoder
         , timeout = Nothing
         , tracker = Nothing
         }

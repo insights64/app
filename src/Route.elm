@@ -13,6 +13,7 @@ type Route
     | Dashboard
     | StudentDetail String
     | GameDetail String
+    | Subscription
     | NotFound
 
 
@@ -25,6 +26,7 @@ parser =
         , Parser.map Dashboard (s "dashboard")
         , Parser.map StudentDetail (s "students" </> string)
         , Parser.map GameDetail (s "games" </> string)
+        , Parser.map Subscription (s "subscription")
         ]
 
 
@@ -71,6 +73,9 @@ routeToPieces route =
 
         GameDetail id ->
             [ "games", id ]
+
+        Subscription ->
+            [ "subscription" ]
 
         NotFound ->
             [ "not-found" ]

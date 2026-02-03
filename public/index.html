@@ -35,12 +35,6 @@
               blue: '#6a9bcc',
               green: '#788c5d',
             }
-          },
-          boxShadow: {
-            'subtle': '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
-            'card': '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1)',
-            'elevated': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)',
-            'modal': '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)',
           }
         }
       }
@@ -192,13 +186,14 @@
       ? 'http://localhost:8080'
       : 'http://localhost:8080';
 
-    // Initialize Elm app with token, coach data, and API URL from localStorage
+    // Initialize Elm app with token, coach data, API URL, and time range filter from localStorage
     const app = Elm.Main.init({
       node: document.getElementById('app'),
       flags: {
         token: localStorage.getItem('insights64_token'),
         coach: JSON.parse(localStorage.getItem('insights64_coach')),
-        apiUrl: API_URL
+        apiUrl: API_URL,
+        timeRangeFilter: localStorage.getItem('insights64_time_range_filter')
       }
     });
 
@@ -232,6 +227,13 @@
             email: user.email
           });
         }
+      });
+    }
+
+    // Port: Save time range filter to localStorage
+    if (app.ports.saveTimeRangeFilter) {
+      app.ports.saveTimeRangeFilter.subscribe(function(filter) {
+        localStorage.setItem('insights64_time_range_filter', filter);
       });
     }
   </script>

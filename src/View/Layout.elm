@@ -1,14 +1,14 @@
-module View.Layout exposing (layout, viewHeader)
+module View.Layout exposing (layout)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick)
 import Route
-import Types exposing (Coach)
+import Types exposing (CoachWithSubscription, SubscriptionStatus(..), SubscriptionWithPlan)
 
 
 type alias Config msg =
-    { coach : Coach
+    { coach : CoachWithSubscription
     , onLogout : msg
     , content : Html msg
     }
@@ -23,7 +23,7 @@ layout config =
         ]
 
 
-viewHeader : Coach -> msg -> Html msg
+viewHeader : CoachWithSubscription -> msg -> Html msg
 viewHeader coach onLogout =
     header [ class "bg-anthro-light/95 backdrop-blur-sm border-b border-anthro-gray-light sticky top-0 z-50" ]
         [ div [ class "max-w-6xl mx-auto px-4 py-4 flex items-center justify-between" ]
@@ -38,7 +38,14 @@ viewHeader coach onLogout =
                 , span [ class "font-semibold text-anthro-dark tracking-tight" ] [ text "Insights64" ]
                 ]
             , div [ class "flex items-center gap-4" ]
-                [ span [ class "text-sm text-anthro-gray" ] [ text coach.email ]
+                [ -- Email with subscription badge - links to subscription page
+                  a
+                    [ Route.href Route.Subscription
+                    , class "flex items-center gap-2 text-sm text-anthro-gray hover:text-anthro-dark transition-colors px-3 py-1.5 rounded-lg hover:bg-anthro-cream"
+                    ]
+                    [ text coach.email
+                    , viewSubscriptionBadge coach.subscription
+                    ]
                 , button
                     [ onClick onLogout
                     , class "text-sm text-anthro-gray hover:text-anthro-dark transition-colors px-3 py-1.5 rounded-lg hover:bg-anthro-cream"
@@ -47,3 +54,33 @@ viewHeader coach onLogout =
                 ]
             ]
         ]
+
+
+viewSubscriptionBadge : Maybe SubscriptionWithPlan -> Html msg
+viewSubscriptionBadge maybeSubscription =
+    case maybeSubscription of
+        Just subWithPlan ->
+            let
+                ( badgeClass, badgeText ) =
+                    case subWithPlan.subscription.status of
+                        Trialing ->
+                            ( "bg-blue-100 text-blue-700", "Trial" )
+
+                        Active ->
+                            ( "bg-green-100 text-green-700", subWithPlan.plan.displayName )
+
+                        PastDue ->
+                            ( "bg-yellow-100 text-yellow-700", "Payment Due" )
+
+                        Cancelled ->
+                            ( "bg-gray-100 text-gray-600", "Cancelled" )
+
+                        Expired ->
+                            ( "bg-red-100 text-red-700", "Expired" )
+            in
+            span [ class ("px-2 py-0.5 text-xs font-medium rounded-full " ++ badgeClass) ]
+                [ text badgeText ]
+
+        Nothing ->
+            -- No subscription info loaded yet - show nothing
+            text ""

@@ -186,13 +186,14 @@
       ? '__API_URL__'
       : 'http://localhost:8080';
 
-    // Initialize Elm app with token, coach data, and API URL from localStorage
+    // Initialize Elm app with token, coach data, API URL, and time range filter from localStorage
     const app = Elm.Main.init({
       node: document.getElementById('app'),
       flags: {
         token: localStorage.getItem('insights64_token'),
         coach: JSON.parse(localStorage.getItem('insights64_coach')),
-        apiUrl: API_URL
+        apiUrl: API_URL,
+        timeRangeFilter: localStorage.getItem('insights64_time_range_filter')
       }
     });
 
@@ -226,6 +227,13 @@
             email: user.email
           });
         }
+      });
+    }
+
+    // Port: Save time range filter to localStorage
+    if (app.ports.saveTimeRangeFilter) {
+      app.ports.saveTimeRangeFilter.subscribe(function(filter) {
+        localStorage.setItem('insights64_time_range_filter', filter);
       });
     }
   </script>

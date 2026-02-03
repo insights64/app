@@ -4,12 +4,12 @@ import Api
 import Http
 import Json.Decode as Decode exposing (Decoder)
 import Json.Encode as Encode
-import Types exposing (Coach, coachDecoder)
+import Types exposing (CoachWithSubscription, coachWithSubscriptionDecoder)
 
 
 type alias AuthResponse =
     { token : String
-    , coach : Coach
+    , coach : CoachWithSubscription
     }
 
 
@@ -17,7 +17,7 @@ authResponseDecoder : Decoder AuthResponse
 authResponseDecoder =
     Decode.map2 AuthResponse
         (Decode.field "token" Decode.string)
-        (Decode.field "coach" coachDecoder)
+        (Decode.field "coach" coachWithSubscriptionDecoder)
 
 
 login :

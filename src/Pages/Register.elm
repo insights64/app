@@ -6,7 +6,7 @@ import Html.Attributes exposing (..)
 import Html.Events exposing (onInput, onSubmit)
 import Http
 import Route
-import Types exposing (Coach)
+import Types exposing (CoachWithSubscription)
 
 
 type alias Model =
@@ -33,10 +33,10 @@ type Msg
     | PasswordChanged String
     | ConfirmPasswordChanged String
     | SubmitForm
-    | GotRegisterResponse (Result Http.Error { token : String, coach : Coach })
+    | GotRegisterResponse (Result Http.Error { token : String, coach : CoachWithSubscription })
 
 
-update : String -> Msg -> Model -> ( Model, Cmd Msg, Maybe { token : String, coach : Coach } )
+update : String -> Msg -> Model -> ( Model, Cmd Msg, Maybe { token : String, coach : CoachWithSubscription } )
 update apiUrl msg model =
     case msg of
         EmailChanged email ->
