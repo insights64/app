@@ -632,8 +632,11 @@ viewDashboard model students archivedCount =
 viewStudentCard : Model -> Student -> Html Msg
 viewStudentCard model student =
     let
-        needsSetup =
-            student.stats.gameCount == 0
+        awaitingImport =
+            student.lastImportedAt == Nothing
+
+        noGamesInPeriod =
+            student.lastImportedAt /= Nothing && student.stats.gameCount == 0
 
         hasAlerts =
             not (List.isEmpty (getStudentAlerts student))
@@ -658,11 +661,18 @@ viewStudentCard model student =
                 , statusClass = "text-gray-500"
                 }
 
-            else if needsSetup then
+            else if awaitingImport then
                 { dotColor = "bg-amber-400"
                 , dotAnimation = ""
                 , statusText = "Awaiting import"
                 , statusClass = "text-amber-600"
+                }
+
+            else if noGamesInPeriod then
+                { dotColor = "bg-gray-400"
+                , dotAnimation = ""
+                , statusText = "No games"
+                , statusClass = "text-gray-500"
                 }
 
             else if analysisInProgress then
@@ -871,9 +881,12 @@ viewAlertRow student =
 getStudentAlerts : Student -> List String
 getStudentAlerts student =
     let
-        noGames =
-            if student.stats.gameCount == 0 then
+        importAlert =
+            if student.lastImportedAt == Nothing then
                 [ "Games not imported yet" ]
+
+            else if student.stats.gameCount == 0 then
+                [ "No games in selected period" ]
 
             else
                 []
@@ -906,7 +919,7 @@ getStudentAlerts student =
             else
                 []
     in
-    noGames ++ lowAccuracy ++ losingRecord
+    importAlert ++ lowAccuracy ++ losingRecord
 
 
 viewStatCell : String -> String -> Maybe String -> Html Msg
