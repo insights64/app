@@ -1,5 +1,6 @@
 module Pages.Dashboard exposing (Model, Msg(..), init, subscriptions, update, view)
 
+import Api.Email
 import Api.Students
 import Api.Subscription
 import Html exposing (..)
@@ -29,9 +30,17 @@ type alias Model =
     , showArchived : Bool
     , archivingStudentId : Maybe String
     , openMenuStudentId : Maybe String
+    , resendStatus : ResendStatus
     , apiUrl : String
     , token : String
     }
+
+
+type ResendStatus
+    = ResendIdle
+    | ResendSending
+    | ResendSuccess
+    | ResendError String
 
 
 
@@ -62,6 +71,7 @@ init apiUrl token initialTimeRange maybeUserInfo =
             , showArchived = False
             , archivingStudentId = Nothing
             , openMenuStudentId = Nothing
+            , resendStatus = ResendIdle
             , apiUrl = apiUrl
             , token = token
             }
@@ -96,6 +106,8 @@ type Msg
     | ArchiveStudent String
     | UnarchiveStudent String
     | GotArchiveResult (Result Http.Error Student)
+    | ResendVerificationEmail
+    | GotResendResult (Result Http.Error Api.Email.MessageResponse)
     | NoOp
 
 
@@ -351,6 +363,23 @@ update apiUrl token msg model =
                 Err _ ->
                     ( { model | archivingStudentId = Nothing }, Cmd.none )
 
+        ResendVerificationEmail ->
+            ( { model | resendStatus = ResendSending }
+            , Api.Email.resendVerification
+                { apiUrl = apiUrl
+                , token = token
+                , onResponse = GotResendResult
+                }
+            )
+
+        GotResendResult result ->
+            case result of
+                Ok _ ->
+                    ( { model | resendStatus = ResendSuccess }, Cmd.none )
+
+                Err error ->
+                    ( { model | resendStatus = ResendError (httpErrorToString error) }, Cmd.none )
+
         NoOp ->
             ( model, Cmd.none )
 
@@ -463,6 +492,9 @@ view apiUrl token model =
           else
             text ""
 
+        -- Email verification banner
+        , viewVerificationBanner model
+
         -- Dashboard content
         , case model.students of
             NotAsked ->
@@ -512,6 +544,55 @@ view apiUrl token model =
           else
             text ""
         ]
+
+
+viewVerificationBanner : Model -> Html Msg
+viewVerificationBanner model =
+    case model.userInfo of
+        Success info ->
+            if info.emailVerified then
+                text ""
+
+            else
+                div [ class "mb-6 rounded-lg border border-amber-200 bg-amber-50 p-4" ]
+                    [ div [ class "flex items-center justify-between" ]
+                        [ div [ class "flex items-center gap-3" ]
+                            [ span [ class "text-amber-600 text-lg" ] [ text "!" ]
+                            , div []
+                                [ p [ class "text-sm font-medium text-amber-800" ]
+                                    [ text "Please verify your email address" ]
+                                , p [ class "text-sm text-amber-700 mt-0.5" ]
+                                    [ text "Check your inbox for a verification link." ]
+                                ]
+                            ]
+                        , case model.resendStatus of
+                            ResendSending ->
+                                span [ class "text-sm text-amber-600" ] [ text "Sending..." ]
+
+                            ResendSuccess ->
+                                span [ class "text-sm text-green-600 font-medium" ] [ text "Verification email sent!" ]
+
+                            ResendError err ->
+                                div [ class "text-right" ]
+                                    [ p [ class "text-sm text-red-600" ] [ text err ]
+                                    , button
+                                        [ onClick ResendVerificationEmail
+                                        , class "text-sm font-medium text-amber-700 hover:text-amber-900 underline mt-1"
+                                        ]
+                                        [ text "Try again" ]
+                                    ]
+
+                            ResendIdle ->
+                                button
+                                    [ onClick ResendVerificationEmail
+                                    , class "text-sm font-medium text-amber-700 hover:text-amber-900 underline"
+                                    ]
+                                    [ text "Resend verification email" ]
+                        ]
+                    ]
+
+        _ ->
+            text ""
 
 
 viewLoading : Model -> Html Msg

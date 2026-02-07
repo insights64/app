@@ -112,7 +112,7 @@ view model =
                     Verified ->
                         div [ class "text-center" ]
                             [ div [ class "mb-4 w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto" ]
-                                [ span [ class "text-green-600 text-2xl" ] [ text "check" ]
+                                [ span [ class "text-3xl" ] [ text "\u{2705}" ]
                                 ]
                             , h2 [ class "text-xl font-semibold text-gray-900 mb-2" ] [ text "Email Verified!" ]
                             , p [ class "text-gray-600 mb-6" ] [ text "Your email has been successfully verified." ]
@@ -126,7 +126,7 @@ view model =
                     Failed errorMsg ->
                         div [ class "text-center" ]
                             [ div [ class "mb-4 w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto" ]
-                                [ span [ class "text-red-600 text-2xl" ] [ text "X" ]
+                                [ span [ class "text-3xl" ] [ text "\u{274C}" ]
                                 ]
                             , h2 [ class "text-xl font-semibold text-gray-900 mb-2" ] [ text "Verification Failed" ]
                             , p [ class "text-gray-600 mb-6" ] [ text errorMsg ]

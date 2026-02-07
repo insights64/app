@@ -6,6 +6,7 @@ module Api.Email exposing
     , getPreferences
     , updatePreferences
     , EmailPreferences
+    , MessageResponse
     , emailPreferencesDecoder
     )
 

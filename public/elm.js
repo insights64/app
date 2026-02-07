@@ -77,7 +77,7 @@ function A9(fun, a, b, c, d, e, f, g, h, i) {
   return fun.a === 9 ? fun.f(a, b, c, d, e, f, g, h, i) : fun(a)(b)(c)(d)(e)(f)(g)(h)(i);
 }
 
-
+console.warn('Compiled in DEV mode. Follow the advice at https://elm-lang.org/0.19.1/optimize for better performance and smaller assets.');
 
 
 var _JsArray_empty = [];
@@ -234,12 +234,12 @@ var _JsArray_appendN = F3(function(n, dest, source)
 
 // LOG
 
-var _Debug_log = F2(function(tag, value)
+var _Debug_log_UNUSED = F2(function(tag, value)
 {
 	return value;
 });
 
-var _Debug_log_UNUSED = F2(function(tag, value)
+var _Debug_log = F2(function(tag, value)
 {
 	console.log(tag + ': ' + _Debug_toString(value));
 	return value;
@@ -265,12 +265,12 @@ function _Debug_todoCase(moduleName, region, value)
 
 // TO STRING
 
-function _Debug_toString(value)
+function _Debug_toString_UNUSED(value)
 {
 	return '<internals>';
 }
 
-function _Debug_toString_UNUSED(value)
+function _Debug_toString(value)
 {
 	return _Debug_toAnsiString(false, value);
 }
@@ -455,13 +455,13 @@ function _Debug_toHexDigit(n)
 // CRASH
 
 
-function _Debug_crash(identifier)
+function _Debug_crash_UNUSED(identifier)
 {
 	throw new Error('https://github.com/elm/core/blob/1.0.0/hints/' + identifier + '.md');
 }
 
 
-function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
+function _Debug_crash(identifier, fact1, fact2, fact3, fact4)
 {
 	switch(identifier)
 	{
@@ -519,11 +519,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.cA.bp === region.cX.bp)
+	if (region.start.line === region.end.line)
 	{
-		return 'on line ' + region.cA.bp;
+		return 'on line ' + region.start.line;
 	}
-	return 'on lines ' + region.cA.bp + ' through ' + region.cX.bp;
+	return 'on lines ' + region.start.line + ' through ' + region.end.line;
 }
 
 
@@ -561,7 +561,7 @@ function _Utils_eqHelp(x, y, depth, stack)
 		return true;
 	}
 
-	/**_UNUSED/
+	/**/
 	if (x.$ === 'Set_elm_builtin')
 	{
 		x = $elm$core$Set$toList(x);
@@ -574,7 +574,7 @@ function _Utils_eqHelp(x, y, depth, stack)
 	}
 	//*/
 
-	/**/
+	/**_UNUSED/
 	if (x.$ < 0)
 	{
 		x = $elm$core$Dict$toList(x);
@@ -609,7 +609,7 @@ function _Utils_cmp(x, y, ord)
 		return x === y ? /*EQ*/ 0 : x < y ? /*LT*/ -1 : /*GT*/ 1;
 	}
 
-	/**_UNUSED/
+	/**/
 	if (x instanceof String)
 	{
 		var a = x.valueOf();
@@ -618,10 +618,10 @@ function _Utils_cmp(x, y, ord)
 	}
 	//*/
 
-	/**/
+	/**_UNUSED/
 	if (typeof x.$ === 'undefined')
 	//*/
-	/**_UNUSED/
+	/**/
 	if (x.$[0] === '#')
 	//*/
 	{
@@ -651,17 +651,17 @@ var _Utils_compare = F2(function(x, y)
 
 // COMMON VALUES
 
-var _Utils_Tuple0 = 0;
-var _Utils_Tuple0_UNUSED = { $: '#0' };
+var _Utils_Tuple0_UNUSED = 0;
+var _Utils_Tuple0 = { $: '#0' };
 
-function _Utils_Tuple2(a, b) { return { a: a, b: b }; }
-function _Utils_Tuple2_UNUSED(a, b) { return { $: '#2', a: a, b: b }; }
+function _Utils_Tuple2_UNUSED(a, b) { return { a: a, b: b }; }
+function _Utils_Tuple2(a, b) { return { $: '#2', a: a, b: b }; }
 
-function _Utils_Tuple3(a, b, c) { return { a: a, b: b, c: c }; }
-function _Utils_Tuple3_UNUSED(a, b, c) { return { $: '#3', a: a, b: b, c: c }; }
+function _Utils_Tuple3_UNUSED(a, b, c) { return { a: a, b: b, c: c }; }
+function _Utils_Tuple3(a, b, c) { return { $: '#3', a: a, b: b, c: c }; }
 
-function _Utils_chr(c) { return c; }
-function _Utils_chr_UNUSED(c) { return new String(c); }
+function _Utils_chr_UNUSED(c) { return c; }
+function _Utils_chr(c) { return new String(c); }
 
 
 // RECORDS
@@ -712,11 +712,11 @@ function _Utils_ap(xs, ys)
 
 
 
-var _List_Nil = { $: 0 };
-var _List_Nil_UNUSED = { $: '[]' };
+var _List_Nil_UNUSED = { $: 0 };
+var _List_Nil = { $: '[]' };
 
-function _List_Cons(hd, tl) { return { $: 1, a: hd, b: tl }; }
-function _List_Cons_UNUSED(hd, tl) { return { $: '::', a: hd, b: tl }; }
+function _List_Cons_UNUSED(hd, tl) { return { $: 1, a: hd, b: tl }; }
+function _List_Cons(hd, tl) { return { $: '::', a: hd, b: tl }; }
 
 
 var _List_cons = F2(_List_Cons);
@@ -1212,7 +1212,7 @@ function _Char_toLocaleLower(char)
 
 
 
-/**_UNUSED/
+/**/
 function _Json_errorToString(error)
 {
 	return $elm$json$Json$Decode$errorToString(error);
@@ -1616,11 +1616,11 @@ var _Json_encode = F2(function(indentLevel, value)
 	return JSON.stringify(_Json_unwrap(value), null, indentLevel) + '';
 });
 
-function _Json_wrap_UNUSED(value) { return { $: 0, a: value }; }
-function _Json_unwrap_UNUSED(value) { return value.a; }
+function _Json_wrap(value) { return { $: 0, a: value }; }
+function _Json_unwrap(value) { return value.a; }
 
-function _Json_wrap(value) { return value; }
-function _Json_unwrap(value) { return value; }
+function _Json_wrap_UNUSED(value) { return value; }
+function _Json_unwrap_UNUSED(value) { return value; }
 
 function _Json_emptyArray() { return []; }
 function _Json_emptyObject() { return {}; }
@@ -1857,9 +1857,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.eN,
-		impl.fU,
-		impl.fE,
+		impl.init,
+		impl.update,
+		impl.subscriptions,
 		function() { return function() {} }
 	);
 });
@@ -1872,7 +1872,7 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 function _Platform_initialize(flagDecoder, args, init, update, subscriptions, stepperBuilder)
 {
 	var result = A2(_Json_run, flagDecoder, _Json_wrap(args ? args['flags'] : undefined));
-	$elm$core$Result$isOk(result) || _Debug_crash(2 /**_UNUSED/, _Json_errorToString(result.a) /**/);
+	$elm$core$Result$isOk(result) || _Debug_crash(2 /**/, _Json_errorToString(result.a) /**/);
 	var managers = {};
 	var initPair = init(result.a);
 	var model = initPair.a;
@@ -2316,7 +2316,7 @@ function _Platform_setupIncomingPort(name, sendToApp)
 //
 
 
-function _Platform_export(exports)
+function _Platform_export_UNUSED(exports)
 {
 	scope['Elm']
 		? _Platform_mergeExportsProd(scope['Elm'], exports)
@@ -2337,7 +2337,7 @@ function _Platform_mergeExportsProd(obj, exports)
 }
 
 
-function _Platform_export_UNUSED(exports)
+function _Platform_export(exports)
 {
 	scope['Elm']
 		? _Platform_mergeExportsDebug('Elm', scope['Elm'], exports)
@@ -2377,10 +2377,10 @@ var _VirtualDom_init = F4(function(virtualNode, flagDecoder, debugMetadata, args
 {
 	// NOTE: this function needs _Platform_export available to work
 
-	/**/
+	/**_UNUSED/
 	var node = args['node'];
 	//*/
-	/**_UNUSED/
+	/**/
 	var node = args && args['node'] ? args['node'] : _Debug_crash(0);
 	//*/
 
@@ -2655,14 +2655,14 @@ function _VirtualDom_noInnerHtmlOrFormAction(key)
 function _VirtualDom_noJavaScriptUri(value)
 {
 	return _VirtualDom_RE_js.test(value)
-		? /**/''//*//**_UNUSED/'javascript:alert("This is an XSS vector. Please use ports or web components instead.")'//*/
+		? /**_UNUSED/''//*//**/'javascript:alert("This is an XSS vector. Please use ports or web components instead.")'//*/
 		: value;
 }
 
 function _VirtualDom_noJavaScriptOrHtmlUri(value)
 {
 	return _VirtualDom_RE_js_html.test(value)
-		? /**/''//*//**_UNUSED/'javascript:alert("This is an XSS vector. Please use ports or web components instead.")'//*/
+		? /**_UNUSED/''//*//**/'javascript:alert("This is an XSS vector. Please use ports or web components instead.")'//*/
 		: value;
 }
 
@@ -2670,7 +2670,7 @@ function _VirtualDom_noJavaScriptOrHtmlJson(value)
 {
 	return (typeof _Json_unwrap(value) === 'string' && _VirtualDom_RE_js_html.test(_Json_unwrap(value)))
 		? _Json_wrap(
-			/**/''//*//**_UNUSED/'javascript:alert("This is an XSS vector. Please use ports or web components instead.")'//*/
+			/**_UNUSED/''//*//**/'javascript:alert("This is an XSS vector. Please use ports or web components instead.")'//*/
 		) : value;
 }
 
@@ -2719,9 +2719,9 @@ var _VirtualDom_mapEventTuple = F2(function(func, tuple)
 var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
-		da: func(record.da),
-		cB: record.cB,
-		co: record.co
+		message: func(record.message),
+		stopPropagation: record.stopPropagation,
+		preventDefault: record.preventDefault
 	}
 });
 
@@ -2989,11 +2989,11 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 		// 3 = Custom
 
 		var value = result.a;
-		var message = !tag ? value : tag < 3 ? value.a : value.da;
-		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.cB;
+		var message = !tag ? value : tag < 3 ? value.a : value.message;
+		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.stopPropagation;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
-			(tag == 2 ? value.b : tag == 3 && value.co) && event.preventDefault(),
+			(tag == 2 ? value.b : tag == 3 && value.preventDefault) && event.preventDefault(),
 			eventNode
 		);
 		var tagger;
@@ -3943,15 +3943,15 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.eN,
-		impl.fU,
-		impl.fE,
+		impl.init,
+		impl.update,
+		impl.subscriptions,
 		function(sendToApp, initialModel) {
-			var view = impl.fX;
-			/**/
+			var view = impl.view;
+			/**_UNUSED/
 			var domNode = args['node'];
 			//*/
-			/**_UNUSED/
+			/**/
 			var domNode = args && args['node'] ? args['node'] : _Debug_crash(0);
 			//*/
 			var currNode = _VirtualDom_virtualize(domNode);
@@ -3979,12 +3979,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.eN,
-		impl.fU,
-		impl.fE,
+		impl.init,
+		impl.update,
+		impl.subscriptions,
 		function(sendToApp, initialModel) {
-			var divertHrefToApp = impl.cs && impl.cs(sendToApp)
-			var view = impl.fX;
+			var divertHrefToApp = impl.setup && impl.setup(sendToApp)
+			var view = impl.view;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -3992,12 +3992,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 			{
 				_VirtualDom_divertHrefToApp = divertHrefToApp;
 				var doc = view(model);
-				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.aj);
+				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.body);
 				var patches = _VirtualDom_diff(currNode, nextNode);
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.fK) && (_VirtualDom_doc.title = title = doc.fK);
+				(title !== doc.title) && (_VirtualDom_doc.title = title = doc.title);
 			});
 		}
 	);
@@ -4053,12 +4053,12 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.e9;
-	var onUrlRequest = impl.fa;
+	var onUrlChange = impl.onUrlChange;
+	var onUrlRequest = impl.onUrlRequest;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
-		cs: function(sendToApp)
+		setup: function(sendToApp)
 		{
 			key.a = sendToApp;
 			_Browser_window.addEventListener('popstate', key);
@@ -4074,9 +4074,9 @@ function _Browser_application(impl)
 					var next = $elm$url$Url$fromString(href).a;
 					sendToApp(onUrlRequest(
 						(next
-							&& curr.dq === next.dq
-							&& curr.c3 === next.c3
-							&& curr.dl.a === next.dl.a
+							&& curr.protocol === next.protocol
+							&& curr.host === next.host
+							&& curr.port_.a === next.port_.a
 						)
 							? $elm$browser$Browser$Internal(next)
 							: $elm$browser$Browser$External(href)
@@ -4084,13 +4084,13 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		eN: function(flags)
+		init: function(flags)
 		{
-			return A3(impl.eN, flags, _Browser_getUrl(), key);
+			return A3(impl.init, flags, _Browser_getUrl(), key);
 		},
-		fX: impl.fX,
-		fU: impl.fU,
-		fE: impl.fE
+		view: impl.view,
+		update: impl.update,
+		subscriptions: impl.subscriptions
 	});
 }
 
@@ -4156,17 +4156,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { eG: 'hidden', ee: 'visibilitychange' }
+		? { hidden: 'hidden', change: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { eG: 'mozHidden', ee: 'mozvisibilitychange' }
+		? { hidden: 'mozHidden', change: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { eG: 'msHidden', ee: 'msvisibilitychange' }
+		? { hidden: 'msHidden', change: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { eG: 'webkitHidden', ee: 'webkitvisibilitychange' }
-		: { eG: 'hidden', ee: 'visibilitychange' };
+		? { hidden: 'webkitHidden', change: 'webkitvisibilitychange' }
+		: { hidden: 'hidden', change: 'visibilitychange' };
 }
 
 
@@ -4247,12 +4247,12 @@ var _Browser_call = F2(function(functionName, id)
 function _Browser_getViewport()
 {
 	return {
-		dA: _Browser_getScene(),
-		dN: {
-			dT: _Browser_window.pageXOffset,
-			dU: _Browser_window.pageYOffset,
-			dR: _Browser_doc.documentElement.clientWidth,
-			c1: _Browser_doc.documentElement.clientHeight
+		scene: _Browser_getScene(),
+		viewport: {
+			x: _Browser_window.pageXOffset,
+			y: _Browser_window.pageYOffset,
+			width: _Browser_doc.documentElement.clientWidth,
+			height: _Browser_doc.documentElement.clientHeight
 		}
 	};
 }
@@ -4262,8 +4262,8 @@ function _Browser_getScene()
 	var body = _Browser_doc.body;
 	var elem = _Browser_doc.documentElement;
 	return {
-		dR: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
-		c1: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
+		width: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
+		height: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
 
@@ -4286,15 +4286,15 @@ function _Browser_getViewportOf(id)
 	return _Browser_withNode(id, function(node)
 	{
 		return {
-			dA: {
-				dR: node.scrollWidth,
-				c1: node.scrollHeight
+			scene: {
+				width: node.scrollWidth,
+				height: node.scrollHeight
 			},
-			dN: {
-				dT: node.scrollLeft,
-				dU: node.scrollTop,
-				dR: node.clientWidth,
-				c1: node.clientHeight
+			viewport: {
+				x: node.scrollLeft,
+				y: node.scrollTop,
+				width: node.clientWidth,
+				height: node.clientHeight
 			}
 		};
 	});
@@ -4324,18 +4324,18 @@ function _Browser_getElement(id)
 		var x = _Browser_window.pageXOffset;
 		var y = _Browser_window.pageYOffset;
 		return {
-			dA: _Browser_getScene(),
-			dN: {
-				dT: x,
-				dU: y,
-				dR: _Browser_doc.documentElement.clientWidth,
-				c1: _Browser_doc.documentElement.clientHeight
+			scene: _Browser_getScene(),
+			viewport: {
+				x: x,
+				y: y,
+				width: _Browser_doc.documentElement.clientWidth,
+				height: _Browser_doc.documentElement.clientHeight
 			},
-			eu: {
-				dT: x + rect.left,
-				dU: y + rect.top,
-				dR: rect.width,
-				c1: rect.height
+			element: {
+				x: x + rect.left,
+				y: y + rect.top,
+				width: rect.width,
+				height: rect.height
 			}
 		};
 	});
@@ -4380,25 +4380,25 @@ var _Http_toTask = F3(function(router, toTask, request)
 	return _Scheduler_binding(function(callback)
 	{
 		function done(response) {
-			callback(toTask(request.a_.a(response)));
+			callback(toTask(request.expect.a(response)));
 		}
 
 		var xhr = new XMLHttpRequest();
 		xhr.addEventListener('error', function() { done($elm$http$Http$NetworkError_); });
 		xhr.addEventListener('timeout', function() { done($elm$http$Http$Timeout_); });
-		xhr.addEventListener('load', function() { done(_Http_toResponse(request.a_.b, xhr)); });
-		$elm$core$Maybe$isJust(request.bb) && _Http_track(router, xhr, request.bb.a);
+		xhr.addEventListener('load', function() { done(_Http_toResponse(request.expect.b, xhr)); });
+		$elm$core$Maybe$isJust(request.tracker) && _Http_track(router, xhr, request.tracker.a);
 
 		try {
-			xhr.open(request.a0, request.bc, true);
+			xhr.open(request.method, request.url, true);
 		} catch (e) {
-			return done($elm$http$Http$BadUrl_(request.bc));
+			return done($elm$http$Http$BadUrl_(request.url));
 		}
 
 		_Http_configureRequest(xhr, request);
 
-		request.aj.a && xhr.setRequestHeader('Content-Type', request.aj.a);
-		xhr.send(request.aj.b);
+		request.body.a && xhr.setRequestHeader('Content-Type', request.body.a);
+		xhr.send(request.body.b);
 
 		return function() { xhr.c = true; xhr.abort(); };
 	});
@@ -4409,13 +4409,13 @@ var _Http_toTask = F3(function(router, toTask, request)
 
 function _Http_configureRequest(xhr, request)
 {
-	for (var headers = request.a$; headers.b; headers = headers.b) // WHILE_CONS
+	for (var headers = request.headers; headers.b; headers = headers.b) // WHILE_CONS
 	{
 		xhr.setRequestHeader(headers.a.a, headers.a.b);
 	}
-	xhr.timeout = request.a8.a || 0;
-	xhr.responseType = request.a_.d;
-	xhr.withCredentials = request.d$;
+	xhr.timeout = request.timeout.a || 0;
+	xhr.responseType = request.expect.d;
+	xhr.withCredentials = request.allowCookiesFromOtherDomains;
 }
 
 
@@ -4436,10 +4436,10 @@ function _Http_toResponse(toBody, xhr)
 function _Http_toMetadata(xhr)
 {
 	return {
-		bc: xhr.responseURL,
-		fB: xhr.status,
-		a7: xhr.statusText,
-		a$: _Http_parseHeaders(xhr.getAllResponseHeaders())
+		url: xhr.responseURL,
+		statusCode: xhr.status,
+		statusText: xhr.statusText,
+		headers: _Http_parseHeaders(xhr.getAllResponseHeaders())
 	};
 }
 
@@ -4534,15 +4534,15 @@ function _Http_track(router, xhr, tracker)
 	xhr.upload.addEventListener('progress', function(event) {
 		if (xhr.c) { return; }
 		_Scheduler_rawSpawn(A2($elm$core$Platform$sendToSelf, router, _Utils_Tuple2(tracker, $elm$http$Http$Sending({
-			fx: event.loaded,
-			dD: event.total
+			sent: event.loaded,
+			size: event.total
 		}))));
 	});
 	xhr.addEventListener('progress', function(event) {
 		if (xhr.c) { return; }
 		_Scheduler_rawSpawn(A2($elm$core$Platform$sendToSelf, router, _Utils_Tuple2(tracker, $elm$http$Http$Receiving({
-			fs: event.loaded,
-			dD: event.lengthComputable ? $elm$core$Maybe$Just(event.total) : $elm$core$Maybe$Nothing
+			received: event.loaded,
+			size: event.lengthComputable ? $elm$core$Maybe$Just(event.total) : $elm$core$Maybe$Nothing
 		}))));
 	});
 }
@@ -4609,14 +4609,14 @@ function _Time_getZoneName()
 	});
 }
 var $elm$core$Maybe$Just = function (a) {
-	return {$: 0, a: a};
+	return {$: 'Just', a: a};
 };
-var $elm$core$Maybe$Nothing = {$: 1};
+var $elm$core$Maybe$Nothing = {$: 'Nothing'};
 var $author$project$Main$UrlChanged = function (a) {
-	return {$: 1, a: a};
+	return {$: 'UrlChanged', a: a};
 };
 var $author$project$Main$UrlRequested = function (a) {
-	return {$: 0, a: a};
+	return {$: 'UrlRequested', a: a};
 };
 var $elm$core$List$cons = _List_cons;
 var $elm$core$Elm$JsArray$foldr = _JsArray_foldr;
@@ -4626,7 +4626,7 @@ var $elm$core$Array$foldr = F3(
 		var tail = _v0.d;
 		var helper = F2(
 			function (node, acc) {
-				if (!node.$) {
+				if (node.$ === 'SubTree') {
 					var subTree = node.a;
 					return A3($elm$core$Elm$JsArray$foldr, helper, acc, subTree);
 				} else {
@@ -4647,7 +4647,7 @@ var $elm$core$Dict$foldr = F3(
 	function (func, acc, t) {
 		foldr:
 		while (true) {
-			if (t.$ === -2) {
+			if (t.$ === 'RBEmpty_elm_builtin') {
 				return acc;
 			} else {
 				var key = t.b;
@@ -4692,34 +4692,34 @@ var $elm$core$Dict$keys = function (dict) {
 		dict);
 };
 var $elm$core$Set$toList = function (_v0) {
-	var dict = _v0;
+	var dict = _v0.a;
 	return $elm$core$Dict$keys(dict);
 };
-var $elm$core$Basics$EQ = 1;
-var $elm$core$Basics$GT = 2;
-var $elm$core$Basics$LT = 0;
+var $elm$core$Basics$EQ = {$: 'EQ'};
+var $elm$core$Basics$GT = {$: 'GT'};
+var $elm$core$Basics$LT = {$: 'LT'};
 var $elm$core$Result$Err = function (a) {
-	return {$: 1, a: a};
+	return {$: 'Err', a: a};
 };
 var $elm$json$Json$Decode$Failure = F2(
 	function (a, b) {
-		return {$: 3, a: a, b: b};
+		return {$: 'Failure', a: a, b: b};
 	});
 var $elm$json$Json$Decode$Field = F2(
 	function (a, b) {
-		return {$: 0, a: a, b: b};
+		return {$: 'Field', a: a, b: b};
 	});
 var $elm$json$Json$Decode$Index = F2(
 	function (a, b) {
-		return {$: 1, a: a, b: b};
+		return {$: 'Index', a: a, b: b};
 	});
 var $elm$core$Result$Ok = function (a) {
-	return {$: 0, a: a};
+	return {$: 'Ok', a: a};
 };
 var $elm$json$Json$Decode$OneOf = function (a) {
-	return {$: 2, a: a};
+	return {$: 'OneOf', a: a};
 };
-var $elm$core$Basics$False = 1;
+var $elm$core$Basics$False = {$: 'False'};
 var $elm$core$Basics$add = _Basics_add;
 var $elm$core$String$all = _String_all;
 var $elm$core$Basics$and = _Basics_and;
@@ -4845,12 +4845,12 @@ var $elm$json$Json$Decode$errorToStringHelp = F2(
 		errorToStringHelp:
 		while (true) {
 			switch (error.$) {
-				case 0:
+				case 'Field':
 					var f = error.a;
 					var err = error.b;
 					var isSimple = function () {
 						var _v1 = $elm$core$String$uncons(f);
-						if (_v1.$ === 1) {
+						if (_v1.$ === 'Nothing') {
 							return false;
 						} else {
 							var _v2 = _v1.a;
@@ -4865,7 +4865,7 @@ var $elm$json$Json$Decode$errorToStringHelp = F2(
 					error = $temp$error;
 					context = $temp$context;
 					continue errorToStringHelp;
-				case 1:
+				case 'Index':
 					var i = error.a;
 					var err = error.b;
 					var indexName = '[' + ($elm$core$String$fromInt(i) + ']');
@@ -4874,7 +4874,7 @@ var $elm$json$Json$Decode$errorToStringHelp = F2(
 					error = $temp$error;
 					context = $temp$context;
 					continue errorToStringHelp;
-				case 2:
+				case 'OneOf':
 					var errors = error.a;
 					if (!errors.b) {
 						return 'Ran into a Json.Decode.oneOf with no possibilities' + function () {
@@ -4938,7 +4938,7 @@ var $elm$json$Json$Decode$errorToStringHelp = F2(
 var $elm$core$Array$branchFactor = 32;
 var $elm$core$Array$Array_elm_builtin = F4(
 	function (a, b, c, d) {
-		return {$: 0, a: a, b: b, c: c, d: d};
+		return {$: 'Array_elm_builtin', a: a, b: b, c: c, d: d};
 	});
 var $elm$core$Elm$JsArray$empty = _JsArray_empty;
 var $elm$core$Basics$ceiling = _Basics_ceiling;
@@ -4953,7 +4953,7 @@ var $elm$core$Array$shiftStep = $elm$core$Basics$ceiling(
 var $elm$core$Array$empty = A4($elm$core$Array$Array_elm_builtin, 0, $elm$core$Array$shiftStep, $elm$core$Elm$JsArray$empty, $elm$core$Elm$JsArray$empty);
 var $elm$core$Elm$JsArray$initialize = _JsArray_initialize;
 var $elm$core$Array$Leaf = function (a) {
-	return {$: 1, a: a};
+	return {$: 'Leaf', a: a};
 };
 var $elm$core$Basics$apL = F2(
 	function (f, x) {
@@ -4973,7 +4973,7 @@ var $elm$core$Basics$max = F2(
 	});
 var $elm$core$Basics$mul = _Basics_mul;
 var $elm$core$Array$SubTree = function (a) {
-	return {$: 0, a: a};
+	return {$: 'SubTree', a: a};
 };
 var $elm$core$Elm$JsArray$initializeFromList = _JsArray_initializeFromList;
 var $elm$core$Array$compressNodes = F2(
@@ -5020,25 +5020,25 @@ var $elm$core$Array$treeFromBuilder = F2(
 	});
 var $elm$core$Array$builderToArray = F2(
 	function (reverseNodeList, builder) {
-		if (!builder.p) {
+		if (!builder.nodeListSize) {
 			return A4(
 				$elm$core$Array$Array_elm_builtin,
-				$elm$core$Elm$JsArray$length(builder.x),
+				$elm$core$Elm$JsArray$length(builder.tail),
 				$elm$core$Array$shiftStep,
 				$elm$core$Elm$JsArray$empty,
-				builder.x);
+				builder.tail);
 		} else {
-			var treeLen = builder.p * $elm$core$Array$branchFactor;
+			var treeLen = builder.nodeListSize * $elm$core$Array$branchFactor;
 			var depth = $elm$core$Basics$floor(
 				A2($elm$core$Basics$logBase, $elm$core$Array$branchFactor, treeLen - 1));
-			var correctNodeList = reverseNodeList ? $elm$core$List$reverse(builder.z) : builder.z;
-			var tree = A2($elm$core$Array$treeFromBuilder, correctNodeList, builder.p);
+			var correctNodeList = reverseNodeList ? $elm$core$List$reverse(builder.nodeList) : builder.nodeList;
+			var tree = A2($elm$core$Array$treeFromBuilder, correctNodeList, builder.nodeListSize);
 			return A4(
 				$elm$core$Array$Array_elm_builtin,
-				$elm$core$Elm$JsArray$length(builder.x) + treeLen,
+				$elm$core$Elm$JsArray$length(builder.tail) + treeLen,
 				A2($elm$core$Basics$max, 5, depth * $elm$core$Array$shiftStep),
 				tree,
-				builder.x);
+				builder.tail);
 		}
 	});
 var $elm$core$Basics$idiv = _Basics_idiv;
@@ -5051,7 +5051,7 @@ var $elm$core$Array$initializeHelp = F5(
 				return A2(
 					$elm$core$Array$builderToArray,
 					false,
-					{z: nodeList, p: (len / $elm$core$Array$branchFactor) | 0, x: tail});
+					{nodeList: nodeList, nodeListSize: (len / $elm$core$Array$branchFactor) | 0, tail: tail});
 			} else {
 				var leaf = $elm$core$Array$Leaf(
 					A3($elm$core$Elm$JsArray$initialize, $elm$core$Array$branchFactor, fromIndex, fn));
@@ -5081,9 +5081,9 @@ var $elm$core$Array$initialize = F2(
 			return A5($elm$core$Array$initializeHelp, fn, initialFromIndex, len, _List_Nil, tail);
 		}
 	});
-var $elm$core$Basics$True = 0;
+var $elm$core$Basics$True = {$: 'True'};
 var $elm$core$Result$isOk = function (result) {
-	if (!result.$) {
+	if (result.$ === 'Ok') {
 		return true;
 	} else {
 		return false;
@@ -5095,31 +5095,33 @@ var $elm$json$Json$Decode$map2 = _Json_map2;
 var $elm$json$Json$Decode$succeed = _Json_succeed;
 var $elm$virtual_dom$VirtualDom$toHandlerInt = function (handler) {
 	switch (handler.$) {
-		case 0:
+		case 'Normal':
 			return 0;
-		case 1:
+		case 'MayStopPropagation':
 			return 1;
-		case 2:
+		case 'MayPreventDefault':
 			return 2;
 		default:
 			return 3;
 	}
 };
 var $elm$browser$Browser$External = function (a) {
-	return {$: 1, a: a};
+	return {$: 'External', a: a};
 };
 var $elm$browser$Browser$Internal = function (a) {
-	return {$: 0, a: a};
+	return {$: 'Internal', a: a};
 };
 var $elm$core$Basics$identity = function (x) {
 	return x;
 };
-var $elm$browser$Browser$Dom$NotFound = $elm$core$Basics$identity;
-var $elm$url$Url$Http = 0;
-var $elm$url$Url$Https = 1;
+var $elm$browser$Browser$Dom$NotFound = function (a) {
+	return {$: 'NotFound', a: a};
+};
+var $elm$url$Url$Http = {$: 'Http'};
+var $elm$url$Url$Https = {$: 'Https'};
 var $elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
-		return {c$: fragment, c3: host, di: path, dl: port_, dq: protocol, dr: query};
+		return {fragment: fragment, host: host, path: path, port_: port_, protocol: protocol, query: query};
 	});
 var $elm$core$String$contains = _String_contains;
 var $elm$core$String$length = _String_length;
@@ -5155,7 +5157,7 @@ var $elm$url$Url$chompBeforePath = F5(
 					var i = _v0.a;
 					var _v1 = $elm$core$String$toInt(
 						A2($elm$core$String$dropLeft, i + 1, str));
-					if (_v1.$ === 1) {
+					if (_v1.$ === 'Nothing') {
 						return $elm$core$Maybe$Nothing;
 					} else {
 						var port_ = _v1;
@@ -5238,24 +5240,26 @@ var $elm$core$String$startsWith = _String_startsWith;
 var $elm$url$Url$fromString = function (str) {
 	return A2($elm$core$String$startsWith, 'http://', str) ? A2(
 		$elm$url$Url$chompAfterProtocol,
-		0,
+		$elm$url$Url$Http,
 		A2($elm$core$String$dropLeft, 7, str)) : (A2($elm$core$String$startsWith, 'https://', str) ? A2(
 		$elm$url$Url$chompAfterProtocol,
-		1,
+		$elm$url$Url$Https,
 		A2($elm$core$String$dropLeft, 8, str)) : $elm$core$Maybe$Nothing);
 };
 var $elm$core$Basics$never = function (_v0) {
 	never:
 	while (true) {
-		var nvr = _v0;
+		var nvr = _v0.a;
 		var $temp$_v0 = nvr;
 		_v0 = $temp$_v0;
 		continue never;
 	}
 };
-var $elm$core$Task$Perform = $elm$core$Basics$identity;
+var $elm$core$Task$Perform = function (a) {
+	return {$: 'Perform', a: a};
+};
 var $elm$core$Task$succeed = _Scheduler_succeed;
-var $elm$core$Task$init = $elm$core$Task$succeed(0);
+var $elm$core$Task$init = $elm$core$Task$succeed(_Utils_Tuple0);
 var $elm$core$List$foldrHelper = F4(
 	function (fn, acc, ctr, ls) {
 		if (!ls.b) {
@@ -5361,7 +5365,7 @@ var $elm$core$Task$sequence = function (tasks) {
 var $elm$core$Platform$sendToApp = _Platform_sendToApp;
 var $elm$core$Task$spawnCmd = F2(
 	function (router, _v0) {
-		var task = _v0;
+		var task = _v0.a;
 		return _Scheduler_spawn(
 			A2(
 				$elm$core$Task$andThen,
@@ -5373,7 +5377,7 @@ var $elm$core$Task$onEffects = F3(
 		return A2(
 			$elm$core$Task$map,
 			function (_v0) {
-				return 0;
+				return _Utils_Tuple0;
 			},
 			$elm$core$Task$sequence(
 				A2(
@@ -5383,100 +5387,103 @@ var $elm$core$Task$onEffects = F3(
 	});
 var $elm$core$Task$onSelfMsg = F3(
 	function (_v0, _v1, _v2) {
-		return $elm$core$Task$succeed(0);
+		return $elm$core$Task$succeed(_Utils_Tuple0);
 	});
 var $elm$core$Task$cmdMap = F2(
 	function (tagger, _v0) {
-		var task = _v0;
-		return A2($elm$core$Task$map, tagger, task);
+		var task = _v0.a;
+		return $elm$core$Task$Perform(
+			A2($elm$core$Task$map, tagger, task));
 	});
 _Platform_effectManagers['Task'] = _Platform_createManager($elm$core$Task$init, $elm$core$Task$onEffects, $elm$core$Task$onSelfMsg, $elm$core$Task$cmdMap);
 var $elm$core$Task$command = _Platform_leaf('Task');
 var $elm$core$Task$perform = F2(
 	function (toMessage, task) {
 		return $elm$core$Task$command(
-			A2($elm$core$Task$map, toMessage, task));
+			$elm$core$Task$Perform(
+				A2($elm$core$Task$map, toMessage, task)));
 	});
 var $elm$browser$Browser$application = _Browser_application;
 var $elm$json$Json$Decode$field = _Json_decodeField;
 var $author$project$Main$GotUserInfo = function (a) {
-	return {$: 12, a: a};
+	return {$: 'GotUserInfo', a: a};
 };
-var $author$project$Main$Guest = {$: 0};
-var $author$project$Types$Last30Days = 1;
+var $author$project$Main$Guest = {$: 'Guest'};
+var $author$project$Types$Last30Days = {$: 'Last30Days'};
 var $author$project$Main$LoggedIn = F2(
 	function (a, b) {
-		return {$: 1, a: a, b: b};
+		return {$: 'LoggedIn', a: a, b: b};
 	});
-var $author$project$Main$NotFoundPage = {$: 10};
+var $author$project$Main$NotFoundPage = {$: 'NotFoundPage'};
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
-var $author$project$Route$Dashboard = {$: 2};
+var $author$project$Route$Dashboard = {$: 'Dashboard'};
 var $author$project$Main$DashboardMsg = function (a) {
-	return {$: 4, a: a};
+	return {$: 'DashboardMsg', a: a};
 };
 var $author$project$Main$DashboardPage = function (a) {
-	return {$: 2, a: a};
+	return {$: 'DashboardPage', a: a};
 };
 var $author$project$Main$EmailPreferencesMsg = function (a) {
-	return {$: 11, a: a};
+	return {$: 'EmailPreferencesMsg', a: a};
 };
 var $author$project$Main$EmailPreferencesPage = function (a) {
-	return {$: 9, a: a};
+	return {$: 'EmailPreferencesPage', a: a};
 };
 var $author$project$Main$ForgotPasswordPage = function (a) {
-	return {$: 6, a: a};
+	return {$: 'ForgotPasswordPage', a: a};
 };
 var $author$project$Main$GameDetailMsg = function (a) {
-	return {$: 6, a: a};
+	return {$: 'GameDetailMsg', a: a};
 };
 var $author$project$Main$GameDetailPage = function (a) {
-	return {$: 4, a: a};
+	return {$: 'GameDetailPage', a: a};
 };
-var $author$project$Route$Login = {$: 0};
+var $author$project$Route$Login = {$: 'Login'};
 var $author$project$Main$LoginPage = function (a) {
-	return {$: 0, a: a};
+	return {$: 'LoginPage', a: a};
 };
 var $author$project$Main$RegisterPage = function (a) {
-	return {$: 1, a: a};
+	return {$: 'RegisterPage', a: a};
 };
 var $author$project$Main$ResetPasswordPage = function (a) {
-	return {$: 7, a: a};
+	return {$: 'ResetPasswordPage', a: a};
 };
 var $author$project$Main$StudentDetailMsg = function (a) {
-	return {$: 5, a: a};
+	return {$: 'StudentDetailMsg', a: a};
 };
 var $author$project$Main$StudentDetailPage = function (a) {
-	return {$: 3, a: a};
+	return {$: 'StudentDetailPage', a: a};
 };
 var $author$project$Main$SubscriptionMsg = function (a) {
-	return {$: 7, a: a};
+	return {$: 'SubscriptionMsg', a: a};
 };
 var $author$project$Main$SubscriptionPage = function (a) {
-	return {$: 5, a: a};
+	return {$: 'SubscriptionPage', a: a};
 };
 var $author$project$Main$VerifyEmailMsg = function (a) {
-	return {$: 10, a: a};
+	return {$: 'VerifyEmailMsg', a: a};
 };
 var $author$project$Main$VerifyEmailPage = function (a) {
-	return {$: 8, a: a};
+	return {$: 'VerifyEmailPage', a: a};
 };
 var $author$project$Pages$Dashboard$GotUserInfo = function (a) {
-	return {$: 1, a: a};
+	return {$: 'GotUserInfo', a: a};
 };
-var $author$project$Types$Loading = {$: 1};
+var $author$project$Types$Loading = {$: 'Loading'};
+var $author$project$Pages$Dashboard$ResendIdle = {$: 'ResendIdle'};
 var $author$project$Types$Success = function (a) {
-	return {$: 3, a: a};
+	return {$: 'Success', a: a};
 };
 var $author$project$Pages$Dashboard$GotStudents = function (a) {
-	return {$: 0, a: a};
+	return {$: 'GotStudents', a: a};
 };
 var $elm$http$Http$Header = F2(
 	function (a, b) {
-		return {$: 0, a: a, b: b};
+		return {$: 'Header', a: a, b: b};
 	});
 var $elm$http$Http$header = $elm$http$Http$Header;
 var $author$project$Api$authHeader = function (maybeToken) {
-	if (!maybeToken.$) {
+	if (maybeToken.$ === 'Just') {
 		var token = maybeToken.a;
 		return _List_fromArray(
 			[
@@ -5488,27 +5495,27 @@ var $author$project$Api$authHeader = function (maybeToken) {
 };
 var $elm$http$Http$BadStatus_ = F2(
 	function (a, b) {
-		return {$: 3, a: a, b: b};
+		return {$: 'BadStatus_', a: a, b: b};
 	});
 var $elm$http$Http$BadUrl_ = function (a) {
-	return {$: 0, a: a};
+	return {$: 'BadUrl_', a: a};
 };
 var $elm$http$Http$GoodStatus_ = F2(
 	function (a, b) {
-		return {$: 4, a: a, b: b};
+		return {$: 'GoodStatus_', a: a, b: b};
 	});
-var $elm$http$Http$NetworkError_ = {$: 2};
+var $elm$http$Http$NetworkError_ = {$: 'NetworkError_'};
 var $elm$http$Http$Receiving = function (a) {
-	return {$: 1, a: a};
+	return {$: 'Receiving', a: a};
 };
 var $elm$http$Http$Sending = function (a) {
-	return {$: 0, a: a};
+	return {$: 'Sending', a: a};
 };
-var $elm$http$Http$Timeout_ = {$: 1};
-var $elm$core$Dict$RBEmpty_elm_builtin = {$: -2};
+var $elm$http$Http$Timeout_ = {$: 'Timeout_'};
+var $elm$core$Dict$RBEmpty_elm_builtin = {$: 'RBEmpty_elm_builtin'};
 var $elm$core$Dict$empty = $elm$core$Dict$RBEmpty_elm_builtin;
 var $elm$core$Maybe$isJust = function (maybe) {
-	if (!maybe.$) {
+	if (maybe.$ === 'Just') {
 		return true;
 	} else {
 		return false;
@@ -5520,7 +5527,7 @@ var $elm$core$Dict$get = F2(
 	function (targetKey, dict) {
 		get:
 		while (true) {
-			if (dict.$ === -2) {
+			if (dict.$ === 'RBEmpty_elm_builtin') {
 				return $elm$core$Maybe$Nothing;
 			} else {
 				var key = dict.b;
@@ -5528,14 +5535,14 @@ var $elm$core$Dict$get = F2(
 				var left = dict.d;
 				var right = dict.e;
 				var _v1 = A2($elm$core$Basics$compare, targetKey, key);
-				switch (_v1) {
-					case 0:
+				switch (_v1.$) {
+					case 'LT':
 						var $temp$targetKey = targetKey,
 							$temp$dict = left;
 						targetKey = $temp$targetKey;
 						dict = $temp$dict;
 						continue get;
-					case 1:
+					case 'EQ':
 						return $elm$core$Maybe$Just(value);
 					default:
 						var $temp$targetKey = targetKey,
@@ -5547,21 +5554,21 @@ var $elm$core$Dict$get = F2(
 			}
 		}
 	});
-var $elm$core$Dict$Black = 1;
+var $elm$core$Dict$Black = {$: 'Black'};
 var $elm$core$Dict$RBNode_elm_builtin = F5(
 	function (a, b, c, d, e) {
-		return {$: -1, a: a, b: b, c: c, d: d, e: e};
+		return {$: 'RBNode_elm_builtin', a: a, b: b, c: c, d: d, e: e};
 	});
-var $elm$core$Dict$Red = 0;
+var $elm$core$Dict$Red = {$: 'Red'};
 var $elm$core$Dict$balance = F5(
 	function (color, key, value, left, right) {
-		if ((right.$ === -1) && (!right.a)) {
+		if ((right.$ === 'RBNode_elm_builtin') && (right.a.$ === 'Red')) {
 			var _v1 = right.a;
 			var rK = right.b;
 			var rV = right.c;
 			var rLeft = right.d;
 			var rRight = right.e;
-			if ((left.$ === -1) && (!left.a)) {
+			if ((left.$ === 'RBNode_elm_builtin') && (left.a.$ === 'Red')) {
 				var _v3 = left.a;
 				var lK = left.b;
 				var lV = left.c;
@@ -5569,22 +5576,22 @@ var $elm$core$Dict$balance = F5(
 				var lRight = left.e;
 				return A5(
 					$elm$core$Dict$RBNode_elm_builtin,
-					0,
+					$elm$core$Dict$Red,
 					key,
 					value,
-					A5($elm$core$Dict$RBNode_elm_builtin, 1, lK, lV, lLeft, lRight),
-					A5($elm$core$Dict$RBNode_elm_builtin, 1, rK, rV, rLeft, rRight));
+					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Black, lK, lV, lLeft, lRight),
+					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Black, rK, rV, rLeft, rRight));
 			} else {
 				return A5(
 					$elm$core$Dict$RBNode_elm_builtin,
 					color,
 					rK,
 					rV,
-					A5($elm$core$Dict$RBNode_elm_builtin, 0, key, value, left, rLeft),
+					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Red, key, value, left, rLeft),
 					rRight);
 			}
 		} else {
-			if ((((left.$ === -1) && (!left.a)) && (left.d.$ === -1)) && (!left.d.a)) {
+			if ((((left.$ === 'RBNode_elm_builtin') && (left.a.$ === 'Red')) && (left.d.$ === 'RBNode_elm_builtin')) && (left.d.a.$ === 'Red')) {
 				var _v5 = left.a;
 				var lK = left.b;
 				var lV = left.c;
@@ -5597,11 +5604,11 @@ var $elm$core$Dict$balance = F5(
 				var lRight = left.e;
 				return A5(
 					$elm$core$Dict$RBNode_elm_builtin,
-					0,
+					$elm$core$Dict$Red,
 					lK,
 					lV,
-					A5($elm$core$Dict$RBNode_elm_builtin, 1, llK, llV, llLeft, llRight),
-					A5($elm$core$Dict$RBNode_elm_builtin, 1, key, value, lRight, right));
+					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Black, llK, llV, llLeft, llRight),
+					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Black, key, value, lRight, right));
 			} else {
 				return A5($elm$core$Dict$RBNode_elm_builtin, color, key, value, left, right);
 			}
@@ -5609,8 +5616,8 @@ var $elm$core$Dict$balance = F5(
 	});
 var $elm$core$Dict$insertHelp = F3(
 	function (key, value, dict) {
-		if (dict.$ === -2) {
-			return A5($elm$core$Dict$RBNode_elm_builtin, 0, key, value, $elm$core$Dict$RBEmpty_elm_builtin, $elm$core$Dict$RBEmpty_elm_builtin);
+		if (dict.$ === 'RBEmpty_elm_builtin') {
+			return A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Red, key, value, $elm$core$Dict$RBEmpty_elm_builtin, $elm$core$Dict$RBEmpty_elm_builtin);
 		} else {
 			var nColor = dict.a;
 			var nKey = dict.b;
@@ -5618,8 +5625,8 @@ var $elm$core$Dict$insertHelp = F3(
 			var nLeft = dict.d;
 			var nRight = dict.e;
 			var _v1 = A2($elm$core$Basics$compare, key, nKey);
-			switch (_v1) {
-				case 0:
+			switch (_v1.$) {
+				case 'LT':
 					return A5(
 						$elm$core$Dict$balance,
 						nColor,
@@ -5627,7 +5634,7 @@ var $elm$core$Dict$insertHelp = F3(
 						nValue,
 						A3($elm$core$Dict$insertHelp, key, value, nLeft),
 						nRight);
-				case 1:
+				case 'EQ':
 					return A5($elm$core$Dict$RBNode_elm_builtin, nColor, nKey, value, nLeft, nRight);
 				default:
 					return A5(
@@ -5643,13 +5650,13 @@ var $elm$core$Dict$insertHelp = F3(
 var $elm$core$Dict$insert = F3(
 	function (key, value, dict) {
 		var _v0 = A3($elm$core$Dict$insertHelp, key, value, dict);
-		if ((_v0.$ === -1) && (!_v0.a)) {
+		if ((_v0.$ === 'RBNode_elm_builtin') && (_v0.a.$ === 'Red')) {
 			var _v1 = _v0.a;
 			var k = _v0.b;
 			var v = _v0.c;
 			var l = _v0.d;
 			var r = _v0.e;
-			return A5($elm$core$Dict$RBNode_elm_builtin, 1, k, v, l, r);
+			return A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Black, k, v, l, r);
 		} else {
 			var x = _v0;
 			return x;
@@ -5658,7 +5665,7 @@ var $elm$core$Dict$insert = F3(
 var $elm$core$Dict$getMin = function (dict) {
 	getMin:
 	while (true) {
-		if ((dict.$ === -1) && (dict.d.$ === -1)) {
+		if ((dict.$ === 'RBNode_elm_builtin') && (dict.d.$ === 'RBNode_elm_builtin')) {
 			var left = dict.d;
 			var $temp$dict = left;
 			dict = $temp$dict;
@@ -5669,8 +5676,8 @@ var $elm$core$Dict$getMin = function (dict) {
 	}
 };
 var $elm$core$Dict$moveRedLeft = function (dict) {
-	if (((dict.$ === -1) && (dict.d.$ === -1)) && (dict.e.$ === -1)) {
-		if ((dict.e.d.$ === -1) && (!dict.e.d.a)) {
+	if (((dict.$ === 'RBNode_elm_builtin') && (dict.d.$ === 'RBNode_elm_builtin')) && (dict.e.$ === 'RBNode_elm_builtin')) {
+		if ((dict.e.d.$ === 'RBNode_elm_builtin') && (dict.e.d.a.$ === 'Red')) {
 			var clr = dict.a;
 			var k = dict.b;
 			var v = dict.c;
@@ -5693,17 +5700,17 @@ var $elm$core$Dict$moveRedLeft = function (dict) {
 			var rRight = _v2.e;
 			return A5(
 				$elm$core$Dict$RBNode_elm_builtin,
-				0,
+				$elm$core$Dict$Red,
 				rlK,
 				rlV,
 				A5(
 					$elm$core$Dict$RBNode_elm_builtin,
-					1,
+					$elm$core$Dict$Black,
 					k,
 					v,
-					A5($elm$core$Dict$RBNode_elm_builtin, 0, lK, lV, lLeft, lRight),
+					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Red, lK, lV, lLeft, lRight),
 					rlL),
-				A5($elm$core$Dict$RBNode_elm_builtin, 1, rK, rV, rlR, rRight));
+				A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Black, rK, rV, rlR, rRight));
 		} else {
 			var clr = dict.a;
 			var k = dict.b;
@@ -5720,22 +5727,22 @@ var $elm$core$Dict$moveRedLeft = function (dict) {
 			var rV = _v5.c;
 			var rLeft = _v5.d;
 			var rRight = _v5.e;
-			if (clr === 1) {
+			if (clr.$ === 'Black') {
 				return A5(
 					$elm$core$Dict$RBNode_elm_builtin,
-					1,
+					$elm$core$Dict$Black,
 					k,
 					v,
-					A5($elm$core$Dict$RBNode_elm_builtin, 0, lK, lV, lLeft, lRight),
-					A5($elm$core$Dict$RBNode_elm_builtin, 0, rK, rV, rLeft, rRight));
+					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Red, lK, lV, lLeft, lRight),
+					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Red, rK, rV, rLeft, rRight));
 			} else {
 				return A5(
 					$elm$core$Dict$RBNode_elm_builtin,
-					1,
+					$elm$core$Dict$Black,
 					k,
 					v,
-					A5($elm$core$Dict$RBNode_elm_builtin, 0, lK, lV, lLeft, lRight),
-					A5($elm$core$Dict$RBNode_elm_builtin, 0, rK, rV, rLeft, rRight));
+					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Red, lK, lV, lLeft, lRight),
+					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Red, rK, rV, rLeft, rRight));
 			}
 		}
 	} else {
@@ -5743,8 +5750,8 @@ var $elm$core$Dict$moveRedLeft = function (dict) {
 	}
 };
 var $elm$core$Dict$moveRedRight = function (dict) {
-	if (((dict.$ === -1) && (dict.d.$ === -1)) && (dict.e.$ === -1)) {
-		if ((dict.d.d.$ === -1) && (!dict.d.d.a)) {
+	if (((dict.$ === 'RBNode_elm_builtin') && (dict.d.$ === 'RBNode_elm_builtin')) && (dict.e.$ === 'RBNode_elm_builtin')) {
+		if ((dict.d.d.$ === 'RBNode_elm_builtin') && (dict.d.d.a.$ === 'Red')) {
 			var clr = dict.a;
 			var k = dict.b;
 			var v = dict.c;
@@ -5767,17 +5774,17 @@ var $elm$core$Dict$moveRedRight = function (dict) {
 			var rRight = _v4.e;
 			return A5(
 				$elm$core$Dict$RBNode_elm_builtin,
-				0,
+				$elm$core$Dict$Red,
 				lK,
 				lV,
-				A5($elm$core$Dict$RBNode_elm_builtin, 1, llK, llV, llLeft, llRight),
+				A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Black, llK, llV, llLeft, llRight),
 				A5(
 					$elm$core$Dict$RBNode_elm_builtin,
-					1,
+					$elm$core$Dict$Black,
 					k,
 					v,
 					lRight,
-					A5($elm$core$Dict$RBNode_elm_builtin, 0, rK, rV, rLeft, rRight)));
+					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Red, rK, rV, rLeft, rRight)));
 		} else {
 			var clr = dict.a;
 			var k = dict.b;
@@ -5794,22 +5801,22 @@ var $elm$core$Dict$moveRedRight = function (dict) {
 			var rV = _v6.c;
 			var rLeft = _v6.d;
 			var rRight = _v6.e;
-			if (clr === 1) {
+			if (clr.$ === 'Black') {
 				return A5(
 					$elm$core$Dict$RBNode_elm_builtin,
-					1,
+					$elm$core$Dict$Black,
 					k,
 					v,
-					A5($elm$core$Dict$RBNode_elm_builtin, 0, lK, lV, lLeft, lRight),
-					A5($elm$core$Dict$RBNode_elm_builtin, 0, rK, rV, rLeft, rRight));
+					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Red, lK, lV, lLeft, lRight),
+					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Red, rK, rV, rLeft, rRight));
 			} else {
 				return A5(
 					$elm$core$Dict$RBNode_elm_builtin,
-					1,
+					$elm$core$Dict$Black,
 					k,
 					v,
-					A5($elm$core$Dict$RBNode_elm_builtin, 0, lK, lV, lLeft, lRight),
-					A5($elm$core$Dict$RBNode_elm_builtin, 0, rK, rV, rLeft, rRight));
+					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Red, lK, lV, lLeft, lRight),
+					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Red, rK, rV, rLeft, rRight));
 			}
 		}
 	} else {
@@ -5818,7 +5825,7 @@ var $elm$core$Dict$moveRedRight = function (dict) {
 };
 var $elm$core$Dict$removeHelpPrepEQGT = F7(
 	function (targetKey, dict, color, key, value, left, right) {
-		if ((left.$ === -1) && (!left.a)) {
+		if ((left.$ === 'RBNode_elm_builtin') && (left.a.$ === 'Red')) {
 			var _v1 = left.a;
 			var lK = left.b;
 			var lV = left.c;
@@ -5830,13 +5837,13 @@ var $elm$core$Dict$removeHelpPrepEQGT = F7(
 				lK,
 				lV,
 				lLeft,
-				A5($elm$core$Dict$RBNode_elm_builtin, 0, key, value, lRight, right));
+				A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Red, key, value, lRight, right));
 		} else {
 			_v2$2:
 			while (true) {
-				if ((right.$ === -1) && (right.a === 1)) {
-					if (right.d.$ === -1) {
-						if (right.d.a === 1) {
+				if ((right.$ === 'RBNode_elm_builtin') && (right.a.$ === 'Black')) {
+					if (right.d.$ === 'RBNode_elm_builtin') {
+						if (right.d.a.$ === 'Black') {
 							var _v3 = right.a;
 							var _v4 = right.d;
 							var _v5 = _v4.a;
@@ -5857,7 +5864,7 @@ var $elm$core$Dict$removeHelpPrepEQGT = F7(
 		}
 	});
 var $elm$core$Dict$removeMin = function (dict) {
-	if ((dict.$ === -1) && (dict.d.$ === -1)) {
+	if ((dict.$ === 'RBNode_elm_builtin') && (dict.d.$ === 'RBNode_elm_builtin')) {
 		var color = dict.a;
 		var key = dict.b;
 		var value = dict.c;
@@ -5865,8 +5872,8 @@ var $elm$core$Dict$removeMin = function (dict) {
 		var lColor = left.a;
 		var lLeft = left.d;
 		var right = dict.e;
-		if (lColor === 1) {
-			if ((lLeft.$ === -1) && (!lLeft.a)) {
+		if (lColor.$ === 'Black') {
+			if ((lLeft.$ === 'RBNode_elm_builtin') && (lLeft.a.$ === 'Red')) {
 				var _v3 = lLeft.a;
 				return A5(
 					$elm$core$Dict$RBNode_elm_builtin,
@@ -5877,7 +5884,7 @@ var $elm$core$Dict$removeMin = function (dict) {
 					right);
 			} else {
 				var _v4 = $elm$core$Dict$moveRedLeft(dict);
-				if (_v4.$ === -1) {
+				if (_v4.$ === 'RBNode_elm_builtin') {
 					var nColor = _v4.a;
 					var nKey = _v4.b;
 					var nValue = _v4.c;
@@ -5909,7 +5916,7 @@ var $elm$core$Dict$removeMin = function (dict) {
 };
 var $elm$core$Dict$removeHelp = F2(
 	function (targetKey, dict) {
-		if (dict.$ === -2) {
+		if (dict.$ === 'RBEmpty_elm_builtin') {
 			return $elm$core$Dict$RBEmpty_elm_builtin;
 		} else {
 			var color = dict.a;
@@ -5918,10 +5925,10 @@ var $elm$core$Dict$removeHelp = F2(
 			var left = dict.d;
 			var right = dict.e;
 			if (_Utils_cmp(targetKey, key) < 0) {
-				if ((left.$ === -1) && (left.a === 1)) {
+				if ((left.$ === 'RBNode_elm_builtin') && (left.a.$ === 'Black')) {
 					var _v4 = left.a;
 					var lLeft = left.d;
-					if ((lLeft.$ === -1) && (!lLeft.a)) {
+					if ((lLeft.$ === 'RBNode_elm_builtin') && (lLeft.a.$ === 'Red')) {
 						var _v6 = lLeft.a;
 						return A5(
 							$elm$core$Dict$RBNode_elm_builtin,
@@ -5932,7 +5939,7 @@ var $elm$core$Dict$removeHelp = F2(
 							right);
 					} else {
 						var _v7 = $elm$core$Dict$moveRedLeft(dict);
-						if (_v7.$ === -1) {
+						if (_v7.$ === 'RBNode_elm_builtin') {
 							var nColor = _v7.a;
 							var nKey = _v7.b;
 							var nValue = _v7.c;
@@ -5968,7 +5975,7 @@ var $elm$core$Dict$removeHelp = F2(
 	});
 var $elm$core$Dict$removeHelpEQGT = F2(
 	function (targetKey, dict) {
-		if (dict.$ === -1) {
+		if (dict.$ === 'RBNode_elm_builtin') {
 			var color = dict.a;
 			var key = dict.b;
 			var value = dict.c;
@@ -5976,7 +5983,7 @@ var $elm$core$Dict$removeHelpEQGT = F2(
 			var right = dict.e;
 			if (_Utils_eq(targetKey, key)) {
 				var _v1 = $elm$core$Dict$getMin(right);
-				if (_v1.$ === -1) {
+				if (_v1.$ === 'RBNode_elm_builtin') {
 					var minKey = _v1.b;
 					var minValue = _v1.c;
 					return A5(
@@ -6005,13 +6012,13 @@ var $elm$core$Dict$removeHelpEQGT = F2(
 var $elm$core$Dict$remove = F2(
 	function (key, dict) {
 		var _v0 = A2($elm$core$Dict$removeHelp, key, dict);
-		if ((_v0.$ === -1) && (!_v0.a)) {
+		if ((_v0.$ === 'RBNode_elm_builtin') && (_v0.a.$ === 'Red')) {
 			var _v1 = _v0.a;
 			var k = _v0.b;
 			var v = _v0.c;
 			var l = _v0.d;
 			var r = _v0.e;
-			return A5($elm$core$Dict$RBNode_elm_builtin, 1, k, v, l, r);
+			return A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Black, k, v, l, r);
 		} else {
 			var x = _v0;
 			return x;
@@ -6021,7 +6028,7 @@ var $elm$core$Dict$update = F3(
 	function (targetKey, alter, dictionary) {
 		var _v0 = alter(
 			A2($elm$core$Dict$get, targetKey, dictionary));
-		if (!_v0.$) {
+		if (_v0.$ === 'Just') {
 			var value = _v0.a;
 			return A3($elm$core$Dict$insert, targetKey, value, dictionary);
 		} else {
@@ -6045,7 +6052,7 @@ var $elm$http$Http$expectStringResponse = F2(
 	});
 var $elm$core$Result$mapError = F2(
 	function (f, result) {
-		if (!result.$) {
+		if (result.$ === 'Ok') {
 			var v = result.a;
 			return $elm$core$Result$Ok(v);
 		} else {
@@ -6055,31 +6062,31 @@ var $elm$core$Result$mapError = F2(
 		}
 	});
 var $elm$http$Http$BadBody = function (a) {
-	return {$: 4, a: a};
+	return {$: 'BadBody', a: a};
 };
 var $elm$http$Http$BadStatus = function (a) {
-	return {$: 3, a: a};
+	return {$: 'BadStatus', a: a};
 };
 var $elm$http$Http$BadUrl = function (a) {
-	return {$: 0, a: a};
+	return {$: 'BadUrl', a: a};
 };
-var $elm$http$Http$NetworkError = {$: 2};
-var $elm$http$Http$Timeout = {$: 1};
+var $elm$http$Http$NetworkError = {$: 'NetworkError'};
+var $elm$http$Http$Timeout = {$: 'Timeout'};
 var $elm$http$Http$resolve = F2(
 	function (toResult, response) {
 		switch (response.$) {
-			case 0:
+			case 'BadUrl_':
 				var url = response.a;
 				return $elm$core$Result$Err(
 					$elm$http$Http$BadUrl(url));
-			case 1:
+			case 'Timeout_':
 				return $elm$core$Result$Err($elm$http$Http$Timeout);
-			case 2:
+			case 'NetworkError_':
 				return $elm$core$Result$Err($elm$http$Http$NetworkError);
-			case 3:
+			case 'BadStatus_':
 				var metadata = response.a;
 				return $elm$core$Result$Err(
-					$elm$http$Http$BadStatus(metadata.fB));
+					$elm$http$Http$BadStatus(metadata.statusCode));
 			default:
 				var body = response.b;
 				return A2(
@@ -6109,11 +6116,11 @@ var $elm$core$List$isEmpty = function (xs) {
 	}
 };
 var $elm$http$Http$Request = function (a) {
-	return {$: 1, a: a};
+	return {$: 'Request', a: a};
 };
 var $elm$http$Http$State = F2(
 	function (reqs, subs) {
-		return {dv: reqs, dG: subs};
+		return {reqs: reqs, subs: subs};
 	});
 var $elm$http$Http$init = $elm$core$Task$succeed(
 	A2($elm$http$Http$State, $elm$core$Dict$empty, _List_Nil));
@@ -6128,10 +6135,10 @@ var $elm$http$Http$updateReqs = F3(
 			} else {
 				var cmd = cmds.a;
 				var otherCmds = cmds.b;
-				if (!cmd.$) {
+				if (cmd.$ === 'Cancel') {
 					var tracker = cmd.a;
 					var _v2 = A2($elm$core$Dict$get, tracker, reqs);
-					if (_v2.$ === 1) {
+					if (_v2.$ === 'Nothing') {
 						var $temp$router = router,
 							$temp$cmds = otherCmds,
 							$temp$reqs = reqs;
@@ -6157,8 +6164,8 @@ var $elm$http$Http$updateReqs = F3(
 					return A2(
 						$elm$core$Task$andThen,
 						function (pid) {
-							var _v4 = req.bb;
-							if (_v4.$ === 1) {
+							var _v4 = req.tracker;
+							if (_v4.$ === 'Nothing') {
 								return A3($elm$http$Http$updateReqs, router, otherCmds, reqs);
 							} else {
 								var tracker = _v4.a;
@@ -6187,12 +6194,12 @@ var $elm$http$Http$onEffects = F4(
 				return $elm$core$Task$succeed(
 					A2($elm$http$Http$State, reqs, subs));
 			},
-			A3($elm$http$Http$updateReqs, router, cmds, state.dv));
+			A3($elm$http$Http$updateReqs, router, cmds, state.reqs));
 	});
 var $elm$core$List$maybeCons = F3(
 	function (f, mx, xs) {
 		var _v0 = f(mx);
-		if (!_v0.$) {
+		if (_v0.$ === 'Just') {
 			var x = _v0.a;
 			return A2($elm$core$List$cons, x, xs);
 		} else {
@@ -6230,34 +6237,34 @@ var $elm$http$Http$onSelfMsg = F3(
 				A2(
 					$elm$core$List$filterMap,
 					A3($elm$http$Http$maybeSend, router, tracker, progress),
-					state.dG)));
+					state.subs)));
 	});
 var $elm$http$Http$Cancel = function (a) {
-	return {$: 0, a: a};
+	return {$: 'Cancel', a: a};
 };
 var $elm$http$Http$cmdMap = F2(
 	function (func, cmd) {
-		if (!cmd.$) {
+		if (cmd.$ === 'Cancel') {
 			var tracker = cmd.a;
 			return $elm$http$Http$Cancel(tracker);
 		} else {
 			var r = cmd.a;
 			return $elm$http$Http$Request(
 				{
-					d$: r.d$,
-					aj: r.aj,
-					a_: A2(_Http_mapExpect, func, r.a_),
-					a$: r.a$,
-					a0: r.a0,
-					a8: r.a8,
-					bb: r.bb,
-					bc: r.bc
+					allowCookiesFromOtherDomains: r.allowCookiesFromOtherDomains,
+					body: r.body,
+					expect: A2(_Http_mapExpect, func, r.expect),
+					headers: r.headers,
+					method: r.method,
+					timeout: r.timeout,
+					tracker: r.tracker,
+					url: r.url
 				});
 		}
 	});
 var $elm$http$Http$MySub = F2(
 	function (a, b) {
-		return {$: 0, a: a, b: b};
+		return {$: 'MySub', a: a, b: b};
 	});
 var $elm$http$Http$subMap = F2(
 	function (func, _v0) {
@@ -6274,14 +6281,14 @@ var $elm$http$Http$subscription = _Platform_leaf('Http');
 var $elm$http$Http$request = function (r) {
 	return $elm$http$Http$command(
 		$elm$http$Http$Request(
-			{d$: false, aj: r.aj, a_: r.a_, a$: r.a$, a0: r.a0, a8: r.a8, bb: r.bb, bc: r.bc}));
+			{allowCookiesFromOtherDomains: false, body: r.body, expect: r.expect, headers: r.headers, method: r.method, timeout: r.timeout, tracker: r.tracker, url: r.url}));
 };
 var $author$project$Api$unwrap = function (_v0) {
-	var str = _v0;
+	var str = _v0.a;
 	return str;
 };
 var $author$project$Api$getWithQuery = function (config) {
-	var queryString = $elm$core$List$isEmpty(config.ds) ? '' : ('?' + A2(
+	var queryString = $elm$core$List$isEmpty(config.queryParams) ? '' : ('?' + A2(
 		$elm$core$String$join,
 		'&',
 		A2(
@@ -6291,19 +6298,19 @@ var $author$project$Api$getWithQuery = function (config) {
 				var v = _v0.b;
 				return k + ('=' + v);
 			},
-			config.ds)));
+			config.queryParams)));
 	var fullUrl = _Utils_ap(
-		$author$project$Api$unwrap(config.aZ),
+		$author$project$Api$unwrap(config.endpoint),
 		queryString);
 	return $elm$http$Http$request(
 		{
-			aj: $elm$http$Http$emptyBody,
-			a_: A2($elm$http$Http$expectJson, config.a1, config.bj),
-			a$: $author$project$Api$authHeader(config.ba),
-			a0: 'GET',
-			a8: $elm$core$Maybe$Nothing,
-			bb: $elm$core$Maybe$Nothing,
-			bc: fullUrl
+			body: $elm$http$Http$emptyBody,
+			expect: A2($elm$http$Http$expectJson, config.onResponse, config.decoder),
+			headers: $author$project$Api$authHeader(config.token),
+			method: 'GET',
+			timeout: $elm$core$Maybe$Nothing,
+			tracker: $elm$core$Maybe$Nothing,
+			url: fullUrl
 		});
 };
 var $elm$json$Json$Decode$list = _Json_decodeList;
@@ -6317,7 +6324,7 @@ var $author$project$Types$Student = function (id) {
 							return function (createdAt) {
 								return function (archivedAt) {
 									return function (stats) {
-										return {bg: archivedAt, d5: avatarUrl, ef: chessComUsername, cO: coachId, cR: createdAt, b3: displayName, F: id, bS: lastImportedAt, eR: lastInsightAt, w: stats};
+										return {archivedAt: archivedAt, avatarUrl: avatarUrl, chessComUsername: chessComUsername, coachId: coachId, createdAt: createdAt, displayName: displayName, id: id, lastImportedAt: lastImportedAt, lastInsightAt: lastInsightAt, stats: stats};
 									};
 								};
 							};
@@ -6360,13 +6367,13 @@ var $NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$optionalDecoder = F3
 				$elm$json$Json$Decode$decodeValue,
 				A2($elm$json$Json$Decode$at, path, $elm$json$Json$Decode$value),
 				input);
-			if (!_v0.$) {
+			if (_v0.$ === 'Ok') {
 				var rawValue = _v0.a;
 				var _v1 = A2(
 					$elm$json$Json$Decode$decodeValue,
 					nullOr(valDecoder),
 					rawValue);
-				if (!_v1.$) {
+				if (_v1.$ === 'Ok') {
 					var finalResult = _v1.a;
 					return $elm$json$Json$Decode$succeed(finalResult);
 				} else {
@@ -6403,7 +6410,7 @@ var $NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required = F3(
 var $elm$json$Json$Decode$string = _Json_decodeString;
 var $author$project$Types$StudentStats = F7(
 	function (gameCount, winCount, lossCount, drawCount, winRate, avgAccuracy, analyzedCount) {
-		return {b_: analyzedCount, cL: avgAccuracy, et: drawCount, U: gameCount, eV: lossCount, f_: winCount, dS: winRate};
+		return {analyzedCount: analyzedCount, avgAccuracy: avgAccuracy, drawCount: drawCount, gameCount: gameCount, lossCount: lossCount, winCount: winCount, winRate: winRate};
 	});
 var $elm$json$Json$Decode$float = _Json_decodeFloat;
 var $elm$json$Json$Decode$int = _Json_decodeInt;
@@ -6488,31 +6495,34 @@ var $author$project$Types$studentsDecoder = A2(
 	$elm$json$Json$Decode$field,
 	'students',
 	$elm$json$Json$Decode$list($author$project$Types$studentDecoder));
-var $author$project$Api$Endpoint = $elm$core$Basics$identity;
+var $author$project$Api$Endpoint = function (a) {
+	return {$: 'Endpoint', a: a};
+};
 var $author$project$Api$url = F2(
 	function (apiUrl, paths) {
-		return apiUrl + ('/' + A2($elm$core$String$join, '/', paths));
+		return $author$project$Api$Endpoint(
+			apiUrl + ('/' + A2($elm$core$String$join, '/', paths)));
 	});
 var $author$project$Api$Students$getStudents = function (config) {
-	var queryParams = $elm$core$String$isEmpty(config.av) ? _List_Nil : _List_fromArray(
+	var queryParams = $elm$core$String$isEmpty(config.period) ? _List_Nil : _List_fromArray(
 		[
-			_Utils_Tuple2('period', config.av)
+			_Utils_Tuple2('period', config.period)
 		]);
 	return $author$project$Api$getWithQuery(
 		{
-			bj: $author$project$Types$studentsDecoder,
-			aZ: A2(
+			decoder: $author$project$Types$studentsDecoder,
+			endpoint: A2(
 				$author$project$Api$url,
-				config.cK,
+				config.apiUrl,
 				_List_fromArray(
 					['api', 'students'])),
-			a1: config.a1,
-			ds: queryParams,
-			ba: $elm$core$Maybe$Just(config.ba)
+			onResponse: config.onResponse,
+			queryParams: queryParams,
+			token: $elm$core$Maybe$Just(config.token)
 		});
 };
 var $author$project$Pages$Dashboard$periodToString = function (filter) {
-	if (!filter) {
+	if (filter.$ === 'Last7Days') {
 		return '7days';
 	} else {
 		return '30days';
@@ -6521,52 +6531,52 @@ var $author$project$Pages$Dashboard$periodToString = function (filter) {
 var $author$project$Pages$Dashboard$fetchStudents = function (model) {
 	return $author$project$Api$Students$getStudents(
 		{
-			cK: model.cK,
-			a1: $author$project$Pages$Dashboard$GotStudents,
-			av: $author$project$Pages$Dashboard$periodToString(model.y),
-			ba: model.ba
+			apiUrl: model.apiUrl,
+			onResponse: $author$project$Pages$Dashboard$GotStudents,
+			period: $author$project$Pages$Dashboard$periodToString(model.timeRangeFilter),
+			token: model.token
 		});
 };
 var $author$project$Api$get = function (config) {
 	return $elm$http$Http$request(
 		{
-			aj: $elm$http$Http$emptyBody,
-			a_: A2($elm$http$Http$expectJson, config.a1, config.bj),
-			a$: $author$project$Api$authHeader(config.ba),
-			a0: 'GET',
-			a8: $elm$core$Maybe$Nothing,
-			bb: $elm$core$Maybe$Nothing,
-			bc: $author$project$Api$unwrap(config.aZ)
+			body: $elm$http$Http$emptyBody,
+			expect: A2($elm$http$Http$expectJson, config.onResponse, config.decoder),
+			headers: $author$project$Api$authHeader(config.token),
+			method: 'GET',
+			timeout: $elm$core$Maybe$Nothing,
+			tracker: $elm$core$Maybe$Nothing,
+			url: $author$project$Api$unwrap(config.endpoint)
 		});
 };
-var $author$project$Types$UserInfo = F5(
-	function (subscription, details, plan, studentCount, isAtLimit) {
-		return {bK: details, cd: isAtLimit, cm: plan, aO: studentCount, bY: subscription};
+var $author$project$Types$UserInfo = F6(
+	function (subscription, details, plan, studentCount, isAtLimit, emailVerified) {
+		return {details: details, emailVerified: emailVerified, isAtLimit: isAtLimit, plan: plan, studentCount: studentCount, subscription: subscription};
 	});
 var $elm$json$Json$Decode$bool = _Json_decodeBool;
 var $author$project$Types$Subscription = F5(
 	function (id, coachId, stripeCustomerId, stripeSubscriptionId, status) {
-		return {cO: coachId, F: id, dF: status, fC: stripeCustomerId, fD: stripeSubscriptionId};
+		return {coachId: coachId, id: id, status: status, stripeCustomerId: stripeCustomerId, stripeSubscriptionId: stripeSubscriptionId};
 	});
-var $author$project$Types$Active = 1;
-var $author$project$Types$Cancelled = 3;
-var $author$project$Types$Expired = 4;
-var $author$project$Types$PastDue = 2;
-var $author$project$Types$Trialing = 0;
+var $author$project$Types$Active = {$: 'Active'};
+var $author$project$Types$Cancelled = {$: 'Cancelled'};
+var $author$project$Types$Expired = {$: 'Expired'};
+var $author$project$Types$PastDue = {$: 'PastDue'};
+var $author$project$Types$Trialing = {$: 'Trialing'};
 var $author$project$Types$subscriptionStatusFromString = function (str) {
 	switch (str) {
 		case 'trialing':
-			return 0;
+			return $author$project$Types$Trialing;
 		case 'active':
-			return 1;
+			return $author$project$Types$Active;
 		case 'past_due':
-			return 2;
+			return $author$project$Types$PastDue;
 		case 'cancelled':
-			return 3;
+			return $author$project$Types$Cancelled;
 		case 'expired':
-			return 4;
+			return $author$project$Types$Expired;
 		default:
-			return 4;
+			return $author$project$Types$Expired;
 	}
 };
 var $author$project$Types$subscriptionDecoder = A3(
@@ -6593,7 +6603,7 @@ var $author$project$Types$subscriptionDecoder = A3(
 					$elm$json$Json$Decode$succeed($author$project$Types$Subscription))))));
 var $author$project$Types$SubscriptionDetails = F8(
 	function (status, cancelAtPeriodEnd, trialEnd, currentPeriodStart, currentPeriodEnd, planId, planAmount, planInterval) {
-		return {b0: cancelAtPeriodEnd, cS: currentPeriodEnd, el: currentPeriodStart, fh: planAmount, fi: planId, dk: planInterval, dF: status, dL: trialEnd};
+		return {cancelAtPeriodEnd: cancelAtPeriodEnd, currentPeriodEnd: currentPeriodEnd, currentPeriodStart: currentPeriodStart, planAmount: planAmount, planId: planId, planInterval: planInterval, status: status, trialEnd: trialEnd};
 	});
 var $author$project$Types$subscriptionDetailsDecoder = A4(
 	$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$optional,
@@ -6634,7 +6644,7 @@ var $author$project$Types$subscriptionDetailsDecoder = A4(
 								$elm$json$Json$Decode$succeed($author$project$Types$SubscriptionDetails)))))))));
 var $author$project$Types$SubscriptionPlan = F7(
 	function (id, name, displayName, studentLimit, monthlyPriceCents, annualPriceCents, createdAt) {
-		return {d1: annualPriceCents, cR: createdAt, b3: displayName, F: id, dd: monthlyPriceCents, bU: name, cC: studentLimit};
+		return {annualPriceCents: annualPriceCents, createdAt: createdAt, displayName: displayName, id: id, monthlyPriceCents: monthlyPriceCents, name: name, studentLimit: studentLimit};
 	});
 var $author$project$Types$subscriptionPlanDecoder = A3(
 	$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
@@ -6665,47 +6675,52 @@ var $author$project$Types$subscriptionPlanDecoder = A3(
 							'id',
 							$elm$json$Json$Decode$string,
 							$elm$json$Json$Decode$succeed($author$project$Types$SubscriptionPlan))))))));
-var $author$project$Types$userInfoDecoder = A3(
-	$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
-	'is_at_limit',
+var $author$project$Types$userInfoDecoder = A4(
+	$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$optional,
+	'email_verified',
 	$elm$json$Json$Decode$bool,
+	false,
 	A3(
 		$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
-		'student_count',
-		$elm$json$Json$Decode$int,
-		A4(
-			$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$optional,
-			'plan',
-			$elm$json$Json$Decode$nullable($author$project$Types$subscriptionPlanDecoder),
-			$elm$core$Maybe$Nothing,
+		'is_at_limit',
+		$elm$json$Json$Decode$bool,
+		A3(
+			$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
+			'student_count',
+			$elm$json$Json$Decode$int,
 			A4(
 				$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$optional,
-				'details',
-				$elm$json$Json$Decode$nullable($author$project$Types$subscriptionDetailsDecoder),
+				'plan',
+				$elm$json$Json$Decode$nullable($author$project$Types$subscriptionPlanDecoder),
 				$elm$core$Maybe$Nothing,
-				A3(
-					$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
-					'subscription',
-					$author$project$Types$subscriptionDecoder,
-					$elm$json$Json$Decode$succeed($author$project$Types$UserInfo))))));
+				A4(
+					$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$optional,
+					'details',
+					$elm$json$Json$Decode$nullable($author$project$Types$subscriptionDetailsDecoder),
+					$elm$core$Maybe$Nothing,
+					A3(
+						$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
+						'subscription',
+						$author$project$Types$subscriptionDecoder,
+						$elm$json$Json$Decode$succeed($author$project$Types$UserInfo)))))));
 var $author$project$Api$Subscription$getUserInfo = function (config) {
 	return $author$project$Api$get(
 		{
-			bj: $author$project$Types$userInfoDecoder,
-			aZ: A2(
+			decoder: $author$project$Types$userInfoDecoder,
+			endpoint: A2(
 				$author$project$Api$url,
-				config.cK,
+				config.apiUrl,
 				_List_fromArray(
 					['api', 'user-info'])),
-			a1: config.a1,
-			ba: $elm$core$Maybe$Just(config.ba)
+			onResponse: config.onResponse,
+			token: $elm$core$Maybe$Just(config.token)
 		});
 };
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $author$project$Pages$Dashboard$init = F4(
 	function (apiUrl, token, initialTimeRange, maybeUserInfo) {
 		var _v0 = function () {
-			if (!maybeUserInfo.$) {
+			if (maybeUserInfo.$ === 'Just') {
 				var info = maybeUserInfo.a;
 				return _Utils_Tuple2(
 					$author$project$Types$Success(info),
@@ -6714,12 +6729,12 @@ var $author$project$Pages$Dashboard$init = F4(
 				return _Utils_Tuple2(
 					$author$project$Types$Loading,
 					$author$project$Api$Subscription$getUserInfo(
-						{cK: apiUrl, a1: $author$project$Pages$Dashboard$GotUserInfo, ba: token}));
+						{apiUrl: apiUrl, onResponse: $author$project$Pages$Dashboard$GotUserInfo, token: token}));
 			}
 		}();
 		var userInfoState = _v0.a;
 		var userInfoCmd = _v0.b;
-		var model = {aq: $elm$core$Maybe$Nothing, cK: apiUrl, aD: $elm$core$Maybe$Nothing, al: false, au: '', ag: $elm$core$Maybe$Nothing, a3: false, az: false, L: $author$project$Types$Loading, y: initialTimeRange, ba: token, fV: userInfoState};
+		var model = {addError: $elm$core$Maybe$Nothing, apiUrl: apiUrl, archivingStudentId: $elm$core$Maybe$Nothing, isAdding: false, newStudentChessCom: '', openMenuStudentId: $elm$core$Maybe$Nothing, resendStatus: $author$project$Pages$Dashboard$ResendIdle, showAddModal: false, showArchived: false, students: $author$project$Types$Loading, timeRangeFilter: initialTimeRange, token: token, userInfo: userInfoState};
 		return _Utils_Tuple2(
 			model,
 			$elm$core$Platform$Cmd$batch(
@@ -6730,11 +6745,11 @@ var $author$project$Pages$Dashboard$init = F4(
 					])));
 	});
 var $author$project$Pages$EmailPreferences$GotPreferences = function (a) {
-	return {$: 0, a: a};
+	return {$: 'GotPreferences', a: a};
 };
 var $author$project$Api$Email$EmailPreferences = F3(
 	function (analysisCompleteNotifications, weeklySummary, marketingEmails) {
-		return {cJ: analysisCompleteNotifications, c9: marketingEmails, dQ: weeklySummary};
+		return {analysisCompleteNotifications: analysisCompleteNotifications, marketingEmails: marketingEmails, weeklySummary: weeklySummary};
 	});
 var $elm$json$Json$Decode$map3 = _Json_map3;
 var $author$project$Api$Email$emailPreferencesDecoder = A4(
@@ -6746,28 +6761,30 @@ var $author$project$Api$Email$emailPreferencesDecoder = A4(
 var $author$project$Api$Email$getPreferences = function (config) {
 	return $author$project$Api$get(
 		{
-			bj: $author$project$Api$Email$emailPreferencesDecoder,
-			aZ: A2(
+			decoder: $author$project$Api$Email$emailPreferencesDecoder,
+			endpoint: A2(
 				$author$project$Api$url,
-				config.cK,
+				config.apiUrl,
 				_List_fromArray(
 					['api', 'email-preferences'])),
-			a1: config.a1,
-			ba: $elm$core$Maybe$Just(config.ba)
+			onResponse: config.onResponse,
+			token: $elm$core$Maybe$Just(config.token)
 		});
 };
 var $author$project$Pages$EmailPreferences$init = F2(
 	function (apiUrl, token) {
 		return _Utils_Tuple2(
-			{cK: apiUrl, aG: $elm$core$Maybe$Nothing, bo: true, A: false, cn: $elm$core$Maybe$Nothing, aN: false, ba: token},
+			{apiUrl: apiUrl, error: $elm$core$Maybe$Nothing, isLoading: true, isSaving: false, preferences: $elm$core$Maybe$Nothing, saveSuccess: false, token: token},
 			$author$project$Api$Email$getPreferences(
-				{cK: apiUrl, a1: $author$project$Pages$EmailPreferences$GotPreferences, ba: token}));
+				{apiUrl: apiUrl, onResponse: $author$project$Pages$EmailPreferences$GotPreferences, token: token}));
 	});
-var $author$project$Pages$ForgotPassword$init = {cW: '', aG: $elm$core$Maybe$Nothing, bo: false, bv: $elm$core$Maybe$Nothing};
-var $author$project$Pages$GameDetail$GotGameDetail = $elm$core$Basics$identity;
+var $author$project$Pages$ForgotPassword$init = {email: '', error: $elm$core$Maybe$Nothing, isLoading: false, success: $elm$core$Maybe$Nothing};
+var $author$project$Pages$GameDetail$GotGameDetail = function (a) {
+	return {$: 'GotGameDetail', a: a};
+};
 var $author$project$Api$Games$GameDetail = F3(
 	function (game, pgn, moves) {
-		return {eD: game, e6: moves, fe: pgn};
+		return {game: game, moves: moves, pgn: pgn};
 	});
 var $author$project$Types$Game = function (id) {
 	return function (studentId) {
@@ -6782,7 +6799,7 @@ var $author$project$Types$Game = function (id) {
 										return function (analyzed) {
 											return function (openingName) {
 												return function (createdAt) {
-													return {d0: analyzed, b$: blackElo, ea: blackUsername, cR: createdAt, F: id, fc: openingName, fk: platform, fl: platformGameId, fm: playedAt, ft: result, bu: studentId, cE: whiteElo, fZ: whiteUsername};
+													return {analyzed: analyzed, blackElo: blackElo, blackUsername: blackUsername, createdAt: createdAt, id: id, openingName: openingName, platform: platform, platformGameId: platformGameId, playedAt: playedAt, result: result, studentId: studentId, whiteElo: whiteElo, whiteUsername: whiteUsername};
 												};
 											};
 										};
@@ -6864,7 +6881,7 @@ var $author$project$Types$MoveAnalysis = function (id) {
 									return function (evalDiff) {
 										return function (classification) {
 											return function (phase) {
-												return {d7: bestMove, aV: classification, eh: color, ew: evalAfterCp, ex: evalBeforeCp, ey: evalDiff, eB: fenBefore, eE: gameId, F: id, e4: moveNumber, df: movePlayed, ff: phase};
+												return {bestMove: bestMove, classification: classification, color: color, evalAfterCp: evalAfterCp, evalBeforeCp: evalBeforeCp, evalDiff: evalDiff, fenBefore: fenBefore, gameId: gameId, id: id, moveNumber: moveNumber, movePlayed: movePlayed, phase: phase};
 											};
 										};
 									};
@@ -6948,42 +6965,44 @@ var $author$project$Api$Games$gameDetailDecoder = A3(
 var $author$project$Api$Games$getGame = function (config) {
 	return $author$project$Api$get(
 		{
-			bj: $author$project$Api$Games$gameDetailDecoder,
-			aZ: A2(
+			decoder: $author$project$Api$Games$gameDetailDecoder,
+			endpoint: A2(
 				$author$project$Api$url,
-				config.cK,
+				config.apiUrl,
 				_List_fromArray(
-					['api', 'games', config.eE])),
-			a1: config.a1,
-			ba: $elm$core$Maybe$Just(config.ba)
+					['api', 'games', config.gameId])),
+			onResponse: config.onResponse,
+			token: $elm$core$Maybe$Just(config.token)
 		});
 };
 var $author$project$Pages$GameDetail$init = F3(
 	function (apiUrl, token, gameId) {
 		return _Utils_Tuple2(
-			{bn: $author$project$Types$Loading, eE: gameId},
+			{gameDetail: $author$project$Types$Loading, gameId: gameId},
 			$author$project$Api$Games$getGame(
-				{cK: apiUrl, eE: gameId, a1: $elm$core$Basics$identity, ba: token}));
+				{apiUrl: apiUrl, gameId: gameId, onResponse: $author$project$Pages$GameDetail$GotGameDetail, token: token}));
 	});
-var $author$project$Pages$Login$init = {cW: '', aG: $elm$core$Maybe$Nothing, bo: false, dh: ''};
-var $author$project$Pages$Register$init = {bh: '', cW: '', aG: $elm$core$Maybe$Nothing, bo: false, dh: ''};
+var $author$project$Pages$Login$init = {email: '', error: $elm$core$Maybe$Nothing, isLoading: false, password: ''};
+var $author$project$Pages$Register$init = {confirmPassword: '', email: '', error: $elm$core$Maybe$Nothing, isLoading: false, password: ''};
 var $author$project$Pages$ResetPassword$init = function (token) {
-	return {bh: '', aG: $elm$core$Maybe$Nothing, bo: false, dh: '', bv: false, ba: token};
+	return {confirmPassword: '', error: $elm$core$Maybe$Nothing, isLoading: false, password: '', success: false, token: token};
 };
-var $author$project$Types$AllColors = 0;
-var $author$project$Types$AllResults = 0;
-var $author$project$Types$AllTimeControls = 0;
-var $author$project$Pages$StudentDetail$DateNewest = 0;
-var $elm$core$Set$Set_elm_builtin = $elm$core$Basics$identity;
-var $elm$core$Set$empty = $elm$core$Dict$empty;
+var $author$project$Types$AllColors = {$: 'AllColors'};
+var $author$project$Types$AllResults = {$: 'AllResults'};
+var $author$project$Types$AllTimeControls = {$: 'AllTimeControls'};
+var $author$project$Pages$StudentDetail$DateNewest = {$: 'DateNewest'};
+var $elm$core$Set$Set_elm_builtin = function (a) {
+	return {$: 'Set_elm_builtin', a: a};
+};
+var $elm$core$Set$empty = $elm$core$Set$Set_elm_builtin($elm$core$Dict$empty);
 var $author$project$Pages$StudentDetail$GotGames = function (a) {
-	return {$: 1, a: a};
+	return {$: 'GotGames', a: a};
 };
 var $author$project$Types$colorFilterToString = function (cf) {
-	switch (cf) {
-		case 0:
+	switch (cf.$) {
+		case 'AllColors':
 			return 'all';
-		case 1:
+		case 'WhiteOnly':
 			return 'white';
 		default:
 			return 'black';
@@ -6991,7 +7010,7 @@ var $author$project$Types$colorFilterToString = function (cf) {
 };
 var $author$project$Types$GameWithInsights = F3(
 	function (game, insight, tags) {
-		return {eD: game, cc: insight, fF: tags};
+		return {game: game, insight: insight, tags: tags};
 	});
 var $author$project$Types$GameInsight = function (id) {
 	return function (gameId) {
@@ -7014,7 +7033,7 @@ var $author$project$Types$GameInsight = function (id) {
 																		return function (decisiveAdvantageReached) {
 																			return function (decisiveAdvantageSquandered) {
 																				return function (phaseDecided) {
-																					return {dY: accuracyEndgame, dZ: accuracyMiddlegame, d_: accuracyOpening, bF: accuracyOverall, d8: bestMovesCount, eb: blundersCount, ek: criticalMomentsCount, ep: decisiveAdvantageReached, eq: decisiveAdvantageSquandered, ez: excellentMovesCount, eE: gameId, F: id, eM: inaccuraciesCount, eZ: maxAdvantage, e$: maxDisadvantage, e3: mistakesCount, fd: opponentRating, fg: phaseDecided, fn: playerColor, fr: ratingDiff, f$: worstMoveEvalLoss};
+																					return {accuracyEndgame: accuracyEndgame, accuracyMiddlegame: accuracyMiddlegame, accuracyOpening: accuracyOpening, accuracyOverall: accuracyOverall, bestMovesCount: bestMovesCount, blundersCount: blundersCount, criticalMomentsCount: criticalMomentsCount, decisiveAdvantageReached: decisiveAdvantageReached, decisiveAdvantageSquandered: decisiveAdvantageSquandered, excellentMovesCount: excellentMovesCount, gameId: gameId, id: id, inaccuraciesCount: inaccuraciesCount, maxAdvantage: maxAdvantage, maxDisadvantage: maxDisadvantage, mistakesCount: mistakesCount, opponentRating: opponentRating, phaseDecided: phaseDecided, playerColor: playerColor, ratingDiff: ratingDiff, worstMoveEvalLoss: worstMoveEvalLoss};
 																				};
 																			};
 																		};
@@ -7133,11 +7152,11 @@ var $author$project$Types$gameInsightDecoder = A4(
 																					$elm$json$Json$Decode$succeed($author$project$Types$GameInsight))))))))))))))))))))));
 var $author$project$Types$GameTag = F6(
 	function (id, gameId, tag, moveNumbers, primaryMove, confidence) {
-		return {ei: confidence, eE: gameId, F: id, e5: moveNumbers, dm: primaryMove, G: tag};
+		return {confidence: confidence, gameId: gameId, id: id, moveNumbers: moveNumbers, primaryMove: primaryMove, tag: tag};
 	});
 var $author$project$Types$Tag = F7(
 	function (id, slug, name, category, description, color, priority) {
-		return {bG: category, eh: color, bJ: description, F: id, bU: name, fq: priority, ct: slug};
+		return {category: category, color: color, description: description, id: id, name: name, priority: priority, slug: slug};
 	});
 var $author$project$Types$tagDecoder = A3(
 	$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
@@ -7223,12 +7242,12 @@ var $author$project$Types$gamesWithInsightsDecoder = A3(
 		$elm$json$Json$Decode$succeed(
 			F2(
 				function (games, total) {
-					return {g: games, by: total};
+					return {games: games, total: total};
 				}))));
 var $author$project$Api$Students$getStudentGames = function (config) {
 	var tagParams = function () {
-		var _v5 = config.fF;
-		if (!_v5.$) {
+		var _v5 = config.tags;
+		if (_v5.$ === 'Just') {
 			var t = _v5.a;
 			return _List_fromArray(
 				[
@@ -7238,13 +7257,13 @@ var $author$project$Api$Students$getStudentGames = function (config) {
 			return _List_Nil;
 		}
 	}();
-	var periodParams = $elm$core$String$isEmpty(config.av) ? _List_Nil : _List_fromArray(
+	var periodParams = $elm$core$String$isEmpty(config.period) ? _List_Nil : _List_fromArray(
 		[
-			_Utils_Tuple2('period', config.av)
+			_Utils_Tuple2('period', config.period)
 		]);
 	var minRatingDiffParams = function () {
-		var _v4 = config.e2;
-		if (!_v4.$) {
+		var _v4 = config.minRatingDiff;
+		if (_v4.$ === 'Just') {
 			var rd = _v4.a;
 			return _List_fromArray(
 				[
@@ -7257,8 +7276,8 @@ var $author$project$Api$Students$getStudentGames = function (config) {
 		}
 	}();
 	var minAccuracyParams = function () {
-		var _v3 = config.e1;
-		if (!_v3.$) {
+		var _v3 = config.minAccuracy;
+		if (_v3.$ === 'Just') {
 			var acc = _v3.a;
 			return _List_fromArray(
 				[
@@ -7271,8 +7290,8 @@ var $author$project$Api$Students$getStudentGames = function (config) {
 		}
 	}();
 	var maxRatingDiffParams = function () {
-		var _v2 = config.e0;
-		if (!_v2.$) {
+		var _v2 = config.maxRatingDiff;
+		if (_v2.$ === 'Just') {
 			var rd = _v2.a;
 			return _List_fromArray(
 				[
@@ -7285,8 +7304,8 @@ var $author$project$Api$Students$getStudentGames = function (config) {
 		}
 	}();
 	var maxBlundersParams = function () {
-		var _v1 = config.e_;
-		if (!_v1.$) {
+		var _v1 = config.maxBlunders;
+		if (_v1.$ === 'Just') {
 			var b = _v1.a;
 			return _List_fromArray(
 				[
@@ -7299,8 +7318,8 @@ var $author$project$Api$Students$getStudentGames = function (config) {
 		}
 	}();
 	var maxAccuracyParams = function () {
-		var _v0 = config.eY;
-		if (!_v0.$) {
+		var _v0 = config.maxAccuracy;
+		if (_v0.$ === 'Just') {
 			var acc = _v0.a;
 			return _List_fromArray(
 				[
@@ -7314,15 +7333,15 @@ var $author$project$Api$Students$getStudentGames = function (config) {
 	}();
 	var baseParams = _List_fromArray(
 		[
-			_Utils_Tuple2('time_control', config.fI),
-			_Utils_Tuple2('result', config.ft),
-			_Utils_Tuple2('color', config.eh),
+			_Utils_Tuple2('time_control', config.timeControl),
+			_Utils_Tuple2('result', config.result),
+			_Utils_Tuple2('color', config.color),
 			_Utils_Tuple2(
 			'limit',
-			$elm$core$String$fromInt(config.eS)),
+			$elm$core$String$fromInt(config.limit)),
 			_Utils_Tuple2(
 			'offset',
-			$elm$core$String$fromInt(config.e8))
+			$elm$core$String$fromInt(config.offset))
 		]);
 	var allParams = _Utils_ap(
 		baseParams,
@@ -7339,56 +7358,56 @@ var $author$project$Api$Students$getStudentGames = function (config) {
 							_Utils_ap(minRatingDiffParams, maxRatingDiffParams)))))));
 	return $author$project$Api$getWithQuery(
 		{
-			bj: $author$project$Types$gamesWithInsightsDecoder,
-			aZ: A2(
+			decoder: $author$project$Types$gamesWithInsightsDecoder,
+			endpoint: A2(
 				$author$project$Api$url,
-				config.cK,
+				config.apiUrl,
 				_List_fromArray(
-					['api', 'students', config.bu, 'games', 'insights'])),
-			a1: config.a1,
-			ds: allParams,
-			ba: $elm$core$Maybe$Just(config.ba)
+					['api', 'students', config.studentId, 'games', 'insights'])),
+			onResponse: config.onResponse,
+			queryParams: allParams,
+			token: $elm$core$Maybe$Just(config.token)
 		});
 };
 var $elm$core$Basics$negate = function (n) {
 	return -n;
 };
 var $author$project$Pages$StudentDetail$periodToString = function (filter) {
-	if (!filter) {
+	if (filter.$ === 'Last7Days') {
 		return '7days';
 	} else {
 		return '30days';
 	}
 };
 var $author$project$Types$resultFilterToString = function (rf) {
-	switch (rf) {
-		case 0:
+	switch (rf.$) {
+		case 'AllResults':
 			return 'all';
-		case 1:
+		case 'WinsOnly':
 			return 'win';
-		case 2:
+		case 'LossesOnly':
 			return 'loss';
 		default:
 			return 'draw';
 	}
 };
 var $author$project$Types$timeControlToString = function (tc) {
-	switch (tc) {
-		case 0:
+	switch (tc.$) {
+		case 'AllTimeControls':
 			return 'all';
-		case 1:
+		case 'Bullet':
 			return 'bullet';
-		case 2:
+		case 'Blitz':
 			return 'blitz';
 		default:
 			return 'rapid';
 	}
 };
 var $author$project$Pages$StudentDetail$fetchFilteredGames = function (model) {
-	var tagsParam = $elm$core$List$isEmpty(model.C) ? $elm$core$Maybe$Nothing : $elm$core$Maybe$Just(
-		A2($elm$core$String$join, ',', model.C));
+	var tagsParam = $elm$core$List$isEmpty(model.selectedTags) ? $elm$core$Maybe$Nothing : $elm$core$Maybe$Just(
+		A2($elm$core$String$join, ',', model.selectedTags));
 	var _v0 = function () {
-		var _v1 = model.X;
+		var _v1 = model.opponentRatingFilter;
 		switch (_v1) {
 			case 'higher':
 				return _Utils_Tuple2(
@@ -7406,61 +7425,61 @@ var $author$project$Pages$StudentDetail$fetchFilteredGames = function (model) {
 	var maxRatingDiff = _v0.b;
 	return $author$project$Api$Students$getStudentGames(
 		{
-			cK: model.cK,
-			eh: $author$project$Types$colorFilterToString(model.T),
-			eS: model.eS,
-			eY: model.eY,
-			e_: model.e_,
-			e0: maxRatingDiff,
-			e1: model.e1,
-			e2: minRatingDiff,
-			e8: model.e8,
-			a1: $author$project$Pages$StudentDetail$GotGames,
-			av: $author$project$Pages$StudentDetail$periodToString(model.y),
-			ft: $author$project$Types$resultFilterToString(model.R),
-			bu: model.bu,
-			fF: tagsParam,
-			fI: $author$project$Types$timeControlToString(model.S),
-			ba: model.ba
+			apiUrl: model.apiUrl,
+			color: $author$project$Types$colorFilterToString(model.colorFilter),
+			limit: model.limit,
+			maxAccuracy: model.maxAccuracy,
+			maxBlunders: model.maxBlunders,
+			maxRatingDiff: maxRatingDiff,
+			minAccuracy: model.minAccuracy,
+			minRatingDiff: minRatingDiff,
+			offset: model.offset,
+			onResponse: $author$project$Pages$StudentDetail$GotGames,
+			period: $author$project$Pages$StudentDetail$periodToString(model.timeRangeFilter),
+			result: $author$project$Types$resultFilterToString(model.resultFilter),
+			studentId: model.studentId,
+			tags: tagsParam,
+			timeControl: $author$project$Types$timeControlToString(model.timeControlFilter),
+			token: model.token
 		});
 };
 var $author$project$Pages$StudentDetail$GotStudent = function (a) {
-	return {$: 0, a: a};
+	return {$: 'GotStudent', a: a};
 };
 var $author$project$Api$Students$getStudent = function (config) {
-	var queryParams = $elm$core$String$isEmpty(config.av) ? _List_Nil : _List_fromArray(
+	var queryParams = $elm$core$String$isEmpty(config.period) ? _List_Nil : _List_fromArray(
 		[
-			_Utils_Tuple2('period', config.av)
+			_Utils_Tuple2('period', config.period)
 		]);
 	return $author$project$Api$getWithQuery(
 		{
-			bj: $author$project$Types$studentDecoder,
-			aZ: A2(
+			decoder: $author$project$Types$studentDecoder,
+			endpoint: A2(
 				$author$project$Api$url,
-				config.cK,
+				config.apiUrl,
 				_List_fromArray(
-					['api', 'students', config.bu])),
-			a1: config.a1,
-			ds: queryParams,
-			ba: $elm$core$Maybe$Just(config.ba)
+					['api', 'students', config.studentId])),
+			onResponse: config.onResponse,
+			queryParams: queryParams,
+			token: $elm$core$Maybe$Just(config.token)
 		});
 };
 var $author$project$Pages$StudentDetail$fetchStudent = function (model) {
 	return $author$project$Api$Students$getStudent(
 		{
-			cK: model.cK,
-			a1: $author$project$Pages$StudentDetail$GotStudent,
-			av: $author$project$Pages$StudentDetail$periodToString(model.y),
-			bu: model.bu,
-			ba: model.ba
+			apiUrl: model.apiUrl,
+			onResponse: $author$project$Pages$StudentDetail$GotStudent,
+			period: $author$project$Pages$StudentDetail$periodToString(model.timeRangeFilter),
+			studentId: model.studentId,
+			token: model.token
 		});
 };
 var $author$project$Pages$StudentDetail$GotTags = function (a) {
-	return {$: 2, a: a};
+	return {$: 'GotTags', a: a};
 };
 var $author$project$Types$TagWithCount = F2(
 	function (tag, count) {
-		return {cQ: count, G: tag};
+		return {count: count, tag: tag};
 	});
 var $author$project$Types$tagWithCountDecoder = A3(
 	$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
@@ -7476,37 +7495,38 @@ var $author$project$Types$tagsWithCountsDecoder = A2(
 	'tags',
 	$elm$json$Json$Decode$list($author$project$Types$tagWithCountDecoder));
 var $author$project$Api$Students$getStudentTags = function (config) {
-	var queryParams = $elm$core$String$isEmpty(config.av) ? _List_Nil : _List_fromArray(
+	var queryParams = $elm$core$String$isEmpty(config.period) ? _List_Nil : _List_fromArray(
 		[
-			_Utils_Tuple2('period', config.av)
+			_Utils_Tuple2('period', config.period)
 		]);
 	return $author$project$Api$getWithQuery(
 		{
-			bj: $author$project$Types$tagsWithCountsDecoder,
-			aZ: A2(
+			decoder: $author$project$Types$tagsWithCountsDecoder,
+			endpoint: A2(
 				$author$project$Api$url,
-				config.cK,
+				config.apiUrl,
 				_List_fromArray(
-					['api', 'students', config.bu, 'tags'])),
-			a1: config.a1,
-			ds: queryParams,
-			ba: $elm$core$Maybe$Just(config.ba)
+					['api', 'students', config.studentId, 'tags'])),
+			onResponse: config.onResponse,
+			queryParams: queryParams,
+			token: $elm$core$Maybe$Just(config.token)
 		});
 };
 var $author$project$Pages$StudentDetail$fetchTags = function (model) {
 	return $author$project$Api$Students$getStudentTags(
 		{
-			cK: model.cK,
-			a1: $author$project$Pages$StudentDetail$GotTags,
-			av: $author$project$Pages$StudentDetail$periodToString(model.y),
-			bu: model.bu,
-			ba: model.ba
+			apiUrl: model.apiUrl,
+			onResponse: $author$project$Pages$StudentDetail$GotTags,
+			period: $author$project$Pages$StudentDetail$periodToString(model.timeRangeFilter),
+			studentId: model.studentId,
+			token: model.token
 		});
 };
 var $elm$core$Set$insert = F2(
 	function (key, _v0) {
-		var dict = _v0;
-		return A3($elm$core$Dict$insert, key, 0, dict);
+		var dict = _v0.a;
+		return $elm$core$Set$Set_elm_builtin(
+			A3($elm$core$Dict$insert, key, _Utils_Tuple0, dict));
 	});
 var $elm$core$Set$fromList = function (list) {
 	return A3($elm$core$List$foldl, $elm$core$Set$insert, $elm$core$Set$empty, list);
@@ -7514,32 +7534,32 @@ var $elm$core$Set$fromList = function (list) {
 var $author$project$Pages$StudentDetail$init = F4(
 	function (apiUrl, token, studentId, initialTimeRange) {
 		var model = {
-			cK: apiUrl,
-			ar: false,
-			T: 0,
-			aH: $elm$core$Set$fromList(
+			apiUrl: apiUrl,
+			archivingStudent: false,
+			colorFilter: $author$project$Types$AllColors,
+			expandedFilterSections: $elm$core$Set$fromList(
 				_List_fromArray(
 					['result', 'timeControl'])),
-			aI: $elm$core$Set$empty,
-			g: $author$project$Types$Loading,
-			bO: $elm$core$Maybe$Nothing,
-			eS: 25,
-			eY: $elm$core$Maybe$Nothing,
-			e_: $elm$core$Maybe$Nothing,
-			e1: $elm$core$Maybe$Nothing,
-			e8: 0,
-			X: 'all',
-			an: '',
-			R: 0,
-			C: _List_Nil,
-			a4: true,
-			Y: 0,
-			ao: $author$project$Types$Loading,
-			bu: studentId,
-			fF: $author$project$Types$Loading,
-			S: 0,
-			y: initialTimeRange,
-			ba: token
+			expandedGames: $elm$core$Set$empty,
+			games: $author$project$Types$Loading,
+			hoveredGameId: $elm$core$Maybe$Nothing,
+			limit: 25,
+			maxAccuracy: $elm$core$Maybe$Nothing,
+			maxBlunders: $elm$core$Maybe$Nothing,
+			minAccuracy: $elm$core$Maybe$Nothing,
+			offset: 0,
+			opponentRatingFilter: 'all',
+			opponentSearch: '',
+			resultFilter: $author$project$Types$AllResults,
+			selectedTags: _List_Nil,
+			sidebarVisible: true,
+			sortOrder: $author$project$Pages$StudentDetail$DateNewest,
+			student: $author$project$Types$Loading,
+			studentId: studentId,
+			tags: $author$project$Types$Loading,
+			timeControlFilter: $author$project$Types$AllTimeControls,
+			timeRangeFilter: initialTimeRange,
+			token: token
 		};
 		return _Utils_Tuple2(
 			model,
@@ -7552,7 +7572,7 @@ var $author$project$Pages$StudentDetail$init = F4(
 					])));
 	});
 var $author$project$Pages$Subscription$GotPlans = function (a) {
-	return {$: 1, a: a};
+	return {$: 'GotPlans', a: a};
 };
 var $author$project$Types$subscriptionPlansDecoder = A2(
 	$elm$json$Json$Decode$field,
@@ -7561,30 +7581,30 @@ var $author$project$Types$subscriptionPlansDecoder = A2(
 var $author$project$Api$Subscription$getPlans = function (config) {
 	return $author$project$Api$get(
 		{
-			bj: $author$project$Types$subscriptionPlansDecoder,
-			aZ: A2(
+			decoder: $author$project$Types$subscriptionPlansDecoder,
+			endpoint: A2(
 				$author$project$Api$url,
-				config.cK,
+				config.apiUrl,
 				_List_fromArray(
 					['api', 'subscription', 'plans'])),
-			a1: config.a1,
-			ba: $elm$core$Maybe$Just(config.ba)
+			onResponse: config.onResponse,
+			token: $elm$core$Maybe$Just(config.token)
 		});
 };
 var $author$project$Pages$Subscription$fetchPlans = function (model) {
 	return $author$project$Api$Subscription$getPlans(
-		{cK: model.cK, a1: $author$project$Pages$Subscription$GotPlans, ba: model.ba});
+		{apiUrl: model.apiUrl, onResponse: $author$project$Pages$Subscription$GotPlans, token: model.token});
 };
 var $author$project$Pages$Subscription$GotUserInfo = function (a) {
-	return {$: 0, a: a};
+	return {$: 'GotUserInfo', a: a};
 };
 var $author$project$Pages$Subscription$fetchSubscription = function (model) {
 	return $author$project$Api$Subscription$getUserInfo(
-		{cK: model.cK, a1: $author$project$Pages$Subscription$GotUserInfo, ba: model.ba});
+		{apiUrl: model.apiUrl, onResponse: $author$project$Pages$Subscription$GotUserInfo, token: model.token});
 };
 var $author$project$Pages$Subscription$init = F2(
 	function (apiUrl, token) {
-		var model = {cK: apiUrl, aG: $elm$core$Maybe$Nothing, bo: false, bt: $author$project$Types$Loading, bY: $author$project$Types$Loading, ba: token};
+		var model = {apiUrl: apiUrl, error: $elm$core$Maybe$Nothing, isLoading: false, plans: $author$project$Types$Loading, subscription: $author$project$Types$Loading, token: token};
 		return _Utils_Tuple2(
 			model,
 			$elm$core$Platform$Cmd$batch(
@@ -7594,11 +7614,13 @@ var $author$project$Pages$Subscription$init = F2(
 						$author$project$Pages$Subscription$fetchPlans(model)
 					])));
 	});
-var $author$project$Pages$VerifyEmail$GotResponse = $elm$core$Basics$identity;
-var $author$project$Pages$VerifyEmail$Verifying = {$: 0};
+var $author$project$Pages$VerifyEmail$GotResponse = function (a) {
+	return {$: 'GotResponse', a: a};
+};
+var $author$project$Pages$VerifyEmail$Verifying = {$: 'Verifying'};
 var $author$project$Api$Email$VerifyEmailResponse = F2(
 	function (message, verified) {
-		return {da: message, fW: verified};
+		return {message: message, verified: verified};
 	});
 var $author$project$Api$Email$verifyEmailResponseDecoder = A3(
 	$elm$json$Json$Decode$map2,
@@ -7608,59 +7630,59 @@ var $author$project$Api$Email$verifyEmailResponseDecoder = A3(
 var $author$project$Api$Email$verifyEmail = function (config) {
 	return $author$project$Api$get(
 		{
-			bj: $author$project$Api$Email$verifyEmailResponseDecoder,
-			aZ: A2(
+			decoder: $author$project$Api$Email$verifyEmailResponseDecoder,
+			endpoint: A2(
 				$author$project$Api$url,
-				config.cK,
+				config.apiUrl,
 				_List_fromArray(
-					['api', 'auth', 'verify-email', config.ba])),
-			a1: config.a1,
-			ba: $elm$core$Maybe$Nothing
+					['api', 'auth', 'verify-email', config.token])),
+			onResponse: config.onResponse,
+			token: $elm$core$Maybe$Nothing
 		});
 };
 var $author$project$Pages$VerifyEmail$init = F2(
 	function (apiUrl, token) {
 		return _Utils_Tuple2(
-			{dF: $author$project$Pages$VerifyEmail$Verifying, ba: token},
+			{status: $author$project$Pages$VerifyEmail$Verifying, token: token},
 			$author$project$Api$Email$verifyEmail(
-				{cK: apiUrl, a1: $elm$core$Basics$identity, ba: token}));
+				{apiUrl: apiUrl, onResponse: $author$project$Pages$VerifyEmail$GotResponse, token: token}));
 	});
 var $elm$core$Platform$Cmd$map = _Platform_map;
 var $elm$browser$Browser$Navigation$replaceUrl = _Browser_replaceUrl;
 var $author$project$Route$routeToPieces = function (route) {
 	switch (route.$) {
-		case 0:
+		case 'Login':
 			return _List_fromArray(
 				['login']);
-		case 1:
+		case 'Register':
 			return _List_fromArray(
 				['register']);
-		case 2:
+		case 'Dashboard':
 			return _List_fromArray(
 				['dashboard']);
-		case 3:
+		case 'StudentDetail':
 			var id = route.a;
 			return _List_fromArray(
 				['students', id]);
-		case 4:
+		case 'GameDetail':
 			var id = route.a;
 			return _List_fromArray(
 				['games', id]);
-		case 5:
+		case 'Subscription':
 			return _List_fromArray(
 				['subscription']);
-		case 6:
+		case 'ForgotPassword':
 			return _List_fromArray(
 				['forgot-password']);
-		case 7:
+		case 'ResetPassword':
 			var token = route.a;
 			return _List_fromArray(
 				['reset-password', token]);
-		case 8:
+		case 'VerifyEmail':
 			var token = route.a;
 			return _List_fromArray(
 				['verify-email', token]);
-		case 9:
+		case 'EmailPreferences':
 			return _List_fromArray(
 				['email-preferences']);
 		default:
@@ -7684,183 +7706,183 @@ var $author$project$Route$replaceUrl = F2(
 var $author$project$Main$changeRouteTo = F2(
 	function (route, model) {
 		switch (route.$) {
-			case 0:
-				var _v1 = model.i;
-				if (_v1.$ === 1) {
+			case 'Login':
+				var _v1 = model.session;
+				if (_v1.$ === 'LoggedIn') {
 					return _Utils_Tuple2(
 						model,
-						A2($author$project$Route$replaceUrl, model.D, $author$project$Route$Dashboard));
+						A2($author$project$Route$replaceUrl, model.key, $author$project$Route$Dashboard));
 				} else {
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								c: $author$project$Main$LoginPage($author$project$Pages$Login$init)
+								page: $author$project$Main$LoginPage($author$project$Pages$Login$init)
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
-			case 1:
-				var _v2 = model.i;
-				if (_v2.$ === 1) {
+			case 'Register':
+				var _v2 = model.session;
+				if (_v2.$ === 'LoggedIn') {
 					return _Utils_Tuple2(
 						model,
-						A2($author$project$Route$replaceUrl, model.D, $author$project$Route$Dashboard));
+						A2($author$project$Route$replaceUrl, model.key, $author$project$Route$Dashboard));
 				} else {
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								c: $author$project$Main$RegisterPage($author$project$Pages$Register$init)
+								page: $author$project$Main$RegisterPage($author$project$Pages$Register$init)
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
-			case 2:
-				var _v3 = model.i;
-				if (_v3.$ === 1) {
+			case 'Dashboard':
+				var _v3 = model.session;
+				if (_v3.$ === 'LoggedIn') {
 					var token = _v3.a;
 					var coach = _v3.b;
-					var _v4 = A4($author$project$Pages$Dashboard$init, model.cK, token, model.y, coach.bY);
+					var _v4 = A4($author$project$Pages$Dashboard$init, model.apiUrl, token, model.timeRangeFilter, coach.subscription);
 					var subModel = _v4.a;
 					var subCmd = _v4.b;
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								c: $author$project$Main$DashboardPage(subModel)
+								page: $author$project$Main$DashboardPage(subModel)
 							}),
 						A2($elm$core$Platform$Cmd$map, $author$project$Main$DashboardMsg, subCmd));
 				} else {
 					return _Utils_Tuple2(
 						model,
-						A2($author$project$Route$replaceUrl, model.D, $author$project$Route$Login));
+						A2($author$project$Route$replaceUrl, model.key, $author$project$Route$Login));
 				}
-			case 3:
+			case 'StudentDetail':
 				var studentId = route.a;
-				var _v5 = model.i;
-				if (_v5.$ === 1) {
+				var _v5 = model.session;
+				if (_v5.$ === 'LoggedIn') {
 					var token = _v5.a;
-					var _v6 = A4($author$project$Pages$StudentDetail$init, model.cK, token, studentId, model.y);
+					var _v6 = A4($author$project$Pages$StudentDetail$init, model.apiUrl, token, studentId, model.timeRangeFilter);
 					var subModel = _v6.a;
 					var subCmd = _v6.b;
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								c: $author$project$Main$StudentDetailPage(subModel)
+								page: $author$project$Main$StudentDetailPage(subModel)
 							}),
 						A2($elm$core$Platform$Cmd$map, $author$project$Main$StudentDetailMsg, subCmd));
 				} else {
 					return _Utils_Tuple2(
 						model,
-						A2($author$project$Route$replaceUrl, model.D, $author$project$Route$Login));
+						A2($author$project$Route$replaceUrl, model.key, $author$project$Route$Login));
 				}
-			case 4:
+			case 'GameDetail':
 				var gameId = route.a;
-				var _v7 = model.i;
-				if (_v7.$ === 1) {
+				var _v7 = model.session;
+				if (_v7.$ === 'LoggedIn') {
 					var token = _v7.a;
-					var _v8 = A3($author$project$Pages$GameDetail$init, model.cK, token, gameId);
+					var _v8 = A3($author$project$Pages$GameDetail$init, model.apiUrl, token, gameId);
 					var subModel = _v8.a;
 					var subCmd = _v8.b;
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								c: $author$project$Main$GameDetailPage(subModel)
+								page: $author$project$Main$GameDetailPage(subModel)
 							}),
 						A2($elm$core$Platform$Cmd$map, $author$project$Main$GameDetailMsg, subCmd));
 				} else {
 					return _Utils_Tuple2(
 						model,
-						A2($author$project$Route$replaceUrl, model.D, $author$project$Route$Login));
+						A2($author$project$Route$replaceUrl, model.key, $author$project$Route$Login));
 				}
-			case 5:
-				var _v9 = model.i;
-				if (_v9.$ === 1) {
+			case 'Subscription':
+				var _v9 = model.session;
+				if (_v9.$ === 'LoggedIn') {
 					var token = _v9.a;
-					var _v10 = A2($author$project$Pages$Subscription$init, model.cK, token);
+					var _v10 = A2($author$project$Pages$Subscription$init, model.apiUrl, token);
 					var subModel = _v10.a;
 					var subCmd = _v10.b;
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								c: $author$project$Main$SubscriptionPage(subModel)
+								page: $author$project$Main$SubscriptionPage(subModel)
 							}),
 						A2($elm$core$Platform$Cmd$map, $author$project$Main$SubscriptionMsg, subCmd));
 				} else {
 					return _Utils_Tuple2(
 						model,
-						A2($author$project$Route$replaceUrl, model.D, $author$project$Route$Login));
+						A2($author$project$Route$replaceUrl, model.key, $author$project$Route$Login));
 				}
-			case 6:
-				var _v11 = model.i;
-				if (_v11.$ === 1) {
+			case 'ForgotPassword':
+				var _v11 = model.session;
+				if (_v11.$ === 'LoggedIn') {
 					return _Utils_Tuple2(
 						model,
-						A2($author$project$Route$replaceUrl, model.D, $author$project$Route$Dashboard));
+						A2($author$project$Route$replaceUrl, model.key, $author$project$Route$Dashboard));
 				} else {
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								c: $author$project$Main$ForgotPasswordPage($author$project$Pages$ForgotPassword$init)
+								page: $author$project$Main$ForgotPasswordPage($author$project$Pages$ForgotPassword$init)
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
-			case 7:
+			case 'ResetPassword':
 				var token = route.a;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							c: $author$project$Main$ResetPasswordPage(
+							page: $author$project$Main$ResetPasswordPage(
 								$author$project$Pages$ResetPassword$init(token))
 						}),
 					$elm$core$Platform$Cmd$none);
-			case 8:
+			case 'VerifyEmail':
 				var token = route.a;
-				var _v12 = A2($author$project$Pages$VerifyEmail$init, model.cK, token);
+				var _v12 = A2($author$project$Pages$VerifyEmail$init, model.apiUrl, token);
 				var subModel = _v12.a;
 				var subCmd = _v12.b;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							c: $author$project$Main$VerifyEmailPage(subModel)
+							page: $author$project$Main$VerifyEmailPage(subModel)
 						}),
 					A2($elm$core$Platform$Cmd$map, $author$project$Main$VerifyEmailMsg, subCmd));
-			case 9:
-				var _v13 = model.i;
-				if (_v13.$ === 1) {
+			case 'EmailPreferences':
+				var _v13 = model.session;
+				if (_v13.$ === 'LoggedIn') {
 					var token = _v13.a;
-					var _v14 = A2($author$project$Pages$EmailPreferences$init, model.cK, token);
+					var _v14 = A2($author$project$Pages$EmailPreferences$init, model.apiUrl, token);
 					var subModel = _v14.a;
 					var subCmd = _v14.b;
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								c: $author$project$Main$EmailPreferencesPage(subModel)
+								page: $author$project$Main$EmailPreferencesPage(subModel)
 							}),
 						A2($elm$core$Platform$Cmd$map, $author$project$Main$EmailPreferencesMsg, subCmd));
 				} else {
 					return _Utils_Tuple2(
 						model,
-						A2($author$project$Route$replaceUrl, model.D, $author$project$Route$Login));
+						A2($author$project$Route$replaceUrl, model.key, $author$project$Route$Login));
 				}
 			default:
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{c: $author$project$Main$NotFoundPage}),
+						{page: $author$project$Main$NotFoundPage}),
 					$elm$core$Platform$Cmd$none);
 		}
 	});
-var $author$project$Route$NotFound = {$: 10};
+var $author$project$Route$NotFound = {$: 'NotFound'};
 var $elm$url$Url$Parser$State = F5(
 	function (visited, unvisited, params, frag, value) {
-		return {aJ: frag, aK: params, aB: unvisited, ap: value, aQ: visited};
+		return {frag: frag, params: params, unvisited: unvisited, value: value, visited: visited};
 	});
 var $elm$url$Url$Parser$getFirstMatch = function (states) {
 	getFirstMatch:
@@ -7870,12 +7892,12 @@ var $elm$url$Url$Parser$getFirstMatch = function (states) {
 		} else {
 			var state = states.a;
 			var rest = states.b;
-			var _v1 = state.aB;
+			var _v1 = state.unvisited;
 			if (!_v1.b) {
-				return $elm$core$Maybe$Just(state.ap);
+				return $elm$core$Maybe$Just(state.value);
 			} else {
 				if ((_v1.a === '') && (!_v1.b.b)) {
-					return $elm$core$Maybe$Just(state.ap);
+					return $elm$core$Maybe$Just(state.value);
 				} else {
 					var $temp$states = rest;
 					states = $temp$states;
@@ -7913,7 +7935,7 @@ var $elm$url$Url$Parser$preparePath = function (path) {
 };
 var $elm$url$Url$Parser$addToParametersHelp = F2(
 	function (value, maybeList) {
-		if (maybeList.$ === 1) {
+		if (maybeList.$ === 'Nothing') {
 			return $elm$core$Maybe$Just(
 				_List_fromArray(
 					[value]));
@@ -7932,12 +7954,12 @@ var $elm$url$Url$Parser$addParam = F2(
 			var _v1 = _v0.b;
 			var rawValue = _v1.a;
 			var _v2 = $elm$url$Url$percentDecode(rawKey);
-			if (_v2.$ === 1) {
+			if (_v2.$ === 'Nothing') {
 				return dict;
 			} else {
 				var key = _v2.a;
 				var _v3 = $elm$url$Url$percentDecode(rawValue);
-				if (_v3.$ === 1) {
+				if (_v3.$ === 'Nothing') {
 					return dict;
 				} else {
 					var value = _v3.a;
@@ -7953,7 +7975,7 @@ var $elm$url$Url$Parser$addParam = F2(
 		}
 	});
 var $elm$url$Url$Parser$prepareQuery = function (maybeQuery) {
-	if (maybeQuery.$ === 1) {
+	if (maybeQuery.$ === 'Nothing') {
 		return $elm$core$Dict$empty;
 	} else {
 		var qry = maybeQuery.a;
@@ -7966,41 +7988,43 @@ var $elm$url$Url$Parser$prepareQuery = function (maybeQuery) {
 };
 var $elm$url$Url$Parser$parse = F2(
 	function (_v0, url) {
-		var parser = _v0;
+		var parser = _v0.a;
 		return $elm$url$Url$Parser$getFirstMatch(
 			parser(
 				A5(
 					$elm$url$Url$Parser$State,
 					_List_Nil,
-					$elm$url$Url$Parser$preparePath(url.di),
-					$elm$url$Url$Parser$prepareQuery(url.dr),
-					url.c$,
+					$elm$url$Url$Parser$preparePath(url.path),
+					$elm$url$Url$Parser$prepareQuery(url.query),
+					url.fragment,
 					$elm$core$Basics$identity)));
 	});
-var $author$project$Route$EmailPreferences = {$: 9};
-var $author$project$Route$ForgotPassword = {$: 6};
+var $author$project$Route$EmailPreferences = {$: 'EmailPreferences'};
+var $author$project$Route$ForgotPassword = {$: 'ForgotPassword'};
 var $author$project$Route$GameDetail = function (a) {
-	return {$: 4, a: a};
+	return {$: 'GameDetail', a: a};
 };
-var $author$project$Route$Register = {$: 1};
+var $author$project$Route$Register = {$: 'Register'};
 var $author$project$Route$ResetPassword = function (a) {
-	return {$: 7, a: a};
+	return {$: 'ResetPassword', a: a};
 };
 var $author$project$Route$StudentDetail = function (a) {
-	return {$: 3, a: a};
+	return {$: 'StudentDetail', a: a};
 };
-var $author$project$Route$Subscription = {$: 5};
+var $author$project$Route$Subscription = {$: 'Subscription'};
 var $author$project$Route$VerifyEmail = function (a) {
-	return {$: 8, a: a};
+	return {$: 'VerifyEmail', a: a};
 };
-var $elm$url$Url$Parser$Parser = $elm$core$Basics$identity;
+var $elm$url$Url$Parser$Parser = function (a) {
+	return {$: 'Parser', a: a};
+};
 var $elm$url$Url$Parser$mapState = F2(
 	function (func, _v0) {
-		var visited = _v0.aQ;
-		var unvisited = _v0.aB;
-		var params = _v0.aK;
-		var frag = _v0.aJ;
-		var value = _v0.ap;
+		var visited = _v0.visited;
+		var unvisited = _v0.unvisited;
+		var params = _v0.params;
+		var frag = _v0.frag;
+		var value = _v0.value;
 		return A5(
 			$elm$url$Url$Parser$State,
 			visited,
@@ -8011,19 +8035,20 @@ var $elm$url$Url$Parser$mapState = F2(
 	});
 var $elm$url$Url$Parser$map = F2(
 	function (subValue, _v0) {
-		var parseArg = _v0;
-		return function (_v1) {
-			var visited = _v1.aQ;
-			var unvisited = _v1.aB;
-			var params = _v1.aK;
-			var frag = _v1.aJ;
-			var value = _v1.ap;
-			return A2(
-				$elm$core$List$map,
-				$elm$url$Url$Parser$mapState(value),
-				parseArg(
-					A5($elm$url$Url$Parser$State, visited, unvisited, params, frag, subValue)));
-		};
+		var parseArg = _v0.a;
+		return $elm$url$Url$Parser$Parser(
+			function (_v1) {
+				var visited = _v1.visited;
+				var unvisited = _v1.unvisited;
+				var params = _v1.params;
+				var frag = _v1.frag;
+				var value = _v1.value;
+				return A2(
+					$elm$core$List$map,
+					$elm$url$Url$Parser$mapState(value),
+					parseArg(
+						A5($elm$url$Url$Parser$State, visited, unvisited, params, frag, subValue)));
+			});
 	});
 var $elm$core$List$append = F2(
 	function (xs, ys) {
@@ -8042,89 +8067,94 @@ var $elm$core$List$concatMap = F2(
 			A2($elm$core$List$map, f, list));
 	});
 var $elm$url$Url$Parser$oneOf = function (parsers) {
-	return function (state) {
-		return A2(
-			$elm$core$List$concatMap,
-			function (_v0) {
-				var parser = _v0;
-				return parser(state);
-			},
-			parsers);
-	};
-};
-var $elm$url$Url$Parser$s = function (str) {
-	return function (_v0) {
-		var visited = _v0.aQ;
-		var unvisited = _v0.aB;
-		var params = _v0.aK;
-		var frag = _v0.aJ;
-		var value = _v0.ap;
-		if (!unvisited.b) {
-			return _List_Nil;
-		} else {
-			var next = unvisited.a;
-			var rest = unvisited.b;
-			return _Utils_eq(next, str) ? _List_fromArray(
-				[
-					A5(
-					$elm$url$Url$Parser$State,
-					A2($elm$core$List$cons, next, visited),
-					rest,
-					params,
-					frag,
-					value)
-				]) : _List_Nil;
-		}
-	};
-};
-var $elm$url$Url$Parser$slash = F2(
-	function (_v0, _v1) {
-		var parseBefore = _v0;
-		var parseAfter = _v1;
-		return function (state) {
+	return $elm$url$Url$Parser$Parser(
+		function (state) {
 			return A2(
 				$elm$core$List$concatMap,
-				parseAfter,
-				parseBefore(state));
-		};
-	});
-var $elm$url$Url$Parser$custom = F2(
-	function (tipe, stringToSomething) {
-		return function (_v0) {
-			var visited = _v0.aQ;
-			var unvisited = _v0.aB;
-			var params = _v0.aK;
-			var frag = _v0.aJ;
-			var value = _v0.ap;
+				function (_v0) {
+					var parser = _v0.a;
+					return parser(state);
+				},
+				parsers);
+		});
+};
+var $elm$url$Url$Parser$s = function (str) {
+	return $elm$url$Url$Parser$Parser(
+		function (_v0) {
+			var visited = _v0.visited;
+			var unvisited = _v0.unvisited;
+			var params = _v0.params;
+			var frag = _v0.frag;
+			var value = _v0.value;
 			if (!unvisited.b) {
 				return _List_Nil;
 			} else {
 				var next = unvisited.a;
 				var rest = unvisited.b;
-				var _v2 = stringToSomething(next);
-				if (!_v2.$) {
-					var nextValue = _v2.a;
-					return _List_fromArray(
-						[
-							A5(
-							$elm$url$Url$Parser$State,
-							A2($elm$core$List$cons, next, visited),
-							rest,
-							params,
-							frag,
-							value(nextValue))
-						]);
-				} else {
-					return _List_Nil;
-				}
+				return _Utils_eq(next, str) ? _List_fromArray(
+					[
+						A5(
+						$elm$url$Url$Parser$State,
+						A2($elm$core$List$cons, next, visited),
+						rest,
+						params,
+						frag,
+						value)
+					]) : _List_Nil;
 			}
-		};
+		});
+};
+var $elm$url$Url$Parser$slash = F2(
+	function (_v0, _v1) {
+		var parseBefore = _v0.a;
+		var parseAfter = _v1.a;
+		return $elm$url$Url$Parser$Parser(
+			function (state) {
+				return A2(
+					$elm$core$List$concatMap,
+					parseAfter,
+					parseBefore(state));
+			});
+	});
+var $elm$url$Url$Parser$custom = F2(
+	function (tipe, stringToSomething) {
+		return $elm$url$Url$Parser$Parser(
+			function (_v0) {
+				var visited = _v0.visited;
+				var unvisited = _v0.unvisited;
+				var params = _v0.params;
+				var frag = _v0.frag;
+				var value = _v0.value;
+				if (!unvisited.b) {
+					return _List_Nil;
+				} else {
+					var next = unvisited.a;
+					var rest = unvisited.b;
+					var _v2 = stringToSomething(next);
+					if (_v2.$ === 'Just') {
+						var nextValue = _v2.a;
+						return _List_fromArray(
+							[
+								A5(
+								$elm$url$Url$Parser$State,
+								A2($elm$core$List$cons, next, visited),
+								rest,
+								params,
+								frag,
+								value(nextValue))
+							]);
+					} else {
+						return _List_Nil;
+					}
+				}
+			});
 	});
 var $elm$url$Url$Parser$string = A2($elm$url$Url$Parser$custom, 'STRING', $elm$core$Maybe$Just);
-var $elm$url$Url$Parser$top = function (state) {
-	return _List_fromArray(
-		[state]);
-};
+var $elm$url$Url$Parser$top = $elm$url$Url$Parser$Parser(
+	function (state) {
+		return _List_fromArray(
+			[state]);
+	});
 var $author$project$Route$parser = $elm$url$Url$Parser$oneOf(
 	_List_fromArray(
 		[
@@ -8184,7 +8214,7 @@ var $author$project$Route$parser = $elm$url$Url$Parser$oneOf(
 		]));
 var $elm$core$Maybe$withDefault = F2(
 	function (_default, maybe) {
-		if (!maybe.$) {
+		if (maybe.$ === 'Just') {
 			var value = maybe.a;
 			return value;
 		} else {
@@ -8199,7 +8229,7 @@ var $author$project$Route$fromUrl = function (url) {
 };
 var $elm$core$Maybe$map = F2(
 	function (f, maybe) {
-		if (!maybe.$) {
+		if (maybe.$ === 'Just') {
 			var value = maybe.a;
 			return $elm$core$Maybe$Just(
 				f(value));
@@ -8207,47 +8237,47 @@ var $elm$core$Maybe$map = F2(
 			return $elm$core$Maybe$Nothing;
 		}
 	});
-var $author$project$Types$Last7Days = 0;
+var $author$project$Types$Last7Days = {$: 'Last7Days'};
 var $author$project$Types$timeRangeFilterFromString = function (str) {
 	if (str === '7days') {
-		return 0;
+		return $author$project$Types$Last7Days;
 	} else {
-		return 1;
+		return $author$project$Types$Last30Days;
 	}
 };
 var $author$project$Main$init = F3(
 	function (flags, url, key) {
 		var timeRangeFilter = A2(
 			$elm$core$Maybe$withDefault,
-			1,
-			A2($elm$core$Maybe$map, $author$project$Types$timeRangeFilterFromString, flags.y));
+			$author$project$Types$Last30Days,
+			A2($elm$core$Maybe$map, $author$project$Types$timeRangeFilterFromString, flags.timeRangeFilter));
 		var subscriptionCmd = function () {
-			var _v3 = flags.ba;
-			if (!_v3.$) {
+			var _v3 = flags.token;
+			if (_v3.$ === 'Just') {
 				var token = _v3.a;
 				return $author$project$Api$Subscription$getUserInfo(
-					{cK: flags.cK, a1: $author$project$Main$GotUserInfo, ba: token});
+					{apiUrl: flags.apiUrl, onResponse: $author$project$Main$GotUserInfo, token: token});
 			} else {
 				return $elm$core$Platform$Cmd$none;
 			}
 		}();
 		var session = function () {
-			var _v1 = _Utils_Tuple2(flags.ba, flags.eg);
-			if (!_v1.a.$) {
-				if (!_v1.b.$) {
+			var _v1 = _Utils_Tuple2(flags.token, flags.coach);
+			if (_v1.a.$ === 'Just') {
+				if (_v1.b.$ === 'Just') {
 					var token = _v1.a.a;
 					var coach = _v1.b.a;
 					return A2(
 						$author$project$Main$LoggedIn,
 						token,
-						{cR: '', cW: coach.cW, F: coach.F, bY: $elm$core$Maybe$Nothing});
+						{createdAt: '', email: coach.email, id: coach.id, subscription: $elm$core$Maybe$Nothing});
 				} else {
 					var token = _v1.a.a;
 					var _v2 = _v1.b;
 					return A2(
 						$author$project$Main$LoggedIn,
 						token,
-						{cR: '', cW: '', F: '', bY: $elm$core$Maybe$Nothing});
+						{createdAt: '', email: '', id: '', subscription: $elm$core$Maybe$Nothing});
 				}
 			} else {
 				return $author$project$Main$Guest;
@@ -8256,7 +8286,7 @@ var $author$project$Main$init = F3(
 		var _v0 = A2(
 			$author$project$Main$changeRouteTo,
 			$author$project$Route$fromUrl(url),
-			{cK: flags.cK, D: key, c: $author$project$Main$NotFoundPage, i: session, y: timeRangeFilter});
+			{apiUrl: flags.apiUrl, key: key, page: $author$project$Main$NotFoundPage, session: session, timeRangeFilter: timeRangeFilter});
 		var model = _v0.a;
 		var routeCmd = _v0.b;
 		return _Utils_Tuple2(
@@ -8269,15 +8299,15 @@ var $elm$core$Platform$Sub$map = _Platform_map;
 var $elm$core$Platform$Sub$batch = _Platform_batch;
 var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
 var $author$project$Pages$Dashboard$PollProgress = function (a) {
-	return {$: 8, a: a};
+	return {$: 'PollProgress', a: a};
 };
 var $elm$time$Time$Every = F2(
 	function (a, b) {
-		return {$: 0, a: a, b: b};
+		return {$: 'Every', a: a, b: b};
 	});
 var $elm$time$Time$State = F2(
 	function (taggers, processes) {
-		return {dp: processes, dH: taggers};
+		return {processes: processes, taggers: taggers};
 	});
 var $elm$time$Time$init = $elm$core$Task$succeed(
 	A2($elm$time$Time$State, $elm$core$Dict$empty, $elm$core$Dict$empty));
@@ -8286,7 +8316,7 @@ var $elm$time$Time$addMySub = F2(
 		var interval = _v0.a;
 		var tagger = _v0.b;
 		var _v1 = A2($elm$core$Dict$get, interval, state);
-		if (_v1.$ === 1) {
+		if (_v1.$ === 'Nothing') {
 			return A3(
 				$elm$core$Dict$insert,
 				interval,
@@ -8306,7 +8336,7 @@ var $elm$core$Dict$foldl = F3(
 	function (func, acc, dict) {
 		foldl:
 		while (true) {
-			if (dict.$ === -2) {
+			if (dict.$ === 'RBEmpty_elm_builtin') {
 				return acc;
 			} else {
 				var key = dict.b;
@@ -8389,14 +8419,14 @@ var $elm$core$Dict$merge = F6(
 			leftovers);
 	});
 var $elm$time$Time$Name = function (a) {
-	return {$: 0, a: a};
+	return {$: 'Name', a: a};
 };
 var $elm$time$Time$Offset = function (a) {
-	return {$: 1, a: a};
+	return {$: 'Offset', a: a};
 };
 var $elm$time$Time$Zone = F2(
 	function (a, b) {
-		return {$: 0, a: a, b: b};
+		return {$: 'Zone', a: a, b: b};
 	});
 var $elm$time$Time$customZone = $elm$time$Time$Zone;
 var $elm$time$Time$setInterval = _Time_setInterval;
@@ -8424,7 +8454,7 @@ var $elm$time$Time$spawnHelp = F3(
 	});
 var $elm$time$Time$onEffects = F3(
 	function (router, subs, _v0) {
-		var processes = _v0.dp;
+		var processes = _v0.processes;
 		var rightStep = F3(
 			function (_v6, id, _v7) {
 				var spawns = _v7.a;
@@ -8471,7 +8501,7 @@ var $elm$time$Time$onEffects = F3(
 			_Utils_Tuple3(
 				_List_Nil,
 				$elm$core$Dict$empty,
-				$elm$core$Task$succeed(0)));
+				$elm$core$Task$succeed(_Utils_Tuple0)));
 		var spawnList = _v1.a;
 		var existingDict = _v1.b;
 		var killTask = _v1.c;
@@ -8488,13 +8518,15 @@ var $elm$time$Time$onEffects = F3(
 				},
 				killTask));
 	});
-var $elm$time$Time$Posix = $elm$core$Basics$identity;
-var $elm$time$Time$millisToPosix = $elm$core$Basics$identity;
+var $elm$time$Time$Posix = function (a) {
+	return {$: 'Posix', a: a};
+};
+var $elm$time$Time$millisToPosix = $elm$time$Time$Posix;
 var $elm$time$Time$now = _Time_now($elm$time$Time$millisToPosix);
 var $elm$time$Time$onSelfMsg = F3(
 	function (router, interval, state) {
-		var _v0 = A2($elm$core$Dict$get, interval, state.dH);
-		if (_v0.$ === 1) {
+		var _v0 = A2($elm$core$Dict$get, interval, state.taggers);
+		if (_v0.$ === 'Nothing') {
 			return $elm$core$Task$succeed(state);
 		} else {
 			var taggers = _v0.a;
@@ -8564,13 +8596,13 @@ var $author$project$Pages$Dashboard$hasAnalysisInProgress = function (students) 
 	return A2(
 		$elm$core$List$any,
 		function (s) {
-			return (!s.w.U) || (_Utils_cmp(s.w.b_, s.w.U) < 0);
+			return (!s.stats.gameCount) || (_Utils_cmp(s.stats.analyzedCount, s.stats.gameCount) < 0);
 		},
 		students);
 };
 var $author$project$Pages$Dashboard$subscriptions = function (model) {
-	var _v0 = model.L;
-	if (_v0.$ === 3) {
+	var _v0 = model.students;
+	if (_v0.$ === 'Success') {
 		var students = _v0.a;
 		return $author$project$Pages$Dashboard$hasAnalysisInProgress(students) ? A2($elm$time$Time$every, 5000, $author$project$Pages$Dashboard$PollProgress) : $elm$core$Platform$Sub$none;
 	} else {
@@ -8578,8 +8610,8 @@ var $author$project$Pages$Dashboard$subscriptions = function (model) {
 	}
 };
 var $author$project$Main$subscriptions = function (model) {
-	var _v0 = model.c;
-	if (_v0.$ === 2) {
+	var _v0 = model.page;
+	if (_v0.$ === 'DashboardPage') {
 		var subModel = _v0.a;
 		return A2(
 			$elm$core$Platform$Sub$map,
@@ -8590,16 +8622,16 @@ var $author$project$Main$subscriptions = function (model) {
 	}
 };
 var $author$project$Main$ForgotPasswordMsg = function (a) {
-	return {$: 8, a: a};
+	return {$: 'ForgotPasswordMsg', a: a};
 };
 var $author$project$Main$LoginMsg = function (a) {
-	return {$: 2, a: a};
+	return {$: 'LoginMsg', a: a};
 };
 var $author$project$Main$RegisterMsg = function (a) {
-	return {$: 3, a: a};
+	return {$: 'RegisterMsg', a: a};
 };
 var $author$project$Main$ResetPasswordMsg = function (a) {
-	return {$: 9, a: a};
+	return {$: 'ResetPasswordMsg', a: a};
 };
 var $elm$json$Json$Encode$null = _Json_encodeNull;
 var $author$project$Main$clearToken = _Platform_outgoingPort(
@@ -8617,7 +8649,7 @@ var $elm$json$Json$Encode$object = function (pairs) {
 					var v = _v0.b;
 					return A3(_Json_addField, k, v, obj);
 				}),
-			_Json_emptyObject(0),
+			_Json_emptyObject(_Utils_Tuple0),
 			pairs));
 };
 var $elm$json$Json$Encode$string = _Json_wrap;
@@ -8629,10 +8661,10 @@ var $author$project$Main$identifyUser = _Platform_outgoingPort(
 				[
 					_Utils_Tuple2(
 					'email',
-					$elm$json$Json$Encode$string($.cW)),
+					$elm$json$Json$Encode$string($.email)),
 					_Utils_Tuple2(
 					'id',
-					$elm$json$Json$Encode$string($.F))
+					$elm$json$Json$Encode$string($.id))
 				]));
 	});
 var $elm$browser$Browser$Navigation$load = _Browser_load;
@@ -8646,16 +8678,16 @@ var $author$project$Main$saveCoach = _Platform_outgoingPort(
 				[
 					_Utils_Tuple2(
 					'email',
-					$elm$json$Json$Encode$string($.cW)),
+					$elm$json$Json$Encode$string($.email)),
 					_Utils_Tuple2(
 					'id',
-					$elm$json$Json$Encode$string($.F))
+					$elm$json$Json$Encode$string($.id))
 				]));
 	});
 var $author$project$Main$saveTimeRangeFilter = _Platform_outgoingPort('saveTimeRangeFilter', $elm$json$Json$Encode$string);
 var $author$project$Main$saveToken = _Platform_outgoingPort('saveToken', $elm$json$Json$Encode$string);
 var $author$project$Types$timeRangeFilterToString = function (filter) {
-	if (!filter) {
+	if (filter.$ === 'Last7Days') {
 		return '7days';
 	} else {
 		return '30days';
@@ -8663,7 +8695,7 @@ var $author$project$Types$timeRangeFilterToString = function (filter) {
 };
 var $elm$url$Url$addPort = F2(
 	function (maybePort, starter) {
-		if (maybePort.$ === 1) {
+		if (maybePort.$ === 'Nothing') {
 			return starter;
 		} else {
 			var port_ = maybePort.a;
@@ -8672,7 +8704,7 @@ var $elm$url$Url$addPort = F2(
 	});
 var $elm$url$Url$addPrefixed = F3(
 	function (prefix, maybeSegment, starter) {
-		if (maybeSegment.$ === 1) {
+		if (maybeSegment.$ === 'Nothing') {
 			return starter;
 		} else {
 			var segment = maybeSegment.a;
@@ -8683,8 +8715,8 @@ var $elm$url$Url$addPrefixed = F3(
 	});
 var $elm$url$Url$toString = function (url) {
 	var http = function () {
-		var _v0 = url.dq;
-		if (!_v0) {
+		var _v0 = url.protocol;
+		if (_v0.$ === 'Http') {
 			return 'http://';
 		} else {
 			return 'https://';
@@ -8693,27 +8725,35 @@ var $elm$url$Url$toString = function (url) {
 	return A3(
 		$elm$url$Url$addPrefixed,
 		'#',
-		url.c$,
+		url.fragment,
 		A3(
 			$elm$url$Url$addPrefixed,
 			'?',
-			url.dr,
+			url.query,
 			_Utils_ap(
 				A2(
 					$elm$url$Url$addPort,
-					url.dl,
-					_Utils_ap(http, url.c3)),
-				url.di)));
+					url.port_,
+					_Utils_ap(http, url.host)),
+				url.path)));
 };
 var $author$project$Types$Failure = function (a) {
-	return {$: 2, a: a};
+	return {$: 'Failure', a: a};
 };
 var $author$project$Pages$Dashboard$GotArchiveResult = function (a) {
-	return {$: 14, a: a};
+	return {$: 'GotArchiveResult', a: a};
 };
 var $author$project$Pages$Dashboard$GotNewStudent = function (a) {
-	return {$: 7, a: a};
+	return {$: 'GotNewStudent', a: a};
 };
+var $author$project$Pages$Dashboard$GotResendResult = function (a) {
+	return {$: 'GotResendResult', a: a};
+};
+var $author$project$Pages$Dashboard$ResendError = function (a) {
+	return {$: 'ResendError', a: a};
+};
+var $author$project$Pages$Dashboard$ResendSending = {$: 'ResendSending'};
+var $author$project$Pages$Dashboard$ResendSuccess = {$: 'ResendSuccess'};
 var $elm$json$Json$Encode$bool = _Json_wrap;
 var $elm$http$Http$jsonBody = function (value) {
 	return A2(
@@ -8724,78 +8764,78 @@ var $elm$http$Http$jsonBody = function (value) {
 var $author$project$Api$patch = function (config) {
 	return $elm$http$Http$request(
 		{
-			aj: $elm$http$Http$jsonBody(config.aj),
-			a_: A2($elm$http$Http$expectJson, config.a1, config.bj),
-			a$: $author$project$Api$authHeader(
-				$elm$core$Maybe$Just(config.ba)),
-			a0: 'PATCH',
-			a8: $elm$core$Maybe$Nothing,
-			bb: $elm$core$Maybe$Nothing,
-			bc: $author$project$Api$unwrap(config.aZ)
+			body: $elm$http$Http$jsonBody(config.body),
+			expect: A2($elm$http$Http$expectJson, config.onResponse, config.decoder),
+			headers: $author$project$Api$authHeader(
+				$elm$core$Maybe$Just(config.token)),
+			method: 'PATCH',
+			timeout: $elm$core$Maybe$Nothing,
+			tracker: $elm$core$Maybe$Nothing,
+			url: $author$project$Api$unwrap(config.endpoint)
 		});
 };
 var $author$project$Api$Students$archiveStudent = function (config) {
 	return $author$project$Api$patch(
 		{
-			aj: $elm$json$Json$Encode$object(
+			body: $elm$json$Json$Encode$object(
 				_List_fromArray(
 					[
 						_Utils_Tuple2(
 						'archived',
-						$elm$json$Json$Encode$bool(config.d2))
+						$elm$json$Json$Encode$bool(config.archived))
 					])),
-			bj: $author$project$Types$studentDecoder,
-			aZ: A2(
+			decoder: $author$project$Types$studentDecoder,
+			endpoint: A2(
 				$author$project$Api$url,
-				config.cK,
+				config.apiUrl,
 				_List_fromArray(
-					['api', 'students', config.bu, 'archive'])),
-			a1: config.a1,
-			ba: config.ba
+					['api', 'students', config.studentId, 'archive'])),
+			onResponse: config.onResponse,
+			token: config.token
 		});
 };
 var $author$project$Api$post = function (config) {
 	return $elm$http$Http$request(
 		{
-			aj: $elm$http$Http$jsonBody(config.aj),
-			a_: A2($elm$http$Http$expectJson, config.a1, config.bj),
-			a$: $author$project$Api$authHeader(config.ba),
-			a0: 'POST',
-			a8: $elm$core$Maybe$Nothing,
-			bb: $elm$core$Maybe$Nothing,
-			bc: $author$project$Api$unwrap(config.aZ)
+			body: $elm$http$Http$jsonBody(config.body),
+			expect: A2($elm$http$Http$expectJson, config.onResponse, config.decoder),
+			headers: $author$project$Api$authHeader(config.token),
+			method: 'POST',
+			timeout: $elm$core$Maybe$Nothing,
+			tracker: $elm$core$Maybe$Nothing,
+			url: $author$project$Api$unwrap(config.endpoint)
 		});
 };
 var $author$project$Api$Students$createStudent = function (config) {
 	return $author$project$Api$post(
 		{
-			aj: $elm$json$Json$Encode$object(
+			body: $elm$json$Json$Encode$object(
 				_List_fromArray(
 					[
 						_Utils_Tuple2(
 						'chess_com_username',
-						$elm$json$Json$Encode$string(config.ef))
+						$elm$json$Json$Encode$string(config.chessComUsername))
 					])),
-			bj: $author$project$Types$studentDecoder,
-			aZ: A2(
+			decoder: $author$project$Types$studentDecoder,
+			endpoint: A2(
 				$author$project$Api$url,
-				config.cK,
+				config.apiUrl,
 				_List_fromArray(
 					['api', 'students'])),
-			a1: config.a1,
-			ba: $elm$core$Maybe$Just(config.ba)
+			onResponse: config.onResponse,
+			token: $elm$core$Maybe$Just(config.token)
 		});
 };
 var $elm$core$Basics$ge = _Utils_ge;
 var $author$project$Pages$Dashboard$httpErrorToString = function (error) {
 	switch (error.$) {
-		case 0:
+		case 'BadUrl':
 			return 'Invalid URL';
-		case 1:
+		case 'Timeout':
 			return 'Request timed out';
-		case 2:
+		case 'NetworkError':
 			return 'Network error';
-		case 3:
+		case 'BadStatus':
 			var status = error.a;
 			return 'Server error (status ' + ($elm$core$String$fromInt(status) + ')');
 		default:
@@ -8804,18 +8844,39 @@ var $author$project$Pages$Dashboard$httpErrorToString = function (error) {
 	}
 };
 var $elm$core$Basics$not = _Basics_not;
+var $author$project$Api$Email$MessageResponse = function (message) {
+	return {message: message};
+};
+var $author$project$Api$Email$messageResponseDecoder = A2(
+	$elm$json$Json$Decode$map,
+	$author$project$Api$Email$MessageResponse,
+	A2($elm$json$Json$Decode$field, 'message', $elm$json$Json$Decode$string));
+var $author$project$Api$Email$resendVerification = function (config) {
+	return $author$project$Api$post(
+		{
+			body: $elm$json$Json$Encode$null,
+			decoder: $author$project$Api$Email$messageResponseDecoder,
+			endpoint: A2(
+				$author$project$Api$url,
+				config.apiUrl,
+				_List_fromArray(
+					['api', 'auth', 'resend-verification'])),
+			onResponse: config.onResponse,
+			token: $elm$core$Maybe$Just(config.token)
+		});
+};
 var $author$project$Pages$Dashboard$update = F4(
 	function (apiUrl, token, msg, model) {
 		switch (msg.$) {
-			case 0:
+			case 'GotStudents':
 				var result = msg.a;
-				if (!result.$) {
+				if (result.$ === 'Ok') {
 					var students = result.a;
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								L: $author$project$Types$Success(students)
+								students: $author$project$Types$Success(students)
 							}),
 						$elm$core$Platform$Cmd$none);
 				} else {
@@ -8824,20 +8885,20 @@ var $author$project$Pages$Dashboard$update = F4(
 						_Utils_update(
 							model,
 							{
-								L: $author$project$Types$Failure(
+								students: $author$project$Types$Failure(
 									$author$project$Pages$Dashboard$httpErrorToString(error))
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
-			case 1:
+			case 'GotUserInfo':
 				var result = msg.a;
-				if (!result.$) {
+				if (result.$ === 'Ok') {
 					var info = result.a;
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								fV: $author$project$Types$Success(info)
+								userInfo: $author$project$Types$Success(info)
 							}),
 						$elm$core$Platform$Cmd$none);
 				} else {
@@ -8846,66 +8907,66 @@ var $author$project$Pages$Dashboard$update = F4(
 						_Utils_update(
 							model,
 							{
-								fV: $author$project$Types$Failure(
+								userInfo: $author$project$Types$Failure(
 									$author$project$Pages$Dashboard$httpErrorToString(error))
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
-			case 2:
+			case 'SetTimeRangeFilter':
 				var filter = msg.a;
 				var newModel = _Utils_update(
 					model,
-					{L: $author$project$Types$Loading, y: filter});
+					{students: $author$project$Types$Loading, timeRangeFilter: filter});
 				return _Utils_Tuple2(
 					newModel,
 					$author$project$Pages$Dashboard$fetchStudents(newModel));
-			case 3:
+			case 'ShowAddModal':
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{aq: $elm$core$Maybe$Nothing, au: '', a3: true}),
+						{addError: $elm$core$Maybe$Nothing, newStudentChessCom: '', showAddModal: true}),
 					$elm$core$Platform$Cmd$none);
-			case 4:
+			case 'HideAddModal':
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{a3: false}),
+						{showAddModal: false}),
 					$elm$core$Platform$Cmd$none);
-			case 5:
+			case 'NewStudentChessComChanged':
 				var username = msg.a;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{aq: $elm$core$Maybe$Nothing, au: username}),
+						{addError: $elm$core$Maybe$Nothing, newStudentChessCom: username}),
 					$elm$core$Platform$Cmd$none);
-			case 6:
+			case 'SubmitNewStudent':
 				var config = msg.a;
-				return $elm$core$String$isEmpty(model.au) ? _Utils_Tuple2(
+				return $elm$core$String$isEmpty(model.newStudentChessCom) ? _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							aq: $elm$core$Maybe$Just('Please enter a Chess.com username')
+							addError: $elm$core$Maybe$Just('Please enter a Chess.com username')
 						}),
 					$elm$core$Platform$Cmd$none) : _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{aq: $elm$core$Maybe$Nothing, al: true}),
+						{addError: $elm$core$Maybe$Nothing, isAdding: true}),
 					$author$project$Api$Students$createStudent(
-						{cK: config.cK, ef: model.au, a1: $author$project$Pages$Dashboard$GotNewStudent, ba: config.ba}));
-			case 7:
+						{apiUrl: config.apiUrl, chessComUsername: model.newStudentChessCom, onResponse: $author$project$Pages$Dashboard$GotNewStudent, token: config.token}));
+			case 'GotNewStudent':
 				var result = msg.a;
-				if (!result.$) {
+				if (result.$ === 'Ok') {
 					var newStudent = result.a;
 					var updatedUserInfo = function () {
-						var _v5 = model.fV;
-						if (_v5.$ === 3) {
+						var _v5 = model.userInfo;
+						if (_v5.$ === 'Success') {
 							var info = _v5.a;
-							var newCount = info.aO + 1;
+							var newCount = info.studentCount + 1;
 							var newIsAtLimit = function () {
-								var _v6 = info.cm;
-								if (!_v6.$) {
+								var _v6 = info.plan;
+								if (_v6.$ === 'Just') {
 									var plan = _v6.a;
-									return _Utils_cmp(newCount, plan.cC) > -1;
+									return _Utils_cmp(newCount, plan.studentLimit) > -1;
 								} else {
 									return false;
 								}
@@ -8913,15 +8974,15 @@ var $author$project$Pages$Dashboard$update = F4(
 							return $author$project$Types$Success(
 								_Utils_update(
 									info,
-									{cd: newIsAtLimit, aO: newCount}));
+									{isAtLimit: newIsAtLimit, studentCount: newCount}));
 						} else {
 							var other = _v5;
 							return other;
 						}
 					}();
 					var updatedStudents = function () {
-						var _v4 = model.L;
-						if (_v4.$ === 3) {
+						var _v4 = model.students;
+						if (_v4.$ === 'Success') {
 							var students = _v4.a;
 							return $author$project$Types$Success(
 								A2($elm$core$List$cons, newStudent, students));
@@ -8934,7 +8995,7 @@ var $author$project$Pages$Dashboard$update = F4(
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{al: false, au: '', a3: false, L: updatedStudents, fV: updatedUserInfo}),
+							{isAdding: false, newStudentChessCom: '', showAddModal: false, students: updatedStudents, userInfo: updatedUserInfo}),
 						$elm$core$Platform$Cmd$none);
 				} else {
 					var error = result.a;
@@ -8942,77 +9003,77 @@ var $author$project$Pages$Dashboard$update = F4(
 						_Utils_update(
 							model,
 							{
-								aq: $elm$core$Maybe$Just(
+								addError: $elm$core$Maybe$Just(
 									$author$project$Pages$Dashboard$httpErrorToString(error)),
-								al: false
+								isAdding: false
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
-			case 8:
+			case 'PollProgress':
 				return _Utils_Tuple2(
 					model,
 					$author$project$Pages$Dashboard$fetchStudents(model));
-			case 9:
+			case 'ToggleShowArchived':
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{az: !model.az}),
+						{showArchived: !model.showArchived}),
 					$elm$core$Platform$Cmd$none);
-			case 10:
+			case 'ToggleStudentMenu':
 				var studentId = msg.a;
 				return _Utils_eq(
-					model.ag,
+					model.openMenuStudentId,
 					$elm$core$Maybe$Just(studentId)) ? _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{ag: $elm$core$Maybe$Nothing}),
+						{openMenuStudentId: $elm$core$Maybe$Nothing}),
 					$elm$core$Platform$Cmd$none) : _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							ag: $elm$core$Maybe$Just(studentId)
+							openMenuStudentId: $elm$core$Maybe$Just(studentId)
 						}),
 					$elm$core$Platform$Cmd$none);
-			case 11:
+			case 'CloseStudentMenu':
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{ag: $elm$core$Maybe$Nothing}),
+						{openMenuStudentId: $elm$core$Maybe$Nothing}),
 					$elm$core$Platform$Cmd$none);
-			case 12:
+			case 'ArchiveStudent':
 				var studentId = msg.a;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							aD: $elm$core$Maybe$Just(studentId),
-							ag: $elm$core$Maybe$Nothing
+							archivingStudentId: $elm$core$Maybe$Just(studentId),
+							openMenuStudentId: $elm$core$Maybe$Nothing
 						}),
 					$author$project$Api$Students$archiveStudent(
-						{cK: apiUrl, d2: true, a1: $author$project$Pages$Dashboard$GotArchiveResult, bu: studentId, ba: token}));
-			case 13:
+						{apiUrl: apiUrl, archived: true, onResponse: $author$project$Pages$Dashboard$GotArchiveResult, studentId: studentId, token: token}));
+			case 'UnarchiveStudent':
 				var studentId = msg.a;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							aD: $elm$core$Maybe$Just(studentId),
-							ag: $elm$core$Maybe$Nothing
+							archivingStudentId: $elm$core$Maybe$Just(studentId),
+							openMenuStudentId: $elm$core$Maybe$Nothing
 						}),
 					$author$project$Api$Students$archiveStudent(
-						{cK: apiUrl, d2: false, a1: $author$project$Pages$Dashboard$GotArchiveResult, bu: studentId, ba: token}));
-			case 14:
+						{apiUrl: apiUrl, archived: false, onResponse: $author$project$Pages$Dashboard$GotArchiveResult, studentId: studentId, token: token}));
+			case 'GotArchiveResult':
 				var result = msg.a;
-				if (!result.$) {
+				if (result.$ === 'Ok') {
 					var updatedStudent = result.a;
 					var wasArchived = function () {
-						var _v11 = model.L;
-						if (_v11.$ === 3) {
+						var _v11 = model.students;
+						if (_v11.$ === 'Success') {
 							var students = _v11.a;
 							return A2(
 								$elm$core$List$any,
 								function (s) {
-									return _Utils_eq(s.F, updatedStudent.F) && (!_Utils_eq(s.bg, $elm$core$Maybe$Nothing));
+									return _Utils_eq(s.id, updatedStudent.id) && (!_Utils_eq(s.archivedAt, $elm$core$Maybe$Nothing));
 								},
 								students);
 						} else {
@@ -9020,32 +9081,32 @@ var $author$project$Pages$Dashboard$update = F4(
 						}
 					}();
 					var updatedStudents = function () {
-						var _v10 = model.L;
-						if (_v10.$ === 3) {
+						var _v10 = model.students;
+						if (_v10.$ === 'Success') {
 							var students = _v10.a;
 							return $author$project$Types$Success(
 								A2(
 									$elm$core$List$map,
 									function (s) {
-										return _Utils_eq(s.F, updatedStudent.F) ? updatedStudent : s;
+										return _Utils_eq(s.id, updatedStudent.id) ? updatedStudent : s;
 									},
 									students));
 						} else {
-							return model.L;
+							return model.students;
 						}
 					}();
-					var isNowArchived = !_Utils_eq(updatedStudent.bg, $elm$core$Maybe$Nothing);
+					var isNowArchived = !_Utils_eq(updatedStudent.archivedAt, $elm$core$Maybe$Nothing);
 					var updatedUserInfo = function () {
-						var _v8 = model.fV;
-						if (_v8.$ === 3) {
+						var _v8 = model.userInfo;
+						if (_v8.$ === 'Success') {
 							var info = _v8.a;
 							var countDelta = (wasArchived && (!isNowArchived)) ? 1 : (((!wasArchived) && isNowArchived) ? (-1) : 0);
-							var newCount = info.aO + countDelta;
+							var newCount = info.studentCount + countDelta;
 							var newIsAtLimit = function () {
-								var _v9 = info.cm;
-								if (!_v9.$) {
+								var _v9 = info.plan;
+								if (_v9.$ === 'Just') {
 									var plan = _v9.a;
-									return _Utils_cmp(newCount, plan.cC) > -1;
+									return _Utils_cmp(newCount, plan.studentLimit) > -1;
 								} else {
 									return false;
 								}
@@ -9053,7 +9114,7 @@ var $author$project$Pages$Dashboard$update = F4(
 							return $author$project$Types$Success(
 								_Utils_update(
 									info,
-									{cd: newIsAtLimit, aO: newCount}));
+									{isAtLimit: newIsAtLimit, studentCount: newCount}));
 						} else {
 							var other = _v8;
 							return other;
@@ -9062,13 +9123,39 @@ var $author$project$Pages$Dashboard$update = F4(
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{aD: $elm$core$Maybe$Nothing, L: updatedStudents, fV: updatedUserInfo}),
+							{archivingStudentId: $elm$core$Maybe$Nothing, students: updatedStudents, userInfo: updatedUserInfo}),
 						$elm$core$Platform$Cmd$none);
 				} else {
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{aD: $elm$core$Maybe$Nothing}),
+							{archivingStudentId: $elm$core$Maybe$Nothing}),
+						$elm$core$Platform$Cmd$none);
+				}
+			case 'ResendVerificationEmail':
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{resendStatus: $author$project$Pages$Dashboard$ResendSending}),
+					$author$project$Api$Email$resendVerification(
+						{apiUrl: apiUrl, onResponse: $author$project$Pages$Dashboard$GotResendResult, token: token}));
+			case 'GotResendResult':
+				var result = msg.a;
+				if (result.$ === 'Ok') {
+					return _Utils_Tuple2(
+						_Utils_update(
+							model,
+							{resendStatus: $author$project$Pages$Dashboard$ResendSuccess}),
+						$elm$core$Platform$Cmd$none);
+				} else {
+					var error = result.a;
+					return _Utils_Tuple2(
+						_Utils_update(
+							model,
+							{
+								resendStatus: $author$project$Pages$Dashboard$ResendError(
+									$author$project$Pages$Dashboard$httpErrorToString(error))
+							}),
 						$elm$core$Platform$Cmd$none);
 				}
 			default:
@@ -9077,13 +9164,13 @@ var $author$project$Pages$Dashboard$update = F4(
 	});
 var $author$project$Pages$EmailPreferences$httpErrorToString = function (error) {
 	switch (error.$) {
-		case 0:
+		case 'BadUrl':
 			return 'Invalid URL';
-		case 1:
+		case 'Timeout':
 			return 'Request timed out';
-		case 2:
+		case 'NetworkError':
 			return 'Network error - please check your connection';
-		case 3:
+		case 'BadStatus':
 			var status = error.a;
 			return 'Server error (status ' + ($elm$core$String$fromInt(status) + ')');
 		default:
@@ -9092,65 +9179,65 @@ var $author$project$Pages$EmailPreferences$httpErrorToString = function (error) 
 	}
 };
 var $author$project$Pages$EmailPreferences$GotSaveResponse = function (a) {
-	return {$: 4, a: a};
+	return {$: 'GotSaveResponse', a: a};
 };
 var $author$project$Api$put = function (config) {
 	return $elm$http$Http$request(
 		{
-			aj: $elm$http$Http$jsonBody(config.aj),
-			a_: A2($elm$http$Http$expectJson, config.a1, config.bj),
-			a$: $author$project$Api$authHeader(config.ba),
-			a0: 'PUT',
-			a8: $elm$core$Maybe$Nothing,
-			bb: $elm$core$Maybe$Nothing,
-			bc: $author$project$Api$unwrap(config.aZ)
+			body: $elm$http$Http$jsonBody(config.body),
+			expect: A2($elm$http$Http$expectJson, config.onResponse, config.decoder),
+			headers: $author$project$Api$authHeader(config.token),
+			method: 'PUT',
+			timeout: $elm$core$Maybe$Nothing,
+			tracker: $elm$core$Maybe$Nothing,
+			url: $author$project$Api$unwrap(config.endpoint)
 		});
 };
 var $author$project$Api$Email$updatePreferences = function (config) {
 	return $author$project$Api$put(
 		{
-			aj: $elm$json$Json$Encode$object(
+			body: $elm$json$Json$Encode$object(
 				_List_fromArray(
 					[
 						_Utils_Tuple2(
 						'analysis_complete_notifications',
-						$elm$json$Json$Encode$bool(config.cn.cJ)),
+						$elm$json$Json$Encode$bool(config.preferences.analysisCompleteNotifications)),
 						_Utils_Tuple2(
 						'weekly_summary',
-						$elm$json$Json$Encode$bool(config.cn.dQ)),
+						$elm$json$Json$Encode$bool(config.preferences.weeklySummary)),
 						_Utils_Tuple2(
 						'marketing_emails',
-						$elm$json$Json$Encode$bool(config.cn.c9))
+						$elm$json$Json$Encode$bool(config.preferences.marketingEmails))
 					])),
-			bj: $author$project$Api$Email$emailPreferencesDecoder,
-			aZ: A2(
+			decoder: $author$project$Api$Email$emailPreferencesDecoder,
+			endpoint: A2(
 				$author$project$Api$url,
-				config.cK,
+				config.apiUrl,
 				_List_fromArray(
 					['api', 'email-preferences'])),
-			a1: config.a1,
-			ba: $elm$core$Maybe$Just(config.ba)
+			onResponse: config.onResponse,
+			token: $elm$core$Maybe$Just(config.token)
 		});
 };
 var $author$project$Pages$EmailPreferences$savePreferences = F3(
 	function (apiUrl, token, prefs) {
 		return $author$project$Api$Email$updatePreferences(
-			{cK: apiUrl, a1: $author$project$Pages$EmailPreferences$GotSaveResponse, cn: prefs, ba: token});
+			{apiUrl: apiUrl, onResponse: $author$project$Pages$EmailPreferences$GotSaveResponse, preferences: prefs, token: token});
 	});
 var $author$project$Pages$EmailPreferences$update = F2(
 	function (msg, model) {
 		switch (msg.$) {
-			case 0:
+			case 'GotPreferences':
 				var result = msg.a;
-				if (!result.$) {
+				if (result.$ === 'Ok') {
 					var prefs = result.a;
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								aG: $elm$core$Maybe$Nothing,
-								bo: false,
-								cn: $elm$core$Maybe$Just(prefs)
+								error: $elm$core$Maybe$Nothing,
+								isLoading: false,
+								preferences: $elm$core$Maybe$Just(prefs)
 							}),
 						$elm$core$Platform$Cmd$none);
 				} else {
@@ -9159,84 +9246,84 @@ var $author$project$Pages$EmailPreferences$update = F2(
 						_Utils_update(
 							model,
 							{
-								aG: $elm$core$Maybe$Just(
+								error: $elm$core$Maybe$Just(
 									$author$project$Pages$EmailPreferences$httpErrorToString(error)),
-								bo: false
+								isLoading: false
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
-			case 1:
+			case 'ToggleAnalysisComplete':
 				var value = msg.a;
-				var _v2 = model.cn;
-				if (!_v2.$) {
+				var _v2 = model.preferences;
+				if (_v2.$ === 'Just') {
 					var prefs = _v2.a;
 					var newPrefs = _Utils_update(
 						prefs,
-						{cJ: value});
+						{analysisCompleteNotifications: value});
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								A: true,
-								cn: $elm$core$Maybe$Just(newPrefs),
-								aN: false
+								isSaving: true,
+								preferences: $elm$core$Maybe$Just(newPrefs),
+								saveSuccess: false
 							}),
-						A3($author$project$Pages$EmailPreferences$savePreferences, model.cK, model.ba, newPrefs));
+						A3($author$project$Pages$EmailPreferences$savePreferences, model.apiUrl, model.token, newPrefs));
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 2:
+			case 'ToggleWeeklySummary':
 				var value = msg.a;
-				var _v3 = model.cn;
-				if (!_v3.$) {
+				var _v3 = model.preferences;
+				if (_v3.$ === 'Just') {
 					var prefs = _v3.a;
 					var newPrefs = _Utils_update(
 						prefs,
-						{dQ: value});
+						{weeklySummary: value});
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								A: true,
-								cn: $elm$core$Maybe$Just(newPrefs),
-								aN: false
+								isSaving: true,
+								preferences: $elm$core$Maybe$Just(newPrefs),
+								saveSuccess: false
 							}),
-						A3($author$project$Pages$EmailPreferences$savePreferences, model.cK, model.ba, newPrefs));
+						A3($author$project$Pages$EmailPreferences$savePreferences, model.apiUrl, model.token, newPrefs));
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
-			case 3:
+			case 'ToggleMarketing':
 				var value = msg.a;
-				var _v4 = model.cn;
-				if (!_v4.$) {
+				var _v4 = model.preferences;
+				if (_v4.$ === 'Just') {
 					var prefs = _v4.a;
 					var newPrefs = _Utils_update(
 						prefs,
-						{c9: value});
+						{marketingEmails: value});
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								A: true,
-								cn: $elm$core$Maybe$Just(newPrefs),
-								aN: false
+								isSaving: true,
+								preferences: $elm$core$Maybe$Just(newPrefs),
+								saveSuccess: false
 							}),
-						A3($author$project$Pages$EmailPreferences$savePreferences, model.cK, model.ba, newPrefs));
+						A3($author$project$Pages$EmailPreferences$savePreferences, model.apiUrl, model.token, newPrefs));
 				} else {
 					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 				}
 			default:
 				var result = msg.a;
-				if (!result.$) {
+				if (result.$ === 'Ok') {
 					var prefs = result.a;
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								aG: $elm$core$Maybe$Nothing,
-								A: false,
-								cn: $elm$core$Maybe$Just(prefs),
-								aN: true
+								error: $elm$core$Maybe$Nothing,
+								isSaving: false,
+								preferences: $elm$core$Maybe$Just(prefs),
+								saveSuccess: true
 							}),
 						$elm$core$Platform$Cmd$none);
 				} else {
@@ -9245,53 +9332,46 @@ var $author$project$Pages$EmailPreferences$update = F2(
 						_Utils_update(
 							model,
 							{
-								aG: $elm$core$Maybe$Just(
+								error: $elm$core$Maybe$Just(
 									$author$project$Pages$EmailPreferences$httpErrorToString(error)),
-								A: false
+								isSaving: false
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
 		}
 	});
 var $author$project$Pages$ForgotPassword$GotResponse = function (a) {
-	return {$: 2, a: a};
+	return {$: 'GotResponse', a: a};
 };
-var $author$project$Api$Email$MessageResponse = function (message) {
-	return {da: message};
-};
-var $author$project$Api$Email$messageResponseDecoder = A2(
-	$elm$json$Json$Decode$map,
-	$author$project$Api$Email$MessageResponse,
-	A2($elm$json$Json$Decode$field, 'message', $elm$json$Json$Decode$string));
 var $author$project$Api$Email$forgotPassword = function (config) {
 	return $author$project$Api$post(
 		{
-			aj: $elm$json$Json$Encode$object(
+			body: $elm$json$Json$Encode$object(
 				_List_fromArray(
 					[
 						_Utils_Tuple2(
 						'email',
-						$elm$json$Json$Encode$string(config.cW))
+						$elm$json$Json$Encode$string(config.email))
 					])),
-			bj: $author$project$Api$Email$messageResponseDecoder,
-			aZ: A2(
+			decoder: $author$project$Api$Email$messageResponseDecoder,
+			endpoint: A2(
 				$author$project$Api$url,
-				config.cK,
+				config.apiUrl,
 				_List_fromArray(
 					['api', 'auth', 'forgot-password'])),
-			a1: config.a1,
-			ba: $elm$core$Maybe$Nothing
+			onResponse: config.onResponse,
+			token: $elm$core$Maybe$Nothing
 		});
 };
 var $author$project$Pages$ForgotPassword$httpErrorToString = function (error) {
 	switch (error.$) {
-		case 0:
+		case 'BadUrl':
 			return 'Invalid URL';
-		case 1:
+		case 'Timeout':
 			return 'Request timed out';
-		case 2:
+		case 'NetworkError':
 			return 'Network error - please check your connection';
-		case 3:
+		case 'BadStatus':
 			var status = error.a;
 			return (status === 400) ? 'Invalid request - please check your input' : ((status === 429) ? 'Too many requests. Please try again later.' : ('Server error (status ' + ($elm$core$String$fromInt(status) + ')')));
 		default:
@@ -9302,37 +9382,37 @@ var $author$project$Pages$ForgotPassword$httpErrorToString = function (error) {
 var $author$project$Pages$ForgotPassword$update = F3(
 	function (apiUrl, msg, model) {
 		switch (msg.$) {
-			case 0:
+			case 'EmailChanged':
 				var email = msg.a;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{cW: email, aG: $elm$core$Maybe$Nothing}),
+						{email: email, error: $elm$core$Maybe$Nothing}),
 					$elm$core$Platform$Cmd$none);
-			case 1:
-				return $elm$core$String$isEmpty(model.cW) ? _Utils_Tuple2(
+			case 'SubmitForm':
+				return $elm$core$String$isEmpty(model.email) ? _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							aG: $elm$core$Maybe$Just('Please enter your email address')
+							error: $elm$core$Maybe$Just('Please enter your email address')
 						}),
 					$elm$core$Platform$Cmd$none) : _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{aG: $elm$core$Maybe$Nothing, bo: true, bv: $elm$core$Maybe$Nothing}),
+						{error: $elm$core$Maybe$Nothing, isLoading: true, success: $elm$core$Maybe$Nothing}),
 					$author$project$Api$Email$forgotPassword(
-						{cK: apiUrl, cW: model.cW, a1: $author$project$Pages$ForgotPassword$GotResponse}));
+						{apiUrl: apiUrl, email: model.email, onResponse: $author$project$Pages$ForgotPassword$GotResponse}));
 			default:
 				var result = msg.a;
-				if (!result.$) {
+				if (result.$ === 'Ok') {
 					var response = result.a;
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								aG: $elm$core$Maybe$Nothing,
-								bo: false,
-								bv: $elm$core$Maybe$Just(response.da)
+								error: $elm$core$Maybe$Nothing,
+								isLoading: false,
+								success: $elm$core$Maybe$Just(response.message)
 							}),
 						$elm$core$Platform$Cmd$none);
 				} else {
@@ -9341,9 +9421,9 @@ var $author$project$Pages$ForgotPassword$update = F3(
 						_Utils_update(
 							model,
 							{
-								aG: $elm$core$Maybe$Just(
+								error: $elm$core$Maybe$Just(
 									$author$project$Pages$ForgotPassword$httpErrorToString(error)),
-								bo: false
+								isLoading: false
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
@@ -9351,13 +9431,13 @@ var $author$project$Pages$ForgotPassword$update = F3(
 	});
 var $author$project$Pages$GameDetail$httpErrorToString = function (error) {
 	switch (error.$) {
-		case 0:
+		case 'BadUrl':
 			return 'Invalid URL';
-		case 1:
+		case 'Timeout':
 			return 'Request timed out';
-		case 2:
+		case 'NetworkError':
 			return 'Network error';
-		case 3:
+		case 'BadStatus':
 			var status = error.a;
 			return (status === 404) ? 'Game not found' : ('Server error (status ' + ($elm$core$String$fromInt(status) + ')'));
 		default:
@@ -9367,14 +9447,14 @@ var $author$project$Pages$GameDetail$httpErrorToString = function (error) {
 };
 var $author$project$Pages$GameDetail$update = F2(
 	function (msg, model) {
-		var result = msg;
-		if (!result.$) {
+		var result = msg.a;
+		if (result.$ === 'Ok') {
 			var detail = result.a;
 			return _Utils_Tuple2(
 				_Utils_update(
 					model,
 					{
-						bn: $author$project$Types$Success(detail)
+						gameDetail: $author$project$Types$Success(detail)
 					}),
 				$elm$core$Platform$Cmd$none);
 		} else {
@@ -9383,24 +9463,24 @@ var $author$project$Pages$GameDetail$update = F2(
 				_Utils_update(
 					model,
 					{
-						bn: $author$project$Types$Failure(
+						gameDetail: $author$project$Types$Failure(
 							$author$project$Pages$GameDetail$httpErrorToString(error))
 					}),
 				$elm$core$Platform$Cmd$none);
 		}
 	});
 var $author$project$Pages$Login$GotLoginResponse = function (a) {
-	return {$: 3, a: a};
+	return {$: 'GotLoginResponse', a: a};
 };
 var $author$project$Pages$Login$httpErrorToString = function (error) {
 	switch (error.$) {
-		case 0:
+		case 'BadUrl':
 			return 'Invalid URL';
-		case 1:
+		case 'Timeout':
 			return 'Request timed out';
-		case 2:
+		case 'NetworkError':
 			return 'Network error - please check your connection';
-		case 3:
+		case 'BadStatus':
 			var status = error.a;
 			return (status === 401) ? 'Invalid email or password' : ((status === 400) ? 'Invalid request - please check your input' : ('Server error (status ' + ($elm$core$String$fromInt(status) + ')')));
 		default:
@@ -9410,11 +9490,11 @@ var $author$project$Pages$Login$httpErrorToString = function (error) {
 };
 var $author$project$Api$Auth$AuthResponse = F2(
 	function (token, coach) {
-		return {eg: coach, ba: token};
+		return {coach: coach, token: token};
 	});
 var $author$project$Types$CoachWithSubscription = F4(
 	function (id, email, createdAt, subscription) {
-		return {cR: createdAt, cW: email, F: id, bY: subscription};
+		return {createdAt: createdAt, email: email, id: id, subscription: subscription};
 	});
 var $author$project$Types$coachWithSubscriptionDecoder = A4(
 	$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$optional,
@@ -9442,68 +9522,68 @@ var $author$project$Api$Auth$authResponseDecoder = A3(
 var $author$project$Api$Auth$login = function (config) {
 	return $author$project$Api$post(
 		{
-			aj: $elm$json$Json$Encode$object(
+			body: $elm$json$Json$Encode$object(
 				_List_fromArray(
 					[
 						_Utils_Tuple2(
 						'email',
-						$elm$json$Json$Encode$string(config.cW)),
+						$elm$json$Json$Encode$string(config.email)),
 						_Utils_Tuple2(
 						'password',
-						$elm$json$Json$Encode$string(config.dh))
+						$elm$json$Json$Encode$string(config.password))
 					])),
-			bj: $author$project$Api$Auth$authResponseDecoder,
-			aZ: A2(
+			decoder: $author$project$Api$Auth$authResponseDecoder,
+			endpoint: A2(
 				$author$project$Api$url,
-				config.cK,
+				config.apiUrl,
 				_List_fromArray(
 					['api', 'auth', 'login'])),
-			a1: config.a1,
-			ba: $elm$core$Maybe$Nothing
+			onResponse: config.onResponse,
+			token: $elm$core$Maybe$Nothing
 		});
 };
 var $author$project$Pages$Login$update = F3(
 	function (apiUrl, msg, model) {
 		switch (msg.$) {
-			case 0:
+			case 'EmailChanged':
 				var email = msg.a;
 				return _Utils_Tuple3(
 					_Utils_update(
 						model,
-						{cW: email, aG: $elm$core$Maybe$Nothing}),
+						{email: email, error: $elm$core$Maybe$Nothing}),
 					$elm$core$Platform$Cmd$none,
 					$elm$core$Maybe$Nothing);
-			case 1:
+			case 'PasswordChanged':
 				var password = msg.a;
 				return _Utils_Tuple3(
 					_Utils_update(
 						model,
-						{aG: $elm$core$Maybe$Nothing, dh: password}),
+						{error: $elm$core$Maybe$Nothing, password: password}),
 					$elm$core$Platform$Cmd$none,
 					$elm$core$Maybe$Nothing);
-			case 2:
-				return ($elm$core$String$isEmpty(model.cW) || $elm$core$String$isEmpty(model.dh)) ? _Utils_Tuple3(
+			case 'SubmitForm':
+				return ($elm$core$String$isEmpty(model.email) || $elm$core$String$isEmpty(model.password)) ? _Utils_Tuple3(
 					_Utils_update(
 						model,
 						{
-							aG: $elm$core$Maybe$Just('Please fill in all fields')
+							error: $elm$core$Maybe$Just('Please fill in all fields')
 						}),
 					$elm$core$Platform$Cmd$none,
 					$elm$core$Maybe$Nothing) : _Utils_Tuple3(
 					_Utils_update(
 						model,
-						{aG: $elm$core$Maybe$Nothing, bo: true}),
+						{error: $elm$core$Maybe$Nothing, isLoading: true}),
 					$author$project$Api$Auth$login(
-						{cK: apiUrl, cW: model.cW, a1: $author$project$Pages$Login$GotLoginResponse, dh: model.dh}),
+						{apiUrl: apiUrl, email: model.email, onResponse: $author$project$Pages$Login$GotLoginResponse, password: model.password}),
 					$elm$core$Maybe$Nothing);
 			default:
 				var result = msg.a;
-				if (!result.$) {
+				if (result.$ === 'Ok') {
 					var authResponse = result.a;
 					return _Utils_Tuple3(
 						_Utils_update(
 							model,
-							{bo: false}),
+							{isLoading: false}),
 						$elm$core$Platform$Cmd$none,
 						$elm$core$Maybe$Just(authResponse));
 				} else {
@@ -9512,9 +9592,9 @@ var $author$project$Pages$Login$update = F3(
 						_Utils_update(
 							model,
 							{
-								aG: $elm$core$Maybe$Just(
+								error: $elm$core$Maybe$Just(
 									$author$project$Pages$Login$httpErrorToString(error)),
-								bo: false
+								isLoading: false
 							}),
 						$elm$core$Platform$Cmd$none,
 						$elm$core$Maybe$Nothing);
@@ -9522,17 +9602,17 @@ var $author$project$Pages$Login$update = F3(
 		}
 	});
 var $author$project$Pages$Register$GotRegisterResponse = function (a) {
-	return {$: 4, a: a};
+	return {$: 'GotRegisterResponse', a: a};
 };
 var $author$project$Pages$Register$httpErrorToString = function (error) {
 	switch (error.$) {
-		case 0:
+		case 'BadUrl':
 			return 'Invalid URL';
-		case 1:
+		case 'Timeout':
 			return 'Request timed out';
-		case 2:
+		case 'NetworkError':
 			return 'Network error - please check your connection';
-		case 3:
+		case 'BadStatus':
 			var status = error.a;
 			return (status === 409) ? 'An account with this email already exists' : ((status === 400) ? 'Invalid email format or password too short' : ('Server error (status ' + ($elm$core$String$fromInt(status) + ')')));
 		default:
@@ -9543,90 +9623,90 @@ var $author$project$Pages$Register$httpErrorToString = function (error) {
 var $author$project$Api$Auth$register = function (config) {
 	return $author$project$Api$post(
 		{
-			aj: $elm$json$Json$Encode$object(
+			body: $elm$json$Json$Encode$object(
 				_List_fromArray(
 					[
 						_Utils_Tuple2(
 						'email',
-						$elm$json$Json$Encode$string(config.cW)),
+						$elm$json$Json$Encode$string(config.email)),
 						_Utils_Tuple2(
 						'password',
-						$elm$json$Json$Encode$string(config.dh))
+						$elm$json$Json$Encode$string(config.password))
 					])),
-			bj: $author$project$Api$Auth$authResponseDecoder,
-			aZ: A2(
+			decoder: $author$project$Api$Auth$authResponseDecoder,
+			endpoint: A2(
 				$author$project$Api$url,
-				config.cK,
+				config.apiUrl,
 				_List_fromArray(
 					['api', 'auth', 'register'])),
-			a1: config.a1,
-			ba: $elm$core$Maybe$Nothing
+			onResponse: config.onResponse,
+			token: $elm$core$Maybe$Nothing
 		});
 };
 var $author$project$Pages$Register$update = F3(
 	function (apiUrl, msg, model) {
 		switch (msg.$) {
-			case 0:
+			case 'EmailChanged':
 				var email = msg.a;
 				return _Utils_Tuple3(
 					_Utils_update(
 						model,
-						{cW: email, aG: $elm$core$Maybe$Nothing}),
+						{email: email, error: $elm$core$Maybe$Nothing}),
 					$elm$core$Platform$Cmd$none,
 					$elm$core$Maybe$Nothing);
-			case 1:
+			case 'PasswordChanged':
 				var password = msg.a;
 				return _Utils_Tuple3(
 					_Utils_update(
 						model,
-						{aG: $elm$core$Maybe$Nothing, dh: password}),
+						{error: $elm$core$Maybe$Nothing, password: password}),
 					$elm$core$Platform$Cmd$none,
 					$elm$core$Maybe$Nothing);
-			case 2:
+			case 'ConfirmPasswordChanged':
 				var confirmPassword = msg.a;
 				return _Utils_Tuple3(
 					_Utils_update(
 						model,
-						{bh: confirmPassword, aG: $elm$core$Maybe$Nothing}),
+						{confirmPassword: confirmPassword, error: $elm$core$Maybe$Nothing}),
 					$elm$core$Platform$Cmd$none,
 					$elm$core$Maybe$Nothing);
-			case 3:
-				return ($elm$core$String$isEmpty(model.cW) || $elm$core$String$isEmpty(model.dh)) ? _Utils_Tuple3(
+			case 'SubmitForm':
+				return ($elm$core$String$isEmpty(model.email) || $elm$core$String$isEmpty(model.password)) ? _Utils_Tuple3(
 					_Utils_update(
 						model,
 						{
-							aG: $elm$core$Maybe$Just('Please fill in all fields')
+							error: $elm$core$Maybe$Just('Please fill in all fields')
 						}),
 					$elm$core$Platform$Cmd$none,
-					$elm$core$Maybe$Nothing) : (($elm$core$String$length(model.dh) < 8) ? _Utils_Tuple3(
+					$elm$core$Maybe$Nothing) : (($elm$core$String$length(model.password) < 8) ? _Utils_Tuple3(
 					_Utils_update(
 						model,
 						{
-							aG: $elm$core$Maybe$Just('Password must be at least 8 characters')
+							error: $elm$core$Maybe$Just('Password must be at least 8 characters')
 						}),
 					$elm$core$Platform$Cmd$none,
-					$elm$core$Maybe$Nothing) : ((!_Utils_eq(model.dh, model.bh)) ? _Utils_Tuple3(
+					$elm$core$Maybe$Nothing) : ((!_Utils_eq(model.password, model.confirmPassword)) ? _Utils_Tuple3(
 					_Utils_update(
 						model,
 						{
-							aG: $elm$core$Maybe$Just('Passwords do not match')
+							error: $elm$core$Maybe$Just('Passwords do not match')
 						}),
 					$elm$core$Platform$Cmd$none,
 					$elm$core$Maybe$Nothing) : _Utils_Tuple3(
 					_Utils_update(
 						model,
-						{aG: $elm$core$Maybe$Nothing, bo: true}),
+						{error: $elm$core$Maybe$Nothing, isLoading: true}),
 					$author$project$Api$Auth$register(
-						{cK: apiUrl, cW: model.cW, a1: $author$project$Pages$Register$GotRegisterResponse, dh: model.dh}),
+						{apiUrl: apiUrl, email: model.email, onResponse: $author$project$Pages$Register$GotRegisterResponse, password: model.password}),
 					$elm$core$Maybe$Nothing)));
 			default:
 				var result = msg.a;
-				if (!result.$) {
+				if (result.$ === 'Ok') {
 					var authResponse = result.a;
 					return _Utils_Tuple3(
 						_Utils_update(
 							model,
-							{bo: false}),
+							{isLoading: false}),
 						$elm$core$Platform$Cmd$none,
 						$elm$core$Maybe$Just(authResponse));
 				} else {
@@ -9635,9 +9715,9 @@ var $author$project$Pages$Register$update = F3(
 						_Utils_update(
 							model,
 							{
-								aG: $elm$core$Maybe$Just(
+								error: $elm$core$Maybe$Just(
 									$author$project$Pages$Register$httpErrorToString(error)),
-								bo: false
+								isLoading: false
 							}),
 						$elm$core$Platform$Cmd$none,
 						$elm$core$Maybe$Nothing);
@@ -9645,17 +9725,17 @@ var $author$project$Pages$Register$update = F3(
 		}
 	});
 var $author$project$Pages$ResetPassword$GotResponse = function (a) {
-	return {$: 3, a: a};
+	return {$: 'GotResponse', a: a};
 };
 var $author$project$Pages$ResetPassword$httpErrorToString = function (error) {
 	switch (error.$) {
-		case 0:
+		case 'BadUrl':
 			return 'Invalid URL';
-		case 1:
+		case 'Timeout':
 			return 'Request timed out';
-		case 2:
+		case 'NetworkError':
 			return 'Network error - please check your connection';
-		case 3:
+		case 'BadStatus':
 			var status = error.a;
 			return (status === 400) ? 'Invalid or expired reset link. Please request a new one.' : ('Server error (status ' + ($elm$core$String$fromInt(status) + ')'));
 		default:
@@ -9666,75 +9746,75 @@ var $author$project$Pages$ResetPassword$httpErrorToString = function (error) {
 var $author$project$Api$Email$resetPassword = function (config) {
 	return $author$project$Api$post(
 		{
-			aj: $elm$json$Json$Encode$object(
+			body: $elm$json$Json$Encode$object(
 				_List_fromArray(
 					[
 						_Utils_Tuple2(
 						'token',
-						$elm$json$Json$Encode$string(config.ba)),
+						$elm$json$Json$Encode$string(config.token)),
 						_Utils_Tuple2(
 						'password',
-						$elm$json$Json$Encode$string(config.dh))
+						$elm$json$Json$Encode$string(config.password))
 					])),
-			bj: $author$project$Api$Email$messageResponseDecoder,
-			aZ: A2(
+			decoder: $author$project$Api$Email$messageResponseDecoder,
+			endpoint: A2(
 				$author$project$Api$url,
-				config.cK,
+				config.apiUrl,
 				_List_fromArray(
 					['api', 'auth', 'reset-password'])),
-			a1: config.a1,
-			ba: $elm$core$Maybe$Nothing
+			onResponse: config.onResponse,
+			token: $elm$core$Maybe$Nothing
 		});
 };
 var $author$project$Pages$ResetPassword$update = F3(
 	function (apiUrl, msg, model) {
 		switch (msg.$) {
-			case 0:
+			case 'PasswordChanged':
 				var password = msg.a;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{aG: $elm$core$Maybe$Nothing, dh: password}),
+						{error: $elm$core$Maybe$Nothing, password: password}),
 					$elm$core$Platform$Cmd$none);
-			case 1:
+			case 'ConfirmPasswordChanged':
 				var confirmPassword = msg.a;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{bh: confirmPassword, aG: $elm$core$Maybe$Nothing}),
+						{confirmPassword: confirmPassword, error: $elm$core$Maybe$Nothing}),
 					$elm$core$Platform$Cmd$none);
-			case 2:
-				return $elm$core$String$isEmpty(model.dh) ? _Utils_Tuple2(
+			case 'SubmitForm':
+				return $elm$core$String$isEmpty(model.password) ? _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							aG: $elm$core$Maybe$Just('Please enter a new password')
+							error: $elm$core$Maybe$Just('Please enter a new password')
 						}),
-					$elm$core$Platform$Cmd$none) : (($elm$core$String$length(model.dh) < 8) ? _Utils_Tuple2(
+					$elm$core$Platform$Cmd$none) : (($elm$core$String$length(model.password) < 8) ? _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							aG: $elm$core$Maybe$Just('Password must be at least 8 characters')
+							error: $elm$core$Maybe$Just('Password must be at least 8 characters')
 						}),
-					$elm$core$Platform$Cmd$none) : ((!_Utils_eq(model.dh, model.bh)) ? _Utils_Tuple2(
+					$elm$core$Platform$Cmd$none) : ((!_Utils_eq(model.password, model.confirmPassword)) ? _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							aG: $elm$core$Maybe$Just('Passwords do not match')
+							error: $elm$core$Maybe$Just('Passwords do not match')
 						}),
 					$elm$core$Platform$Cmd$none) : _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{aG: $elm$core$Maybe$Nothing, bo: true}),
+						{error: $elm$core$Maybe$Nothing, isLoading: true}),
 					$author$project$Api$Email$resetPassword(
-						{cK: apiUrl, a1: $author$project$Pages$ResetPassword$GotResponse, dh: model.dh, ba: model.ba}))));
+						{apiUrl: apiUrl, onResponse: $author$project$Pages$ResetPassword$GotResponse, password: model.password, token: model.token}))));
 			default:
 				var result = msg.a;
-				if (!result.$) {
+				if (result.$ === 'Ok') {
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{aG: $elm$core$Maybe$Nothing, bo: false, bv: true}),
+							{error: $elm$core$Maybe$Nothing, isLoading: false, success: true}),
 						$elm$core$Platform$Cmd$none);
 				} else {
 					var error = result.a;
@@ -9742,16 +9822,16 @@ var $author$project$Pages$ResetPassword$update = F3(
 						_Utils_update(
 							model,
 							{
-								aG: $elm$core$Maybe$Just(
+								error: $elm$core$Maybe$Just(
 									$author$project$Pages$ResetPassword$httpErrorToString(error)),
-								bo: false
+								isLoading: false
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
 		}
 	});
 var $author$project$Pages$StudentDetail$GotArchiveResult = function (a) {
-	return {$: 26, a: a};
+	return {$: 'GotArchiveResult', a: a};
 };
 var $elm$core$List$filter = F2(
 	function (isGood, list) {
@@ -9766,13 +9846,13 @@ var $elm$core$List$filter = F2(
 	});
 var $author$project$Pages$StudentDetail$httpErrorToString = function (error) {
 	switch (error.$) {
-		case 0:
+		case 'BadUrl':
 			return 'Invalid URL';
-		case 1:
+		case 'Timeout':
 			return 'Request timed out';
-		case 2:
+		case 'NetworkError':
 			return 'Network error';
-		case 3:
+		case 'BadStatus':
 			var status = error.a;
 			return 'Server error (status ' + ($elm$core$String$fromInt(status) + ')');
 		default:
@@ -9792,7 +9872,7 @@ var $elm$core$List$member = F2(
 var $elm$core$Dict$member = F2(
 	function (key, dict) {
 		var _v0 = A2($elm$core$Dict$get, key, dict);
-		if (!_v0.$) {
+		if (_v0.$ === 'Just') {
 			return true;
 		} else {
 			return false;
@@ -9800,26 +9880,27 @@ var $elm$core$Dict$member = F2(
 	});
 var $elm$core$Set$member = F2(
 	function (key, _v0) {
-		var dict = _v0;
+		var dict = _v0.a;
 		return A2($elm$core$Dict$member, key, dict);
 	});
 var $elm$core$Set$remove = F2(
 	function (key, _v0) {
-		var dict = _v0;
-		return A2($elm$core$Dict$remove, key, dict);
+		var dict = _v0.a;
+		return $elm$core$Set$Set_elm_builtin(
+			A2($elm$core$Dict$remove, key, dict));
 	});
 var $author$project$Pages$StudentDetail$update = F2(
 	function (msg, model) {
 		switch (msg.$) {
-			case 0:
+			case 'GotStudent':
 				var result = msg.a;
-				if (!result.$) {
+				if (result.$ === 'Ok') {
 					var student = result.a;
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								ao: $author$project$Types$Success(student)
+								student: $author$project$Types$Success(student)
 							}),
 						$elm$core$Platform$Cmd$none);
 				} else {
@@ -9828,20 +9909,20 @@ var $author$project$Pages$StudentDetail$update = F2(
 						_Utils_update(
 							model,
 							{
-								ao: $author$project$Types$Failure(
+								student: $author$project$Types$Failure(
 									$author$project$Pages$StudentDetail$httpErrorToString(error))
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
-			case 1:
+			case 'GotGames':
 				var result = msg.a;
-				if (!result.$) {
+				if (result.$ === 'Ok') {
 					var gamesData = result.a;
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								g: $author$project$Types$Success(gamesData)
+								games: $author$project$Types$Success(gamesData)
 							}),
 						$elm$core$Platform$Cmd$none);
 				} else {
@@ -9850,20 +9931,20 @@ var $author$project$Pages$StudentDetail$update = F2(
 						_Utils_update(
 							model,
 							{
-								g: $author$project$Types$Failure(
+								games: $author$project$Types$Failure(
 									$author$project$Pages$StudentDetail$httpErrorToString(error))
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
-			case 2:
+			case 'GotTags':
 				var result = msg.a;
-				if (!result.$) {
+				if (result.$ === 'Ok') {
 					var tagsData = result.a;
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								fF: $author$project$Types$Success(tagsData)
+								tags: $author$project$Types$Success(tagsData)
 							}),
 						$elm$core$Platform$Cmd$none);
 				} else {
@@ -9872,16 +9953,16 @@ var $author$project$Pages$StudentDetail$update = F2(
 						_Utils_update(
 							model,
 							{
-								fF: $author$project$Types$Failure(
+								tags: $author$project$Types$Failure(
 									$author$project$Pages$StudentDetail$httpErrorToString(error))
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
-			case 3:
+			case 'SetTimeRangeFilter':
 				var filter = msg.a;
 				var newModel = _Utils_update(
 					model,
-					{g: $author$project$Types$Loading, e8: 0, ao: $author$project$Types$Loading, fF: $author$project$Types$Loading, y: filter});
+					{games: $author$project$Types$Loading, offset: 0, student: $author$project$Types$Loading, tags: $author$project$Types$Loading, timeRangeFilter: filter});
 				return _Utils_Tuple2(
 					newModel,
 					$elm$core$Platform$Cmd$batch(
@@ -9891,236 +9972,236 @@ var $author$project$Pages$StudentDetail$update = F2(
 								$author$project$Pages$StudentDetail$fetchFilteredGames(newModel),
 								$author$project$Pages$StudentDetail$fetchTags(newModel)
 							])));
-			case 4:
+			case 'SetTimeControlFilter':
 				var filter = msg.a;
 				var newModel = _Utils_update(
 					model,
-					{g: $author$project$Types$Loading, e8: 0, S: filter});
+					{games: $author$project$Types$Loading, offset: 0, timeControlFilter: filter});
 				return _Utils_Tuple2(
 					newModel,
 					$author$project$Pages$StudentDetail$fetchFilteredGames(newModel));
-			case 5:
+			case 'SetResultFilter':
 				var filter = msg.a;
 				var newModel = _Utils_update(
 					model,
-					{g: $author$project$Types$Loading, e8: 0, R: filter});
+					{games: $author$project$Types$Loading, offset: 0, resultFilter: filter});
 				return _Utils_Tuple2(
 					newModel,
 					$author$project$Pages$StudentDetail$fetchFilteredGames(newModel));
-			case 6:
+			case 'SetColorFilter':
 				var filter = msg.a;
 				var newModel = _Utils_update(
 					model,
-					{T: filter, g: $author$project$Types$Loading, e8: 0});
+					{colorFilter: filter, games: $author$project$Types$Loading, offset: 0});
 				return _Utils_Tuple2(
 					newModel,
 					$author$project$Pages$StudentDetail$fetchFilteredGames(newModel));
-			case 7:
+			case 'ToggleTag':
 				var tagSlug = msg.a;
-				var newTags = A2($elm$core$List$member, tagSlug, model.C) ? A2(
+				var newTags = A2($elm$core$List$member, tagSlug, model.selectedTags) ? A2(
 					$elm$core$List$filter,
 					function (t) {
 						return !_Utils_eq(t, tagSlug);
 					},
-					model.C) : A2($elm$core$List$cons, tagSlug, model.C);
+					model.selectedTags) : A2($elm$core$List$cons, tagSlug, model.selectedTags);
 				var newModel = _Utils_update(
 					model,
-					{g: $author$project$Types$Loading, e8: 0, C: newTags});
+					{games: $author$project$Types$Loading, offset: 0, selectedTags: newTags});
 				return _Utils_Tuple2(
 					newModel,
 					$author$project$Pages$StudentDetail$fetchFilteredGames(newModel));
-			case 8:
+			case 'ClearTags':
 				var newModel = _Utils_update(
 					model,
-					{g: $author$project$Types$Loading, e8: 0, C: _List_Nil});
+					{games: $author$project$Types$Loading, offset: 0, selectedTags: _List_Nil});
 				return _Utils_Tuple2(
 					newModel,
 					$author$project$Pages$StudentDetail$fetchFilteredGames(newModel));
-			case 9:
+			case 'SetMinAccuracy':
 				var str = msg.a;
 				var newModel = _Utils_update(
 					model,
 					{
-						g: $author$project$Types$Loading,
-						e1: $elm$core$String$toInt(str),
-						e8: 0
+						games: $author$project$Types$Loading,
+						minAccuracy: $elm$core$String$toInt(str),
+						offset: 0
 					});
 				return _Utils_Tuple2(
 					newModel,
 					$author$project$Pages$StudentDetail$fetchFilteredGames(newModel));
-			case 10:
+			case 'SetMaxAccuracy':
 				var str = msg.a;
 				var newModel = _Utils_update(
 					model,
 					{
-						g: $author$project$Types$Loading,
-						eY: $elm$core$String$toInt(str),
-						e8: 0
+						games: $author$project$Types$Loading,
+						maxAccuracy: $elm$core$String$toInt(str),
+						offset: 0
 					});
 				return _Utils_Tuple2(
 					newModel,
 					$author$project$Pages$StudentDetail$fetchFilteredGames(newModel));
-			case 11:
+			case 'ClearAccuracy':
 				var newModel = _Utils_update(
 					model,
-					{g: $author$project$Types$Loading, eY: $elm$core$Maybe$Nothing, e1: $elm$core$Maybe$Nothing, e8: 0});
+					{games: $author$project$Types$Loading, maxAccuracy: $elm$core$Maybe$Nothing, minAccuracy: $elm$core$Maybe$Nothing, offset: 0});
 				return _Utils_Tuple2(
 					newModel,
 					$author$project$Pages$StudentDetail$fetchFilteredGames(newModel));
-			case 12:
+			case 'SetMaxBlunders':
 				var str = msg.a;
 				var newModel = _Utils_update(
 					model,
 					{
-						g: $author$project$Types$Loading,
-						e_: $elm$core$String$toInt(str),
-						e8: 0
+						games: $author$project$Types$Loading,
+						maxBlunders: $elm$core$String$toInt(str),
+						offset: 0
 					});
 				return _Utils_Tuple2(
 					newModel,
 					$author$project$Pages$StudentDetail$fetchFilteredGames(newModel));
-			case 13:
+			case 'ClearBlunders':
 				var newModel = _Utils_update(
 					model,
-					{g: $author$project$Types$Loading, e_: $elm$core$Maybe$Nothing, e8: 0});
+					{games: $author$project$Types$Loading, maxBlunders: $elm$core$Maybe$Nothing, offset: 0});
 				return _Utils_Tuple2(
 					newModel,
 					$author$project$Pages$StudentDetail$fetchFilteredGames(newModel));
-			case 14:
+			case 'SetOpponentRatingFilter':
 				var filter = msg.a;
 				var newModel = _Utils_update(
 					model,
-					{g: $author$project$Types$Loading, e8: 0, X: filter});
+					{games: $author$project$Types$Loading, offset: 0, opponentRatingFilter: filter});
 				return _Utils_Tuple2(
 					newModel,
 					$author$project$Pages$StudentDetail$fetchFilteredGames(newModel));
-			case 15:
+			case 'SetOpponentSearch':
 				var searchStr = msg.a;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{an: searchStr}),
+						{opponentSearch: searchStr}),
 					$elm$core$Platform$Cmd$none);
-			case 16:
+			case 'SetSortOrder':
 				var order = msg.a;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{Y: order}),
+						{sortOrder: order}),
 					$elm$core$Platform$Cmd$none);
-			case 17:
+			case 'ClearAllFilters':
 				var newModel = _Utils_update(
 					model,
-					{T: 0, g: $author$project$Types$Loading, eY: $elm$core$Maybe$Nothing, e_: $elm$core$Maybe$Nothing, e1: $elm$core$Maybe$Nothing, e8: 0, X: 'all', an: '', R: 0, C: _List_Nil, Y: 0, S: 0});
+					{colorFilter: $author$project$Types$AllColors, games: $author$project$Types$Loading, maxAccuracy: $elm$core$Maybe$Nothing, maxBlunders: $elm$core$Maybe$Nothing, minAccuracy: $elm$core$Maybe$Nothing, offset: 0, opponentRatingFilter: 'all', opponentSearch: '', resultFilter: $author$project$Types$AllResults, selectedTags: _List_Nil, sortOrder: $author$project$Pages$StudentDetail$DateNewest, timeControlFilter: $author$project$Types$AllTimeControls});
 				return _Utils_Tuple2(
 					newModel,
 					$author$project$Pages$StudentDetail$fetchFilteredGames(newModel));
-			case 18:
+			case 'ToggleGameExpanded':
 				var gameId = msg.a;
-				var newExpanded = A2($elm$core$Set$member, gameId, model.aI) ? A2($elm$core$Set$remove, gameId, model.aI) : A2($elm$core$Set$insert, gameId, model.aI);
+				var newExpanded = A2($elm$core$Set$member, gameId, model.expandedGames) ? A2($elm$core$Set$remove, gameId, model.expandedGames) : A2($elm$core$Set$insert, gameId, model.expandedGames);
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{aI: newExpanded}),
+						{expandedGames: newExpanded}),
 					$elm$core$Platform$Cmd$none);
-			case 19:
+			case 'ToggleFilterSection':
 				var section = msg.a;
-				var newSections = A2($elm$core$Set$member, section, model.aH) ? A2($elm$core$Set$remove, section, model.aH) : A2($elm$core$Set$insert, section, model.aH);
+				var newSections = A2($elm$core$Set$member, section, model.expandedFilterSections) ? A2($elm$core$Set$remove, section, model.expandedFilterSections) : A2($elm$core$Set$insert, section, model.expandedFilterSections);
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{aH: newSections}),
+						{expandedFilterSections: newSections}),
 					$elm$core$Platform$Cmd$none);
-			case 20:
+			case 'ToggleSidebar':
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{a4: !model.a4}),
+						{sidebarVisible: !model.sidebarVisible}),
 					$elm$core$Platform$Cmd$none);
-			case 21:
+			case 'LoadMore':
 				var newModel = _Utils_update(
 					model,
-					{g: $author$project$Types$Loading, e8: model.e8 + model.eS});
+					{games: $author$project$Types$Loading, offset: model.offset + model.limit});
 				return _Utils_Tuple2(
 					newModel,
 					$author$project$Pages$StudentDetail$fetchFilteredGames(newModel));
-			case 22:
+			case 'GoToPage':
 				var page = msg.a;
 				var newModel = _Utils_update(
 					model,
-					{g: $author$project$Types$Loading, e8: page * model.eS});
+					{games: $author$project$Types$Loading, offset: page * model.limit});
 				return _Utils_Tuple2(
 					newModel,
 					$author$project$Pages$StudentDetail$fetchFilteredGames(newModel));
-			case 23:
+			case 'HoverGame':
 				var maybeId = msg.a;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{bO: maybeId}),
+						{hoveredGameId: maybeId}),
 					$elm$core$Platform$Cmd$none);
-			case 24:
+			case 'ArchiveStudent':
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{ar: true}),
+						{archivingStudent: true}),
 					$author$project$Api$Students$archiveStudent(
-						{cK: model.cK, d2: true, a1: $author$project$Pages$StudentDetail$GotArchiveResult, bu: model.bu, ba: model.ba}));
-			case 25:
+						{apiUrl: model.apiUrl, archived: true, onResponse: $author$project$Pages$StudentDetail$GotArchiveResult, studentId: model.studentId, token: model.token}));
+			case 'UnarchiveStudent':
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{ar: true}),
+						{archivingStudent: true}),
 					$author$project$Api$Students$archiveStudent(
-						{cK: model.cK, d2: false, a1: $author$project$Pages$StudentDetail$GotArchiveResult, bu: model.bu, ba: model.ba}));
+						{apiUrl: model.apiUrl, archived: false, onResponse: $author$project$Pages$StudentDetail$GotArchiveResult, studentId: model.studentId, token: model.token}));
 			default:
 				var result = msg.a;
-				if (!result.$) {
+				if (result.$ === 'Ok') {
 					var updatedStudent = result.a;
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								ar: false,
-								ao: $author$project$Types$Success(updatedStudent)
+								archivingStudent: false,
+								student: $author$project$Types$Success(updatedStudent)
 							}),
 						$elm$core$Platform$Cmd$none);
 				} else {
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{ar: false}),
+							{archivingStudent: false}),
 						$elm$core$Platform$Cmd$none);
 				}
 		}
 	});
 var $author$project$Pages$Subscription$GotPortalUrl = function (a) {
-	return {$: 3, a: a};
+	return {$: 'GotPortalUrl', a: a};
 };
 var $author$project$Api$Subscription$createBillingPortalSession = function (config) {
 	return $author$project$Api$post(
 		{
-			aj: $elm$json$Json$Encode$object(_List_Nil),
-			bj: A2($elm$json$Json$Decode$field, 'portal_url', $elm$json$Json$Decode$string),
-			aZ: A2(
+			body: $elm$json$Json$Encode$object(_List_Nil),
+			decoder: A2($elm$json$Json$Decode$field, 'portal_url', $elm$json$Json$Decode$string),
+			endpoint: A2(
 				$author$project$Api$url,
-				config.cK,
+				config.apiUrl,
 				_List_fromArray(
 					['api', 'subscription', 'portal'])),
-			a1: config.a1,
-			ba: $elm$core$Maybe$Just(config.ba)
+			onResponse: config.onResponse,
+			token: $elm$core$Maybe$Just(config.token)
 		});
 };
 var $author$project$Pages$Subscription$httpErrorToString = function (error) {
 	switch (error.$) {
-		case 0:
+		case 'BadUrl':
 			var url = error.a;
 			return 'Bad URL: ' + url;
-		case 1:
+		case 'Timeout':
 			return 'Request timed out';
-		case 2:
+		case 'NetworkError':
 			return 'Network error';
-		case 3:
+		case 'BadStatus':
 			var status = error.a;
 			return 'Server error: ' + $elm$core$String$fromInt(status);
 		default:
@@ -10131,15 +10212,15 @@ var $author$project$Pages$Subscription$httpErrorToString = function (error) {
 var $author$project$Pages$Subscription$update = F2(
 	function (msg, model) {
 		switch (msg.$) {
-			case 0:
+			case 'GotUserInfo':
 				var result = msg.a;
-				if (!result.$) {
+				if (result.$ === 'Ok') {
 					var userInfo = result.a;
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								bY: $author$project$Types$Success(userInfo)
+								subscription: $author$project$Types$Success(userInfo)
 							}),
 						$elm$core$Platform$Cmd$none);
 				} else {
@@ -10148,20 +10229,20 @@ var $author$project$Pages$Subscription$update = F2(
 						_Utils_update(
 							model,
 							{
-								bY: $author$project$Types$Failure(
+								subscription: $author$project$Types$Failure(
 									$author$project$Pages$Subscription$httpErrorToString(err))
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
-			case 1:
+			case 'GotPlans':
 				var result = msg.a;
-				if (!result.$) {
+				if (result.$ === 'Ok') {
 					var plansList = result.a;
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								bt: $author$project$Types$Success(plansList)
+								plans: $author$project$Types$Success(plansList)
 							}),
 						$elm$core$Platform$Cmd$none);
 				} else {
@@ -10170,26 +10251,26 @@ var $author$project$Pages$Subscription$update = F2(
 						_Utils_update(
 							model,
 							{
-								bt: $author$project$Types$Failure(
+								plans: $author$project$Types$Failure(
 									$author$project$Pages$Subscription$httpErrorToString(err))
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
-			case 2:
+			case 'OpenBillingPortal':
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{aG: $elm$core$Maybe$Nothing, bo: true}),
+						{error: $elm$core$Maybe$Nothing, isLoading: true}),
 					$author$project$Api$Subscription$createBillingPortalSession(
-						{cK: model.cK, a1: $author$project$Pages$Subscription$GotPortalUrl, ba: model.ba}));
-			case 3:
+						{apiUrl: model.apiUrl, onResponse: $author$project$Pages$Subscription$GotPortalUrl, token: model.token}));
+			case 'GotPortalUrl':
 				var result = msg.a;
-				if (!result.$) {
+				if (result.$ === 'Ok') {
 					var url = result.a;
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{bo: false}),
+							{isLoading: false}),
 						$elm$browser$Browser$Navigation$load(url));
 				} else {
 					var err = result.a;
@@ -10197,9 +10278,9 @@ var $author$project$Pages$Subscription$update = F2(
 						_Utils_update(
 							model,
 							{
-								aG: $elm$core$Maybe$Just(
+								error: $elm$core$Maybe$Just(
 									$author$project$Pages$Subscription$httpErrorToString(err)),
-								bo: false
+								isLoading: false
 							}),
 						$elm$core$Platform$Cmd$none);
 				}
@@ -10207,23 +10288,23 @@ var $author$project$Pages$Subscription$update = F2(
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{aG: $elm$core$Maybe$Nothing}),
+						{error: $elm$core$Maybe$Nothing}),
 					$elm$core$Platform$Cmd$none);
 		}
 	});
 var $author$project$Pages$VerifyEmail$Failed = function (a) {
-	return {$: 2, a: a};
+	return {$: 'Failed', a: a};
 };
-var $author$project$Pages$VerifyEmail$Verified = {$: 1};
+var $author$project$Pages$VerifyEmail$Verified = {$: 'Verified'};
 var $author$project$Pages$VerifyEmail$httpErrorToString = function (error) {
 	switch (error.$) {
-		case 0:
+		case 'BadUrl':
 			return 'Invalid URL';
-		case 1:
+		case 'Timeout':
 			return 'Request timed out';
-		case 2:
+		case 'NetworkError':
 			return 'Network error - please check your connection';
-		case 3:
+		case 'BadStatus':
 			var status = error.a;
 			return (status === 400) ? 'Invalid or expired verification link.' : ('Server error (status ' + ($elm$core$String$fromInt(status) + ')'));
 		default:
@@ -10233,18 +10314,18 @@ var $author$project$Pages$VerifyEmail$httpErrorToString = function (error) {
 };
 var $author$project$Pages$VerifyEmail$update = F2(
 	function (msg, model) {
-		var result = msg;
-		if (!result.$) {
+		var result = msg.a;
+		if (result.$ === 'Ok') {
 			var response = result.a;
-			return response.fW ? _Utils_Tuple2(
+			return response.verified ? _Utils_Tuple2(
 				_Utils_update(
 					model,
-					{dF: $author$project$Pages$VerifyEmail$Verified}),
+					{status: $author$project$Pages$VerifyEmail$Verified}),
 				$elm$core$Platform$Cmd$none) : _Utils_Tuple2(
 				_Utils_update(
 					model,
 					{
-						dF: $author$project$Pages$VerifyEmail$Failed(response.da)
+						status: $author$project$Pages$VerifyEmail$Failed(response.message)
 					}),
 				$elm$core$Platform$Cmd$none);
 		} else {
@@ -10253,7 +10334,7 @@ var $author$project$Pages$VerifyEmail$update = F2(
 				_Utils_update(
 					model,
 					{
-						dF: $author$project$Pages$VerifyEmail$Failed(
+						status: $author$project$Pages$VerifyEmail$Failed(
 							$author$project$Pages$VerifyEmail$httpErrorToString(error))
 					}),
 				$elm$core$Platform$Cmd$none);
@@ -10261,19 +10342,19 @@ var $author$project$Pages$VerifyEmail$update = F2(
 	});
 var $author$project$Main$update = F2(
 	function (msg, model) {
-		var _v0 = _Utils_Tuple2(msg, model.c);
+		var _v0 = _Utils_Tuple2(msg, model.page);
 		_v0$15:
 		while (true) {
 			switch (_v0.a.$) {
-				case 0:
+				case 'UrlRequested':
 					var urlRequest = _v0.a.a;
-					if (!urlRequest.$) {
+					if (urlRequest.$ === 'Internal') {
 						var url = urlRequest.a;
 						return _Utils_Tuple2(
 							model,
 							A2(
 								$elm$browser$Browser$Navigation$pushUrl,
-								model.D,
+								model.key,
 								$elm$url$Url$toString(url)));
 					} else {
 						var href = urlRequest.a;
@@ -10281,113 +10362,113 @@ var $author$project$Main$update = F2(
 							model,
 							$elm$browser$Browser$Navigation$load(href));
 					}
-				case 1:
+				case 'UrlChanged':
 					var url = _v0.a.a;
 					return A2(
 						$author$project$Main$changeRouteTo,
 						$author$project$Route$fromUrl(url),
 						model);
-				case 2:
-					if (!_v0.b.$) {
+				case 'LoginMsg':
+					if (_v0.b.$ === 'LoginPage') {
 						var subMsg = _v0.a.a;
 						var subModel = _v0.b.a;
-						var _v2 = A3($author$project$Pages$Login$update, model.cK, subMsg, subModel);
+						var _v2 = A3($author$project$Pages$Login$update, model.apiUrl, subMsg, subModel);
 						var newSubModel = _v2.a;
 						var subCmd = _v2.b;
 						var maybeAuth = _v2.c;
-						if (!maybeAuth.$) {
-							var token = maybeAuth.a.ba;
-							var coach = maybeAuth.a.eg;
+						if (maybeAuth.$ === 'Just') {
+							var token = maybeAuth.a.token;
+							var coach = maybeAuth.a.coach;
 							return _Utils_Tuple2(
 								_Utils_update(
 									model,
 									{
-										i: A2($author$project$Main$LoggedIn, token, coach)
+										session: A2($author$project$Main$LoggedIn, token, coach)
 									}),
 								$elm$core$Platform$Cmd$batch(
 									_List_fromArray(
 										[
 											$author$project$Main$saveToken(token),
 											$author$project$Main$saveCoach(
-											{cW: coach.cW, F: coach.F}),
+											{email: coach.email, id: coach.id}),
 											$author$project$Main$identifyUser(
-											{cW: coach.cW, F: coach.F}),
-											A2($author$project$Route$replaceUrl, model.D, $author$project$Route$Dashboard)
+											{email: coach.email, id: coach.id}),
+											A2($author$project$Route$replaceUrl, model.key, $author$project$Route$Dashboard)
 										])));
 						} else {
 							return _Utils_Tuple2(
 								_Utils_update(
 									model,
 									{
-										c: $author$project$Main$LoginPage(newSubModel)
+										page: $author$project$Main$LoginPage(newSubModel)
 									}),
 								A2($elm$core$Platform$Cmd$map, $author$project$Main$LoginMsg, subCmd));
 						}
 					} else {
 						break _v0$15;
 					}
-				case 3:
-					if (_v0.b.$ === 1) {
+				case 'RegisterMsg':
+					if (_v0.b.$ === 'RegisterPage') {
 						var subMsg = _v0.a.a;
 						var subModel = _v0.b.a;
-						var _v4 = A3($author$project$Pages$Register$update, model.cK, subMsg, subModel);
+						var _v4 = A3($author$project$Pages$Register$update, model.apiUrl, subMsg, subModel);
 						var newSubModel = _v4.a;
 						var subCmd = _v4.b;
 						var maybeAuth = _v4.c;
-						if (!maybeAuth.$) {
-							var token = maybeAuth.a.ba;
-							var coach = maybeAuth.a.eg;
+						if (maybeAuth.$ === 'Just') {
+							var token = maybeAuth.a.token;
+							var coach = maybeAuth.a.coach;
 							return _Utils_Tuple2(
 								_Utils_update(
 									model,
 									{
-										i: A2($author$project$Main$LoggedIn, token, coach)
+										session: A2($author$project$Main$LoggedIn, token, coach)
 									}),
 								$elm$core$Platform$Cmd$batch(
 									_List_fromArray(
 										[
 											$author$project$Main$saveToken(token),
 											$author$project$Main$saveCoach(
-											{cW: coach.cW, F: coach.F}),
+											{email: coach.email, id: coach.id}),
 											$author$project$Main$identifyUser(
-											{cW: coach.cW, F: coach.F}),
-											A2($author$project$Route$replaceUrl, model.D, $author$project$Route$Dashboard)
+											{email: coach.email, id: coach.id}),
+											A2($author$project$Route$replaceUrl, model.key, $author$project$Route$Dashboard)
 										])));
 						} else {
 							return _Utils_Tuple2(
 								_Utils_update(
 									model,
 									{
-										c: $author$project$Main$RegisterPage(newSubModel)
+										page: $author$project$Main$RegisterPage(newSubModel)
 									}),
 								A2($elm$core$Platform$Cmd$map, $author$project$Main$RegisterMsg, subCmd));
 						}
 					} else {
 						break _v0$15;
 					}
-				case 4:
-					if (_v0.b.$ === 2) {
+				case 'DashboardMsg':
+					if (_v0.b.$ === 'DashboardPage') {
 						var subMsg = _v0.a.a;
 						var subModel = _v0.b.a;
-						var _v6 = model.i;
-						if (_v6.$ === 1) {
+						var _v6 = model.session;
+						if (_v6.$ === 'LoggedIn') {
 							var token = _v6.a;
-							var _v7 = A4($author$project$Pages$Dashboard$update, model.cK, token, subMsg, subModel);
+							var _v7 = A4($author$project$Pages$Dashboard$update, model.apiUrl, token, subMsg, subModel);
 							var newSubModel = _v7.a;
 							var subCmd = _v7.b;
-							var _v8 = (!_Utils_eq(newSubModel.y, model.y)) ? _Utils_Tuple2(
+							var _v8 = (!_Utils_eq(newSubModel.timeRangeFilter, model.timeRangeFilter)) ? _Utils_Tuple2(
 								_Utils_update(
 									model,
 									{
-										c: $author$project$Main$DashboardPage(newSubModel),
-										y: newSubModel.y
+										page: $author$project$Main$DashboardPage(newSubModel),
+										timeRangeFilter: newSubModel.timeRangeFilter
 									}),
 								$author$project$Main$saveTimeRangeFilter(
-									$author$project$Types$timeRangeFilterToString(newSubModel.y))) : _Utils_Tuple2(
+									$author$project$Types$timeRangeFilterToString(newSubModel.timeRangeFilter))) : _Utils_Tuple2(
 								_Utils_update(
 									model,
 									{
-										c: $author$project$Main$DashboardPage(newSubModel)
+										page: $author$project$Main$DashboardPage(newSubModel)
 									}),
 								$elm$core$Platform$Cmd$none);
 							var updatedModel = _v8.a;
@@ -10403,31 +10484,31 @@ var $author$project$Main$update = F2(
 						} else {
 							return _Utils_Tuple2(
 								model,
-								A2($author$project$Route$replaceUrl, model.D, $author$project$Route$Login));
+								A2($author$project$Route$replaceUrl, model.key, $author$project$Route$Login));
 						}
 					} else {
 						break _v0$15;
 					}
-				case 5:
-					if (_v0.b.$ === 3) {
+				case 'StudentDetailMsg':
+					if (_v0.b.$ === 'StudentDetailPage') {
 						var subMsg = _v0.a.a;
 						var subModel = _v0.b.a;
 						var _v9 = A2($author$project$Pages$StudentDetail$update, subMsg, subModel);
 						var newSubModel = _v9.a;
 						var subCmd = _v9.b;
-						var _v10 = (!_Utils_eq(newSubModel.y, model.y)) ? _Utils_Tuple2(
+						var _v10 = (!_Utils_eq(newSubModel.timeRangeFilter, model.timeRangeFilter)) ? _Utils_Tuple2(
 							_Utils_update(
 								model,
 								{
-									c: $author$project$Main$StudentDetailPage(newSubModel),
-									y: newSubModel.y
+									page: $author$project$Main$StudentDetailPage(newSubModel),
+									timeRangeFilter: newSubModel.timeRangeFilter
 								}),
 							$author$project$Main$saveTimeRangeFilter(
-								$author$project$Types$timeRangeFilterToString(newSubModel.y))) : _Utils_Tuple2(
+								$author$project$Types$timeRangeFilterToString(newSubModel.timeRangeFilter))) : _Utils_Tuple2(
 							_Utils_update(
 								model,
 								{
-									c: $author$project$Main$StudentDetailPage(newSubModel)
+									page: $author$project$Main$StudentDetailPage(newSubModel)
 								}),
 							$elm$core$Platform$Cmd$none);
 						var updatedModel = _v10.a;
@@ -10443,8 +10524,8 @@ var $author$project$Main$update = F2(
 					} else {
 						break _v0$15;
 					}
-				case 6:
-					if (_v0.b.$ === 4) {
+				case 'GameDetailMsg':
+					if (_v0.b.$ === 'GameDetailPage') {
 						var subMsg = _v0.a.a;
 						var subModel = _v0.b.a;
 						var _v11 = A2($author$project$Pages$GameDetail$update, subMsg, subModel);
@@ -10454,14 +10535,14 @@ var $author$project$Main$update = F2(
 							_Utils_update(
 								model,
 								{
-									c: $author$project$Main$GameDetailPage(newSubModel)
+									page: $author$project$Main$GameDetailPage(newSubModel)
 								}),
 							A2($elm$core$Platform$Cmd$map, $author$project$Main$GameDetailMsg, subCmd));
 					} else {
 						break _v0$15;
 					}
-				case 7:
-					if (_v0.b.$ === 5) {
+				case 'SubscriptionMsg':
+					if (_v0.b.$ === 'SubscriptionPage') {
 						var subMsg = _v0.a.a;
 						var subModel = _v0.b.a;
 						var _v12 = A2($author$project$Pages$Subscription$update, subMsg, subModel);
@@ -10471,48 +10552,48 @@ var $author$project$Main$update = F2(
 							_Utils_update(
 								model,
 								{
-									c: $author$project$Main$SubscriptionPage(newSubModel)
+									page: $author$project$Main$SubscriptionPage(newSubModel)
 								}),
 							A2($elm$core$Platform$Cmd$map, $author$project$Main$SubscriptionMsg, subCmd));
 					} else {
 						break _v0$15;
 					}
-				case 8:
-					if (_v0.b.$ === 6) {
+				case 'ForgotPasswordMsg':
+					if (_v0.b.$ === 'ForgotPasswordPage') {
 						var subMsg = _v0.a.a;
 						var subModel = _v0.b.a;
-						var _v13 = A3($author$project$Pages$ForgotPassword$update, model.cK, subMsg, subModel);
+						var _v13 = A3($author$project$Pages$ForgotPassword$update, model.apiUrl, subMsg, subModel);
 						var newSubModel = _v13.a;
 						var subCmd = _v13.b;
 						return _Utils_Tuple2(
 							_Utils_update(
 								model,
 								{
-									c: $author$project$Main$ForgotPasswordPage(newSubModel)
+									page: $author$project$Main$ForgotPasswordPage(newSubModel)
 								}),
 							A2($elm$core$Platform$Cmd$map, $author$project$Main$ForgotPasswordMsg, subCmd));
 					} else {
 						break _v0$15;
 					}
-				case 9:
-					if (_v0.b.$ === 7) {
+				case 'ResetPasswordMsg':
+					if (_v0.b.$ === 'ResetPasswordPage') {
 						var subMsg = _v0.a.a;
 						var subModel = _v0.b.a;
-						var _v14 = A3($author$project$Pages$ResetPassword$update, model.cK, subMsg, subModel);
+						var _v14 = A3($author$project$Pages$ResetPassword$update, model.apiUrl, subMsg, subModel);
 						var newSubModel = _v14.a;
 						var subCmd = _v14.b;
 						return _Utils_Tuple2(
 							_Utils_update(
 								model,
 								{
-									c: $author$project$Main$ResetPasswordPage(newSubModel)
+									page: $author$project$Main$ResetPasswordPage(newSubModel)
 								}),
 							A2($elm$core$Platform$Cmd$map, $author$project$Main$ResetPasswordMsg, subCmd));
 					} else {
 						break _v0$15;
 					}
-				case 10:
-					if (_v0.b.$ === 8) {
+				case 'VerifyEmailMsg':
+					if (_v0.b.$ === 'VerifyEmailPage') {
 						var subMsg = _v0.a.a;
 						var subModel = _v0.b.a;
 						var _v15 = A2($author$project$Pages$VerifyEmail$update, subMsg, subModel);
@@ -10522,14 +10603,14 @@ var $author$project$Main$update = F2(
 							_Utils_update(
 								model,
 								{
-									c: $author$project$Main$VerifyEmailPage(newSubModel)
+									page: $author$project$Main$VerifyEmailPage(newSubModel)
 								}),
 							A2($elm$core$Platform$Cmd$map, $author$project$Main$VerifyEmailMsg, subCmd));
 					} else {
 						break _v0$15;
 					}
-				case 11:
-					if (_v0.b.$ === 9) {
+				case 'EmailPreferencesMsg':
+					if (_v0.b.$ === 'EmailPreferencesPage') {
 						var subMsg = _v0.a.a;
 						var subModel = _v0.b.a;
 						var _v16 = A2($author$project$Pages$EmailPreferences$update, subMsg, subModel);
@@ -10539,18 +10620,18 @@ var $author$project$Main$update = F2(
 							_Utils_update(
 								model,
 								{
-									c: $author$project$Main$EmailPreferencesPage(newSubModel)
+									page: $author$project$Main$EmailPreferencesPage(newSubModel)
 								}),
 							A2($elm$core$Platform$Cmd$map, $author$project$Main$EmailPreferencesMsg, subCmd));
 					} else {
 						break _v0$15;
 					}
-				case 12:
+				case 'GotUserInfo':
 					var result = _v0.a.a;
-					if (!result.$) {
+					if (result.$ === 'Ok') {
 						var userInfo = result.a;
-						var _v18 = model.i;
-						if (_v18.$ === 1) {
+						var _v18 = model.session;
+						if (_v18.$ === 'LoggedIn') {
 							var token = _v18.a;
 							var coach = _v18.b;
 							var updatedSession = A2(
@@ -10559,17 +10640,17 @@ var $author$project$Main$update = F2(
 								_Utils_update(
 									coach,
 									{
-										bY: $elm$core$Maybe$Just(userInfo)
+										subscription: $elm$core$Maybe$Just(userInfo)
 									}));
 							var updatedPage = function () {
-								var _v19 = model.c;
-								if (_v19.$ === 2) {
+								var _v19 = model.page;
+								if (_v19.$ === 'DashboardPage') {
 									var dashModel = _v19.a;
 									return $author$project$Main$DashboardPage(
 										_Utils_update(
 											dashModel,
 											{
-												fV: $author$project$Types$Success(userInfo)
+												userInfo: $author$project$Types$Success(userInfo)
 											}));
 								} else {
 									var other = _v19;
@@ -10579,7 +10660,7 @@ var $author$project$Main$update = F2(
 							return _Utils_Tuple2(
 								_Utils_update(
 									model,
-									{c: updatedPage, i: updatedSession}),
+									{page: updatedPage, session: updatedSession}),
 								$elm$core$Platform$Cmd$none);
 						} else {
 							return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
@@ -10587,31 +10668,31 @@ var $author$project$Main$update = F2(
 					} else {
 						return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 					}
-				case 13:
+				case 'Logout':
 					var _v20 = _v0.a;
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{i: $author$project$Main$Guest}),
+							{session: $author$project$Main$Guest}),
 						$elm$core$Platform$Cmd$batch(
 							_List_fromArray(
 								[
-									$author$project$Main$clearToken(0),
-									A2($author$project$Route$replaceUrl, model.D, $author$project$Route$Login)
+									$author$project$Main$clearToken(_Utils_Tuple0),
+									A2($author$project$Route$replaceUrl, model.key, $author$project$Route$Login)
 								])));
 				default:
 					var filter = _v0.a.a;
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{y: filter}),
+							{timeRangeFilter: filter}),
 						$author$project$Main$saveTimeRangeFilter(
 							$author$project$Types$timeRangeFilterToString(filter)));
 			}
 		}
 		return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 	});
-var $author$project$Main$Logout = {$: 13};
+var $author$project$Main$Logout = {$: 'Logout'};
 var $elm$html$Html$Attributes$stringProperty = F2(
 	function (key, string) {
 		return A2(
@@ -10636,7 +10717,7 @@ var $author$project$Route$href = function (route) {
 		$author$project$Route$routeToString(route));
 };
 var $elm$virtual_dom$VirtualDom$Normal = function (a) {
-	return {$: 0, a: a};
+	return {$: 'Normal', a: a};
 };
 var $elm$virtual_dom$VirtualDom$on = _VirtualDom_on;
 var $elm$html$Html$Events$on = F2(
@@ -10656,7 +10737,7 @@ var $elm$html$Html$span = _VirtualDom_node('span');
 var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
 var $author$project$View$Layout$viewSubscriptionBadge = function (maybeUserInfo) {
-	if (!maybeUserInfo.$) {
+	if (maybeUserInfo.$ === 'Just') {
 		var userInfo = maybeUserInfo.a;
 		var planName = A2(
 			$elm$core$Maybe$withDefault,
@@ -10664,19 +10745,19 @@ var $author$project$View$Layout$viewSubscriptionBadge = function (maybeUserInfo)
 			A2(
 				$elm$core$Maybe$map,
 				function ($) {
-					return $.b3;
+					return $.displayName;
 				},
-				userInfo.cm));
+				userInfo.plan));
 		var _v1 = function () {
-			var _v2 = userInfo.bY.dF;
-			switch (_v2) {
-				case 0:
+			var _v2 = userInfo.subscription.status;
+			switch (_v2.$) {
+				case 'Trialing':
 					return _Utils_Tuple2('bg-blue-100 text-blue-700', 'Trial');
-				case 1:
+				case 'Active':
 					return _Utils_Tuple2('bg-green-100 text-green-700', planName);
-				case 2:
+				case 'PastDue':
 					return _Utils_Tuple2('bg-yellow-100 text-yellow-700', 'Payment Due');
-				case 3:
+				case 'Cancelled':
 					return _Utils_Tuple2('bg-gray-100 text-gray-600', 'Cancelled');
 				default:
 					return _Utils_Tuple2('bg-red-100 text-red-700', 'Expired');
@@ -10790,8 +10871,8 @@ var $author$project$View$Layout$viewHeader = F2(
 										]),
 									_List_fromArray(
 										[
-											$elm$html$Html$text(coach.cW),
-											$author$project$View$Layout$viewSubscriptionBadge(coach.bY)
+											$elm$html$Html$text(coach.email),
+											$author$project$View$Layout$viewSubscriptionBadge(coach.subscription)
 										])),
 									A2(
 									$elm$html$Html$button,
@@ -10817,7 +10898,7 @@ var $author$project$View$Layout$layout = function (config) {
 			]),
 		_List_fromArray(
 			[
-				A2($author$project$View$Layout$viewHeader, config.eg, config.br),
+				A2($author$project$View$Layout$viewHeader, config.coach, config.onLogout),
 				A2(
 				$elm$html$Html$main_,
 				_List_fromArray(
@@ -10825,21 +10906,21 @@ var $author$project$View$Layout$layout = function (config) {
 						$elm$html$Html$Attributes$class('max-w-6xl mx-auto px-4 py-8')
 					]),
 				_List_fromArray(
-					[config.bi]))
+					[config.content]))
 			]));
 };
 var $elm$virtual_dom$VirtualDom$map = _VirtualDom_map;
 var $elm$html$Html$map = $elm$virtual_dom$VirtualDom$map;
-var $author$project$Pages$Dashboard$CloseStudentMenu = {$: 11};
-var $author$project$Pages$Dashboard$ToggleShowArchived = {$: 9};
+var $author$project$Pages$Dashboard$CloseStudentMenu = {$: 'CloseStudentMenu'};
+var $author$project$Pages$Dashboard$ToggleShowArchived = {$: 'ToggleShowArchived'};
 var $elm$html$Html$p = _VirtualDom_node('p');
-var $author$project$Pages$Dashboard$HideAddModal = {$: 4};
+var $author$project$Pages$Dashboard$HideAddModal = {$: 'HideAddModal'};
 var $author$project$Pages$Dashboard$NewStudentChessComChanged = function (a) {
-	return {$: 5, a: a};
+	return {$: 'NewStudentChessComChanged', a: a};
 };
-var $author$project$Pages$Dashboard$NoOp = {$: 15};
+var $author$project$Pages$Dashboard$NoOp = {$: 'NoOp'};
 var $author$project$Pages$Dashboard$SubmitNewStudent = function (a) {
-	return {$: 6, a: a};
+	return {$: 'SubmitNewStudent', a: a};
 };
 var $elm$html$Html$Attributes$boolProperty = F2(
 	function (key, bool) {
@@ -10857,7 +10938,7 @@ var $elm$html$Html$Events$alwaysStop = function (x) {
 	return _Utils_Tuple2(x, true);
 };
 var $elm$virtual_dom$VirtualDom$MayStopPropagation = function (a) {
-	return {$: 1, a: a};
+	return {$: 'MayStopPropagation', a: a};
 };
 var $elm$html$Html$Events$stopPropagationOn = F2(
 	function (event, decoder) {
@@ -10884,7 +10965,7 @@ var $elm$html$Html$Events$alwaysPreventDefault = function (msg) {
 	return _Utils_Tuple2(msg, true);
 };
 var $elm$virtual_dom$VirtualDom$MayPreventDefault = function (a) {
-	return {$: 2, a: a};
+	return {$: 'MayPreventDefault', a: a};
 };
 var $elm$html$Html$Events$preventDefaultOn = F2(
 	function (event, decoder) {
@@ -10965,14 +11046,14 @@ var $author$project$Pages$Dashboard$viewAddModal = F3(
 								[
 									$elm$html$Html$Events$onSubmit(
 									$author$project$Pages$Dashboard$SubmitNewStudent(
-										{cK: apiUrl, ba: token})),
+										{apiUrl: apiUrl, token: token})),
 									$elm$html$Html$Attributes$class('p-5')
 								]),
 							_List_fromArray(
 								[
 									function () {
-									var _v0 = model.aq;
-									if (!_v0.$) {
+									var _v0 = model.addError;
+									if (_v0.$ === 'Just') {
 										var errorMsg = _v0.a;
 										return A2(
 											$elm$html$Html$div,
@@ -11013,9 +11094,9 @@ var $author$project$Pages$Dashboard$viewAddModal = F3(
 													$elm$html$Html$Attributes$type_('text'),
 													$elm$html$Html$Attributes$class('w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-anthro-dark focus:border-anthro-dark outline-none transition-shadow'),
 													$elm$html$Html$Attributes$placeholder('Enter username'),
-													$elm$html$Html$Attributes$value(model.au),
+													$elm$html$Html$Attributes$value(model.newStudentChessCom),
 													$elm$html$Html$Events$onInput($author$project$Pages$Dashboard$NewStudentChessComChanged),
-													$elm$html$Html$Attributes$disabled(model.al)
+													$elm$html$Html$Attributes$disabled(model.isAdding)
 												]),
 											_List_Nil)
 										])),
@@ -11054,7 +11135,7 @@ var $author$project$Pages$Dashboard$viewAddModal = F3(
 													$elm$html$Html$Attributes$type_('button'),
 													$elm$html$Html$Events$onClick($author$project$Pages$Dashboard$HideAddModal),
 													$elm$html$Html$Attributes$class('px-4 py-2.5 text-gray-600 hover:text-gray-900 font-medium transition-colors'),
-													$elm$html$Html$Attributes$disabled(model.al)
+													$elm$html$Html$Attributes$disabled(model.isAdding)
 												]),
 											_List_fromArray(
 												[
@@ -11066,11 +11147,11 @@ var $author$project$Pages$Dashboard$viewAddModal = F3(
 												[
 													$elm$html$Html$Attributes$type_('submit'),
 													$elm$html$Html$Attributes$class('bg-gray-900 hover:bg-gray-800 text-white font-medium py-2.5 px-5 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed'),
-													$elm$html$Html$Attributes$disabled(model.al)
+													$elm$html$Html$Attributes$disabled(model.isAdding)
 												]),
 											_List_fromArray(
 												[
-													model.al ? $elm$html$Html$text('Adding...') : $elm$html$Html$text('Add Student')
+													model.isAdding ? $elm$html$Html$text('Adding...') : $elm$html$Html$text('Add Student')
 												]))
 										]))
 								]))
@@ -11078,15 +11159,15 @@ var $author$project$Pages$Dashboard$viewAddModal = F3(
 				]));
 	});
 var $elm$html$Html$h1 = _VirtualDom_node('h1');
-var $author$project$Pages$Dashboard$AtLimit = 1;
-var $author$project$Pages$Dashboard$LimitUnknown = 2;
-var $author$project$Pages$Dashboard$UnderLimit = 0;
+var $author$project$Pages$Dashboard$AtLimit = {$: 'AtLimit'};
+var $author$project$Pages$Dashboard$LimitUnknown = {$: 'LimitUnknown'};
+var $author$project$Pages$Dashboard$UnderLimit = {$: 'UnderLimit'};
 var $author$project$Pages$Dashboard$isAtStudentLimitFromUserInfo = function (userInfoRemote) {
-	if (userInfoRemote.$ === 3) {
+	if (userInfoRemote.$ === 'Success') {
 		var info = userInfoRemote.a;
-		return info.cd ? 1 : 0;
+		return info.isAtLimit ? $author$project$Pages$Dashboard$AtLimit : $author$project$Pages$Dashboard$UnderLimit;
 	} else {
-		return 2;
+		return $author$project$Pages$Dashboard$LimitUnknown;
 	}
 };
 var $author$project$Pages$Dashboard$pluralize = function (count) {
@@ -11095,7 +11176,7 @@ var $author$project$Pages$Dashboard$pluralize = function (count) {
 var $elm$core$List$sum = function (numbers) {
 	return A3($elm$core$List$foldl, $elm$core$Basics$add, 0, numbers);
 };
-var $author$project$Pages$Dashboard$ShowAddModal = {$: 3};
+var $author$project$Pages$Dashboard$ShowAddModal = {$: 'ShowAddModal'};
 var $author$project$Pages$Dashboard$viewAddStudentButton = A2(
 	$elm$html$Html$button,
 	_List_fromArray(
@@ -11118,13 +11199,13 @@ var $author$project$Pages$Dashboard$viewAddStudentButton = A2(
 			$elm$html$Html$text('Add Student')
 		]));
 var $author$project$Pages$Dashboard$ArchiveStudent = function (a) {
-	return {$: 12, a: a};
+	return {$: 'ArchiveStudent', a: a};
 };
 var $author$project$Pages$Dashboard$ToggleStudentMenu = function (a) {
-	return {$: 10, a: a};
+	return {$: 'ToggleStudentMenu', a: a};
 };
 var $author$project$Pages$Dashboard$UnarchiveStudent = function (a) {
-	return {$: 13, a: a};
+	return {$: 'UnarchiveStudent', a: a};
 };
 var $elm$html$Html$Attributes$alt = $elm$html$Html$Attributes$stringProperty('alt');
 var $elm$core$List$takeReverse = F3(
@@ -11273,8 +11354,8 @@ var $author$project$Pages$Dashboard$getInitials = function (name) {
 var $elm$core$Basics$round = _Basics_round;
 var $author$project$Pages$Dashboard$getStudentAlerts = function (student) {
 	var lowAccuracy = function () {
-		var _v1 = student.w.cL;
-		if (!_v1.$) {
+		var _v1 = student.stats.avgAccuracy;
+		if (_v1.$ === 'Just') {
 			var acc = _v1.a;
 			return (acc < 50) ? _List_fromArray(
 				[
@@ -11286,9 +11367,9 @@ var $author$project$Pages$Dashboard$getStudentAlerts = function (student) {
 		}
 	}();
 	var losingRecord = function () {
-		if (student.w.U > 5) {
-			var _v0 = student.w.dS;
-			if (!_v0.$) {
+		if (student.stats.gameCount > 5) {
+			var _v0 = student.stats.winRate;
+			if (_v0.$ === 'Just') {
 				var rate = _v0.a;
 				return (rate < 30) ? _List_fromArray(
 					['Struggling with recent games']) : _List_Nil;
@@ -11299,8 +11380,8 @@ var $author$project$Pages$Dashboard$getStudentAlerts = function (student) {
 			return _List_Nil;
 		}
 	}();
-	var importAlert = _Utils_eq(student.bS, $elm$core$Maybe$Nothing) ? _List_fromArray(
-		['Games not imported yet']) : ((!student.w.U) ? _List_fromArray(
+	var importAlert = _Utils_eq(student.lastImportedAt, $elm$core$Maybe$Nothing) ? _List_fromArray(
+		['Games not imported yet']) : ((!student.stats.gameCount) ? _List_fromArray(
 		['No games in selected period']) : _List_Nil);
 	return _Utils_ap(
 		importAlert,
@@ -11326,7 +11407,7 @@ var $elm$core$List$head = function (list) {
 var $author$project$Pages$Dashboard$viewAlertRow = function (student) {
 	var alerts = $author$project$Pages$Dashboard$getStudentAlerts(student);
 	var _v0 = $elm$core$List$head(alerts);
-	if (!_v0.$) {
+	if (_v0.$ === 'Just') {
 		var alert = _v0.a;
 		return A2(
 			$elm$html$Html$div,
@@ -11380,7 +11461,7 @@ var $author$project$Pages$Dashboard$viewStatCell = F3(
 							$elm$html$Html$text(label)
 						])),
 					function () {
-					if (!maybeTrend.$) {
+					if (maybeTrend.$ === 'Just') {
 						var trend = maybeTrend.a;
 						return A2(
 							$elm$html$Html$div,
@@ -11401,28 +11482,28 @@ var $author$project$Pages$Dashboard$viewStatCell = F3(
 	});
 var $author$project$Pages$Dashboard$viewStudentCard = F2(
 	function (model, student) {
-		var noGamesInPeriod = (!_Utils_eq(student.bS, $elm$core$Maybe$Nothing)) && (!student.w.U);
+		var noGamesInPeriod = (!_Utils_eq(student.lastImportedAt, $elm$core$Maybe$Nothing)) && (!student.stats.gameCount);
 		var isMenuOpen = _Utils_eq(
-			model.ag,
-			$elm$core$Maybe$Just(student.F));
+			model.openMenuStudentId,
+			$elm$core$Maybe$Just(student.id));
 		var isArchiving = _Utils_eq(
-			model.aD,
-			$elm$core$Maybe$Just(student.F));
-		var isArchived = !_Utils_eq(student.bg, $elm$core$Maybe$Nothing);
+			model.archivingStudentId,
+			$elm$core$Maybe$Just(student.id));
+		var isArchived = !_Utils_eq(student.archivedAt, $elm$core$Maybe$Nothing);
 		var hasAlerts = !$elm$core$List$isEmpty(
 			$author$project$Pages$Dashboard$getStudentAlerts(student));
-		var awaitingImport = _Utils_eq(student.bS, $elm$core$Maybe$Nothing);
-		var analysisInProgress = (student.w.U > 0) && (_Utils_cmp(student.w.b_, student.w.U) < 0);
-		var statusInfo = isArchived ? {aW: '', aX: 'bg-gray-400', a6: 'text-gray-500', a7: 'Archived'} : (awaitingImport ? {aW: '', aX: 'bg-amber-400', a6: 'text-amber-600', a7: 'Awaiting import'} : (noGamesInPeriod ? {aW: '', aX: 'bg-gray-400', a6: 'text-gray-500', a7: 'No games'} : (analysisInProgress ? {
-			aW: ' animate-pulse',
-			aX: 'bg-blue-500',
-			a6: 'text-blue-600',
-			a7: $elm$core$String$fromInt(student.w.b_) + ('/' + ($elm$core$String$fromInt(student.w.U) + ' analyzed'))
+		var awaitingImport = _Utils_eq(student.lastImportedAt, $elm$core$Maybe$Nothing);
+		var analysisInProgress = (student.stats.gameCount > 0) && (_Utils_cmp(student.stats.analyzedCount, student.stats.gameCount) < 0);
+		var statusInfo = isArchived ? {dotAnimation: '', dotColor: 'bg-gray-400', statusClass: 'text-gray-500', statusText: 'Archived'} : (awaitingImport ? {dotAnimation: '', dotColor: 'bg-amber-400', statusClass: 'text-amber-600', statusText: 'Awaiting import'} : (noGamesInPeriod ? {dotAnimation: '', dotColor: 'bg-gray-400', statusClass: 'text-gray-500', statusText: 'No games'} : (analysisInProgress ? {
+			dotAnimation: ' animate-pulse',
+			dotColor: 'bg-blue-500',
+			statusClass: 'text-blue-600',
+			statusText: $elm$core$String$fromInt(student.stats.analyzedCount) + ('/' + ($elm$core$String$fromInt(student.stats.gameCount) + ' analyzed'))
 		} : {
-			aW: '',
-			aX: 'bg-green-500',
-			a6: 'text-green-600',
-			a7: $elm$core$String$fromInt(student.w.U) + ' games'
+			dotAnimation: '',
+			dotColor: 'bg-green-500',
+			statusClass: 'text-green-600',
+			statusText: $elm$core$String$fromInt(student.stats.gameCount) + ' games'
 		})));
 		return A2(
 			$elm$html$Html$div,
@@ -11446,14 +11527,14 @@ var $author$project$Pages$Dashboard$viewStudentCard = F2(
 							_List_fromArray(
 								[
 									$elm$html$Html$Events$onClick(
-									$author$project$Pages$Dashboard$ToggleStudentMenu(student.F)),
+									$author$project$Pages$Dashboard$ToggleStudentMenu(student.id)),
 									$elm$html$Html$Attributes$class('w-8 h-8 flex items-center justify-center rounded-lg text-gray-300 hover:text-gray-500 hover:bg-gray-100 transition-colors'),
 									A2(
 									$elm$html$Html$Events$stopPropagationOn,
 									'click',
 									$elm$json$Json$Decode$succeed(
 										_Utils_Tuple2(
-											$author$project$Pages$Dashboard$ToggleStudentMenu(student.F),
+											$author$project$Pages$Dashboard$ToggleStudentMenu(student.id),
 											true)))
 								]),
 							_List_fromArray(
@@ -11507,7 +11588,7 @@ var $author$project$Pages$Dashboard$viewStudentCard = F2(
 									_List_fromArray(
 										[
 											$elm$html$Html$Events$onClick(
-											$author$project$Pages$Dashboard$UnarchiveStudent(student.F)),
+											$author$project$Pages$Dashboard$UnarchiveStudent(student.id)),
 											$elm$html$Html$Attributes$class('w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors'),
 											$elm$html$Html$Attributes$disabled(isArchiving)
 										]),
@@ -11520,7 +11601,7 @@ var $author$project$Pages$Dashboard$viewStudentCard = F2(
 									_List_fromArray(
 										[
 											$elm$html$Html$Events$onClick(
-											$author$project$Pages$Dashboard$ArchiveStudent(student.F)),
+											$author$project$Pages$Dashboard$ArchiveStudent(student.id)),
 											$elm$html$Html$Attributes$class('w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors'),
 											$elm$html$Html$Attributes$disabled(isArchiving)
 										]),
@@ -11536,7 +11617,7 @@ var $author$project$Pages$Dashboard$viewStudentCard = F2(
 					_List_fromArray(
 						[
 							$author$project$Route$href(
-							$author$project$Route$StudentDetail(student.F)),
+							$author$project$Route$StudentDetail(student.id)),
 							$elm$html$Html$Attributes$class('block p-5 group')
 						]),
 					_List_fromArray(
@@ -11550,15 +11631,15 @@ var $author$project$Pages$Dashboard$viewStudentCard = F2(
 							_List_fromArray(
 								[
 									function () {
-									var _v0 = student.d5;
-									if (!_v0.$) {
+									var _v0 = student.avatarUrl;
+									if (_v0.$ === 'Just') {
 										var url = _v0.a;
 										return A2(
 											$elm$html$Html$img,
 											_List_fromArray(
 												[
 													$elm$html$Html$Attributes$src(url),
-													$elm$html$Html$Attributes$alt(student.b3),
+													$elm$html$Html$Attributes$alt(student.displayName),
 													$elm$html$Html$Attributes$class(
 													'w-14 h-14 rounded-full object-cover flex-shrink-0' + (isArchived ? ' grayscale' : ''))
 												]),
@@ -11581,7 +11662,7 @@ var $author$project$Pages$Dashboard$viewStudentCard = F2(
 													_List_fromArray(
 														[
 															$elm$html$Html$text(
-															$author$project$Pages$Dashboard$getInitials(student.b3))
+															$author$project$Pages$Dashboard$getInitials(student.displayName))
 														]))
 												]));
 									}
@@ -11610,7 +11691,7 @@ var $author$project$Pages$Dashboard$viewStudentCard = F2(
 														]),
 													_List_fromArray(
 														[
-															$elm$html$Html$text(student.b3)
+															$elm$html$Html$text(student.displayName)
 														])),
 													isArchived ? A2(
 													$elm$html$Html$span,
@@ -11624,8 +11705,8 @@ var $author$project$Pages$Dashboard$viewStudentCard = F2(
 														])) : $elm$html$Html$text('')
 												])),
 											function () {
-											var _v1 = student.ef;
-											if (!_v1.$) {
+											var _v1 = student.chessComUsername;
+											if (_v1.$ === 'Just') {
 												var username = _v1.a;
 												return A2(
 													$elm$html$Html$p,
@@ -11661,8 +11742,8 @@ var $author$project$Pages$Dashboard$viewStudentCard = F2(
 										[
 											$elm$html$Html$text(
 											function () {
-												var _v2 = student.bS;
-												if (!_v2.$) {
+												var _v2 = student.lastImportedAt;
+												if (_v2.$ === 'Just') {
 													var date = _v2.a;
 													return 'Last sync: ' + A2($elm$core$String$left, 10, date);
 												} else {
@@ -11681,12 +11762,12 @@ var $author$project$Pages$Dashboard$viewStudentCard = F2(
 								[
 									A3(
 									$author$project$Pages$Dashboard$viewStatCell,
-									$elm$core$String$fromInt(student.w.U),
+									$elm$core$String$fromInt(student.stats.gameCount),
 									'games',
 									$elm$core$Maybe$Nothing),
 									function () {
-									var _v3 = student.w.dS;
-									if (!_v3.$) {
+									var _v3 = student.stats.winRate;
+									if (_v3.$ === 'Just') {
 										var rate = _v3.a;
 										return A3(
 											$author$project$Pages$Dashboard$viewStatCell,
@@ -11699,8 +11780,8 @@ var $author$project$Pages$Dashboard$viewStudentCard = F2(
 									}
 								}(),
 									function () {
-									var _v4 = student.w.cL;
-									if (!_v4.$) {
+									var _v4 = student.stats.avgAccuracy;
+									if (_v4.$ === 'Just') {
 										var acc = _v4.a;
 										return A3(
 											$author$project$Pages$Dashboard$viewStatCell,
@@ -11736,7 +11817,7 @@ var $author$project$Pages$Dashboard$viewStudentCard = F2(
 									$elm$html$Html$span,
 									_List_fromArray(
 										[
-											$elm$html$Html$Attributes$class('text-xs flex items-center gap-1.5 ' + statusInfo.a6)
+											$elm$html$Html$Attributes$class('text-xs flex items-center gap-1.5 ' + statusInfo.statusClass)
 										]),
 									_List_fromArray(
 										[
@@ -11744,17 +11825,17 @@ var $author$project$Pages$Dashboard$viewStudentCard = F2(
 											$elm$html$Html$span,
 											_List_fromArray(
 												[
-													$elm$html$Html$Attributes$class('w-1.5 h-1.5 rounded-full ' + (statusInfo.aX + statusInfo.aW))
+													$elm$html$Html$Attributes$class('w-1.5 h-1.5 rounded-full ' + (statusInfo.dotColor + statusInfo.dotAnimation))
 												]),
 											_List_Nil),
-											$elm$html$Html$text(statusInfo.a7)
+											$elm$html$Html$text(statusInfo.statusText)
 										]))
 								]))
 						]))
 				]));
 	});
 var $author$project$Pages$Dashboard$SetTimeRangeFilter = function (a) {
-	return {$: 2, a: a};
+	return {$: 'SetTimeRangeFilter', a: a};
 };
 var $author$project$Pages$Dashboard$viewTimeRangeFilter = function (currentFilter) {
 	var pillButton = F2(
@@ -11781,8 +11862,8 @@ var $author$project$Pages$Dashboard$viewTimeRangeFilter = function (currentFilte
 			]),
 		_List_fromArray(
 			[
-				A2(pillButton, 0, 'Last 7 days'),
-				A2(pillButton, 1, 'Last 30 days')
+				A2(pillButton, $author$project$Types$Last7Days, 'Last 7 days'),
+				A2(pillButton, $author$project$Types$Last30Days, 'Last 30 days')
 			]));
 };
 var $author$project$Pages$Dashboard$viewUpgradeButton = A2(
@@ -11812,20 +11893,20 @@ var $author$project$Pages$Dashboard$viewDashboard = F3(
 			A2(
 				$elm$core$List$map,
 				function (s) {
-					return s.w.U;
+					return s.stats.gameCount;
 				},
 				students));
 		var displayStudentCount = $elm$core$List$length(students);
 		var studentCountText = function () {
-			var _v1 = model.fV;
-			if (_v1.$ === 3) {
+			var _v1 = model.userInfo;
+			if (_v1.$ === 'Success') {
 				var info = _v1.a;
-				var _v2 = info.cm;
-				if (!_v2.$) {
+				var _v2 = info.plan;
+				if (_v2.$ === 'Just') {
 					var plan = _v2.a;
-					return $elm$core$String$fromInt(info.aO) + ('/' + ($elm$core$String$fromInt(plan.cC) + ' students'));
+					return $elm$core$String$fromInt(info.studentCount) + ('/' + ($elm$core$String$fromInt(plan.studentLimit) + ' students'));
 				} else {
-					return $elm$core$String$fromInt(info.aO) + (' student' + $author$project$Pages$Dashboard$pluralize(info.aO));
+					return $elm$core$String$fromInt(info.studentCount) + (' student' + $author$project$Pages$Dashboard$pluralize(info.studentCount));
 				}
 			} else {
 				return $elm$core$String$fromInt(displayStudentCount) + (' student' + $author$project$Pages$Dashboard$pluralize(displayStudentCount));
@@ -11893,12 +11974,12 @@ var $author$project$Pages$Dashboard$viewDashboard = F3(
 														[
 															$elm$html$Html$Events$onClick($author$project$Pages$Dashboard$ToggleShowArchived),
 															$elm$html$Html$Attributes$class(
-															model.az ? 'text-gray-600 hover:text-gray-800 transition-colors ml-1' : 'text-gray-400 hover:text-gray-600 transition-colors ml-1')
+															model.showArchived ? 'text-gray-600 hover:text-gray-800 transition-colors ml-1' : 'text-gray-400 hover:text-gray-600 transition-colors ml-1')
 														]),
 													_List_fromArray(
 														[
 															$elm$html$Html$text(
-															' · ' + (model.az ? ('Hide archived (' + ($elm$core$String$fromInt(archivedCount) + ')')) : ('Show archived (' + ($elm$core$String$fromInt(archivedCount) + ')'))))
+															' · ' + (model.showArchived ? ('Hide archived (' + ($elm$core$String$fromInt(archivedCount) + ')')) : ('Show archived (' + ($elm$core$String$fromInt(archivedCount) + ')'))))
 														])) : $elm$html$Html$text('')
 												]))
 										])),
@@ -11910,10 +11991,10 @@ var $author$project$Pages$Dashboard$viewDashboard = F3(
 										]),
 									_List_fromArray(
 										[
-											$author$project$Pages$Dashboard$viewTimeRangeFilter(model.y),
+											$author$project$Pages$Dashboard$viewTimeRangeFilter(model.timeRangeFilter),
 											function () {
-											var _v0 = $author$project$Pages$Dashboard$isAtStudentLimitFromUserInfo(model.fV);
-											if (_v0 === 1) {
+											var _v0 = $author$project$Pages$Dashboard$isAtStudentLimitFromUserInfo(model.userInfo);
+											if (_v0.$ === 'AtLimit') {
 												return $author$project$Pages$Dashboard$viewUpgradeButton;
 											} else {
 												return $author$project$Pages$Dashboard$viewAddStudentButton;
@@ -11992,8 +12073,8 @@ var $author$project$Pages$Dashboard$viewEmptyState = function (model) {
 								$elm$html$Html$text('Add your first student to start tracking their chess progress and identifying areas for improvement.')
 							])),
 						function () {
-						var _v0 = $author$project$Pages$Dashboard$isAtStudentLimitFromUserInfo(model.fV);
-						if (_v0 === 1) {
+						var _v0 = $author$project$Pages$Dashboard$isAtStudentLimitFromUserInfo(model.userInfo);
+						if (_v0.$ === 'AtLimit') {
 							return A2(
 								$elm$html$Html$a,
 								_List_fromArray(
@@ -12159,7 +12240,7 @@ var $author$project$Pages$Dashboard$viewLoading = function (model) {
 									]),
 								_List_fromArray(
 									[
-										$author$project$Pages$Dashboard$viewTimeRangeFilter(model.y),
+										$author$project$Pages$Dashboard$viewTimeRangeFilter(model.timeRangeFilter),
 										$author$project$Pages$Dashboard$viewAddStudentButton
 									]))
 							]))
@@ -12253,6 +12334,149 @@ var $author$project$Pages$Dashboard$viewLoading = function (model) {
 							]))))
 			]));
 };
+var $author$project$Pages$Dashboard$ResendVerificationEmail = {$: 'ResendVerificationEmail'};
+var $author$project$Pages$Dashboard$viewVerificationBanner = function (model) {
+	var _v0 = model.userInfo;
+	if (_v0.$ === 'Success') {
+		var info = _v0.a;
+		return info.emailVerified ? $elm$html$Html$text('') : A2(
+			$elm$html$Html$div,
+			_List_fromArray(
+				[
+					$elm$html$Html$Attributes$class('mb-6 rounded-lg border border-amber-200 bg-amber-50 p-4')
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$elm$html$Html$div,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('flex items-center justify-between')
+						]),
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$div,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('flex items-center gap-3')
+								]),
+							_List_fromArray(
+								[
+									A2(
+									$elm$html$Html$span,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('text-amber-600 text-lg')
+										]),
+									_List_fromArray(
+										[
+											$elm$html$Html$text('!')
+										])),
+									A2(
+									$elm$html$Html$div,
+									_List_Nil,
+									_List_fromArray(
+										[
+											A2(
+											$elm$html$Html$p,
+											_List_fromArray(
+												[
+													$elm$html$Html$Attributes$class('text-sm font-medium text-amber-800')
+												]),
+											_List_fromArray(
+												[
+													$elm$html$Html$text('Please verify your email address')
+												])),
+											A2(
+											$elm$html$Html$p,
+											_List_fromArray(
+												[
+													$elm$html$Html$Attributes$class('text-sm text-amber-700 mt-0.5')
+												]),
+											_List_fromArray(
+												[
+													$elm$html$Html$text('Check your inbox for a verification link.')
+												]))
+										]))
+								])),
+							function () {
+							var _v1 = model.resendStatus;
+							switch (_v1.$) {
+								case 'ResendSending':
+									return A2(
+										$elm$html$Html$span,
+										_List_fromArray(
+											[
+												$elm$html$Html$Attributes$class('text-sm text-amber-600')
+											]),
+										_List_fromArray(
+											[
+												$elm$html$Html$text('Sending...')
+											]));
+								case 'ResendSuccess':
+									return A2(
+										$elm$html$Html$span,
+										_List_fromArray(
+											[
+												$elm$html$Html$Attributes$class('text-sm text-green-600 font-medium')
+											]),
+										_List_fromArray(
+											[
+												$elm$html$Html$text('Verification email sent!')
+											]));
+								case 'ResendError':
+									var err = _v1.a;
+									return A2(
+										$elm$html$Html$div,
+										_List_fromArray(
+											[
+												$elm$html$Html$Attributes$class('text-right')
+											]),
+										_List_fromArray(
+											[
+												A2(
+												$elm$html$Html$p,
+												_List_fromArray(
+													[
+														$elm$html$Html$Attributes$class('text-sm text-red-600')
+													]),
+												_List_fromArray(
+													[
+														$elm$html$Html$text(err)
+													])),
+												A2(
+												$elm$html$Html$button,
+												_List_fromArray(
+													[
+														$elm$html$Html$Events$onClick($author$project$Pages$Dashboard$ResendVerificationEmail),
+														$elm$html$Html$Attributes$class('text-sm font-medium text-amber-700 hover:text-amber-900 underline mt-1')
+													]),
+												_List_fromArray(
+													[
+														$elm$html$Html$text('Try again')
+													]))
+											]));
+								default:
+									return A2(
+										$elm$html$Html$button,
+										_List_fromArray(
+											[
+												$elm$html$Html$Events$onClick($author$project$Pages$Dashboard$ResendVerificationEmail),
+												$elm$html$Html$Attributes$class('text-sm font-medium text-amber-700 hover:text-amber-900 underline')
+											]),
+										_List_fromArray(
+											[
+												$elm$html$Html$text('Resend verification email')
+											]));
+							}
+						}()
+						]))
+				]));
+	} else {
+		return $elm$html$Html$text('');
+	}
+};
 var $author$project$Pages$Dashboard$view = F3(
 	function (apiUrl, token, model) {
 		return A2(
@@ -12263,7 +12487,7 @@ var $author$project$Pages$Dashboard$view = F3(
 				]),
 			_List_fromArray(
 				[
-					(!_Utils_eq(model.ag, $elm$core$Maybe$Nothing)) ? A2(
+					(!_Utils_eq(model.openMenuStudentId, $elm$core$Maybe$Nothing)) ? A2(
 					$elm$html$Html$div,
 					_List_fromArray(
 						[
@@ -12271,29 +12495,30 @@ var $author$project$Pages$Dashboard$view = F3(
 							$elm$html$Html$Events$onClick($author$project$Pages$Dashboard$CloseStudentMenu)
 						]),
 					_List_Nil) : $elm$html$Html$text(''),
+					$author$project$Pages$Dashboard$viewVerificationBanner(model),
 					function () {
-					var _v0 = model.L;
+					var _v0 = model.students;
 					switch (_v0.$) {
-						case 0:
+						case 'NotAsked':
 							return $elm$html$Html$text('');
-						case 1:
+						case 'Loading':
 							return $author$project$Pages$Dashboard$viewLoading(model);
-						case 2:
+						case 'Failure':
 							var error = _v0.a;
 							return $author$project$Pages$Dashboard$viewError(error);
 						default:
 							var students = _v0.a;
-							var filteredStudents = model.az ? students : A2(
+							var filteredStudents = model.showArchived ? students : A2(
 								$elm$core$List$filter,
 								function (s) {
-									return _Utils_eq(s.bg, $elm$core$Maybe$Nothing);
+									return _Utils_eq(s.archivedAt, $elm$core$Maybe$Nothing);
 								},
 								students);
 							var archivedCount = $elm$core$List$length(
 								A2(
 									$elm$core$List$filter,
 									function (s) {
-										return !_Utils_eq(s.bg, $elm$core$Maybe$Nothing);
+										return !_Utils_eq(s.archivedAt, $elm$core$Maybe$Nothing);
 									},
 									students));
 							return A2(
@@ -12301,7 +12526,7 @@ var $author$project$Pages$Dashboard$view = F3(
 								_List_Nil,
 								_List_fromArray(
 									[
-										$elm$core$List$isEmpty(filteredStudents) ? ((model.az || (!archivedCount)) ? $author$project$Pages$Dashboard$viewEmptyState(model) : A2(
+										$elm$core$List$isEmpty(filteredStudents) ? ((model.showArchived || (!archivedCount)) ? $author$project$Pages$Dashboard$viewEmptyState(model) : A2(
 										$elm$html$Html$div,
 										_List_fromArray(
 											[
@@ -12334,17 +12559,17 @@ var $author$project$Pages$Dashboard$view = F3(
 									]));
 					}
 				}(),
-					model.a3 ? A3($author$project$Pages$Dashboard$viewAddModal, apiUrl, token, model) : $elm$html$Html$text('')
+					model.showAddModal ? A3($author$project$Pages$Dashboard$viewAddModal, apiUrl, token, model) : $elm$html$Html$text('')
 				]));
 	});
 var $author$project$Pages$EmailPreferences$ToggleAnalysisComplete = function (a) {
-	return {$: 1, a: a};
+	return {$: 'ToggleAnalysisComplete', a: a};
 };
 var $author$project$Pages$EmailPreferences$ToggleMarketing = function (a) {
-	return {$: 3, a: a};
+	return {$: 'ToggleMarketing', a: a};
 };
 var $author$project$Pages$EmailPreferences$ToggleWeeklySummary = function (a) {
-	return {$: 2, a: a};
+	return {$: 'ToggleWeeklySummary', a: a};
 };
 var $elm$html$Html$Attributes$checked = $elm$html$Html$Attributes$boolProperty('checked');
 var $elm$html$Html$Events$targetChecked = A2(
@@ -12383,7 +12608,7 @@ var $author$project$Pages$EmailPreferences$preferenceToggle = function (config) 
 							]),
 						_List_fromArray(
 							[
-								$elm$html$Html$text(config.bR)
+								$elm$html$Html$text(config.label)
 							])),
 						A2(
 						$elm$html$Html$p,
@@ -12393,7 +12618,7 @@ var $author$project$Pages$EmailPreferences$preferenceToggle = function (config) 
 							]),
 						_List_fromArray(
 							[
-								$elm$html$Html$text(config.bJ)
+								$elm$html$Html$text(config.description)
 							]))
 					])),
 				A2(
@@ -12410,9 +12635,9 @@ var $author$project$Pages$EmailPreferences$preferenceToggle = function (config) 
 							[
 								$elm$html$Html$Attributes$type_('checkbox'),
 								$elm$html$Html$Attributes$class('sr-only peer'),
-								$elm$html$Html$Attributes$checked(config.bQ),
-								$elm$html$Html$Events$onCheck(config.bW),
-								$elm$html$Html$Attributes$disabled(config.A)
+								$elm$html$Html$Attributes$checked(config.isEnabled),
+								$elm$html$Html$Events$onCheck(config.onToggle),
+								$elm$html$Html$Attributes$disabled(config.isSaving)
 							]),
 						_List_Nil),
 						A2(
@@ -12429,7 +12654,7 @@ var $author$project$Pages$EmailPreferences$preferenceToggle = function (config) 
 											'peer-checked:after:translate-x-full peer-checked:after:border-white',
 											'after:content-[\'\'] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all',
 											'peer-checked:bg-anthro-dark',
-											config.A ? 'opacity-50' : ''
+											config.isSaving ? 'opacity-50' : ''
 										])))
 							]),
 						_List_Nil)
@@ -12483,8 +12708,8 @@ var $author$project$Pages$EmailPreferences$view = function (model) {
 				_List_fromArray(
 					[
 						function () {
-						var _v0 = model.aG;
-						if (!_v0.$) {
+						var _v0 = model.error;
+						if (_v0.$ === 'Just') {
 							var errorMsg = _v0.a;
 							return A2(
 								$elm$html$Html$div,
@@ -12500,7 +12725,7 @@ var $author$project$Pages$EmailPreferences$view = function (model) {
 							return $elm$html$Html$text('');
 						}
 					}(),
-						(model.aN && (!model.A)) ? A2(
+						(model.saveSuccess && (!model.isSaving)) ? A2(
 						$elm$html$Html$div,
 						_List_fromArray(
 							[
@@ -12511,7 +12736,7 @@ var $author$project$Pages$EmailPreferences$view = function (model) {
 								$elm$html$Html$text('Preferences saved')
 							])) : $elm$html$Html$text(''),
 						function () {
-						if (model.bo) {
+						if (model.isLoading) {
 							return A2(
 								$elm$html$Html$div,
 								_List_fromArray(
@@ -12539,8 +12764,8 @@ var $author$project$Pages$EmailPreferences$view = function (model) {
 											]))
 									]));
 						} else {
-							var _v1 = model.cn;
-							if (_v1.$ === 1) {
+							var _v1 = model.preferences;
+							if (_v1.$ === 'Nothing') {
 								return A2(
 									$elm$html$Html$div,
 									_List_fromArray(
@@ -12562,11 +12787,11 @@ var $author$project$Pages$EmailPreferences$view = function (model) {
 									_List_fromArray(
 										[
 											$author$project$Pages$EmailPreferences$preferenceToggle(
-											{bJ: 'Get notified when game analysis is complete for your students', bQ: prefs.cJ, A: model.A, bR: 'Analysis Complete Notifications', bW: $author$project$Pages$EmailPreferences$ToggleAnalysisComplete}),
+											{description: 'Get notified when game analysis is complete for your students', isEnabled: prefs.analysisCompleteNotifications, isSaving: model.isSaving, label: 'Analysis Complete Notifications', onToggle: $author$project$Pages$EmailPreferences$ToggleAnalysisComplete}),
 											$author$project$Pages$EmailPreferences$preferenceToggle(
-											{bJ: 'Receive a weekly digest of your students\' progress (coming soon)', bQ: prefs.dQ, A: model.A, bR: 'Weekly Summary', bW: $author$project$Pages$EmailPreferences$ToggleWeeklySummary}),
+											{description: 'Receive a weekly digest of your students\' progress (coming soon)', isEnabled: prefs.weeklySummary, isSaving: model.isSaving, label: 'Weekly Summary', onToggle: $author$project$Pages$EmailPreferences$ToggleWeeklySummary}),
 											$author$project$Pages$EmailPreferences$preferenceToggle(
-											{bJ: 'Receive updates about new features and improvements', bQ: prefs.c9, A: model.A, bR: 'Product Updates', bW: $author$project$Pages$EmailPreferences$ToggleMarketing})
+											{description: 'Receive updates about new features and improvements', isEnabled: prefs.marketingEmails, isSaving: model.isSaving, label: 'Product Updates', onToggle: $author$project$Pages$EmailPreferences$ToggleMarketing})
 										]));
 							}
 						}
@@ -12575,9 +12800,9 @@ var $author$project$Pages$EmailPreferences$view = function (model) {
 			]));
 };
 var $author$project$Pages$ForgotPassword$EmailChanged = function (a) {
-	return {$: 0, a: a};
+	return {$: 'EmailChanged', a: a};
 };
-var $author$project$Pages$ForgotPassword$SubmitForm = {$: 1};
+var $author$project$Pages$ForgotPassword$SubmitForm = {$: 'SubmitForm'};
 var $elm$html$Html$Attributes$for = $elm$html$Html$Attributes$stringProperty('htmlFor');
 var $elm$html$Html$Attributes$id = $elm$html$Html$Attributes$stringProperty('id');
 var $author$project$Pages$ForgotPassword$view = function (model) {
@@ -12681,8 +12906,8 @@ var $author$project$Pages$ForgotPassword$view = function (model) {
 											]))
 									])),
 								function () {
-								var _v0 = model.bv;
-								if (!_v0.$) {
+								var _v0 = model.success;
+								if (_v0.$ === 'Just') {
 									var successMsg = _v0.a;
 									return A2(
 										$elm$html$Html$div,
@@ -12740,8 +12965,8 @@ var $author$project$Pages$ForgotPassword$view = function (model) {
 														$elm$html$Html$text('Enter your email address and we\'ll send you a link to reset your password.')
 													])),
 												function () {
-												var _v1 = model.aG;
-												if (!_v1.$) {
+												var _v1 = model.error;
+												if (_v1.$ === 'Just') {
 													var errorMsg = _v1.a;
 													return A2(
 														$elm$html$Html$div,
@@ -12784,9 +13009,9 @@ var $author$project$Pages$ForgotPassword$view = function (model) {
 																$elm$html$Html$Attributes$id('email'),
 																$elm$html$Html$Attributes$class('w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-anthro-dark focus:border-anthro-dark outline-none transition-colors'),
 																$elm$html$Html$Attributes$placeholder('coach@example.com'),
-																$elm$html$Html$Attributes$value(model.cW),
+																$elm$html$Html$Attributes$value(model.email),
 																$elm$html$Html$Events$onInput($author$project$Pages$ForgotPassword$EmailChanged),
-																$elm$html$Html$Attributes$disabled(model.bo)
+																$elm$html$Html$Attributes$disabled(model.isLoading)
 															]),
 														_List_Nil)
 													])),
@@ -12796,11 +13021,11 @@ var $author$project$Pages$ForgotPassword$view = function (model) {
 													[
 														$elm$html$Html$Attributes$type_('submit'),
 														$elm$html$Html$Attributes$class('w-full bg-anthro-dark hover:bg-gray-800 text-white font-medium py-2 px-4 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed'),
-														$elm$html$Html$Attributes$disabled(model.bo)
+														$elm$html$Html$Attributes$disabled(model.isLoading)
 													]),
 												_List_fromArray(
 													[
-														model.bo ? $elm$html$Html$text('Sending...') : $elm$html$Html$text('Send Reset Link')
+														model.isLoading ? $elm$html$Html$text('Sending...') : $elm$html$Html$text('Send Reset Link')
 													])),
 												A2(
 												$elm$html$Html$div,
@@ -12871,7 +13096,7 @@ var $author$project$Pages$GameDetail$viewGameHeader = function (game) {
 						_List_fromArray(
 							[
 								$elm$html$Html$text(
-								(game.fk === 'chess_com') ? '♞' : '♘')
+								(game.platform === 'chess_com') ? '♞' : '♘')
 							])),
 						A2(
 						$elm$html$Html$div,
@@ -12886,7 +13111,7 @@ var $author$project$Pages$GameDetail$viewGameHeader = function (game) {
 									]),
 								_List_fromArray(
 									[
-										$elm$html$Html$text(game.fZ + (' vs ' + game.ea))
+										$elm$html$Html$text(game.whiteUsername + (' vs ' + game.blackUsername))
 									])),
 								A2(
 								$elm$html$Html$div,
@@ -12897,7 +13122,7 @@ var $author$project$Pages$GameDetail$viewGameHeader = function (game) {
 								_List_fromArray(
 									[
 										$elm$html$Html$text(
-										$author$project$Pages$GameDetail$formatDate(game.fm))
+										$author$project$Pages$GameDetail$formatDate(game.playedAt))
 									]))
 							]))
 					])),
@@ -12915,7 +13140,7 @@ var $author$project$Pages$GameDetail$viewGameHeader = function (game) {
 							[
 								$elm$html$Html$Attributes$class(
 								'px-3 py-1 rounded font-medium bg-anthro-gray-light text-anthro-gray border-l-2 ' + function () {
-									var _v0 = game.ft;
+									var _v0 = game.result;
 									switch (_v0) {
 										case '1-0':
 											return 'border-anthro-green';
@@ -12929,9 +13154,9 @@ var $author$project$Pages$GameDetail$viewGameHeader = function (game) {
 						_List_fromArray(
 							[
 								$elm$html$Html$text(
-								$author$project$Pages$GameDetail$resultToText(game.ft))
+								$author$project$Pages$GameDetail$resultToText(game.result))
 							])),
-						game.d0 ? A2(
+						game.analyzed ? A2(
 						$elm$html$Html$span,
 						_List_fromArray(
 							[
@@ -12972,7 +13197,7 @@ var $author$project$Pages$GameDetail$classificationLabel = function (class_) {
 };
 var $author$project$Pages$GameDetail$viewMoveRow = function (move) {
 	var phaseLabel = function () {
-		var _v5 = move.ff;
+		var _v5 = move.phase;
 		switch (_v5) {
 			case 'opening':
 				return 'Opening';
@@ -12986,10 +13211,10 @@ var $author$project$Pages$GameDetail$viewMoveRow = function (move) {
 		}
 	}();
 	var _v0 = function () {
-		var _v1 = move.aV;
+		var _v1 = move.classification;
 		_v1$5:
 		while (true) {
-			if (!_v1.$) {
+			if (_v1.$ === 'Just') {
 				switch (_v1.a) {
 					case 'blunder':
 						return _Utils_Tuple3('bg-red-50', 'text-red-700', '??');
@@ -13046,7 +13271,7 @@ var $author$project$Pages$GameDetail$viewMoveRow = function (move) {
 								_List_fromArray(
 									[
 										$elm$html$Html$text(
-										$elm$core$String$fromInt(move.e4) + '.')
+										$elm$core$String$fromInt(move.moveNumber) + '.')
 									])),
 								A2(
 								$elm$html$Html$span,
@@ -13057,7 +13282,7 @@ var $author$project$Pages$GameDetail$viewMoveRow = function (move) {
 								_List_fromArray(
 									[
 										$elm$html$Html$text(
-										(move.eh === 'white') ? move.df : ('...' + move.df))
+										(move.color === 'white') ? move.movePlayed : ('...' + move.movePlayed))
 									])),
 								(icon !== '') ? A2(
 								$elm$html$Html$span,
@@ -13089,8 +13314,8 @@ var $author$project$Pages$GameDetail$viewMoveRow = function (move) {
 										$elm$html$Html$text(phaseLabel)
 									])),
 								function () {
-								var _v2 = move.aV;
-								if (!_v2.$) {
+								var _v2 = move.classification;
+								if (_v2.$ === 'Just') {
 									var class_ = _v2.a;
 									return A2(
 										$elm$html$Html$span,
@@ -13108,8 +13333,8 @@ var $author$project$Pages$GameDetail$viewMoveRow = function (move) {
 								}
 							}(),
 								function () {
-								var _v3 = move.ey;
-								if (!_v3.$) {
+								var _v3 = move.evalDiff;
+								if (_v3.$ === 'Just') {
 									var diff = _v3.a;
 									return (diff > 0) ? A2(
 										$elm$html$Html$span,
@@ -13129,8 +13354,8 @@ var $author$project$Pages$GameDetail$viewMoveRow = function (move) {
 							]))
 					])),
 				function () {
-				var _v4 = _Utils_Tuple2(move.aV, move.d7);
-				if ((!_v4.a.$) && (!_v4.b.$)) {
+				var _v4 = _Utils_Tuple2(move.classification, move.bestMove);
+				if ((_v4.a.$ === 'Just') && (_v4.b.$ === 'Just')) {
 					var c = _v4.a.a;
 					var best = _v4.b.a;
 					return ((c === 'blunder') || ((c === 'mistake') || (c === 'inaccuracy'))) ? A2(
@@ -13155,7 +13380,7 @@ var $author$project$Pages$GameDetail$viewMoveSummary = function (moves) {
 			$elm$core$List$filter,
 			function (m) {
 				return _Utils_eq(
-					m.aV,
+					m.classification,
 					$elm$core$Maybe$Just('mistake'));
 			},
 			moves));
@@ -13164,7 +13389,7 @@ var $author$project$Pages$GameDetail$viewMoveSummary = function (moves) {
 			$elm$core$List$filter,
 			function (m) {
 				return _Utils_eq(
-					m.aV,
+					m.classification,
 					$elm$core$Maybe$Just('inaccuracy'));
 			},
 			moves));
@@ -13173,7 +13398,7 @@ var $author$project$Pages$GameDetail$viewMoveSummary = function (moves) {
 			$elm$core$List$filter,
 			function (m) {
 				return _Utils_eq(
-					m.aV,
+					m.classification,
 					$elm$core$Maybe$Just('blunder'));
 			},
 			moves));
@@ -13302,8 +13527,8 @@ var $author$project$Pages$GameDetail$viewGameDetail = function (detail) {
 		_List_Nil,
 		_List_fromArray(
 			[
-				$author$project$Pages$GameDetail$viewGameHeader(detail.eD),
-				$author$project$Pages$GameDetail$viewMoveSummary(detail.e6),
+				$author$project$Pages$GameDetail$viewGameHeader(detail.game),
+				$author$project$Pages$GameDetail$viewMoveSummary(detail.moves),
 				A2(
 				$elm$html$Html$div,
 				_List_fromArray(
@@ -13322,7 +13547,7 @@ var $author$project$Pages$GameDetail$viewGameDetail = function (detail) {
 							[
 								$elm$html$Html$text('Move Analysis')
 							])),
-						$elm$core$List$isEmpty(detail.e6) ? A2(
+						$elm$core$List$isEmpty(detail.moves) ? A2(
 						$elm$html$Html$div,
 						_List_fromArray(
 							[
@@ -13337,7 +13562,7 @@ var $author$project$Pages$GameDetail$viewGameDetail = function (detail) {
 							[
 								$elm$html$Html$Attributes$class('bg-white rounded-lg shadow-card divide-y divide-gray-100')
 							]),
-						A2($elm$core$List$map, $author$project$Pages$GameDetail$viewMoveRow, detail.e6))
+						A2($elm$core$List$map, $author$project$Pages$GameDetail$viewMoveRow, detail.moves))
 					]))
 			]));
 };
@@ -13366,11 +13591,11 @@ var $author$project$Pages$GameDetail$view = function (model) {
 						$elm$html$Html$text('Back')
 					])),
 				function () {
-				var _v0 = model.bn;
+				var _v0 = model.gameDetail;
 				switch (_v0.$) {
-					case 0:
+					case 'NotAsked':
 						return $elm$html$Html$text('');
-					case 1:
+					case 'Loading':
 						return A2(
 							$elm$html$Html$div,
 							_List_fromArray(
@@ -13381,7 +13606,7 @@ var $author$project$Pages$GameDetail$view = function (model) {
 								[
 									$elm$html$Html$text('Loading game analysis...')
 								]));
-					case 2:
+					case 'Failure':
 						var error = _v0.a;
 						return A2(
 							$elm$html$Html$div,
@@ -13401,12 +13626,12 @@ var $author$project$Pages$GameDetail$view = function (model) {
 			]));
 };
 var $author$project$Pages$Login$EmailChanged = function (a) {
-	return {$: 0, a: a};
+	return {$: 'EmailChanged', a: a};
 };
 var $author$project$Pages$Login$PasswordChanged = function (a) {
-	return {$: 1, a: a};
+	return {$: 'PasswordChanged', a: a};
 };
-var $author$project$Pages$Login$SubmitForm = {$: 2};
+var $author$project$Pages$Login$SubmitForm = {$: 'SubmitForm'};
 var $author$project$Pages$Login$view = function (model) {
 	return A2(
 		$elm$html$Html$div,
@@ -13516,8 +13741,8 @@ var $author$project$Pages$Login$view = function (model) {
 								_List_fromArray(
 									[
 										function () {
-										var _v0 = model.aG;
-										if (!_v0.$) {
+										var _v0 = model.error;
+										if (_v0.$ === 'Just') {
 											var errorMsg = _v0.a;
 											return A2(
 												$elm$html$Html$div,
@@ -13560,9 +13785,9 @@ var $author$project$Pages$Login$view = function (model) {
 														$elm$html$Html$Attributes$id('email'),
 														$elm$html$Html$Attributes$class('w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-anthro-dark focus:border-anthro-dark outline-none transition-colors'),
 														$elm$html$Html$Attributes$placeholder('coach@example.com'),
-														$elm$html$Html$Attributes$value(model.cW),
+														$elm$html$Html$Attributes$value(model.email),
 														$elm$html$Html$Events$onInput($author$project$Pages$Login$EmailChanged),
-														$elm$html$Html$Attributes$disabled(model.bo)
+														$elm$html$Html$Attributes$disabled(model.isLoading)
 													]),
 												_List_Nil)
 											])),
@@ -13593,9 +13818,9 @@ var $author$project$Pages$Login$view = function (model) {
 														$elm$html$Html$Attributes$id('password'),
 														$elm$html$Html$Attributes$class('w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-anthro-dark focus:border-anthro-dark outline-none transition-colors'),
 														$elm$html$Html$Attributes$placeholder('Enter your password'),
-														$elm$html$Html$Attributes$value(model.dh),
+														$elm$html$Html$Attributes$value(model.password),
 														$elm$html$Html$Events$onInput($author$project$Pages$Login$PasswordChanged),
-														$elm$html$Html$Attributes$disabled(model.bo)
+														$elm$html$Html$Attributes$disabled(model.isLoading)
 													]),
 												_List_Nil)
 											])),
@@ -13625,11 +13850,11 @@ var $author$project$Pages$Login$view = function (model) {
 											[
 												$elm$html$Html$Attributes$type_('submit'),
 												$elm$html$Html$Attributes$class('w-full bg-anthro-dark hover:bg-gray-800 text-white font-medium py-2 px-4 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed'),
-												$elm$html$Html$Attributes$disabled(model.bo)
+												$elm$html$Html$Attributes$disabled(model.isLoading)
 											]),
 										_List_fromArray(
 											[
-												model.bo ? $elm$html$Html$text('Signing in...') : $elm$html$Html$text('Sign in')
+												model.isLoading ? $elm$html$Html$text('Signing in...') : $elm$html$Html$text('Sign in')
 											]))
 									])),
 								A2(
@@ -13658,15 +13883,15 @@ var $author$project$Pages$Login$view = function (model) {
 			]));
 };
 var $author$project$Pages$Register$ConfirmPasswordChanged = function (a) {
-	return {$: 2, a: a};
+	return {$: 'ConfirmPasswordChanged', a: a};
 };
 var $author$project$Pages$Register$EmailChanged = function (a) {
-	return {$: 0, a: a};
+	return {$: 'EmailChanged', a: a};
 };
 var $author$project$Pages$Register$PasswordChanged = function (a) {
-	return {$: 1, a: a};
+	return {$: 'PasswordChanged', a: a};
 };
-var $author$project$Pages$Register$SubmitForm = {$: 3};
+var $author$project$Pages$Register$SubmitForm = {$: 'SubmitForm'};
 var $author$project$Pages$Register$view = function (model) {
 	return A2(
 		$elm$html$Html$div,
@@ -13776,8 +14001,8 @@ var $author$project$Pages$Register$view = function (model) {
 								_List_fromArray(
 									[
 										function () {
-										var _v0 = model.aG;
-										if (!_v0.$) {
+										var _v0 = model.error;
+										if (_v0.$ === 'Just') {
 											var errorMsg = _v0.a;
 											return A2(
 												$elm$html$Html$div,
@@ -13820,9 +14045,9 @@ var $author$project$Pages$Register$view = function (model) {
 														$elm$html$Html$Attributes$id('email'),
 														$elm$html$Html$Attributes$class('w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-anthro-dark focus:border-anthro-dark outline-none transition-colors'),
 														$elm$html$Html$Attributes$placeholder('coach@example.com'),
-														$elm$html$Html$Attributes$value(model.cW),
+														$elm$html$Html$Attributes$value(model.email),
 														$elm$html$Html$Events$onInput($author$project$Pages$Register$EmailChanged),
-														$elm$html$Html$Attributes$disabled(model.bo)
+														$elm$html$Html$Attributes$disabled(model.isLoading)
 													]),
 												_List_Nil)
 											])),
@@ -13853,9 +14078,9 @@ var $author$project$Pages$Register$view = function (model) {
 														$elm$html$Html$Attributes$id('password'),
 														$elm$html$Html$Attributes$class('w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-anthro-dark focus:border-anthro-dark outline-none transition-colors'),
 														$elm$html$Html$Attributes$placeholder('At least 8 characters'),
-														$elm$html$Html$Attributes$value(model.dh),
+														$elm$html$Html$Attributes$value(model.password),
 														$elm$html$Html$Events$onInput($author$project$Pages$Register$PasswordChanged),
-														$elm$html$Html$Attributes$disabled(model.bo)
+														$elm$html$Html$Attributes$disabled(model.isLoading)
 													]),
 												_List_Nil)
 											])),
@@ -13886,9 +14111,9 @@ var $author$project$Pages$Register$view = function (model) {
 														$elm$html$Html$Attributes$id('confirmPassword'),
 														$elm$html$Html$Attributes$class('w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-anthro-dark focus:border-anthro-dark outline-none transition-colors'),
 														$elm$html$Html$Attributes$placeholder('Confirm your password'),
-														$elm$html$Html$Attributes$value(model.bh),
+														$elm$html$Html$Attributes$value(model.confirmPassword),
 														$elm$html$Html$Events$onInput($author$project$Pages$Register$ConfirmPasswordChanged),
-														$elm$html$Html$Attributes$disabled(model.bo)
+														$elm$html$Html$Attributes$disabled(model.isLoading)
 													]),
 												_List_Nil)
 											])),
@@ -13898,11 +14123,11 @@ var $author$project$Pages$Register$view = function (model) {
 											[
 												$elm$html$Html$Attributes$type_('submit'),
 												$elm$html$Html$Attributes$class('w-full bg-anthro-dark hover:bg-gray-800 text-white font-medium py-2 px-4 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed'),
-												$elm$html$Html$Attributes$disabled(model.bo)
+												$elm$html$Html$Attributes$disabled(model.isLoading)
 											]),
 										_List_fromArray(
 											[
-												model.bo ? $elm$html$Html$text('Creating account...') : $elm$html$Html$text('Create account')
+												model.isLoading ? $elm$html$Html$text('Creating account...') : $elm$html$Html$text('Create account')
 											]))
 									])),
 								A2(
@@ -13931,12 +14156,12 @@ var $author$project$Pages$Register$view = function (model) {
 			]));
 };
 var $author$project$Pages$ResetPassword$ConfirmPasswordChanged = function (a) {
-	return {$: 1, a: a};
+	return {$: 'ConfirmPasswordChanged', a: a};
 };
 var $author$project$Pages$ResetPassword$PasswordChanged = function (a) {
-	return {$: 0, a: a};
+	return {$: 'PasswordChanged', a: a};
 };
-var $author$project$Pages$ResetPassword$SubmitForm = {$: 2};
+var $author$project$Pages$ResetPassword$SubmitForm = {$: 'SubmitForm'};
 var $author$project$Pages$ResetPassword$view = function (model) {
 	return A2(
 		$elm$html$Html$div,
@@ -14037,7 +14262,7 @@ var $author$project$Pages$ResetPassword$view = function (model) {
 												$elm$html$Html$text('Set a new password')
 											]))
 									])),
-								model.bv ? A2(
+								model.success ? A2(
 								$elm$html$Html$div,
 								_List_Nil,
 								_List_fromArray(
@@ -14091,8 +14316,8 @@ var $author$project$Pages$ResetPassword$view = function (model) {
 								_List_fromArray(
 									[
 										function () {
-										var _v0 = model.aG;
-										if (!_v0.$) {
+										var _v0 = model.error;
+										if (_v0.$ === 'Just') {
 											var errorMsg = _v0.a;
 											return A2(
 												$elm$html$Html$div,
@@ -14135,9 +14360,9 @@ var $author$project$Pages$ResetPassword$view = function (model) {
 														$elm$html$Html$Attributes$id('password'),
 														$elm$html$Html$Attributes$class('w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-anthro-dark focus:border-anthro-dark outline-none transition-colors'),
 														$elm$html$Html$Attributes$placeholder('Enter your new password'),
-														$elm$html$Html$Attributes$value(model.dh),
+														$elm$html$Html$Attributes$value(model.password),
 														$elm$html$Html$Events$onInput($author$project$Pages$ResetPassword$PasswordChanged),
-														$elm$html$Html$Attributes$disabled(model.bo)
+														$elm$html$Html$Attributes$disabled(model.isLoading)
 													]),
 												_List_Nil),
 												A2(
@@ -14178,9 +14403,9 @@ var $author$project$Pages$ResetPassword$view = function (model) {
 														$elm$html$Html$Attributes$id('confirmPassword'),
 														$elm$html$Html$Attributes$class('w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-anthro-dark focus:border-anthro-dark outline-none transition-colors'),
 														$elm$html$Html$Attributes$placeholder('Confirm your new password'),
-														$elm$html$Html$Attributes$value(model.bh),
+														$elm$html$Html$Attributes$value(model.confirmPassword),
 														$elm$html$Html$Events$onInput($author$project$Pages$ResetPassword$ConfirmPasswordChanged),
-														$elm$html$Html$Attributes$disabled(model.bo)
+														$elm$html$Html$Attributes$disabled(model.isLoading)
 													]),
 												_List_Nil)
 											])),
@@ -14190,11 +14415,11 @@ var $author$project$Pages$ResetPassword$view = function (model) {
 											[
 												$elm$html$Html$Attributes$type_('submit'),
 												$elm$html$Html$Attributes$class('w-full bg-anthro-dark hover:bg-gray-800 text-white font-medium py-2 px-4 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed'),
-												$elm$html$Html$Attributes$disabled(model.bo)
+												$elm$html$Html$Attributes$disabled(model.isLoading)
 											]),
 										_List_fromArray(
 											[
-												model.bo ? $elm$html$Html$text('Resetting...') : $elm$html$Html$text('Reset Password')
+												model.isLoading ? $elm$html$Html$text('Resetting...') : $elm$html$Html$text('Reset Password')
 											])),
 										A2(
 										$elm$html$Html$div,
@@ -14221,7 +14446,7 @@ var $author$project$Pages$ResetPassword$view = function (model) {
 					]))
 			]));
 };
-var $author$project$Pages$StudentDetail$ToggleSidebar = {$: 20};
+var $author$project$Pages$StudentDetail$ToggleSidebar = {$: 'ToggleSidebar'};
 var $author$project$Pages$StudentDetail$countActiveFilters = function (model) {
 	return $elm$core$List$length(
 		A2(
@@ -14229,17 +14454,17 @@ var $author$project$Pages$StudentDetail$countActiveFilters = function (model) {
 			$elm$core$Basics$identity,
 			_List_fromArray(
 				[
-					!(!model.S),
-					!(!model.R),
-					!(!model.T),
-					!$elm$core$List$isEmpty(model.C),
-					(!_Utils_eq(model.e1, $elm$core$Maybe$Nothing)) || (!_Utils_eq(model.eY, $elm$core$Maybe$Nothing)),
-					!_Utils_eq(model.e_, $elm$core$Maybe$Nothing),
-					model.X !== 'all',
-					model.an !== ''
+					!_Utils_eq(model.timeControlFilter, $author$project$Types$AllTimeControls),
+					!_Utils_eq(model.resultFilter, $author$project$Types$AllResults),
+					!_Utils_eq(model.colorFilter, $author$project$Types$AllColors),
+					!$elm$core$List$isEmpty(model.selectedTags),
+					(!_Utils_eq(model.minAccuracy, $elm$core$Maybe$Nothing)) || (!_Utils_eq(model.maxAccuracy, $elm$core$Maybe$Nothing)),
+					!_Utils_eq(model.maxBlunders, $elm$core$Maybe$Nothing),
+					model.opponentRatingFilter !== 'all',
+					model.opponentSearch !== ''
 				])));
 };
-var $author$project$Pages$StudentDetail$ClearAllFilters = {$: 17};
+var $author$project$Pages$StudentDetail$ClearAllFilters = {$: 'ClearAllFilters'};
 var $elm$core$String$toLower = _String_toLower;
 var $author$project$Pages$StudentDetail$filterByOpponentName = F3(
 	function (searchStr, student, games) {
@@ -14253,17 +14478,17 @@ var $author$project$Pages$StudentDetail$filterByOpponentName = F3(
 					$elm$core$List$filterMap,
 					$elm$core$Basics$identity,
 					_List_fromArray(
-						[student.ef])));
+						[student.chessComUsername])));
 			var search = $elm$core$String$toLower(searchStr);
 			return A2(
 				$elm$core$List$filter,
 				function (g) {
 					var isWhite = A2(
 						$elm$core$List$member,
-						$elm$core$String$toLower(g.eD.fZ),
+						$elm$core$String$toLower(g.game.whiteUsername),
 						studentUsernames);
 					var opponent = $elm$core$String$toLower(
-						isWhite ? g.eD.ea : g.eD.fZ);
+						isWhite ? g.game.blackUsername : g.game.whiteUsername);
 					return A2($elm$core$String$contains, search, opponent);
 				},
 				games);
@@ -14275,7 +14500,7 @@ var $author$project$Pages$StudentDetail$groupGamesByDate = function (games) {
 			$elm$core$List$foldl,
 			F2(
 				function (game, acc) {
-					var dateStr = A2($elm$core$String$left, 10, game.eD.fm);
+					var dateStr = A2($elm$core$String$left, 10, game.game.playedAt);
 					if (!acc.b) {
 						return _List_fromArray(
 							[
@@ -14310,11 +14535,11 @@ var $author$project$Pages$StudentDetail$groupGamesByDate = function (games) {
 			games));
 };
 var $author$project$Pages$StudentDetail$hasActiveFilters = function (model) {
-	return (!(!model.S)) || ((!(!model.R)) || ((!(!model.T)) || ((!$elm$core$List$isEmpty(model.C)) || ((!_Utils_eq(model.e1, $elm$core$Maybe$Nothing)) || ((!_Utils_eq(model.eY, $elm$core$Maybe$Nothing)) || ((!_Utils_eq(model.e_, $elm$core$Maybe$Nothing)) || ((model.X !== 'all') || (model.an !== ''))))))));
+	return (!_Utils_eq(model.timeControlFilter, $author$project$Types$AllTimeControls)) || ((!_Utils_eq(model.resultFilter, $author$project$Types$AllResults)) || ((!_Utils_eq(model.colorFilter, $author$project$Types$AllColors)) || ((!$elm$core$List$isEmpty(model.selectedTags)) || ((!_Utils_eq(model.minAccuracy, $elm$core$Maybe$Nothing)) || ((!_Utils_eq(model.maxAccuracy, $elm$core$Maybe$Nothing)) || ((!_Utils_eq(model.maxBlunders, $elm$core$Maybe$Nothing)) || ((model.opponentRatingFilter !== 'all') || (model.opponentSearch !== ''))))))));
 };
 var $elm$core$Maybe$andThen = F2(
 	function (callback, maybeValue) {
-		if (!maybeValue.$) {
+		if (maybeValue.$ === 'Just') {
 			var value = maybeValue.a;
 			return callback(value);
 		} else {
@@ -14328,13 +14553,13 @@ var $author$project$Pages$StudentDetail$sortGames = F3(
 			$elm$core$List$filterMap,
 			$elm$core$Basics$identity,
 			_List_fromArray(
-				[student.ef]));
+				[student.chessComUsername]));
 		var getOpponentRating = function (g) {
 			var isWhite = A2(
 				$elm$core$List$member,
-				$elm$core$String$toLower(g.eD.fZ),
+				$elm$core$String$toLower(g.game.whiteUsername),
 				A2($elm$core$List$map, $elm$core$String$toLower, studentUsernames));
-			return isWhite ? A2($elm$core$Maybe$withDefault, 0, g.eD.b$) : A2($elm$core$Maybe$withDefault, 0, g.eD.cE);
+			return isWhite ? A2($elm$core$Maybe$withDefault, 0, g.game.blackElo) : A2($elm$core$Maybe$withDefault, 0, g.game.whiteElo);
 		};
 		var getAccuracy = function (g) {
 			return A2(
@@ -14343,25 +14568,25 @@ var $author$project$Pages$StudentDetail$sortGames = F3(
 				A2(
 					$elm$core$Maybe$andThen,
 					function ($) {
-						return $.bF;
+						return $.accuracyOverall;
 					},
-					g.cc));
+					g.insight));
 		};
-		switch (order) {
-			case 0:
+		switch (order.$) {
+			case 'DateNewest':
 				return games;
-			case 1:
+			case 'DateOldest':
 				return $elm$core$List$reverse(games);
-			case 2:
+			case 'AccuracyHigh':
 				return A2(
 					$elm$core$List$sortBy,
 					function (g) {
 						return -getAccuracy(g);
 					},
 					games);
-			case 3:
+			case 'AccuracyLow':
 				return A2($elm$core$List$sortBy, getAccuracy, games);
-			case 4:
+			case 'OpponentRatingHigh':
 				return A2(
 					$elm$core$List$sortBy,
 					function (g) {
@@ -14421,10 +14646,10 @@ var $author$project$Pages$StudentDetail$formatDateLabel = function (dateStr) {
 	}
 };
 var $author$project$Pages$StudentDetail$HoverGame = function (a) {
-	return {$: 23, a: a};
+	return {$: 'HoverGame', a: a};
 };
 var $author$project$Pages$StudentDetail$ToggleGameExpanded = function (a) {
-	return {$: 18, a: a};
+	return {$: 'ToggleGameExpanded', a: a};
 };
 var $author$project$Pages$StudentDetail$getPriorityTags = function (tags) {
 	return A2($elm$core$List$take, 3, tags);
@@ -14433,22 +14658,22 @@ var $author$project$Pages$StudentDetail$getResultInfo = F2(
 	function (isStudentWhite, result) {
 		switch (result) {
 			case '1-0':
-				return isStudentWhite ? {at: 'bg-green-500', bR: 'Win', aw: 'bg-green-100', ax: 'text-green-700'} : {at: 'bg-red-500', bR: 'Loss', aw: 'bg-red-100', ax: 'text-red-700'};
+				return isStudentWhite ? {barColor: 'bg-green-500', label: 'Win', pillBg: 'bg-green-100', pillText: 'text-green-700'} : {barColor: 'bg-red-500', label: 'Loss', pillBg: 'bg-red-100', pillText: 'text-red-700'};
 			case '0-1':
-				return isStudentWhite ? {at: 'bg-red-500', bR: 'Loss', aw: 'bg-red-100', ax: 'text-red-700'} : {at: 'bg-green-500', bR: 'Win', aw: 'bg-green-100', ax: 'text-green-700'};
+				return isStudentWhite ? {barColor: 'bg-red-500', label: 'Loss', pillBg: 'bg-red-100', pillText: 'text-red-700'} : {barColor: 'bg-green-500', label: 'Win', pillBg: 'bg-green-100', pillText: 'text-green-700'};
 			case '1/2-1/2':
-				return {at: 'bg-gray-400', bR: 'Draw', aw: 'bg-gray-100', ax: 'text-gray-700'};
+				return {barColor: 'bg-gray-400', label: 'Draw', pillBg: 'bg-gray-100', pillText: 'text-gray-700'};
 			default:
-				return {at: 'bg-gray-400', bR: result, aw: 'bg-gray-100', ax: 'text-gray-700'};
+				return {barColor: 'bg-gray-400', label: result, pillBg: 'bg-gray-100', pillText: 'text-gray-700'};
 		}
 	});
 var $elm$core$Maybe$map2 = F3(
 	function (func, ma, mb) {
-		if (ma.$ === 1) {
+		if (ma.$ === 'Nothing') {
 			return $elm$core$Maybe$Nothing;
 		} else {
 			var a = ma.a;
-			if (mb.$ === 1) {
+			if (mb.$ === 'Nothing') {
 				return $elm$core$Maybe$Nothing;
 			} else {
 				var b = mb.a;
@@ -14474,20 +14699,20 @@ var $elm$html$Html$Attributes$style = $elm$virtual_dom$VirtualDom$style;
 var $elm$html$Html$Attributes$target = $elm$html$Html$Attributes$stringProperty('target');
 var $elm$html$Html$Attributes$title = $elm$html$Html$Attributes$stringProperty('title');
 var $author$project$Pages$StudentDetail$accuracyColors = function (accuracy) {
-	return (accuracy <= 40) ? {aT: 'bg-red-500', aU: 'bg-red-50', aA: 'text-red-700'} : ((accuracy <= 60) ? {aT: 'bg-orange-500', aU: 'bg-orange-50', aA: 'text-orange-700'} : ((accuracy <= 80) ? {aT: 'bg-yellow-500', aU: 'bg-yellow-50', aA: 'text-yellow-700'} : {aT: 'bg-green-500', aU: 'bg-green-50', aA: 'text-green-700'}));
+	return (accuracy <= 40) ? {bar: 'bg-red-500', bg: 'bg-red-50', text: 'text-red-700'} : ((accuracy <= 60) ? {bar: 'bg-orange-500', bg: 'bg-orange-50', text: 'text-orange-700'} : ((accuracy <= 80) ? {bar: 'bg-yellow-500', bg: 'bg-yellow-50', text: 'text-yellow-700'} : {bar: 'bg-green-500', bg: 'bg-green-50', text: 'text-green-700'}));
 };
 var $author$project$Pages$StudentDetail$viewAccuracyBadge = function (maybeInsight) {
-	if (!maybeInsight.$) {
+	if (maybeInsight.$ === 'Just') {
 		var ins = maybeInsight.a;
-		var _v1 = ins.bF;
-		if (!_v1.$) {
+		var _v1 = ins.accuracyOverall;
+		if (_v1.$ === 'Just') {
 			var acc = _v1.a;
 			var colors = $author$project$Pages$StudentDetail$accuracyColors(acc);
 			return A2(
 				$elm$html$Html$span,
 				_List_fromArray(
 					[
-						$elm$html$Html$Attributes$class('px-2 py-0.5 rounded text-xs font-semibold ' + (colors.aU + (' ' + colors.aA)))
+						$elm$html$Html$Attributes$class('px-2 py-0.5 rounded text-xs font-semibold ' + (colors.bg + (' ' + colors.text)))
 					]),
 				_List_fromArray(
 					[
@@ -14520,7 +14745,7 @@ var $author$project$Pages$StudentDetail$groupTagsByCategory = function (tags) {
 		A2(
 			$elm$core$List$map,
 			function (gt) {
-				return gt.G.bG;
+				return gt.tag.category;
 			},
 			tags));
 	return A2(
@@ -14537,7 +14762,7 @@ var $author$project$Pages$StudentDetail$groupTagsByCategory = function (tags) {
 					A2(
 						$elm$core$List$filter,
 						function (gt) {
-							return _Utils_eq(gt.G.bG, cat);
+							return _Utils_eq(gt.tag.category, cat);
 						},
 						tags));
 			},
@@ -14545,8 +14770,8 @@ var $author$project$Pages$StudentDetail$groupTagsByCategory = function (tags) {
 };
 var $elm$core$String$fromFloat = _String_fromNumber;
 var $author$project$Pages$StudentDetail$viewAccuracyBar = function (ins) {
-	var _v0 = ins.bF;
-	if (!_v0.$) {
+	var _v0 = ins.accuracyOverall;
+	if (_v0.$ === 'Just') {
 		var acc = _v0.a;
 		var colors = $author$project$Pages$StudentDetail$accuracyColors(acc);
 		return A2(
@@ -14577,7 +14802,7 @@ var $author$project$Pages$StudentDetail$viewAccuracyBar = function (ins) {
 									$elm$html$Html$div,
 									_List_fromArray(
 										[
-											$elm$html$Html$Attributes$class('h-full rounded-full ' + colors.aT),
+											$elm$html$Html$Attributes$class('h-full rounded-full ' + colors.bar),
 											A2(
 											$elm$html$Html$Attributes$style,
 											'width',
@@ -14589,7 +14814,7 @@ var $author$project$Pages$StudentDetail$viewAccuracyBar = function (ins) {
 							$elm$html$Html$span,
 							_List_fromArray(
 								[
-									$elm$html$Html$Attributes$class('text-sm font-bold ' + colors.aA)
+									$elm$html$Html$Attributes$class('text-sm font-bold ' + colors.text)
 								]),
 							_List_fromArray(
 								[
@@ -14607,8 +14832,8 @@ var $author$project$Pages$StudentDetail$viewAccuracyBar = function (ins) {
 					_List_fromArray(
 						[
 							function () {
-							var _v1 = ins.d_;
-							if (!_v1.$) {
+							var _v1 = ins.accuracyOpening;
+							if (_v1.$ === 'Just') {
 								var a = _v1.a;
 								return A2(
 									$elm$html$Html$span,
@@ -14624,8 +14849,8 @@ var $author$project$Pages$StudentDetail$viewAccuracyBar = function (ins) {
 							}
 						}(),
 							function () {
-							var _v2 = ins.dZ;
-							if (!_v2.$) {
+							var _v2 = ins.accuracyMiddlegame;
+							if (_v2.$ === 'Just') {
 								var a = _v2.a;
 								return A2(
 									$elm$html$Html$span,
@@ -14641,8 +14866,8 @@ var $author$project$Pages$StudentDetail$viewAccuracyBar = function (ins) {
 							}
 						}(),
 							function () {
-							var _v3 = ins.dY;
-							if (!_v3.$) {
+							var _v3 = ins.accuracyEndgame;
+							if (_v3.$ === 'Just') {
 								var a = _v3.a;
 								return A2(
 									$elm$html$Html$span,
@@ -14675,9 +14900,9 @@ var $author$project$Pages$StudentDetail$viewErrorSummary = function (ins) {
 		},
 		_List_fromArray(
 			[
-				_Utils_Tuple3(ins.eb, 'Blunder', 'bg-red-500'),
-				_Utils_Tuple3(ins.e3, 'Mistake', 'bg-orange-500'),
-				_Utils_Tuple3(ins.eM, 'Inaccuracy', 'bg-yellow-500')
+				_Utils_Tuple3(ins.blundersCount, 'Blunder', 'bg-red-500'),
+				_Utils_Tuple3(ins.mistakesCount, 'Mistake', 'bg-orange-500'),
+				_Utils_Tuple3(ins.inaccuraciesCount, 'Inaccuracy', 'bg-yellow-500')
 			]));
 	return $elm$core$List$isEmpty(items) ? A2(
 		$elm$html$Html$div,
@@ -14765,7 +14990,7 @@ var $author$project$Pages$StudentDetail$tagClasses = function (_v0) {
 	return 'px-2.5 py-1 text-xs rounded-full font-medium bg-anthro-gray-light text-anthro-gray';
 };
 var $author$project$Pages$StudentDetail$viewTagBadge = function (gameTag) {
-	var hasTooltipContent = (!_Utils_eq(gameTag.G.bJ, $elm$core$Maybe$Nothing)) || (!_Utils_eq(gameTag.dm, $elm$core$Maybe$Nothing));
+	var hasTooltipContent = (!_Utils_eq(gameTag.tag.description, $elm$core$Maybe$Nothing)) || (!_Utils_eq(gameTag.primaryMove, $elm$core$Maybe$Nothing));
 	var tooltipContent = hasTooltipContent ? A2(
 		$elm$html$Html$div,
 		_List_fromArray(
@@ -14784,13 +15009,13 @@ var $author$project$Pages$StudentDetail$viewTagBadge = function (gameTag) {
 						]),
 					_List_fromArray(
 						[
-							$elm$html$Html$text(gameTag.G.bU)
+							$elm$html$Html$text(gameTag.tag.name)
 						]))
 				]),
 			_Utils_ap(
 				function () {
-					var _v0 = gameTag.G.bJ;
-					if (!_v0.$) {
+					var _v0 = gameTag.tag.description;
+					if (_v0.$ === 'Just') {
 						var desc = _v0.a;
 						return _List_fromArray(
 							[
@@ -14810,8 +15035,8 @@ var $author$project$Pages$StudentDetail$viewTagBadge = function (gameTag) {
 					}
 				}(),
 				function () {
-					var _v1 = gameTag.dm;
-					if (!_v1.$) {
+					var _v1 = gameTag.primaryMove;
+					if (_v1.$ === 'Just') {
 						var moveNum = _v1.a;
 						return _List_fromArray(
 							[
@@ -14846,11 +15071,11 @@ var $author$project$Pages$StudentDetail$viewTagBadge = function (gameTag) {
 				_List_fromArray(
 					[
 						$elm$html$Html$Attributes$class(
-						$author$project$Pages$StudentDetail$tagClasses(gameTag.G))
+						$author$project$Pages$StudentDetail$tagClasses(gameTag.tag))
 					]),
 				_List_fromArray(
 					[
-						$elm$html$Html$text(gameTag.G.bU)
+						$elm$html$Html$text(gameTag.tag.name)
 					])),
 				tooltipContent
 			]));
@@ -14941,7 +15166,7 @@ var $author$project$Pages$StudentDetail$viewExpandedContent = F4(
 										]))
 								]));
 					} else {
-						if (!maybeInsight.$) {
+						if (maybeInsight.$ === 'Just') {
 							var ins = maybeInsight.a;
 							return A2(
 								$elm$html$Html$div,
@@ -15019,29 +15244,29 @@ var $author$project$Pages$StudentDetail$viewExpandedContent = F4(
 	});
 var $author$project$Pages$StudentDetail$viewGameCard = F3(
 	function (model, student, gameWithInsights) {
-		var tags = gameWithInsights.fF;
+		var tags = gameWithInsights.tags;
 		var studentUsernames = A2(
 			$elm$core$List$filterMap,
 			$elm$core$Basics$identity,
 			_List_fromArray(
-				[student.ef]));
+				[student.chessComUsername]));
 		var priorityTags = $author$project$Pages$StudentDetail$getPriorityTags(tags);
-		var insight = gameWithInsights.cc;
-		var game = gameWithInsights.eD;
-		var isExpanded = A2($elm$core$Set$member, game.F, model.aI);
+		var insight = gameWithInsights.insight;
+		var game = gameWithInsights.game;
+		var isExpanded = A2($elm$core$Set$member, game.id, model.expandedGames);
 		var isHovered = _Utils_eq(
-			model.bO,
-			$elm$core$Maybe$Just(game.F));
+			model.hoveredGameId,
+			$elm$core$Maybe$Just(game.id));
 		var isStudentWhite = A2(
 			$elm$core$List$member,
-			$elm$core$String$toLower(game.fZ),
+			$elm$core$String$toLower(game.whiteUsername),
 			A2($elm$core$List$map, $elm$core$String$toLower, studentUsernames));
-		var opponent = isStudentWhite ? game.ea : game.fZ;
-		var opponentRating = isStudentWhite ? game.b$ : game.cE;
-		var result = A2($author$project$Pages$StudentDetail$getResultInfo, isStudentWhite, game.ft);
-		var studentRating = isStudentWhite ? game.cE : game.b$;
+		var opponent = isStudentWhite ? game.blackUsername : game.whiteUsername;
+		var opponentRating = isStudentWhite ? game.blackElo : game.whiteElo;
+		var result = A2($author$project$Pages$StudentDetail$getResultInfo, isStudentWhite, game.result);
+		var studentRating = isStudentWhite ? game.whiteElo : game.blackElo;
 		var ratingDiff = A3($elm$core$Maybe$map2, $elm$core$Basics$sub, opponentRating, studentRating);
-		var chessComUrl = 'https://www.chess.com/analysis/game/live/' + game.fl;
+		var chessComUrl = 'https://www.chess.com/analysis/game/live/' + game.platformGameId;
 		return A2(
 			$elm$html$Html$div,
 			_List_fromArray(
@@ -15049,10 +15274,10 @@ var $author$project$Pages$StudentDetail$viewGameCard = F3(
 					$elm$html$Html$Attributes$class(
 					'bg-white rounded-xl transition-all duration-200 cursor-pointer flex shadow-card ' + (isExpanded ? 'shadow-elevated' : (isHovered ? 'shadow-elevated' : 'hover:shadow-elevated'))),
 					$elm$html$Html$Events$onClick(
-					$author$project$Pages$StudentDetail$ToggleGameExpanded(game.F)),
+					$author$project$Pages$StudentDetail$ToggleGameExpanded(game.id)),
 					$elm$html$Html$Events$onMouseEnter(
 					$author$project$Pages$StudentDetail$HoverGame(
-						$elm$core$Maybe$Just(game.F))),
+						$elm$core$Maybe$Just(game.id))),
 					$elm$html$Html$Events$onMouseLeave(
 					$author$project$Pages$StudentDetail$HoverGame($elm$core$Maybe$Nothing))
 				]),
@@ -15062,7 +15287,7 @@ var $author$project$Pages$StudentDetail$viewGameCard = F3(
 					$elm$html$Html$div,
 					_List_fromArray(
 						[
-							$elm$html$Html$Attributes$class('w-1 flex-shrink-0 rounded-l-xl ' + result.at)
+							$elm$html$Html$Attributes$class('w-1 flex-shrink-0 rounded-l-xl ' + result.barColor)
 						]),
 					_List_Nil),
 					A2(
@@ -15108,7 +15333,7 @@ var $author$project$Pages$StudentDetail$viewGameCard = F3(
 															$elm$html$Html$text(opponent)
 														])),
 													function () {
-													if (!opponentRating.$) {
+													if (opponentRating.$ === 'Just') {
 														var rating = opponentRating.a;
 														return A2(
 															$elm$html$Html$span,
@@ -15129,14 +15354,14 @@ var $author$project$Pages$StudentDetail$viewGameCard = F3(
 													$elm$html$Html$span,
 													_List_fromArray(
 														[
-															$elm$html$Html$Attributes$class('px-2 py-0.5 rounded-full text-xs font-semibold ' + (result.aw + (' ' + result.ax)))
+															$elm$html$Html$Attributes$class('px-2 py-0.5 rounded-full text-xs font-semibold ' + (result.pillBg + (' ' + result.pillText)))
 														]),
 													_List_fromArray(
 														[
-															$elm$html$Html$text(result.bR)
+															$elm$html$Html$text(result.label)
 														])),
 													function () {
-													if (!ratingDiff.$) {
+													if (ratingDiff.$ === 'Just') {
 														var diff = ratingDiff.a;
 														return (diff > 0) ? A2(
 															$elm$html$Html$span,
@@ -15178,8 +15403,8 @@ var $author$project$Pages$StudentDetail$viewGameCard = F3(
 													_List_Nil)
 												])),
 											function () {
-											var _v2 = game.fc;
-											if (!_v2.$) {
+											var _v2 = game.openingName;
+											if (_v2.$ === 'Just') {
 												var opening = _v2.a;
 												return A2(
 													$elm$html$Html$div,
@@ -15212,9 +15437,9 @@ var $author$project$Pages$StudentDetail$viewGameCard = F3(
 													_List_fromArray(
 														[
 															$elm$html$Html$text(
-															A2($elm$core$String$left, 10, game.fm))
+															A2($elm$core$String$left, 10, game.playedAt))
 														])),
-													(!game.d0) ? A2(
+													(!game.analyzed) ? A2(
 													$elm$html$Html$span,
 													_List_fromArray(
 														[
@@ -15232,7 +15457,7 @@ var $author$project$Pages$StudentDetail$viewGameCard = F3(
 															$elm$html$Html$text('Pending analysis')
 														])) : $author$project$Pages$StudentDetail$viewAccuracyBadge(insight)
 												])),
-											isExpanded ? A4($author$project$Pages$StudentDetail$viewExpandedContent, game.d0, insight, tags, chessComUrl) : ((!$elm$core$List$isEmpty(priorityTags)) ? A2(
+											isExpanded ? A4($author$project$Pages$StudentDetail$viewExpandedContent, game.analyzed, insight, tags, chessComUrl) : ((!$elm$core$List$isEmpty(priorityTags)) ? A2(
 											$elm$html$Html$div,
 											_List_fromArray(
 												[
@@ -15381,7 +15606,7 @@ var $author$project$Pages$StudentDetail$viewDateGroup = F3(
 				]));
 	});
 var $author$project$Pages$StudentDetail$GoToPage = function (a) {
-	return {$: 22, a: a};
+	return {$: 'GoToPage', a: a};
 };
 var $author$project$Pages$StudentDetail$viewPagination = F2(
 	function (currentPage, totalPages) {
@@ -15445,11 +15670,11 @@ var $author$project$Pages$StudentDetail$viewPagination = F2(
 						]))));
 	});
 var $author$project$Pages$StudentDetail$viewGamesList = function (model) {
-	var _v0 = model.g;
+	var _v0 = model.games;
 	switch (_v0.$) {
-		case 0:
+		case 'NotAsked':
 			return $elm$html$Html$text('');
-		case 1:
+		case 'Loading':
 			return A2(
 				$elm$html$Html$div,
 				_List_fromArray(
@@ -15514,7 +15739,7 @@ var $author$project$Pages$StudentDetail$viewGamesList = function (model) {
 										_List_Nil)
 									]))
 							]))));
-		case 2:
+		case 'Failure':
 			var error = _v0.a;
 			return A2(
 				$elm$html$Html$div,
@@ -15528,17 +15753,17 @@ var $author$project$Pages$StudentDetail$viewGamesList = function (model) {
 					]));
 		default:
 			var gamesData = _v0.a;
-			var _v1 = model.ao;
-			if (_v1.$ === 3) {
+			var _v1 = model.student;
+			if (_v1.$ === 'Success') {
 				var student = _v1.a;
-				var totalPages = $elm$core$Basics$ceiling(gamesData.by / model.eS);
+				var totalPages = $elm$core$Basics$ceiling(gamesData.total / model.limit);
 				var filteredGames = A3(
 					$author$project$Pages$StudentDetail$sortGames,
-					model.Y,
+					model.sortOrder,
 					student,
-					A3($author$project$Pages$StudentDetail$filterByOpponentName, model.an, student, gamesData.g));
+					A3($author$project$Pages$StudentDetail$filterByOpponentName, model.opponentSearch, student, gamesData.games));
 				var groupedGames = $author$project$Pages$StudentDetail$groupGamesByDate(filteredGames);
-				var currentPage = (model.e8 / model.eS) | 0;
+				var currentPage = (model.offset / model.limit) | 0;
 				return $elm$core$List$isEmpty(filteredGames) ? A2(
 					$elm$html$Html$div,
 					_List_fromArray(
@@ -15610,8 +15835,8 @@ var $author$project$Pages$StudentDetail$viewGamesList = function (model) {
 									_List_fromArray(
 										[
 											$elm$html$Html$text(
-											'Showing ' + ($elm$core$String$fromInt(model.e8 + 1) + ('-' + ($elm$core$String$fromInt(
-												model.e8 + $elm$core$List$length(filteredGames)) + (' of ' + ($elm$core$String$fromInt(gamesData.by) + ' games'))))))
+											'Showing ' + ($elm$core$String$fromInt(model.offset + 1) + ('-' + ($elm$core$String$fromInt(
+												model.offset + $elm$core$List$length(filteredGames)) + (' of ' + ($elm$core$String$fromInt(gamesData.total) + ' games'))))))
 										]))
 								])),
 							A2(
@@ -15631,23 +15856,23 @@ var $author$project$Pages$StudentDetail$viewGamesList = function (model) {
 			}
 	}
 };
-var $author$project$Pages$StudentDetail$AccuracyHigh = 2;
-var $author$project$Pages$StudentDetail$AccuracyLow = 3;
-var $author$project$Pages$StudentDetail$DateOldest = 1;
-var $author$project$Pages$StudentDetail$OpponentRatingHigh = 4;
-var $author$project$Pages$StudentDetail$OpponentRatingLow = 5;
+var $author$project$Pages$StudentDetail$AccuracyHigh = {$: 'AccuracyHigh'};
+var $author$project$Pages$StudentDetail$AccuracyLow = {$: 'AccuracyLow'};
+var $author$project$Pages$StudentDetail$DateOldest = {$: 'DateOldest'};
+var $author$project$Pages$StudentDetail$OpponentRatingHigh = {$: 'OpponentRatingHigh'};
+var $author$project$Pages$StudentDetail$OpponentRatingLow = {$: 'OpponentRatingLow'};
 var $author$project$Pages$StudentDetail$SetSortOrder = function (a) {
-	return {$: 16, a: a};
+	return {$: 'SetSortOrder', a: a};
 };
 var $elm$html$Html$option = _VirtualDom_node('option');
 var $elm$html$Html$select = _VirtualDom_node('select');
 var $elm$html$Html$Attributes$selected = $elm$html$Html$Attributes$boolProperty('selected');
-var $author$project$Pages$StudentDetail$ClearAccuracy = {$: 11};
+var $author$project$Pages$StudentDetail$ClearAccuracy = {$: 'ClearAccuracy'};
 var $author$project$Pages$StudentDetail$SetMaxAccuracy = function (a) {
-	return {$: 10, a: a};
+	return {$: 'SetMaxAccuracy', a: a};
 };
 var $author$project$Pages$StudentDetail$SetMinAccuracy = function (a) {
-	return {$: 9, a: a};
+	return {$: 'SetMinAccuracy', a: a};
 };
 var $elm$html$Html$Attributes$max = $elm$html$Html$Attributes$stringProperty('max');
 var $elm$html$Html$Attributes$min = $elm$html$Html$Attributes$stringProperty('min');
@@ -15673,7 +15898,7 @@ var $author$project$Pages$StudentDetail$viewAccuracyFilter = function (model) {
 						A2(
 							$elm$core$Maybe$withDefault,
 							'',
-							A2($elm$core$Maybe$map, $elm$core$String$fromInt, model.e1))),
+							A2($elm$core$Maybe$map, $elm$core$String$fromInt, model.minAccuracy))),
 						$elm$html$Html$Events$onInput($author$project$Pages$StudentDetail$SetMinAccuracy)
 					]),
 				_List_Nil),
@@ -15700,11 +15925,11 @@ var $author$project$Pages$StudentDetail$viewAccuracyFilter = function (model) {
 						A2(
 							$elm$core$Maybe$withDefault,
 							'',
-							A2($elm$core$Maybe$map, $elm$core$String$fromInt, model.eY))),
+							A2($elm$core$Maybe$map, $elm$core$String$fromInt, model.maxAccuracy))),
 						$elm$html$Html$Events$onInput($author$project$Pages$StudentDetail$SetMaxAccuracy)
 					]),
 				_List_Nil),
-				((!_Utils_eq(model.e1, $elm$core$Maybe$Nothing)) || (!_Utils_eq(model.eY, $elm$core$Maybe$Nothing))) ? A2(
+				((!_Utils_eq(model.minAccuracy, $elm$core$Maybe$Nothing)) || (!_Utils_eq(model.maxAccuracy, $elm$core$Maybe$Nothing))) ? A2(
 				$elm$html$Html$button,
 				_List_fromArray(
 					[
@@ -15717,11 +15942,11 @@ var $author$project$Pages$StudentDetail$viewAccuracyFilter = function (model) {
 					])) : $elm$html$Html$text('')
 			]));
 };
-var $author$project$Types$BlackOnly = 2;
+var $author$project$Types$BlackOnly = {$: 'BlackOnly'};
 var $author$project$Pages$StudentDetail$SetColorFilter = function (a) {
-	return {$: 6, a: a};
+	return {$: 'SetColorFilter', a: a};
 };
-var $author$project$Types$WhiteOnly = 1;
+var $author$project$Types$WhiteOnly = {$: 'WhiteOnly'};
 var $author$project$Pages$StudentDetail$viewRadioOption = F3(
 	function (label, isSelected, msg) {
 		return A2(
@@ -15775,26 +16000,26 @@ var $author$project$Pages$StudentDetail$viewColorFilter = function (model) {
 				A3(
 				$author$project$Pages$StudentDetail$viewRadioOption,
 				'All',
-				!model.T,
-				$author$project$Pages$StudentDetail$SetColorFilter(0)),
+				_Utils_eq(model.colorFilter, $author$project$Types$AllColors),
+				$author$project$Pages$StudentDetail$SetColorFilter($author$project$Types$AllColors)),
 				A3(
 				$author$project$Pages$StudentDetail$viewRadioOption,
 				'White',
-				model.T === 1,
-				$author$project$Pages$StudentDetail$SetColorFilter(1)),
+				_Utils_eq(model.colorFilter, $author$project$Types$WhiteOnly),
+				$author$project$Pages$StudentDetail$SetColorFilter($author$project$Types$WhiteOnly)),
 				A3(
 				$author$project$Pages$StudentDetail$viewRadioOption,
 				'Black',
-				model.T === 2,
-				$author$project$Pages$StudentDetail$SetColorFilter(2))
+				_Utils_eq(model.colorFilter, $author$project$Types$BlackOnly),
+				$author$project$Pages$StudentDetail$SetColorFilter($author$project$Types$BlackOnly))
 			]));
 };
 var $author$project$Pages$StudentDetail$ToggleFilterSection = function (a) {
-	return {$: 19, a: a};
+	return {$: 'ToggleFilterSection', a: a};
 };
 var $author$project$Pages$StudentDetail$viewFilterSection = F5(
 	function (model, sectionId, label, hasActiveFilter, content) {
-		var isExpanded = A2($elm$core$Set$member, sectionId, model.aH);
+		var isExpanded = A2($elm$core$Set$member, sectionId, model.expandedFilterSections);
 		return A2(
 			$elm$html$Html$div,
 			_List_fromArray(
@@ -15862,10 +16087,10 @@ var $author$project$Pages$StudentDetail$viewFilterSection = F5(
 				]));
 	});
 var $author$project$Pages$StudentDetail$SetOpponentRatingFilter = function (a) {
-	return {$: 14, a: a};
+	return {$: 'SetOpponentRatingFilter', a: a};
 };
 var $author$project$Pages$StudentDetail$SetOpponentSearch = function (a) {
-	return {$: 15, a: a};
+	return {$: 'SetOpponentSearch', a: a};
 };
 var $author$project$Pages$StudentDetail$viewOpponentFilter = function (model) {
 	return A2(
@@ -15883,7 +16108,7 @@ var $author$project$Pages$StudentDetail$viewOpponentFilter = function (model) {
 						$elm$html$Html$Attributes$type_('text'),
 						$elm$html$Html$Attributes$class('w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-anthro-dark focus:border-anthro-dark'),
 						$elm$html$Html$Attributes$placeholder('Search opponent...'),
-						$elm$html$Html$Attributes$value(model.an),
+						$elm$html$Html$Attributes$value(model.opponentSearch),
 						$elm$html$Html$Events$onInput($author$project$Pages$StudentDetail$SetOpponentSearch)
 					]),
 				_List_Nil),
@@ -15898,27 +16123,27 @@ var $author$project$Pages$StudentDetail$viewOpponentFilter = function (model) {
 						A3(
 						$author$project$Pages$StudentDetail$viewRadioOption,
 						'Any rating',
-						model.X === 'all',
+						model.opponentRatingFilter === 'all',
 						$author$project$Pages$StudentDetail$SetOpponentRatingFilter('all')),
 						A3(
 						$author$project$Pages$StudentDetail$viewRadioOption,
 						'Higher rated',
-						model.X === 'higher',
+						model.opponentRatingFilter === 'higher',
 						$author$project$Pages$StudentDetail$SetOpponentRatingFilter('higher')),
 						A3(
 						$author$project$Pages$StudentDetail$viewRadioOption,
 						'Lower rated',
-						model.X === 'lower',
+						model.opponentRatingFilter === 'lower',
 						$author$project$Pages$StudentDetail$SetOpponentRatingFilter('lower'))
 					]))
 			]));
 };
-var $author$project$Types$DrawsOnly = 3;
-var $author$project$Types$LossesOnly = 2;
+var $author$project$Types$DrawsOnly = {$: 'DrawsOnly'};
+var $author$project$Types$LossesOnly = {$: 'LossesOnly'};
 var $author$project$Pages$StudentDetail$SetResultFilter = function (a) {
-	return {$: 5, a: a};
+	return {$: 'SetResultFilter', a: a};
 };
-var $author$project$Types$WinsOnly = 1;
+var $author$project$Types$WinsOnly = {$: 'WinsOnly'};
 var $author$project$Pages$StudentDetail$viewResultFilter = function (model) {
 	return A2(
 		$elm$html$Html$div,
@@ -15931,32 +16156,32 @@ var $author$project$Pages$StudentDetail$viewResultFilter = function (model) {
 				A3(
 				$author$project$Pages$StudentDetail$viewRadioOption,
 				'All',
-				!model.R,
-				$author$project$Pages$StudentDetail$SetResultFilter(0)),
+				_Utils_eq(model.resultFilter, $author$project$Types$AllResults),
+				$author$project$Pages$StudentDetail$SetResultFilter($author$project$Types$AllResults)),
 				A3(
 				$author$project$Pages$StudentDetail$viewRadioOption,
 				'Wins',
-				model.R === 1,
-				$author$project$Pages$StudentDetail$SetResultFilter(1)),
+				_Utils_eq(model.resultFilter, $author$project$Types$WinsOnly),
+				$author$project$Pages$StudentDetail$SetResultFilter($author$project$Types$WinsOnly)),
 				A3(
 				$author$project$Pages$StudentDetail$viewRadioOption,
 				'Losses',
-				model.R === 2,
-				$author$project$Pages$StudentDetail$SetResultFilter(2)),
+				_Utils_eq(model.resultFilter, $author$project$Types$LossesOnly),
+				$author$project$Pages$StudentDetail$SetResultFilter($author$project$Types$LossesOnly)),
 				A3(
 				$author$project$Pages$StudentDetail$viewRadioOption,
 				'Draws',
-				model.R === 3,
-				$author$project$Pages$StudentDetail$SetResultFilter(3))
+				_Utils_eq(model.resultFilter, $author$project$Types$DrawsOnly),
+				$author$project$Pages$StudentDetail$SetResultFilter($author$project$Types$DrawsOnly))
 			]));
 };
-var $author$project$Pages$StudentDetail$ClearTags = {$: 8};
+var $author$project$Pages$StudentDetail$ClearTags = {$: 'ClearTags'};
 var $author$project$Pages$StudentDetail$groupTagsWithCountByCategory = function (tags) {
 	var categories = $author$project$Pages$StudentDetail$unique(
 		A2(
 			$elm$core$List$map,
 			function (tc) {
-				return tc.G.bG;
+				return tc.tag.category;
 			},
 			tags));
 	return A2(
@@ -15973,7 +16198,7 @@ var $author$project$Pages$StudentDetail$groupTagsWithCountByCategory = function 
 					A2(
 						$elm$core$List$filter,
 						function (tc) {
-							return _Utils_eq(tc.G.bG, cat);
+							return _Utils_eq(tc.tag.category, cat);
 						},
 						tags));
 			},
@@ -15986,7 +16211,7 @@ var $elm$core$String$fromChar = function (_char) {
 var $elm$core$Char$toUpper = _Char_toUpper;
 var $author$project$Pages$StudentDetail$capitalizeFirst = function (str) {
 	var _v0 = $elm$core$String$uncons(str);
-	if (!_v0.$) {
+	if (_v0.$ === 'Just') {
 		var _v1 = _v0.a;
 		var first = _v1.a;
 		var rest = _v1.b;
@@ -16009,26 +16234,26 @@ var $author$project$Pages$StudentDetail$formatCategoryName = function (category)
 				A3($elm$core$String$replace, '_', ' ', category))));
 };
 var $author$project$Pages$StudentDetail$ToggleTag = function (a) {
-	return {$: 7, a: a};
+	return {$: 'ToggleTag', a: a};
 };
 var $author$project$Pages$StudentDetail$viewFilterTagChip = F2(
 	function (selectedTags, tc) {
-		var isSelected = A2($elm$core$List$member, tc.G.ct, selectedTags);
+		var isSelected = A2($elm$core$List$member, tc.tag.slug, selectedTags);
 		return A2(
 			$elm$html$Html$button,
 			_List_fromArray(
 				[
 					$elm$html$Html$Events$onClick(
-					$author$project$Pages$StudentDetail$ToggleTag(tc.G.ct)),
+					$author$project$Pages$StudentDetail$ToggleTag(tc.tag.slug)),
 					$elm$html$Html$Attributes$class(
 					isSelected ? 'px-2 py-1 text-xs rounded-full bg-gray-900 text-white transition-colors' : 'px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors'),
 					$elm$html$Html$Attributes$title(
-					A2($elm$core$Maybe$withDefault, tc.G.bU, tc.G.bJ))
+					A2($elm$core$Maybe$withDefault, tc.tag.name, tc.tag.description))
 				]),
 			_List_fromArray(
 				[
 					$elm$html$Html$text(
-					tc.G.bU + (' (' + ($elm$core$String$fromInt(tc.cQ) + ')')))
+					tc.tag.name + (' (' + ($elm$core$String$fromInt(tc.count) + ')')))
 				]));
 	});
 var $author$project$Pages$StudentDetail$viewFilterTagGroup = F2(
@@ -16064,9 +16289,9 @@ var $author$project$Pages$StudentDetail$viewFilterTagGroup = F2(
 				]));
 	});
 var $author$project$Pages$StudentDetail$viewTagFilters = function (model) {
-	var _v0 = model.fF;
+	var _v0 = model.tags;
 	switch (_v0.$) {
-		case 1:
+		case 'Loading':
 			return A2(
 				$elm$html$Html$div,
 				_List_fromArray(
@@ -16077,9 +16302,9 @@ var $author$project$Pages$StudentDetail$viewTagFilters = function (model) {
 					[
 						$elm$html$Html$text('Loading...')
 					]));
-		case 2:
+		case 'Failure':
 			return $elm$html$Html$text('');
-		case 0:
+		case 'NotAsked':
 			return $elm$html$Html$text('');
 		default:
 			var tagsWithCounts = _v0.a;
@@ -16087,7 +16312,7 @@ var $author$project$Pages$StudentDetail$viewTagFilters = function (model) {
 				A2(
 					$elm$core$List$sortBy,
 					function (tc) {
-						return -tc.cQ;
+						return -tc.count;
 					},
 					tagsWithCounts));
 			return A2(
@@ -16095,7 +16320,7 @@ var $author$project$Pages$StudentDetail$viewTagFilters = function (model) {
 				_List_Nil,
 				_List_fromArray(
 					[
-						(!$elm$core$List$isEmpty(model.C)) ? A2(
+						(!$elm$core$List$isEmpty(model.selectedTags)) ? A2(
 						$elm$html$Html$div,
 						_List_fromArray(
 							[
@@ -16113,7 +16338,7 @@ var $author$project$Pages$StudentDetail$viewTagFilters = function (model) {
 									[
 										$elm$html$Html$text(
 										$elm$core$String$fromInt(
-											$elm$core$List$length(model.C)) + ' selected')
+											$elm$core$List$length(model.selectedTags)) + ' selected')
 									])),
 								A2(
 								$elm$html$Html$button,
@@ -16135,16 +16360,16 @@ var $author$project$Pages$StudentDetail$viewTagFilters = function (model) {
 							]),
 						A2(
 							$elm$core$List$map,
-							$author$project$Pages$StudentDetail$viewFilterTagGroup(model.C),
+							$author$project$Pages$StudentDetail$viewFilterTagGroup(model.selectedTags),
 							groupedTags))
 					]));
 	}
 };
-var $author$project$Types$Blitz = 2;
-var $author$project$Types$Bullet = 1;
-var $author$project$Types$Rapid = 3;
+var $author$project$Types$Blitz = {$: 'Blitz'};
+var $author$project$Types$Bullet = {$: 'Bullet'};
+var $author$project$Types$Rapid = {$: 'Rapid'};
 var $author$project$Pages$StudentDetail$SetTimeControlFilter = function (a) {
-	return {$: 4, a: a};
+	return {$: 'SetTimeControlFilter', a: a};
 };
 var $author$project$Pages$StudentDetail$viewTimeControlFilter = function (model) {
 	return A2(
@@ -16158,23 +16383,23 @@ var $author$project$Pages$StudentDetail$viewTimeControlFilter = function (model)
 				A3(
 				$author$project$Pages$StudentDetail$viewRadioOption,
 				'All',
-				!model.S,
-				$author$project$Pages$StudentDetail$SetTimeControlFilter(0)),
+				_Utils_eq(model.timeControlFilter, $author$project$Types$AllTimeControls),
+				$author$project$Pages$StudentDetail$SetTimeControlFilter($author$project$Types$AllTimeControls)),
 				A3(
 				$author$project$Pages$StudentDetail$viewRadioOption,
 				'Bullet',
-				model.S === 1,
-				$author$project$Pages$StudentDetail$SetTimeControlFilter(1)),
+				_Utils_eq(model.timeControlFilter, $author$project$Types$Bullet),
+				$author$project$Pages$StudentDetail$SetTimeControlFilter($author$project$Types$Bullet)),
 				A3(
 				$author$project$Pages$StudentDetail$viewRadioOption,
 				'Blitz',
-				model.S === 2,
-				$author$project$Pages$StudentDetail$SetTimeControlFilter(2)),
+				_Utils_eq(model.timeControlFilter, $author$project$Types$Blitz),
+				$author$project$Pages$StudentDetail$SetTimeControlFilter($author$project$Types$Blitz)),
 				A3(
 				$author$project$Pages$StudentDetail$viewRadioOption,
 				'Rapid',
-				model.S === 3,
-				$author$project$Pages$StudentDetail$SetTimeControlFilter(3))
+				_Utils_eq(model.timeControlFilter, $author$project$Types$Rapid),
+				$author$project$Pages$StudentDetail$SetTimeControlFilter($author$project$Types$Rapid))
 			]));
 };
 var $author$project$Pages$StudentDetail$viewSidebar = function (model) {
@@ -16183,7 +16408,7 @@ var $author$project$Pages$StudentDetail$viewSidebar = function (model) {
 		_List_fromArray(
 			[
 				$elm$html$Html$Attributes$class(
-				model.a4 ? 'fixed lg:sticky inset-y-0 left-0 z-40 w-72 bg-white border-r border-gray-200 transform transition-transform duration-200 lg:translate-x-0 lg:top-0 lg:h-screen shadow-lg lg:shadow-none' : 'fixed lg:sticky inset-y-0 left-0 z-40 w-72 bg-white border-r border-gray-200 transform -translate-x-full lg:translate-x-0 transition-transform duration-200 lg:top-0 lg:h-screen')
+				model.sidebarVisible ? 'fixed lg:sticky inset-y-0 left-0 z-40 w-72 bg-white border-r border-gray-200 transform transition-transform duration-200 lg:translate-x-0 lg:top-0 lg:h-screen shadow-lg lg:shadow-none' : 'fixed lg:sticky inset-y-0 left-0 z-40 w-72 bg-white border-r border-gray-200 transform -translate-x-full lg:translate-x-0 transition-transform duration-200 lg:top-0 lg:h-screen')
 			]),
 		_List_fromArray(
 			[
@@ -16289,42 +16514,42 @@ var $author$project$Pages$StudentDetail$viewSidebar = function (model) {
 								model,
 								'result',
 								'Result',
-								!(!model.R),
+								!_Utils_eq(model.resultFilter, $author$project$Types$AllResults),
 								$author$project$Pages$StudentDetail$viewResultFilter(model)),
 								A5(
 								$author$project$Pages$StudentDetail$viewFilterSection,
 								model,
 								'timeControl',
 								'Time Control',
-								!(!model.S),
+								!_Utils_eq(model.timeControlFilter, $author$project$Types$AllTimeControls),
 								$author$project$Pages$StudentDetail$viewTimeControlFilter(model)),
 								A5(
 								$author$project$Pages$StudentDetail$viewFilterSection,
 								model,
 								'color',
 								'Played As',
-								!(!model.T),
+								!_Utils_eq(model.colorFilter, $author$project$Types$AllColors),
 								$author$project$Pages$StudentDetail$viewColorFilter(model)),
 								A5(
 								$author$project$Pages$StudentDetail$viewFilterSection,
 								model,
 								'accuracy',
 								'Accuracy',
-								(!_Utils_eq(model.e1, $elm$core$Maybe$Nothing)) || (!_Utils_eq(model.eY, $elm$core$Maybe$Nothing)),
+								(!_Utils_eq(model.minAccuracy, $elm$core$Maybe$Nothing)) || (!_Utils_eq(model.maxAccuracy, $elm$core$Maybe$Nothing)),
 								$author$project$Pages$StudentDetail$viewAccuracyFilter(model)),
 								A5(
 								$author$project$Pages$StudentDetail$viewFilterSection,
 								model,
 								'opponent',
 								'Opponent',
-								(model.X !== 'all') || (model.an !== ''),
+								(model.opponentRatingFilter !== 'all') || (model.opponentSearch !== ''),
 								$author$project$Pages$StudentDetail$viewOpponentFilter(model)),
 								A5(
 								$author$project$Pages$StudentDetail$viewFilterSection,
 								model,
 								'tags',
 								'Tags',
-								!$elm$core$List$isEmpty(model.C),
+								!$elm$core$List$isEmpty(model.selectedTags),
 								$author$project$Pages$StudentDetail$viewTagFilters(model))
 							])),
 						A2(
@@ -16354,19 +16579,19 @@ var $author$project$Pages$StudentDetail$viewSidebar = function (model) {
 										function (str) {
 											switch (str) {
 												case 'date-newest':
-													return $author$project$Pages$StudentDetail$SetSortOrder(0);
+													return $author$project$Pages$StudentDetail$SetSortOrder($author$project$Pages$StudentDetail$DateNewest);
 												case 'date-oldest':
-													return $author$project$Pages$StudentDetail$SetSortOrder(1);
+													return $author$project$Pages$StudentDetail$SetSortOrder($author$project$Pages$StudentDetail$DateOldest);
 												case 'accuracy-high':
-													return $author$project$Pages$StudentDetail$SetSortOrder(2);
+													return $author$project$Pages$StudentDetail$SetSortOrder($author$project$Pages$StudentDetail$AccuracyHigh);
 												case 'accuracy-low':
-													return $author$project$Pages$StudentDetail$SetSortOrder(3);
+													return $author$project$Pages$StudentDetail$SetSortOrder($author$project$Pages$StudentDetail$AccuracyLow);
 												case 'rating-high':
-													return $author$project$Pages$StudentDetail$SetSortOrder(4);
+													return $author$project$Pages$StudentDetail$SetSortOrder($author$project$Pages$StudentDetail$OpponentRatingHigh);
 												case 'rating-low':
-													return $author$project$Pages$StudentDetail$SetSortOrder(5);
+													return $author$project$Pages$StudentDetail$SetSortOrder($author$project$Pages$StudentDetail$OpponentRatingLow);
 												default:
-													return $author$project$Pages$StudentDetail$SetSortOrder(0);
+													return $author$project$Pages$StudentDetail$SetSortOrder($author$project$Pages$StudentDetail$DateNewest);
 											}
 										})
 									]),
@@ -16377,7 +16602,8 @@ var $author$project$Pages$StudentDetail$viewSidebar = function (model) {
 										_List_fromArray(
 											[
 												$elm$html$Html$Attributes$value('date-newest'),
-												$elm$html$Html$Attributes$selected(!model.Y)
+												$elm$html$Html$Attributes$selected(
+												_Utils_eq(model.sortOrder, $author$project$Pages$StudentDetail$DateNewest))
 											]),
 										_List_fromArray(
 											[
@@ -16388,7 +16614,8 @@ var $author$project$Pages$StudentDetail$viewSidebar = function (model) {
 										_List_fromArray(
 											[
 												$elm$html$Html$Attributes$value('date-oldest'),
-												$elm$html$Html$Attributes$selected(model.Y === 1)
+												$elm$html$Html$Attributes$selected(
+												_Utils_eq(model.sortOrder, $author$project$Pages$StudentDetail$DateOldest))
 											]),
 										_List_fromArray(
 											[
@@ -16399,7 +16626,8 @@ var $author$project$Pages$StudentDetail$viewSidebar = function (model) {
 										_List_fromArray(
 											[
 												$elm$html$Html$Attributes$value('accuracy-high'),
-												$elm$html$Html$Attributes$selected(model.Y === 2)
+												$elm$html$Html$Attributes$selected(
+												_Utils_eq(model.sortOrder, $author$project$Pages$StudentDetail$AccuracyHigh))
 											]),
 										_List_fromArray(
 											[
@@ -16410,7 +16638,8 @@ var $author$project$Pages$StudentDetail$viewSidebar = function (model) {
 										_List_fromArray(
 											[
 												$elm$html$Html$Attributes$value('accuracy-low'),
-												$elm$html$Html$Attributes$selected(model.Y === 3)
+												$elm$html$Html$Attributes$selected(
+												_Utils_eq(model.sortOrder, $author$project$Pages$StudentDetail$AccuracyLow))
 											]),
 										_List_fromArray(
 											[
@@ -16421,7 +16650,8 @@ var $author$project$Pages$StudentDetail$viewSidebar = function (model) {
 										_List_fromArray(
 											[
 												$elm$html$Html$Attributes$value('rating-high'),
-												$elm$html$Html$Attributes$selected(model.Y === 4)
+												$elm$html$Html$Attributes$selected(
+												_Utils_eq(model.sortOrder, $author$project$Pages$StudentDetail$OpponentRatingHigh))
 											]),
 										_List_fromArray(
 											[
@@ -16432,7 +16662,8 @@ var $author$project$Pages$StudentDetail$viewSidebar = function (model) {
 										_List_fromArray(
 											[
 												$elm$html$Html$Attributes$value('rating-low'),
-												$elm$html$Html$Attributes$selected(model.Y === 5)
+												$elm$html$Html$Attributes$selected(
+												_Utils_eq(model.sortOrder, $author$project$Pages$StudentDetail$OpponentRatingLow))
 											]),
 										_List_fromArray(
 											[
@@ -16452,20 +16683,20 @@ var $author$project$Pages$StudentDetail$calculateStats = F2(
 				$elm$core$List$filterMap,
 				$elm$core$Basics$identity,
 				_List_fromArray(
-					[student.ef])));
+					[student.chessComUsername])));
 		var isWin = function (g) {
 			var isWhite = A2(
 				$elm$core$List$member,
-				$elm$core$String$toLower(g.eD.fZ),
+				$elm$core$String$toLower(g.game.whiteUsername),
 				studentUsernames);
-			return (isWhite && (g.eD.ft === '1-0')) || ((!isWhite) && (g.eD.ft === '0-1'));
+			return (isWhite && (g.game.result === '1-0')) || ((!isWhite) && (g.game.result === '0-1'));
 		};
 		var isLoss = function (g) {
 			var isWhite = A2(
 				$elm$core$List$member,
-				$elm$core$String$toLower(g.eD.fZ),
+				$elm$core$String$toLower(g.game.whiteUsername),
 				studentUsernames);
-			return (isWhite && (g.eD.ft === '0-1')) || ((!isWhite) && (g.eD.ft === '1-0'));
+			return (isWhite && (g.game.result === '0-1')) || ((!isWhite) && (g.game.result === '1-0'));
 		};
 		var accuracies = A2(
 			$elm$core$List$filterMap,
@@ -16473,39 +16704,39 @@ var $author$project$Pages$StudentDetail$calculateStats = F2(
 				return A2(
 					$elm$core$Maybe$andThen,
 					function ($) {
-						return $.bF;
+						return $.accuracyOverall;
 					},
-					g.cc);
+					g.insight);
 			},
 			games);
 		var avgAcc = $elm$core$List$isEmpty(accuracies) ? $elm$core$Maybe$Nothing : $elm$core$Maybe$Just(
 			$elm$core$List$sum(accuracies) / $elm$core$List$length(accuracies));
 		return {
-			cL: avgAcc,
-			bl: $elm$core$List$length(
+			avgAccuracy: avgAcc,
+			draws: $elm$core$List$length(
 				A2(
 					$elm$core$List$filter,
 					function (g) {
-						return g.eD.ft === '1/2-1/2';
+						return g.game.result === '1/2-1/2';
 					},
 					games)),
-			bq: $elm$core$List$length(
+			losses: $elm$core$List$length(
 				A2($elm$core$List$filter, isLoss, games)),
-			by: $elm$core$List$length(games),
-			bB: $elm$core$List$length(
+			total: $elm$core$List$length(games),
+			wins: $elm$core$List$length(
 				A2($elm$core$List$filter, isWin, games))
 		};
 	});
 var $author$project$Pages$StudentDetail$viewStatsHeader = function (model) {
-	var _v0 = _Utils_Tuple2(model.ao, model.g);
-	if ((_v0.a.$ === 3) && (_v0.b.$ === 3)) {
+	var _v0 = _Utils_Tuple2(model.student, model.games);
+	if ((_v0.a.$ === 'Success') && (_v0.b.$ === 'Success')) {
 		var student = _v0.a.a;
 		var gamesData = _v0.b.a;
-		var stats = A2($author$project$Pages$StudentDetail$calculateStats, student, gamesData.g);
-		var totalGames = (stats.bB + stats.bq) + stats.bl;
-		var winPercent = (totalGames > 0) ? ((stats.bB / totalGames) * 100) : 0;
-		var lossPercent = (totalGames > 0) ? ((stats.bq / totalGames) * 100) : 0;
-		var drawPercent = (totalGames > 0) ? ((stats.bl / totalGames) * 100) : 0;
+		var stats = A2($author$project$Pages$StudentDetail$calculateStats, student, gamesData.games);
+		var totalGames = (stats.wins + stats.losses) + stats.draws;
+		var winPercent = (totalGames > 0) ? ((stats.wins / totalGames) * 100) : 0;
+		var lossPercent = (totalGames > 0) ? ((stats.losses / totalGames) * 100) : 0;
+		var drawPercent = (totalGames > 0) ? ((stats.draws / totalGames) * 100) : 0;
 		return A2(
 			$elm$html$Html$div,
 			_List_fromArray(
@@ -16539,7 +16770,7 @@ var $author$project$Pages$StudentDetail$viewStatsHeader = function (model) {
 									_List_fromArray(
 										[
 											$elm$html$Html$text(
-											$elm$core$String$fromInt(gamesData.by))
+											$elm$core$String$fromInt(gamesData.total))
 										])),
 									A2(
 									$elm$html$Html$div,
@@ -16561,8 +16792,8 @@ var $author$project$Pages$StudentDetail$viewStatsHeader = function (model) {
 							_List_fromArray(
 								[
 									function () {
-									var _v1 = stats.cL;
-									if (!_v1.$) {
+									var _v1 = stats.avgAccuracy;
+									if (_v1.$ === 'Just') {
 										var acc = _v1.a;
 										var colors = $author$project$Pages$StudentDetail$accuracyColors(acc);
 										return A2(
@@ -16574,7 +16805,7 @@ var $author$project$Pages$StudentDetail$viewStatsHeader = function (model) {
 													$elm$html$Html$div,
 													_List_fromArray(
 														[
-															$elm$html$Html$Attributes$class('text-2xl font-bold ' + colors.aA)
+															$elm$html$Html$Attributes$class('text-2xl font-bold ' + colors.text)
 														]),
 													_List_fromArray(
 														[
@@ -16731,7 +16962,7 @@ var $author$project$Pages$StudentDetail$viewStatsHeader = function (model) {
 									_List_fromArray(
 										[
 											$elm$html$Html$text(
-											$elm$core$String$fromInt(stats.bB) + ' wins')
+											$elm$core$String$fromInt(stats.wins) + ' wins')
 										])),
 									A2(
 									$elm$html$Html$span,
@@ -16742,7 +16973,7 @@ var $author$project$Pages$StudentDetail$viewStatsHeader = function (model) {
 									_List_fromArray(
 										[
 											$elm$html$Html$text(
-											$elm$core$String$fromInt(stats.bl) + ' draws')
+											$elm$core$String$fromInt(stats.draws) + ' draws')
 										])),
 									A2(
 									$elm$html$Html$span,
@@ -16753,7 +16984,7 @@ var $author$project$Pages$StudentDetail$viewStatsHeader = function (model) {
 									_List_fromArray(
 										[
 											$elm$html$Html$text(
-											$elm$core$String$fromInt(stats.bq) + ' losses')
+											$elm$core$String$fromInt(stats.losses) + ' losses')
 										]))
 								]))
 						]))
@@ -16848,10 +17079,10 @@ var $author$project$Pages$StudentDetail$viewStatsHeader = function (model) {
 				]));
 	}
 };
-var $author$project$Pages$StudentDetail$UnarchiveStudent = {$: 25};
+var $author$project$Pages$StudentDetail$UnarchiveStudent = {$: 'UnarchiveStudent'};
 var $elm$html$Html$nav = _VirtualDom_node('nav');
 var $author$project$Pages$StudentDetail$SetTimeRangeFilter = function (a) {
-	return {$: 3, a: a};
+	return {$: 'SetTimeRangeFilter', a: a};
 };
 var $author$project$Pages$StudentDetail$viewTimeRangeFilter = function (currentFilter) {
 	var pillButton = F2(
@@ -16878,14 +17109,14 @@ var $author$project$Pages$StudentDetail$viewTimeRangeFilter = function (currentF
 			]),
 		_List_fromArray(
 			[
-				A2(pillButton, 0, 'Last 7 days'),
-				A2(pillButton, 1, 'Last 30 days')
+				A2(pillButton, $author$project$Types$Last7Days, 'Last 7 days'),
+				A2(pillButton, $author$project$Types$Last30Days, 'Last 30 days')
 			]));
 };
 var $author$project$Pages$StudentDetail$viewStudentHeader = F2(
 	function (model, studentData) {
 		switch (studentData.$) {
-			case 1:
+			case 'Loading':
 				return A2(
 					$elm$html$Html$div,
 					_List_fromArray(
@@ -16934,7 +17165,7 @@ var $author$project$Pages$StudentDetail$viewStudentHeader = F2(
 										]))
 								]))
 						]));
-			case 2:
+			case 'Failure':
 				var error = studentData.a;
 				return A2(
 					$elm$html$Html$div,
@@ -16955,11 +17186,11 @@ var $author$project$Pages$StudentDetail$viewStudentHeader = F2(
 									$elm$html$Html$text(error)
 								]))
 						]));
-			case 0:
+			case 'NotAsked':
 				return $elm$html$Html$text('');
 			default:
 				var student = studentData.a;
-				var isArchived = !_Utils_eq(student.bg, $elm$core$Maybe$Nothing);
+				var isArchived = !_Utils_eq(student.archivedAt, $elm$core$Maybe$Nothing);
 				return A2(
 					$elm$html$Html$div,
 					_List_fromArray(
@@ -17001,12 +17232,12 @@ var $author$project$Pages$StudentDetail$viewStudentHeader = F2(
 										[
 											$elm$html$Html$Events$onClick($author$project$Pages$StudentDetail$UnarchiveStudent),
 											$elm$html$Html$Attributes$class('text-sm font-medium text-gray-700 hover:text-gray-900 bg-white border border-gray-300 px-3 py-1.5 rounded-lg hover:bg-gray-50 transition-colors'),
-											$elm$html$Html$Attributes$disabled(model.ar)
+											$elm$html$Html$Attributes$disabled(model.archivingStudent)
 										]),
 									_List_fromArray(
 										[
 											$elm$html$Html$text(
-											model.ar ? 'Unarchiving...' : 'Unarchive Student')
+											model.archivingStudent ? 'Unarchiving...' : 'Unarchive Student')
 										]))
 								])) : $elm$html$Html$text(''),
 							A2(
@@ -17046,7 +17277,7 @@ var $author$project$Pages$StudentDetail$viewStudentHeader = F2(
 										]),
 									_List_fromArray(
 										[
-											$elm$html$Html$text(student.b3)
+											$elm$html$Html$text(student.displayName)
 										]))
 								])),
 							A2(
@@ -17066,8 +17297,8 @@ var $author$project$Pages$StudentDetail$viewStudentHeader = F2(
 									_List_fromArray(
 										[
 											function () {
-											var _v1 = student.d5;
-											if (!_v1.$) {
+											var _v1 = student.avatarUrl;
+											if (_v1.$ === 'Just') {
 												var url = _v1.a;
 												return A2(
 													$elm$html$Html$img,
@@ -17076,7 +17307,7 @@ var $author$project$Pages$StudentDetail$viewStudentHeader = F2(
 															$elm$html$Html$Attributes$src(url),
 															$elm$html$Html$Attributes$class(
 															'w-16 h-16 rounded-full border-2 border-gray-200 shadow-sm' + (isArchived ? ' grayscale opacity-75' : '')),
-															$elm$html$Html$Attributes$alt(student.b3)
+															$elm$html$Html$Attributes$alt(student.displayName)
 														]),
 													_List_Nil);
 											} else {
@@ -17090,7 +17321,7 @@ var $author$project$Pages$StudentDetail$viewStudentHeader = F2(
 														[
 															$elm$html$Html$text(
 															$elm$core$String$toUpper(
-																A2($elm$core$String$left, 1, student.b3)))
+																A2($elm$core$String$left, 1, student.displayName)))
 														]));
 											}
 										}(),
@@ -17115,7 +17346,7 @@ var $author$project$Pages$StudentDetail$viewStudentHeader = F2(
 																]),
 															_List_fromArray(
 																[
-																	$elm$html$Html$text(student.b3)
+																	$elm$html$Html$text(student.displayName)
 																])),
 															isArchived ? A2(
 															$elm$html$Html$span,
@@ -17129,8 +17360,8 @@ var $author$project$Pages$StudentDetail$viewStudentHeader = F2(
 																])) : $elm$html$Html$text('')
 														])),
 													function () {
-													var _v2 = student.ef;
-													if (!_v2.$) {
+													var _v2 = student.chessComUsername;
+													if (_v2.$ === 'Just') {
 														var username = _v2.a;
 														return A2(
 															$elm$html$Html$a,
@@ -17150,7 +17381,7 @@ var $author$project$Pages$StudentDetail$viewStudentHeader = F2(
 												}()
 												]))
 										])),
-									$author$project$Pages$StudentDetail$viewTimeRangeFilter(model.y)
+									$author$project$Pages$StudentDetail$viewTimeRangeFilter(model.timeRangeFilter)
 								]))
 						]));
 		}
@@ -17196,7 +17427,7 @@ var $author$project$Pages$StudentDetail$view = function (model) {
 									])) : $elm$html$Html$text('')
 							]))
 					])),
-				model.a4 ? A2(
+				model.sidebarVisible ? A2(
 				$elm$html$Html$div,
 				_List_fromArray(
 					[
@@ -17229,7 +17460,7 @@ var $author$project$Pages$StudentDetail$view = function (model) {
 									]),
 								_List_fromArray(
 									[
-										A2($author$project$Pages$StudentDetail$viewStudentHeader, model, model.ao),
+										A2($author$project$Pages$StudentDetail$viewStudentHeader, model, model.student),
 										$author$project$Pages$StudentDetail$viewStatsHeader(model),
 										$author$project$Pages$StudentDetail$viewGamesList(model)
 									]))
@@ -17242,12 +17473,12 @@ var $elm$html$Html$li = _VirtualDom_node('li');
 var $elm$html$Html$ul = _VirtualDom_node('ul');
 var $author$project$Pages$Subscription$viewPlanFeatures = function (plan) {
 	var features = function () {
-		var _v0 = plan.bU;
+		var _v0 = plan.name;
 		switch (_v0) {
 			case 'coach':
 				return _List_fromArray(
 					[
-						'Up to ' + ($elm$core$String$fromInt(plan.cC) + ' students'),
+						'Up to ' + ($elm$core$String$fromInt(plan.studentLimit) + ' students'),
 						'Game import from Chess.com',
 						'AI-powered game analysis',
 						'Student progress tracking'
@@ -17255,14 +17486,14 @@ var $author$project$Pages$Subscription$viewPlanFeatures = function (plan) {
 			case 'academy':
 				return _List_fromArray(
 					[
-						'Up to ' + ($elm$core$String$fromInt(plan.cC) + ' students'),
+						'Up to ' + ($elm$core$String$fromInt(plan.studentLimit) + ' students'),
 						'Everything in Coach plan',
 						'Priority support'
 					]);
 			default:
 				return _List_fromArray(
 					[
-						'Up to ' + ($elm$core$String$fromInt(plan.cC) + ' students')
+						'Up to ' + ($elm$core$String$fromInt(plan.studentLimit) + ' students')
 					]);
 		}
 	}();
@@ -17299,9 +17530,9 @@ var $author$project$Pages$Subscription$viewPlanFeatures = function (plan) {
 			features));
 };
 var $author$project$Pages$Subscription$viewPlanPricing = function (plan) {
-	if (plan.dd > 0) {
-		var monthlyPrice = (plan.dd / 100) | 0;
-		var annualPrice = (plan.d1 / 100) | 0;
+	if (plan.monthlyPriceCents > 0) {
+		var monthlyPrice = (plan.monthlyPriceCents / 100) | 0;
+		var annualPrice = (plan.annualPriceCents / 100) | 0;
 		var savings = (monthlyPrice * 12) - annualPrice;
 		var annualMonthly = (annualPrice / 12) | 0;
 		return A2(
@@ -17405,7 +17636,7 @@ var $author$project$Pages$Subscription$viewPlanCard = F2(
 			A2(
 				$elm$core$Maybe$map,
 				function (current) {
-					return _Utils_eq(plan.bU, current.bU);
+					return _Utils_eq(plan.name, current.name);
 				},
 				maybeCurrentPlan));
 		var borderClass = isCurrentPlan ? 'border-2 border-anthro-orange' : 'border border-gray-200';
@@ -17433,7 +17664,7 @@ var $author$project$Pages$Subscription$viewPlanCard = F2(
 								]),
 							_List_fromArray(
 								[
-									$elm$html$Html$text(plan.b3)
+									$elm$html$Html$text(plan.displayName)
 								])),
 							isCurrentPlan ? A2(
 							$elm$html$Html$span,
@@ -17455,7 +17686,7 @@ var $author$project$Pages$Subscription$viewPlanCard = F2(
 					_List_fromArray(
 						[
 							$elm$html$Html$text(
-							$elm$core$String$fromInt(plan.cC)),
+							$elm$core$String$fromInt(plan.studentLimit)),
 							A2(
 							$elm$html$Html$span,
 							_List_fromArray(
@@ -17473,9 +17704,9 @@ var $author$project$Pages$Subscription$viewPlanCard = F2(
 	});
 var $author$project$Pages$Subscription$viewAvailablePlans = F2(
 	function (model, maybeCurrentPlan) {
-		var _v0 = model.bt;
+		var _v0 = model.plans;
 		switch (_v0.$) {
-			case 3:
+			case 'Success':
 				var plans = _v0.a;
 				return A2(
 					$elm$html$Html$div,
@@ -17506,7 +17737,7 @@ var $author$project$Pages$Subscription$viewAvailablePlans = F2(
 								$author$project$Pages$Subscription$viewPlanCard(maybeCurrentPlan),
 								plans))
 						]));
-			case 1:
+			case 'Loading':
 				return A2(
 					$elm$html$Html$div,
 					_List_fromArray(
@@ -17560,7 +17791,7 @@ var $author$project$Pages$Subscription$formatDate = function (isoDate) {
 	return A2($elm$core$String$left, 10, isoDate);
 };
 var $author$project$Pages$Subscription$viewBillingInfo = function (maybeDetails) {
-	if (!maybeDetails.$) {
+	if (maybeDetails.$ === 'Just') {
 		var details = maybeDetails.a;
 		return A2(
 			$elm$html$Html$div,
@@ -17595,7 +17826,7 @@ var $author$project$Pages$Subscription$viewBillingInfo = function (maybeDetails)
 								[
 									$elm$html$Html$text(
 									$author$project$Pages$Subscription$capitalize(
-										A2($elm$core$Maybe$withDefault, 'monthly', details.dk)))
+										A2($elm$core$Maybe$withDefault, 'monthly', details.planInterval)))
 								]))
 						])),
 					A2(
@@ -17622,10 +17853,10 @@ var $author$project$Pages$Subscription$viewBillingInfo = function (maybeDetails)
 							_List_fromArray(
 								[
 									$elm$html$Html$text(
-									$author$project$Pages$Subscription$formatDate(details.cS))
+									$author$project$Pages$Subscription$formatDate(details.currentPeriodEnd))
 								]))
 						])),
-					details.b0 ? A2(
+					details.cancelAtPeriodEnd ? A2(
 					$elm$html$Html$p,
 					_List_fromArray(
 						[
@@ -17648,21 +17879,21 @@ var $author$project$Pages$Subscription$viewStatusBadge = F2(
 			A2(
 				$elm$core$Maybe$map,
 				function ($) {
-					return $.b0;
+					return $.cancelAtPeriodEnd;
 				},
 				maybeDetails));
 		var _v0 = function () {
 			if (isCancelling) {
 				return _Utils_Tuple2('bg-yellow-100 text-yellow-800', 'Cancelling');
 			} else {
-				switch (status) {
-					case 0:
+				switch (status.$) {
+					case 'Trialing':
 						return _Utils_Tuple2('bg-blue-100 text-blue-800', 'Trial');
-					case 1:
+					case 'Active':
 						return _Utils_Tuple2('bg-green-100 text-green-800', 'Active');
-					case 2:
+					case 'PastDue':
 						return _Utils_Tuple2('bg-yellow-100 text-yellow-800', 'Payment Due');
-					case 3:
+					case 'Cancelled':
 						return _Utils_Tuple2('bg-gray-100 text-gray-800', 'Cancelled');
 					default:
 						return _Utils_Tuple2('bg-red-100 text-red-800', 'Expired');
@@ -17683,9 +17914,9 @@ var $author$project$Pages$Subscription$viewStatusBadge = F2(
 				]));
 	});
 var $author$project$Pages$Subscription$viewTrialInfo = function (maybeDetails) {
-	if (!maybeDetails.$) {
+	if (maybeDetails.$ === 'Just') {
 		var details = maybeDetails.a;
-		return details.b0 ? A2(
+		return details.cancelAtPeriodEnd ? A2(
 			$elm$html$Html$div,
 			_List_fromArray(
 				[
@@ -17713,8 +17944,8 @@ var $author$project$Pages$Subscription$viewTrialInfo = function (maybeDetails) {
 								]))
 						])),
 					function () {
-					var _v1 = details.dL;
-					if (!_v1.$) {
+					var _v1 = details.trialEnd;
+					if (_v1.$ === 'Just') {
 						var endsAt = _v1.a;
 						return A2(
 							$elm$html$Html$p,
@@ -17728,7 +17959,7 @@ var $author$project$Pages$Subscription$viewTrialInfo = function (maybeDetails) {
 									'Your subscription will end on ' + $author$project$Pages$Subscription$formatDate(endsAt))
 								]));
 					} else {
-						var _v2 = details.cS;
+						var _v2 = details.currentPeriodEnd;
 						if (_v2 === '') {
 							return $elm$html$Html$text('');
 						} else {
@@ -17775,8 +18006,8 @@ var $author$project$Pages$Subscription$viewTrialInfo = function (maybeDetails) {
 								]))
 						])),
 					function () {
-					var _v3 = details.dL;
-					if (!_v3.$) {
+					var _v3 = details.trialEnd;
+					if (_v3.$ === 'Just') {
 						var endsAt = _v3.a;
 						return A2(
 							$elm$html$Html$p,
@@ -17846,25 +18077,25 @@ var $author$project$Pages$Subscription$viewTrialInfo = function (maybeDetails) {
 	}
 };
 var $author$project$Pages$Subscription$viewCurrentPlan = function (userInfo) {
-	var sub = userInfo.bY;
+	var sub = userInfo.subscription;
 	var studentLimit = A2(
 		$elm$core$Maybe$withDefault,
 		0,
 		A2(
 			$elm$core$Maybe$map,
 			function ($) {
-				return $.cC;
+				return $.studentLimit;
 			},
-			userInfo.cm));
+			userInfo.plan));
 	var planName = A2(
 		$elm$core$Maybe$withDefault,
 		'Free',
 		A2(
 			$elm$core$Maybe$map,
 			function ($) {
-				return $.b3;
+				return $.displayName;
 			},
-			userInfo.cm));
+			userInfo.plan));
 	var billingPeriod = A2(
 		$elm$core$Maybe$withDefault,
 		'',
@@ -17874,9 +18105,9 @@ var $author$project$Pages$Subscription$viewCurrentPlan = function (userInfo) {
 			A2(
 				$elm$core$Maybe$andThen,
 				function ($) {
-					return $.dk;
+					return $.planInterval;
 				},
-				userInfo.bK)));
+				userInfo.details)));
 	return A2(
 		$elm$html$Html$div,
 		_List_fromArray(
@@ -17926,7 +18157,7 @@ var $author$project$Pages$Subscription$viewCurrentPlan = function (userInfo) {
 											[
 												$elm$html$Html$text(planName)
 											])),
-										A2($author$project$Pages$Subscription$viewStatusBadge, sub.dF, userInfo.bK),
+										A2($author$project$Pages$Subscription$viewStatusBadge, sub.status, userInfo.details),
 										(billingPeriod !== '') ? A2(
 										$elm$html$Html$span,
 										_List_fromArray(
@@ -17971,16 +18202,16 @@ var $author$project$Pages$Subscription$viewCurrentPlan = function (userInfo) {
 							]))
 					])),
 				function () {
-				var _v0 = sub.dF;
-				if (!_v0) {
-					return $author$project$Pages$Subscription$viewTrialInfo(userInfo.bK);
+				var _v0 = sub.status;
+				if (_v0.$ === 'Trialing') {
+					return $author$project$Pages$Subscription$viewTrialInfo(userInfo.details);
 				} else {
-					return $author$project$Pages$Subscription$viewBillingInfo(userInfo.bK);
+					return $author$project$Pages$Subscription$viewBillingInfo(userInfo.details);
 				}
 			}()
 			]));
 };
-var $author$project$Pages$Subscription$OpenBillingPortal = {$: 2};
+var $author$project$Pages$Subscription$OpenBillingPortal = {$: 'OpenBillingPortal'};
 var $author$project$Pages$Subscription$viewManageButton = F2(
 	function (model, sub) {
 		return A2(
@@ -18011,17 +18242,17 @@ var $author$project$Pages$Subscription$viewManageButton = F2(
 						[
 							$elm$html$Html$text('Change your plan, update payment methods, view invoices, or cancel your subscription.')
 						])),
-					(sub.fC !== 'local_dev') ? A2(
+					(sub.stripeCustomerId !== 'local_dev') ? A2(
 					$elm$html$Html$button,
 					_List_fromArray(
 						[
 							$elm$html$Html$Attributes$class('w-full px-4 py-3 bg-anthro-dark text-white rounded-lg hover:bg-gray-800 disabled:opacity-50 font-medium'),
 							$elm$html$Html$Events$onClick($author$project$Pages$Subscription$OpenBillingPortal),
-							$elm$html$Html$Attributes$disabled(model.bo)
+							$elm$html$Html$Attributes$disabled(model.isLoading)
 						]),
 					_List_fromArray(
 						[
-							model.bo ? $elm$html$Html$text('Opening...') : $elm$html$Html$text('Manage Subscription')
+							model.isLoading ? $elm$html$Html$text('Opening...') : $elm$html$Html$text('Manage Subscription')
 						])) : A2(
 					$elm$html$Html$div,
 					_List_fromArray(
@@ -18036,7 +18267,7 @@ var $author$project$Pages$Subscription$viewManageButton = F2(
 	});
 var $author$project$Pages$Subscription$viewContent = F2(
 	function (model, userInfo) {
-		var sub = userInfo.bY;
+		var sub = userInfo.subscription;
 		return A2(
 			$elm$html$Html$div,
 			_List_fromArray(
@@ -18046,14 +18277,14 @@ var $author$project$Pages$Subscription$viewContent = F2(
 			_List_fromArray(
 				[
 					$author$project$Pages$Subscription$viewCurrentPlan(userInfo),
-					A2($author$project$Pages$Subscription$viewAvailablePlans, model, userInfo.cm),
+					A2($author$project$Pages$Subscription$viewAvailablePlans, model, userInfo.plan),
 					A2($author$project$Pages$Subscription$viewManageButton, model, sub)
 				]));
 	});
-var $author$project$Pages$Subscription$DismissError = {$: 4};
+var $author$project$Pages$Subscription$DismissError = {$: 'DismissError'};
 var $author$project$Pages$Subscription$viewError = function (model) {
-	var _v0 = model.aG;
-	if (!_v0.$) {
+	var _v0 = model.error;
+	if (_v0.$ === 'Just') {
 		var err = _v0.a;
 		return A2(
 			$elm$html$Html$div,
@@ -18170,13 +18401,13 @@ var $author$project$Pages$Subscription$view = function (model) {
 				$author$project$Pages$Subscription$viewHeader,
 				$author$project$Pages$Subscription$viewError(model),
 				function () {
-				var _v0 = model.bY;
+				var _v0 = model.subscription;
 				switch (_v0.$) {
-					case 0:
+					case 'NotAsked':
 						return $elm$html$Html$text('');
-					case 1:
+					case 'Loading':
 						return $author$project$Pages$Subscription$viewLoading;
-					case 2:
+					case 'Failure':
 						var err = _v0.a;
 						return $author$project$Pages$Subscription$viewLoadError(err);
 					default:
@@ -18277,9 +18508,9 @@ var $author$project$Pages$VerifyEmail$view = function (model) {
 											]))
 									])),
 								function () {
-								var _v0 = model.dF;
+								var _v0 = model.status;
 								switch (_v0.$) {
-									case 0:
+									case 'Verifying':
 										return A2(
 											$elm$html$Html$div,
 											_List_fromArray(
@@ -18315,7 +18546,7 @@ var $author$project$Pages$VerifyEmail$view = function (model) {
 															$elm$html$Html$text('Verifying your email...')
 														]))
 												]));
-									case 1:
+									case 'Verified':
 										return A2(
 											$elm$html$Html$div,
 											_List_fromArray(
@@ -18336,11 +18567,11 @@ var $author$project$Pages$VerifyEmail$view = function (model) {
 															$elm$html$Html$span,
 															_List_fromArray(
 																[
-																	$elm$html$Html$Attributes$class('text-green-600 text-2xl')
+																	$elm$html$Html$Attributes$class('text-3xl')
 																]),
 															_List_fromArray(
 																[
-																	$elm$html$Html$text('check')
+																	$elm$html$Html$text('\u2705')
 																]))
 														])),
 													A2(
@@ -18397,11 +18628,11 @@ var $author$project$Pages$VerifyEmail$view = function (model) {
 															$elm$html$Html$span,
 															_List_fromArray(
 																[
-																	$elm$html$Html$Attributes$class('text-red-600 text-2xl')
+																	$elm$html$Html$Attributes$class('text-3xl')
 																]),
 															_List_fromArray(
 																[
-																	$elm$html$Html$text('X')
+																	$elm$html$Html$text('\u274C')
 																]))
 														])),
 													A2(
@@ -18522,123 +18753,123 @@ var $author$project$Main$viewNotFound = A2(
 		]));
 var $author$project$Main$view = function (model) {
 	return {
-		aj: _List_fromArray(
+		body: _List_fromArray(
 			[
 				function () {
-				var _v0 = model.c;
+				var _v0 = model.page;
 				switch (_v0.$) {
-					case 0:
+					case 'LoginPage':
 						var subModel = _v0.a;
 						return A2(
 							$elm$html$Html$map,
 							$author$project$Main$LoginMsg,
 							$author$project$Pages$Login$view(subModel));
-					case 1:
+					case 'RegisterPage':
 						var subModel = _v0.a;
 						return A2(
 							$elm$html$Html$map,
 							$author$project$Main$RegisterMsg,
 							$author$project$Pages$Register$view(subModel));
-					case 2:
+					case 'DashboardPage':
 						var subModel = _v0.a;
-						var _v1 = model.i;
-						if (_v1.$ === 1) {
+						var _v1 = model.session;
+						if (_v1.$ === 'LoggedIn') {
 							var token = _v1.a;
 							var coach = _v1.b;
 							return $author$project$View$Layout$layout(
 								{
-									eg: coach,
-									bi: A2(
+									coach: coach,
+									content: A2(
 										$elm$html$Html$map,
 										$author$project$Main$DashboardMsg,
-										A3($author$project$Pages$Dashboard$view, model.cK, token, subModel)),
-									br: $author$project$Main$Logout
+										A3($author$project$Pages$Dashboard$view, model.apiUrl, token, subModel)),
+									onLogout: $author$project$Main$Logout
 								});
 						} else {
 							return $elm$html$Html$text('');
 						}
-					case 3:
+					case 'StudentDetailPage':
 						var subModel = _v0.a;
-						var _v2 = model.i;
-						if (_v2.$ === 1) {
+						var _v2 = model.session;
+						if (_v2.$ === 'LoggedIn') {
 							var coach = _v2.b;
 							return $author$project$View$Layout$layout(
 								{
-									eg: coach,
-									bi: A2(
+									coach: coach,
+									content: A2(
 										$elm$html$Html$map,
 										$author$project$Main$StudentDetailMsg,
 										$author$project$Pages$StudentDetail$view(subModel)),
-									br: $author$project$Main$Logout
+									onLogout: $author$project$Main$Logout
 								});
 						} else {
 							return $elm$html$Html$text('');
 						}
-					case 4:
+					case 'GameDetailPage':
 						var subModel = _v0.a;
-						var _v3 = model.i;
-						if (_v3.$ === 1) {
+						var _v3 = model.session;
+						if (_v3.$ === 'LoggedIn') {
 							var coach = _v3.b;
 							return $author$project$View$Layout$layout(
 								{
-									eg: coach,
-									bi: A2(
+									coach: coach,
+									content: A2(
 										$elm$html$Html$map,
 										$author$project$Main$GameDetailMsg,
 										$author$project$Pages$GameDetail$view(subModel)),
-									br: $author$project$Main$Logout
+									onLogout: $author$project$Main$Logout
 								});
 						} else {
 							return $elm$html$Html$text('');
 						}
-					case 5:
+					case 'SubscriptionPage':
 						var subModel = _v0.a;
-						var _v4 = model.i;
-						if (_v4.$ === 1) {
+						var _v4 = model.session;
+						if (_v4.$ === 'LoggedIn') {
 							var coach = _v4.b;
 							return $author$project$View$Layout$layout(
 								{
-									eg: coach,
-									bi: A2(
+									coach: coach,
+									content: A2(
 										$elm$html$Html$map,
 										$author$project$Main$SubscriptionMsg,
 										$author$project$Pages$Subscription$view(subModel)),
-									br: $author$project$Main$Logout
+									onLogout: $author$project$Main$Logout
 								});
 						} else {
 							return $elm$html$Html$text('');
 						}
-					case 6:
+					case 'ForgotPasswordPage':
 						var subModel = _v0.a;
 						return A2(
 							$elm$html$Html$map,
 							$author$project$Main$ForgotPasswordMsg,
 							$author$project$Pages$ForgotPassword$view(subModel));
-					case 7:
+					case 'ResetPasswordPage':
 						var subModel = _v0.a;
 						return A2(
 							$elm$html$Html$map,
 							$author$project$Main$ResetPasswordMsg,
 							$author$project$Pages$ResetPassword$view(subModel));
-					case 8:
+					case 'VerifyEmailPage':
 						var subModel = _v0.a;
 						return A2(
 							$elm$html$Html$map,
 							$author$project$Main$VerifyEmailMsg,
 							$author$project$Pages$VerifyEmail$view(subModel));
-					case 9:
+					case 'EmailPreferencesPage':
 						var subModel = _v0.a;
-						var _v5 = model.i;
-						if (_v5.$ === 1) {
+						var _v5 = model.session;
+						if (_v5.$ === 'LoggedIn') {
 							var coach = _v5.b;
 							return $author$project$View$Layout$layout(
 								{
-									eg: coach,
-									bi: A2(
+									coach: coach,
+									content: A2(
 										$elm$html$Html$map,
 										$author$project$Main$EmailPreferencesMsg,
 										$author$project$Pages$EmailPreferences$view(subModel)),
-									br: $author$project$Main$Logout
+									onLogout: $author$project$Main$Logout
 								});
 						} else {
 							return $elm$html$Html$text('');
@@ -18648,11 +18879,11 @@ var $author$project$Main$view = function (model) {
 				}
 			}()
 			]),
-		fK: 'Insights64'
+		title: 'Insights64'
 	};
 };
 var $author$project$Main$main = $elm$browser$Browser$application(
-	{eN: $author$project$Main$init, e9: $author$project$Main$UrlChanged, fa: $author$project$Main$UrlRequested, fE: $author$project$Main$subscriptions, fU: $author$project$Main$update, fX: $author$project$Main$view});
+	{init: $author$project$Main$init, onUrlChange: $author$project$Main$UrlChanged, onUrlRequest: $author$project$Main$UrlRequested, subscriptions: $author$project$Main$subscriptions, update: $author$project$Main$update, view: $author$project$Main$view});
 _Platform_export({'Main':{'init':$author$project$Main$main(
 	A2(
 		$elm$json$Json$Decode$andThen,
@@ -18667,7 +18898,7 @@ _Platform_export({'Main':{'init':$author$project$Main$main(
 								$elm$json$Json$Decode$andThen,
 								function (apiUrl) {
 									return $elm$json$Json$Decode$succeed(
-										{cK: apiUrl, eg: coach, y: timeRangeFilter, ba: token});
+										{apiUrl: apiUrl, coach: coach, timeRangeFilter: timeRangeFilter, token: token});
 								},
 								A2($elm$json$Json$Decode$field, 'apiUrl', $elm$json$Json$Decode$string));
 						},
@@ -18688,7 +18919,7 @@ _Platform_export({'Main':{'init':$author$project$Main$main(
 													$elm$json$Json$Decode$andThen,
 													function (email) {
 														return $elm$json$Json$Decode$succeed(
-															{cW: email, F: id});
+															{email: email, id: id});
 													},
 													A2($elm$json$Json$Decode$field, 'email', $elm$json$Json$Decode$string));
 											},

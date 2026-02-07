@@ -230,6 +230,7 @@ type alias UserInfo =
     , plan : Maybe SubscriptionPlan
     , studentCount : Int
     , isAtLimit : Bool
+    , emailVerified : Bool
     }
 
 
@@ -241,6 +242,7 @@ userInfoDecoder =
         |> Pipeline.optional "plan" (Decode.nullable subscriptionPlanDecoder) Nothing
         |> Pipeline.required "student_count" Decode.int
         |> Pipeline.required "is_at_limit" Decode.bool
+        |> Pipeline.optional "email_verified" Decode.bool False
 
 
 type alias CoachWithSubscription =
