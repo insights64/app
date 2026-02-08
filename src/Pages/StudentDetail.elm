@@ -41,6 +41,7 @@ type alias Model =
     , resultFilter : ResultFilter
     , colorFilter : ColorFilter
     , selectedTags : List String
+    , tagSearch : String
     , minAccuracy : Maybe Int
     , maxAccuracy : Maybe Int
     , maxBlunders : Maybe Int
@@ -87,6 +88,7 @@ init apiUrl token studentId initialTimeRange =
             , resultFilter = AllResults
             , colorFilter = AllColors
             , selectedTags = []
+            , tagSearch = ""
             , minAccuracy = Nothing
             , maxAccuracy = Nothing
             , maxBlunders = Nothing
@@ -94,7 +96,7 @@ init apiUrl token studentId initialTimeRange =
             , opponentSearch = ""
             , sortOrder = DateNewest
             , expandedGames = Set.empty
-            , expandedFilterSections = Set.fromList [ "result", "timeControl" ]
+            , expandedFilterSections = Set.fromList [ "tags", "result", "timeControl" ]
             , sidebarVisible = True
             , hoveredGameId = Nothing
             , limit = 25
@@ -127,6 +129,7 @@ type Msg
     | SetColorFilter ColorFilter
     | ToggleTag String
     | ClearTags
+    | SetTagSearch String
     | SetMinAccuracy String
     | SetMaxAccuracy String
     | ClearAccuracy
@@ -231,9 +234,12 @@ update msg model =
         ClearTags ->
             let
                 newModel =
-                    { model | selectedTags = [], games = Loading, offset = 0 }
+                    { model | selectedTags = [], tagSearch = "", games = Loading, offset = 0 }
             in
             ( newModel, fetchFilteredGames newModel )
+
+        SetTagSearch str ->
+            ( { model | tagSearch = str }, Cmd.none )
 
         SetMinAccuracy str ->
             let
@@ -291,6 +297,7 @@ update msg model =
                         , resultFilter = AllResults
                         , colorFilter = AllColors
                         , selectedTags = []
+                        , tagSearch = ""
                         , minAccuracy = Nothing
                         , maxAccuracy = Nothing
                         , maxBlunders = Nothing
@@ -843,12 +850,12 @@ viewSidebar model =
 
             -- Filters
             , div [ class "space-y-1" ]
-                [ viewFilterSection model "result" "Result" (model.resultFilter /= AllResults) (viewResultFilter model)
+                [ viewFilterSection model "tags" "Tags" (not (List.isEmpty model.selectedTags)) (viewTagFilters model)
+                , viewFilterSection model "result" "Result" (model.resultFilter /= AllResults) (viewResultFilter model)
                 , viewFilterSection model "timeControl" "Time Control" (model.timeControlFilter /= AllTimeControls) (viewTimeControlFilter model)
                 , viewFilterSection model "color" "Played As" (model.colorFilter /= AllColors) (viewColorFilter model)
                 , viewFilterSection model "accuracy" "Accuracy" (model.minAccuracy /= Nothing || model.maxAccuracy /= Nothing) (viewAccuracyFilter model)
                 , viewFilterSection model "opponent" "Opponent" (model.opponentRatingFilter /= "all" || model.opponentSearch /= "") (viewOpponentFilter model)
-                , viewFilterSection model "tags" "Tags" (not (List.isEmpty model.selectedTags)) (viewTagFilters model)
                 ]
 
             -- Sort
@@ -1036,8 +1043,18 @@ viewTagFilters model =
 
         Success tagsWithCounts ->
             let
+                searchLower =
+                    String.toLower model.tagSearch
+
+                filtered =
+                    if String.isEmpty model.tagSearch then
+                        tagsWithCounts
+
+                    else
+                        List.filter (\tc -> String.contains searchLower (String.toLower tc.tag.name)) tagsWithCounts
+
                 groupedTags =
-                    tagsWithCounts
+                    filtered
                         |> List.sortBy (\tc -> -tc.count)
                         |> groupTagsWithCountByCategory
             in
@@ -1050,8 +1067,27 @@ viewTagFilters model =
 
                   else
                     text ""
+                , if List.length tagsWithCounts > 8 then
+                    div [ class "mb-3" ]
+                        [ input
+                            [ type_ "text"
+                            , placeholder "Search tags..."
+                            , value model.tagSearch
+                            , onInput SetTagSearch
+                            , class "w-full px-2.5 py-1.5 text-xs border border-gray-200 rounded-lg bg-white focus:ring-2 focus:ring-anthro-dark focus:border-anthro-dark placeholder-gray-400"
+                            ]
+                            []
+                        ]
+
+                  else
+                    text ""
                 , div [ class "space-y-3" ]
                     (List.map (viewFilterTagGroup model.selectedTags) groupedTags)
+                , if not (String.isEmpty model.tagSearch) && List.isEmpty filtered then
+                    div [ class "text-xs text-gray-400 py-1" ] [ text "No tags match your search" ]
+
+                  else
+                    text ""
                 ]
 
 
@@ -1133,7 +1169,7 @@ viewStudentHeader model studentData =
             div [ class "mb-6" ]
                 [ -- Archived banner
                   if isArchived then
-                    div [ class "mb-4 bg-gray-100 border border-gray-200 rounded-lg p-4 flex items-center justify-between" ]
+                    div [ class "mb-4 bg-gray-100 border border-gray-200 rounded-lg p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3" ]
                         [ div [ class "flex items-center gap-2" ]
                             [ span [ class "text-gray-600" ] [ text "This student is archived. Games are not being imported or analyzed." ]
                             ]
@@ -1162,7 +1198,7 @@ viewStudentHeader model studentData =
                     , span [ class "text-anthro-gray-light" ] [ text "/" ]
                     , span [ class "text-anthro-dark font-medium" ] [ text student.displayName ]
                     ]
-                , div [ class "flex items-center justify-between" ]
+                , div [ class "flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4" ]
                     [ div [ class "flex items-center gap-4" ]
                         [ case student.avatarUrl of
                             Just url ->
@@ -1264,7 +1300,7 @@ viewStatsHeader model =
             in
             div [ class "mb-6 bg-white rounded-xl shadow-card p-5" ]
                 [ -- Stats row
-                  div [ class "grid grid-cols-3 gap-6" ]
+                  div [ class "grid grid-cols-3 gap-3 sm:gap-6" ]
                     [ div [ class "text-center" ]
                         [ div [ class "text-2xl font-bold text-gray-900" ] [ text (String.fromInt gamesData.total) ]
                         , div [ class "text-xs text-gray-500 mt-1" ] [ text "Games" ]
@@ -1346,7 +1382,7 @@ viewStatsHeader model =
         _ ->
             -- Loading skeleton for stats
             div [ class "mb-6 bg-white rounded-xl shadow-card p-5 animate-pulse" ]
-                [ div [ class "grid grid-cols-3 gap-6" ]
+                [ div [ class "grid grid-cols-3 gap-3 sm:gap-6" ]
                     [ div [ class "text-center" ]
                         [ div [ class "h-8 w-12 bg-gray-200 rounded mx-auto mb-2" ] []
                         , div [ class "h-3 w-16 bg-gray-200 rounded mx-auto" ] []
@@ -1761,7 +1797,7 @@ viewErrorSummary ins =
             [ span [ class "text-lg" ] [ text "✓" ], text "Clean game - no major errors" ]
 
     else
-        div [ class "flex items-center gap-4 text-sm" ]
+        div [ class "flex items-center flex-wrap gap-x-4 gap-y-1 text-sm" ]
             (List.map
                 (\( count, label, color ) ->
                     span [ class "flex items-center gap-1.5" ]

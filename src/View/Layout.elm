@@ -36,21 +36,24 @@ viewHeader coach onLogout =
                     , span [ class "bg-anthro-orange" ] []
                     ]
                 , span [ class "font-semibold text-anthro-dark tracking-tight" ] [ text "Insights64" ]
+                , span [ class "text-[10px] font-semibold text-anthro-orange border border-anthro-orange rounded px-1 py-0.5 leading-none uppercase tracking-wide" ] [ text "Beta" ]
                 ]
-            , div [ class "flex items-center gap-4" ]
+            , div [ class "flex items-center gap-2 sm:gap-4" ]
                 [ -- Email with subscription badge - links to subscription page
                   a
                     [ Route.href Route.Subscription
-                    , class "flex items-center gap-2 text-sm text-anthro-gray hover:text-anthro-dark transition-colors px-3 py-1.5 rounded-lg hover:bg-anthro-cream"
+                    , class "flex items-center gap-2 text-sm text-anthro-gray hover:text-anthro-dark transition-colors px-3 py-1.5 rounded-lg hover:bg-anthro-cream min-w-0"
                     ]
-                    [ text coach.email
+                    [ span [ class "max-w-[120px] sm:max-w-none truncate" ] [ text coach.email ]
                     , viewSubscriptionBadge coach.subscription
                     ]
                 , button
                     [ onClick onLogout
                     , class "text-sm text-anthro-gray hover:text-anthro-dark transition-colors px-3 py-1.5 rounded-lg hover:bg-anthro-cream"
                     ]
-                    [ text "Sign out" ]
+                    [ span [ class "sm:hidden" ] [ text "\u{2192}" ]
+                    , span [ class "hidden sm:inline" ] [ text "Sign out" ]
+                    ]
                 ]
             ]
         ]

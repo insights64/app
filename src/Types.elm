@@ -1,5 +1,6 @@
 module Types exposing
-    ( Coach
+    ( ChessComPlayer
+    , Coach
     , CoachWithSubscription
     , ColorFilter(..)
     , Game
@@ -20,6 +21,7 @@ module Types exposing
     , TimeControl(..)
     , TimeRangeFilter(..)
     , UserInfo
+    , chessComPlayerDecoder
     , coachDecoder
     , coachWithSubscriptionDecoder
     , colorFilterToString
@@ -664,3 +666,22 @@ timeRangeFilterFromString str =
 
         _ ->
             Last30Days
+
+
+
+-- CHESS.COM PLAYER LOOKUP
+
+
+type alias ChessComPlayer =
+    { username : String
+    , name : Maybe String
+    , avatarUrl : Maybe String
+    }
+
+
+chessComPlayerDecoder : Decoder ChessComPlayer
+chessComPlayerDecoder =
+    Decode.succeed ChessComPlayer
+        |> Pipeline.required "username" Decode.string
+        |> Pipeline.optional "name" (Decode.nullable Decode.string) Nothing
+        |> Pipeline.optional "avatar_url" (Decode.nullable Decode.string) Nothing

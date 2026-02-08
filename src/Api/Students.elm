@@ -6,6 +6,7 @@ module Api.Students exposing
     , getStudentGames
     , getStudentTags
     , getStudents
+    , lookupChessComPlayer
     )
 
 import Api
@@ -13,9 +14,11 @@ import Http
 import Json.Encode as Encode
 import Types
     exposing
-        ( GameWithInsights
+        ( ChessComPlayer
+        , GameWithInsights
         , Student
         , TagWithCount
+        , chessComPlayerDecoder
         , gamesWithInsightsDecoder
         , studentDecoder
         , studentsDecoder
@@ -255,5 +258,23 @@ archiveStudent config =
                 [ ( "archived", Encode.bool config.archived )
                 ]
         , decoder = studentDecoder
+        , onResponse = config.onResponse
+        }
+
+
+{-| Look up a Chess.com player profile by username
+-}
+lookupChessComPlayer :
+    { apiUrl : String
+    , token : String
+    , username : String
+    , onResponse : Result Http.Error ChessComPlayer -> msg
+    }
+    -> Cmd msg
+lookupChessComPlayer config =
+    Api.get
+        { endpoint = Api.url config.apiUrl [ "api", "chess-com", "player", config.username ]
+        , token = Just config.token
+        , decoder = chessComPlayerDecoder
         , onResponse = config.onResponse
         }

@@ -125,6 +125,7 @@ view model =
                             , span [ class "bg-anthro-orange" ] []
                             ]
                         , h1 [ class "text-2xl font-semibold text-anthro-dark tracking-tight" ] [ text "Insights64" ]
+                        , span [ class "text-[10px] font-semibold text-anthro-orange border border-anthro-orange rounded px-1 py-0.5 leading-none uppercase tracking-wide" ] [ text "Beta" ]
                         ]
                     , p [ class "text-anthro-gray" ] [ text "Chess coaching dashboard" ]
                     ]

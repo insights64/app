@@ -8,9 +8,11 @@ import Html.Attributes exposing (..)
 import Html.Events exposing (onClick, onInput, onSubmit, stopPropagationOn)
 import Http
 import Json.Decode as Decode exposing (Decoder)
+import Process
 import Route
+import Task
 import Time
-import Types exposing (RemoteData(..), Student, UserInfo, TimeRangeFilter(..))
+import Types exposing (ChessComPlayer, RemoteData(..), Student, UserInfo, TimeRangeFilter(..))
 
 
 
@@ -31,6 +33,8 @@ type alias Model =
     , archivingStudentId : Maybe String
     , openMenuStudentId : Maybe String
     , resendStatus : ResendStatus
+    , chessComLookup : RemoteData String ChessComPlayer
+    , debounceCounter : Int
     , apiUrl : String
     , token : String
     }
@@ -72,6 +76,8 @@ init apiUrl token initialTimeRange maybeUserInfo =
             , archivingStudentId = Nothing
             , openMenuStudentId = Nothing
             , resendStatus = ResendIdle
+            , chessComLookup = NotAsked
+            , debounceCounter = 0
             , apiUrl = apiUrl
             , token = token
             }
@@ -106,6 +112,8 @@ type Msg
     | ArchiveStudent String
     | UnarchiveStudent String
     | GotArchiveResult (Result Http.Error Student)
+    | DebounceCheckUsername Int
+    | GotChessComLookup (Result Http.Error ChessComPlayer)
     | ResendVerificationEmail
     | GotResendResult (Result Http.Error Api.Email.MessageResponse)
     | NoOp
@@ -174,6 +182,8 @@ update apiUrl token msg model =
                 | showAddModal = True
                 , newStudentChessCom = ""
                 , addError = Nothing
+                , chessComLookup = NotAsked
+                , debounceCounter = 0
               }
             , Cmd.none
             )
@@ -182,7 +192,61 @@ update apiUrl token msg model =
             ( { model | showAddModal = False }, Cmd.none )
 
         NewStudentChessComChanged username ->
-            ( { model | newStudentChessCom = username, addError = Nothing }, Cmd.none )
+            let
+                newCounter =
+                    model.debounceCounter + 1
+
+                trimmed =
+                    String.trim username
+
+                ( lookupState, debounceCmd ) =
+                    if String.isEmpty trimmed then
+                        ( NotAsked, Cmd.none )
+
+                    else
+                        ( Loading
+                        , Process.sleep 500
+                            |> Task.perform (\_ -> DebounceCheckUsername newCounter)
+                        )
+            in
+            ( { model
+                | newStudentChessCom = username
+                , addError = Nothing
+                , debounceCounter = newCounter
+                , chessComLookup = lookupState
+              }
+            , debounceCmd
+            )
+
+        DebounceCheckUsername counter ->
+            if counter == model.debounceCounter then
+                let
+                    trimmed =
+                        String.trim model.newStudentChessCom
+                in
+                if String.isEmpty trimmed then
+                    ( model, Cmd.none )
+
+                else
+                    ( model
+                    , Api.Students.lookupChessComPlayer
+                        { apiUrl = apiUrl
+                        , token = token
+                        , username = trimmed
+                        , onResponse = GotChessComLookup
+                        }
+                    )
+
+            else
+                ( model, Cmd.none )
+
+        GotChessComLookup result ->
+            case result of
+                Ok player ->
+                    ( { model | chessComLookup = Success player }, Cmd.none )
+
+                Err _ ->
+                    ( { model | chessComLookup = Failure "Player not found on Chess.com" }, Cmd.none )
 
         SubmitNewStudent config ->
             if String.isEmpty model.newStudentChessCom then
@@ -237,6 +301,8 @@ update apiUrl token msg model =
                         , showAddModal = False
                         , isAdding = False
                         , newStudentChessCom = ""
+                        , chessComLookup = NotAsked
+                        , debounceCounter = 0
                       }
                     , Cmd.none
                     )
@@ -600,12 +666,12 @@ viewLoading model =
     div []
         [ -- Header with title and controls (real content, not skeleton)
           div [ class "mb-8" ]
-            [ div [ class "flex items-start justify-between" ]
+            [ div [ class "flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4" ]
                 [ div []
                     [ h1 [ class "text-2xl font-bold text-gray-900" ] [ text "Your Students" ]
                     , p [ class "text-gray-500 mt-1" ] [ text "Loading..." ]
                     ]
-                , div [ class "flex items-center gap-4" ]
+                , div [ class "flex flex-wrap items-center gap-2 sm:gap-4" ]
                     [ viewTimeRangeFilter model.timeRangeFilter
                     , viewAddStudentButton
                     ]
@@ -714,7 +780,7 @@ viewDashboard model students archivedCount =
     div []
         [ -- Header with title, time range filter, archive toggle, and add button
           div [ class "mb-8" ]
-            [ div [ class "flex items-start justify-between" ]
+            [ div [ class "flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4" ]
                 [ div []
                     [ h1 [ class "text-2xl font-bold text-gray-900" ] [ text "Your Students" ]
                     , p [ class "text-gray-500 mt-1 flex items-center gap-1" ]
@@ -751,7 +817,7 @@ viewDashboard model students archivedCount =
                             text ""
                         ]
                     ]
-                , div [ class "flex items-center gap-4" ]
+                , div [ class "flex flex-wrap items-center gap-2 sm:gap-4" ]
                     [ viewTimeRangeFilter model.timeRangeFilter
                     , case isAtStudentLimitFromUserInfo model.userInfo of
                         AtLimit ->
@@ -1184,11 +1250,8 @@ viewAddModal apiUrl token model =
                         []
                     ]
 
-                -- Info note
-                , div [ class "mb-6 flex items-start gap-2 text-sm text-gray-500 bg-gray-50 rounded-lg p-3" ]
-                    [ span [ class "text-blue-500 flex-shrink-0" ] [ text "i" ]
-                    , text "Name and avatar will be fetched automatically from Chess.com"
-                    ]
+                -- Player lookup result
+                , viewChessComLookup model.chessComLookup
 
                 -- Buttons
                 , div [ class "flex justify-end gap-3" ]
@@ -1202,7 +1265,7 @@ viewAddModal apiUrl token model =
                     , button
                         [ type_ "submit"
                         , class "bg-gray-900 hover:bg-gray-800 text-white font-medium py-2.5 px-5 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                        , disabled model.isAdding
+                        , disabled (model.isAdding || not (isLookupSuccess model.chessComLookup))
                         ]
                         [ if model.isAdding then
                             text "Adding..."
@@ -1214,6 +1277,57 @@ viewAddModal apiUrl token model =
                 ]
             ]
         ]
+
+
+isLookupSuccess : RemoteData String ChessComPlayer -> Bool
+isLookupSuccess lookup =
+    case lookup of
+        Success _ ->
+            True
+
+        _ ->
+            False
+
+
+viewChessComLookup : RemoteData String ChessComPlayer -> Html Msg
+viewChessComLookup lookup =
+    case lookup of
+        NotAsked ->
+            text ""
+
+        Loading ->
+            div [ class "mb-6 flex items-center gap-2 text-sm text-gray-500 bg-gray-50 rounded-lg p-3" ]
+                [ div [ class "w-4 h-4 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin" ] []
+                , text "Looking up player..."
+                ]
+
+        Success player ->
+            div [ class "mb-6 flex items-center gap-3 bg-green-50 border border-green-200 rounded-lg p-3" ]
+                [ case player.avatarUrl of
+                    Just url ->
+                        img
+                            [ src url
+                            , alt (Maybe.withDefault player.username player.name)
+                            , class "w-10 h-10 rounded-full object-cover flex-shrink-0"
+                            ]
+                            []
+
+                    Nothing ->
+                        div [ class "w-10 h-10 rounded-full bg-green-200 flex items-center justify-center flex-shrink-0" ]
+                            [ span [ class "text-green-700 font-semibold text-sm" ]
+                                [ text (getInitials (Maybe.withDefault player.username player.name)) ]
+                            ]
+                , div []
+                    [ p [ class "text-sm font-medium text-gray-900" ]
+                        [ text (Maybe.withDefault player.username player.name) ]
+                    , p [ class "text-xs text-gray-500" ]
+                        [ text ("@" ++ player.username) ]
+                    ]
+                ]
+
+        Failure errorMsg ->
+            div [ class "mb-6 flex items-center gap-2 text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg p-3" ]
+                [ text errorMsg ]
 
 
 pluralize : Int -> String
