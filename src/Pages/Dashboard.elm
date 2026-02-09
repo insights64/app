@@ -232,7 +232,7 @@ update apiUrl token msg model =
                     , Api.Students.lookupChessComPlayer
                         { apiUrl = apiUrl
                         , token = token
-                        , username = trimmed
+                        , username = String.toLower trimmed
                         , onResponse = GotChessComLookup
                         }
                     )
@@ -257,7 +257,7 @@ update apiUrl token msg model =
                 , Api.Students.createStudent
                     { apiUrl = config.apiUrl
                     , token = config.token
-                    , chessComUsername = model.newStudentChessCom
+                    , chessComUsername = String.toLower model.newStudentChessCom
                     , onResponse = GotNewStudent
                     }
                 )
